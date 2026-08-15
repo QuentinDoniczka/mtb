@@ -1,0 +1,144 @@
+#!/bin/sh
+# Provisionnement idempotent de la stack MTB — appelé au démarrage du conteneur wpcli.
+# Relançable sans risque sur une stack déjà en place (pas de duplication de contenu).
+set -u
+
+WP_PATH=/var/www/html
+WP="wp --path=${WP_PATH}"
+
+log() {
+	echo "[provision] $*"
+}
+
+wait_for() {
+	description="$1"
+	shift
+	i=0
+	until "$@" >/dev/null 2>&1; do
+		i=$((i + 1))
+		if [ "$i" -ge 60 ]; then
+			echo "[provision] ERREUR : $description toujours indisponible après 60 tentatives (~2 min)" >&2
+			exit 1
+		fi
+		sleep 2
+	done
+}
+
+log "attente de la base de données…"
+# On teste la connexion en PHP pur (mysqli) plutôt que via "wp db check", qui délègue au
+# client mariadb-check. Ce dernier exige TLS par défaut sur les versions récentes du paquet
+# client, alors que le service "db" (mariadb:10.11, développement local) ne l'active pas.
+db_reachable() {
+	php -r '
+		$link = @mysqli_connect(getenv("WORDPRESS_DB_HOST"), getenv("WORDPRESS_DB_USER"), getenv("WORDPRESS_DB_PASSWORD"), getenv("WORDPRESS_DB_NAME"));
+		exit($link ? 0 : 1);
+	'
+}
+wait_for "la base de données" db_reachable
+
+log "attente du cœur WordPress (wp-load.php, déposé par le conteneur wordpress)…"
+wait_for "wp-load.php" test -f "${WP_PATH}/wp-load.php"
+
+if ! $WP core is-installed 2>/dev/null; then
+	log "installation de WordPress en français (fr_FR)…"
+	$WP core install \
+		--url="${WP_SITE_URL}" \
+		--title="${WP_SITE_TITLE}" \
+		--admin_user="${WP_ADMIN_USER}" \
+		--admin_password="${WP_ADMIN_PASSWORD}" \
+		--admin_email="${WP_ADMIN_EMAIL}" \
+		--locale=fr_FR \
+		--skip-email
+else
+	log "WordPress déjà installé — étape ignorée."
+fi
+
+log "expéditeur du courrier sortant (mu-plugin de développement)…"
+# WordPress calcule par défaut un expéditeur du type "wordpress@localhost" à partir de
+# WP_SITE_URL. Cette adresse est rejetée par la validation d'adresse de PHPMailer (pas de
+# domaine à point), donc wp_mail() échoue silencieusement en local. On force une adresse
+# valide via un mu-plugin, écrit à chaque provisionnement (idempotent car identique à chaque
+# fois) — un simple détail d'environnement de développement, pas une décision produit.
+mkdir -p "${WP_PATH}/wp-content/mu-plugins"
+cat > "${WP_PATH}/wp-content/mu-plugins/zz-mtb-docker-mail.php" <<'PHP'
+<?php
+// Placeholder d'amorçage Docker — expéditeur de courrier de développement uniquement.
+// Écrit par docker/provision/provision.sh, hors du dépôt (wp-content n'est pas versionné ici).
+add_filter( 'wp_mail_from', static fn () => 'no-reply@mtbrabant.local' );
+add_filter( 'wp_mail_from_name', static fn () => 'MTB (développement)' );
+PHP
+
+log "langue, fuseau horaire, format des permaliens…"
+$WP language core install fr_FR --activate >/dev/null 2>&1 || log "AVERTISSEMENT : installation de la langue fr_FR impossible (hors-ligne ?)"
+$WP option update WPLANG fr_FR >/dev/null
+$WP option update timezone_string "Europe/Paris" >/dev/null
+$WP option update date_format "d/m/Y" >/dev/null
+$WP option update blogdescription "Élevage de bergers hollandais du Mont Brabant" >/dev/null
+$WP rewrite structure "/%postname%/" --hard >/dev/null
+$WP rewrite flush --hard >/dev/null
+
+log "activation du thème mtb…"
+if [ -f "${WP_PATH}/wp-content/themes/mtb/style.css" ]; then
+	if $WP theme activate mtb >/dev/null 2>&1; then
+		log "thème mtb activé."
+	else
+		log "AVERTISSEMENT : le thème mtb existe mais son activation a échoué (voir wp theme activate mtb en direct)."
+	fi
+else
+	log "thème mtb absent de wp-content/themes/mtb — étape ignorée (attendu tant que leaddev-front-mtb/dev-front-mtb n'a pas livré)."
+fi
+
+log "activation de l'extension mtb-core…"
+if [ -f "${WP_PATH}/wp-content/plugins/mtb-core/mtb-core.php" ]; then
+	if $WP plugin activate mtb-core >/dev/null 2>&1; then
+		log "extension mtb-core activée."
+	else
+		log "AVERTISSEMENT : l'extension mtb-core existe mais son activation a échoué (voir wp plugin activate mtb-core en direct)."
+	fi
+else
+	log "extension mtb-core absente de wp-content/plugins/mtb-core — étape ignorée (attendu tant que leaddev-back-mtb/dev-back-mtb n'a pas livré)."
+fi
+
+log "comptes utilisateur…"
+if ! $WP user get "${WP_EDITOR_USER}" >/dev/null 2>&1; then
+	$WP user create "${WP_EDITOR_USER}" "${WP_EDITOR_EMAIL}" \
+		--role=editor \
+		--user_pass="${WP_EDITOR_PASSWORD}" \
+		--display_name="Fabienne Guéneau" >/dev/null
+	log "compte éditrice « ${WP_EDITOR_USER} » créé avec le rôle natif WordPress « Éditeur » — c'est le rôle le plus étroit disponible tant que mtb-core ne définit pas de rôle métier dédié plus précis. Ne jamais lui donner « Administrateur »."
+else
+	log "compte éditrice déjà présent."
+fi
+log "compte administrateur « ${WP_ADMIN_USER} » créé par wp core install."
+
+log "pages fixes (contact, espace protégé)…"
+if [ -z "$($WP post list --post_type=page --name=contact --field=ID)" ]; then
+	$WP post create --post_type=page --post_title="Contact" --post_status=publish --post_name=contact \
+		--post_content="Page de contact — à composer avec les blocs du catalogue une fois livrés (voir BRIEF §9)." >/dev/null
+	log "page « Contact » créée."
+fi
+
+if [ -z "$($WP post list --post_type=page --name=espace-prive --field=ID)" ]; then
+	$WP post create --post_type=page --post_title="Espace privé (démonstration)" --post_status=publish \
+		--post_name=espace-prive --post_password="chiot2026" \
+		--post_content="Page de démonstration du mécanisme natif WordPress de protection par mot de passe (BRIEF §8)." >/dev/null
+	log "page protégée par mot de passe « Espace privé » créée (mot de passe de démo : chiot2026)."
+fi
+
+log "contenu structuré (portées, chiens, résultats de travail)…"
+if $WP mtb import-fixtures --help >/dev/null 2>&1; then
+	log "commande « wp mtb import-fixtures » détectée (fournie par mtb-core) — import des fixtures…"
+	$WP mtb import-fixtures \
+		--portees=/fixtures/portees.json \
+		--chiens=/fixtures/chiens.json \
+		--resultats=/fixtures/resultats.json \
+		|| log "AVERTISSEMENT : l'import des fixtures via mtb-core a échoué (voir sortie ci-dessus)."
+else
+	log "aucune commande « wp mtb import-fixtures » disponible — mtb-core n'a pas encore enregistré ses types de contenu ni sa commande d'import de fixtures. Étape ignorée ; les fichiers docker/fixtures/*.json sont prêts et attendent cette commande. Relancer le provisionnement (make provision) une fois mtb-core livré."
+fi
+
+log "terminé."
+
+# Le conteneur reste en vie pour que WP-CLI reste disponible en cas d'exécution ponctuelle
+# (make wp, make shell) et pour que le healthcheck du service reflète l'état du provisionnement.
+tail -f /dev/null

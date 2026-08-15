@@ -1,0 +1,12 @@
+.git/
+.claude/
+node_modules/
+vendor/
+dumps/
+*.sql
+*.sql.gz
+wp-content/uploads/
+export-uploads/
+.env
+.env.*
+!.env.example

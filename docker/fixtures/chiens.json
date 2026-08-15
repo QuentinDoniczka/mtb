@@ -1,0 +1,41 @@
+[
+  {
+    "reference": "rex-du-mont-brabant",
+    "nom_usage": "Rex",
+    "nom_complet": "Rex du Mont Brabant",
+    "sexe": "male",
+    "variete": "poil_long",
+    "date_naissance": "2018-05-01",
+    "date_deces": null,
+    "tests_sante": {
+      "HD": "A", "ED": "0", "LTV": "négatif", "DM": "N/N",
+      "SDCA1": "N/N", "SDCA2": "N/N", "ADN_identifie": true, "diversite_genetique": "62%"
+    },
+    "statut": "reproducteur",
+    "texte_libre": "Fixture de démonstration : fiche chien avec tests de santé complets."
+  },
+  {
+    "reference": "luna-du-mont-brabant",
+    "nom_usage": "Luna",
+    "nom_complet": "Luna du Mont Brabant",
+    "sexe": "femelle",
+    "variete": "poil_long",
+    "date_naissance": "2019-02-10",
+    "date_deces": null,
+    "tests_sante": {},
+    "statut": "reproducteur",
+    "texte_libre": "Fixture de démonstration : fiche chien avec tests de santé manquants — sert à vérifier D12."
+  },
+  {
+    "reference": "cesar-du-mont-brabant",
+    "nom_usage": "César",
+    "nom_complet": "César du Mont Brabant",
+    "sexe": "male",
+    "variete": "poil_court",
+    "date_naissance": "2010-01-01",
+    "date_deces": "2022-08-15",
+    "tests_sante": { "HD": "B", "ED": "0" },
+    "statut": "disparu",
+    "texte_libre": "Fixture de démonstration : fiche chien décédé."
+  }
+]

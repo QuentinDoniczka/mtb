@@ -1,0 +1,18 @@
+[
+  {
+    "discipline": "RING",
+    "chien": "rex-du-mont-brabant",
+    "annee": 2021,
+    "niveau_ou_titre": "Brevet",
+    "conducteur": "Fabienne Guéneau",
+    "pays": null
+  },
+  {
+    "discipline": "IGP",
+    "chien": "cesar-du-mont-brabant",
+    "annee": 2015,
+    "niveau_ou_titre": "IGP1",
+    "conducteur": "Fabienne Guéneau",
+    "pays": null
+  }
+]
