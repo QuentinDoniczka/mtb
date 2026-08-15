@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aper&ccedil;u &mdash; Style 5 &laquo;&nbsp;Sauge et calcaire&nbsp;&raquo; &mdash; Berger Hollandais du Mont Brabant</title>
+<style>
+/* ============================================================================
+   MTBRABANT — Style 5 : « SAUGE ET CALCAIRE »
+   Famille esthétique : botanique sévère — herbier d'apothicaire.
+   Vert sauge froid et pierre calcaire pâle, un seul accent métal chaud (laiton).
+   Aucun fond jaune, aucune terre cuite : la chaleur ne vient que du laiton.
+
+   Élément signature : le FILET DOUBLE — un trait sauge de 3 px posé sur un
+   trait laiton de 1 px. Il sépare les sections, souligne les titres, ferme le
+   bandeau de navigation et se dessine au survol des liens du bandeau.
+
+   PALETTE — contrastes mesurés (WCAG 2.1, ratios calculés) :
+
+     --calcaire       #F2F1EA  fond de page (pierre pâle)
+     --calcaire-creux #E7E5DA  fonds creusés, pied de page
+     --blanc          #FBFAF6  papier du bloc de contenu
+     --pin            #16241C  encre pin profond, titres
+     --texte          #22312A  texte courant
+     --texte-doux     #4A5A50  texte secondaire
+     --sauge          #4A6B57  sauge, bandeau de navigation, liens
+     --sauge-fonce    #35513F  sauge foncé, survol
+     --laiton         #9A7B3F  laiton, filets et anneaux (non textuel)
+     --laiton-texte   #7A5F2C  laiton lisible en texte
+     --laiton-clair   #E3CB9C  laiton clair, sur fonds sauge et pin
+     --filet          #CFCDBF  hachures décoratives sans valeur d'information
+
+     Sur --calcaire #F2F1EA :
+       --pin           14,23:1   AAA
+       --texte         12,04:1   AAA
+       --texte-doux     6,46:1   AA  (AAA en grand)
+       --sauge          5,25:1   AA
+       --sauge-fonce    7,73:1   AAA
+       --laiton-texte   5,30:1   AA
+       --laiton         3,51:1   non textuel uniquement (filets, anneaux, focus)
+
+     Sur --blanc #FBFAF6 (bloc de contenu) :
+       --pin           15,43:1   AAA
+       --texte         13,05:1   AAA
+       --texte-doux     7,01:1   AAA
+       --sauge-fonce    8,38:1   AAA
+       --laiton-texte   5,74:1   AA
+       --laiton         3,81:1   non textuel uniquement
+
+     Sur --calcaire-creux #E7E5DA (pied de page, états creusés) :
+       --texte         10,79:1   AAA
+       --texte-doux     5,79:1   AA
+       --sauge-fonce    6,92:1   AAA
+       --laiton         3,15:1   non textuel uniquement (anneau de focus)
+
+     Sur --sauge #4A6B57 (bandeau de navigation) :
+       --calcaire       5,25:1   AA   libellés du bandeau
+       --laiton-clair   3,76:1   trait de survol, indicateur non textuel
+       --calcaire       5,25:1   anneau de focus
+
+     Sur --pin #16241C (page courante du bandeau) :
+       --calcaire      14,23:1   AAA
+       --laiton-clair  10,20:1   trait permanent de la page courante
+
+   POLICES — piles système uniquement, aucune requête tierce :
+     titres  : "Sitka Text", Cambria, Charter, "Bitstream Charter",
+               Baskerville, "Palatino Linotype", Georgia, serif   (serif transitionnelle)
+     données : system-ui, "Segoe UI", -apple-system, BlinkMacSystemFont,
+               Roboto, "Helvetica Neue", Arial, sans-serif        (sans neutre)
+
+   Aucune couleur ne porte seule une information : la page courante cumule
+   fond, graisse et trait permanent ; les liens de contenu sont soulignés.
+
+   13 août 2026
+   ========================================================================== */
+
+/* --- Jetons ------------------------------------------------------------- */
+
+:root {
+  --calcaire:       #F2F1EA;
+  --calcaire-creux: #E7E5DA;
+  --blanc:          #FBFAF6;
+  --pin:            #16241C;
+  --texte:          #22312A;
+  --texte-doux:     #4A5A50;
+  --sauge:          #4A6B57;
+  --sauge-fonce:    #35513F;
+  --laiton:         #9A7B3F;
+  --laiton-texte:   #7A5F2C;
+  --laiton-clair:   #E3CB9C;
+  --filet:          #CFCDBF;
+
+  --serif: "Sitka Text", Cambria, Charter, "Bitstream Charter", Baskerville, "Palatino Linotype", Georgia, serif;
+  --sans:  system-ui, "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --t-xs:   .75rem;
+  --t-sm:   .875rem;
+  --t-base: 1rem;
+  --t-md:   1.125rem;
+  --t-lg:   1.375rem;
+  --t-xl:   1.875rem;
+  --t-2xl:  2.5rem;
+
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 20px;
+  --e-5: 32px;
+  --e-6: 52px;
+  --e-7: 84px;
+
+  --page:    940px;
+  --colonne: 239px;
+  --corps:   700px;
+  --barre:   3.25rem;
+
+  --medaillon: 44px;
+
+  --duree: 160ms;
+
+  --filet-double: linear-gradient(to bottom, var(--sauge) 0 3px, var(--laiton) 3px 4px);
+}
+
+/* --- Reset -------------------------------------------------------------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--calcaire-creux);
+  color: var(--texte);
+  font-family: var(--sans);
+  font-size: var(--t-base);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a { color: var(--sauge-fonce); }
+
+:focus-visible {
+  outline: 3px solid var(--laiton);
+  outline-offset: 2px;
+}
+
+/* --- Ossature ----------------------------------------------------------- */
+
+#container,
+.altcolor { background-color: var(--calcaire); }
+
+#container {
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#wrapper::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+#header { order: 1; }
+
+#sidebar { order: 2; }
+
+#content { order: 3; }
+
+#content {
+  width: auto;
+  float: none;
+  background: var(--blanc);
+  overflow-wrap: break-word;
+}
+
+#content .gutter { padding: var(--e-5) var(--e-4) var(--e-6); }
+
+#sidebar {
+  width: auto;
+  float: none;
+  padding-bottom: var(--e-4);
+}
+
+#sidebar_content {
+  margin: 0;
+  padding: var(--e-4);
+}
+
+#footer {
+  width: auto;
+  margin-left: 0;
+  clear: both;
+}
+
+#footer .gutter { padding: var(--e-4); }
+
+.c,
+br.c,
+div.c {
+  clear: both;
+  display: block;
+}
+
+#wrapper > .c {
+  height: 0;
+  line-height: 0;
+}
+
+/* --- En-tête ------------------------------------------------------------ */
+
+#header {
+  padding: var(--e-5) 0 0;
+  margin-bottom: var(--e-4);
+  line-height: 0;
+  text-align: center;
+}
+
+#header_wrapper {
+  padding-bottom: var(--e-4);
+  background-color: transparent;
+}
+
+#header_wrapper img {
+  display: inline-block;
+  width: auto;
+  height: 108px;
+  margin: 0 auto;
+}
+
+#header::after {
+  content: "";
+  display: block;
+  height: 4px;
+  background-image: var(--filet-double);
+}
+
+/* --- Navigation : garde IONOS ------------------------------------------- */
+
+#navigation,
+#navigation ul,
+#navigation li,
+#navigation a {
+  position: static;
+  float: none;
+  transform: none;
+  visibility: visible;
+  opacity: 1;
+  max-height: none;
+  clip-path: none;
+}
+
+#navigation ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#navigation ul.mainNav2,
+#navigation ul.mainNav3 { display: block !important; }
+
+#navigation li { display: block; }
+
+#navigation a {
+  display: block;
+  text-decoration: none;
+}
+
+#navigation .diyfeDropDownSubList {
+  display: block !important;
+  position: static !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0;
+  margin: 0;
+}
+
+#navigation .diyfeDropDownSubOpener { display: none !important; }
+
+#navigation a span { display: inline; }
+
+#navigation ul,
+#navigation li { background-image: none !important; }
+
+#navigation {
+  display: block !important;
+  overflow: visible !important;
+  margin: 0;
+}
+
+#container,
+#wrapper,
+#sidebar { overflow: visible; }
+
+/* --- Navigation : bandeau horizontal de niveau 1 ------------------------- */
+
+#navigation ul.mainNav1 {
+  display: flex !important;
+  flex-wrap: wrap;
+  width: auto;
+  pointer-events: none;
+}
+
+#navigation ul.mainNav1 > li { display: contents; }
+
+#navigation ul.mainNav1 > li > a {
+  position: relative;
+  order: 1;
+  flex: 1 1 9rem;
+  min-height: var(--barre);
+  padding: .9rem 1rem;
+  background-color: var(--sauge);
+  background-image: none !important;
+  border-bottom: 3px solid var(--sauge-fonce);
+  box-shadow: 0 1px 0 var(--laiton);
+  color: var(--calcaire);
+  font-family: var(--sans);
+  font-size: var(--t-sm);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: .06em;
+  text-align: center;
+  text-transform: uppercase;
+  pointer-events: auto;
+  transition: background-color var(--duree) ease;
+}
+
+#navigation ul.mainNav1 > li > a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  background-color: var(--laiton-clair);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duree) ease;
+}
+
+#navigation ul.mainNav1 > li > a:hover { background-color: var(--sauge-fonce); }
+
+#navigation ul.mainNav1 > li > a:hover::after { transform: scaleX(1); }
+
+#navigation ul.mainNav1 > li > a.current {
+  background-color: var(--pin);
+  color: var(--calcaire);
+  font-weight: 700;
+}
+
+#navigation ul.mainNav1 > li > a.current::after { transform: scaleX(1); }
+
+#navigation ul.mainNav1 > li > a:focus-visible {
+  outline: 3px solid var(--calcaire);
+  outline-offset: -5px;
+}
+
+/* --- Navigation : niveau 2 — cas IMBRIQUÉ dans le <li> de niveau 1 ------- */
+
+#navigation ul.mainNav1 > li > div.diyfeDropDownSubList,
+#navigation ul.mainNav1 > li > ul.mainNav2 {
+  order: 2;
+  flex: 0 0 100%;
+  padding-right: 0;
+}
+
+/* --- Navigation : niveau 2 — cas FRÈRE de ul.mainNav1 -------------------- */
+
+#navigation > ul.mainNav2,
+#navigation > div.diyfeDropDownSubList {
+  width: auto;
+  margin: 0;
+}
+
+/* --- Navigation : niveau 2 — apparence commune aux deux cas -------------- */
+
+#navigation ul.mainNav2 {
+  width: auto;
+  margin: 0;
+  padding: var(--e-4) 0 var(--e-5);
+  background-color: var(--calcaire);
+  counter-reset: entree;
+}
+
+#navigation ul.mainNav2::before {
+  content: "Dans cette rubrique";
+  display: block;
+  margin: 0 var(--e-4) var(--e-2);
+  padding-bottom: var(--e-2);
+  border-bottom: 1px solid var(--laiton);
+  font-family: var(--sans);
+  font-size: var(--t-xs);
+  letter-spacing: .18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+}
+
+#navigation ul.mainNav2 > li {
+  counter-increment: entree;
+  border-bottom: 1px solid var(--filet);
+  pointer-events: auto;
+}
+
+#navigation ul.mainNav2 > li:last-child { border-bottom: 0; }
+
+#navigation ul.mainNav2 > li > a {
+  display: flex;
+  align-items: baseline;
+  gap: .65rem;
+  min-height: 44px;
+  padding: .7rem var(--e-4);
+  border-left: 3px solid transparent;
+  font-family: var(--sans);
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--texte);
+  transition: background-color var(--duree) ease, border-color var(--duree) ease;
+}
+
+#navigation ul.mainNav2 > li > a::before {
+  content: counter(entree, decimal-leading-zero);
+  flex: 0 0 1.6rem;
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .08em;
+  color: var(--laiton-texte);
+}
+
+#navigation ul.mainNav2 > li > a:hover {
+  background-color: var(--calcaire-creux);
+  border-left-color: var(--laiton);
+}
+
+#navigation ul.mainNav2 > li > a.current {
+  background-color: var(--calcaire-creux);
+  border-left-color: var(--sauge);
+  color: var(--pin);
+  font-weight: 700;
+}
+
+#navigation ul.mainNav2 > li > a.current::before { color: var(--sauge-fonce); }
+
+/* --- Navigation : niveau 3 ---------------------------------------------- */
+
+#navigation ul.mainNav3 {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  background-color: var(--calcaire);
+}
+
+#navigation ul.mainNav3 > li {
+  border-top: 1px solid var(--filet);
+  pointer-events: auto;
+}
+
+#navigation ul.mainNav3 > li > a {
+  display: flex;
+  align-items: baseline;
+  gap: .55rem;
+  min-height: 44px;
+  padding: .7rem var(--e-4) .7rem 2.9rem;
+  font-family: var(--sans);
+  font-size: var(--t-xs);
+  line-height: 1.45;
+  color: var(--texte-doux);
+  transition: background-color var(--duree) ease, color var(--duree) ease;
+}
+
+#navigation ul.mainNav3 > li > a::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-left: 1px solid var(--laiton);
+  border-bottom: 1px solid var(--laiton);
+  transform: translateY(-2px);
+}
+
+#navigation ul.mainNav3 > li > a:hover {
+  background-color: var(--calcaire-creux);
+  color: var(--pin);
+}
+
+#navigation ul.mainNav3 > li > a.current {
+  color: var(--pin);
+  font-weight: 700;
+}
+
+/* --- Contenu : titres --------------------------------------------------- */
+
+#content h1,
+#content h2,
+#content h3,
+#content h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  color: var(--pin);
+  text-wrap: balance;
+}
+
+#content h1 {
+  margin: 0 0 var(--e-5);
+  padding-bottom: var(--e-4);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 4px;
+  font-size: var(--t-2xl);
+  line-height: 1.08;
+  letter-spacing: -.015em;
+}
+
+#content h2 {
+  margin: var(--e-6) 0 var(--e-4);
+  padding-bottom: var(--e-3);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 96px 4px;
+  font-size: var(--t-xl);
+  line-height: 1.16;
+  letter-spacing: -.01em;
+}
+
+#content h3 {
+  margin: var(--e-5) 0 var(--e-3);
+  font-size: var(--t-lg);
+  line-height: 1.25;
+}
+
+#content h4 {
+  margin: var(--e-5) 0 var(--e-2);
+  font-family: var(--sans);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--laiton-texte);
+}
+
+/* --- Contenu : texte ---------------------------------------------------- */
+
+#content p { margin: 0 0 var(--e-4); }
+
+#content a {
+  color: var(--sauge-fonce);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+  text-decoration-color: var(--laiton);
+  transition: color var(--duree) ease, text-decoration-color var(--duree) ease;
+}
+
+#content a:hover {
+  color: var(--pin);
+  text-decoration-color: var(--pin);
+  text-decoration-thickness: 2px;
+}
+
+#content strong,
+#content b { font-weight: 700; }
+
+#content em,
+#content i { font-style: italic; }
+
+#content ul,
+#content ol {
+  margin: 0 0 var(--e-4);
+  padding-left: 1.35em;
+}
+
+#content li { margin-bottom: var(--e-2); }
+
+#content ul li::marker { color: var(--laiton); }
+
+#content ol li::marker {
+  color: var(--laiton-texte);
+  font-variant-numeric: tabular-nums;
+}
+
+#content blockquote {
+  margin: var(--e-5) 0;
+  padding: var(--e-2) 0 var(--e-2) var(--e-4);
+  border-left: 3px solid var(--sauge);
+  font-family: var(--serif);
+  font-size: var(--t-md);
+  line-height: 1.5;
+  color: var(--pin);
+}
+
+#content hr,
+#content .hr {
+  height: 4px;
+  border: 0;
+  margin: var(--e-6) 0;
+  background-image: var(--filet-double);
+}
+
+/* --- Contenu : images et médaillons ------------------------------------- */
+
+#content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: var(--e-5) auto var(--e-2);
+  background-color: var(--calcaire-creux);
+  box-shadow: 0 0 0 1px var(--filet);
+}
+
+#content img[style*="max-width: 1"]:not([style*="%"]),
+#content img[style*="max-width: 2"]:not([style*="%"]),
+#content img[style*="max-width:1"]:not([style*="%"]),
+#content img[style*="max-width:2"]:not([style*="%"]) {
+  width: 100%;
+  max-width: 240px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: 50% 34%;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--filet), 0 0 0 5px var(--blanc), 0 0 0 6px var(--laiton);
+}
+
+#content figure {
+  margin: var(--e-5) 0;
+  text-align: center;
+}
+
+#content figcaption {
+  font-size: var(--t-xs);
+  letter-spacing: .04em;
+  color: var(--texte-doux);
+}
+
+#content #emotion-header { margin: 0 0 var(--e-5); }
+
+#content #emotion-header img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  box-shadow: none;
+  border-bottom: 3px solid var(--sauge);
+}
+
+#content #emotion-header strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: var(--t-xl);
+  font-weight: 400;
+}
+
+/* --- Contenu : tableaux ------------------------------------------------- */
+
+#content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--e-5) 0;
+  font-size: var(--t-sm);
+}
+
+#content caption {
+  padding-bottom: var(--e-3);
+  font-size: var(--t-xs);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--laiton-texte);
+  text-align: left;
+}
+
+#content th,
+#content td {
+  padding: var(--e-3) var(--e-4) var(--e-3) 0;
+  border-bottom: 1px solid var(--filet);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+#content th {
+  border-bottom: 3px solid var(--sauge);
+  font-family: var(--sans);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--pin);
+}
+
+/* --- Contenu : formulaires ---------------------------------------------- */
+
+#content form {
+  margin: var(--e-5) 0;
+  padding-top: var(--e-4);
+  border-top: 3px solid var(--sauge);
+}
+
+#content label {
+  display: block;
+  margin-bottom: var(--e-2);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  color: var(--pin);
+}
+
+#content input[type="text"],
+#content input[type="email"],
+#content input[type="tel"],
+#content input[type="url"],
+#content input[type="number"],
+#content input[type="date"],
+#content textarea,
+#content select {
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: var(--e-4);
+  padding: var(--e-3) var(--e-4);
+  border: 1px solid var(--texte-doux);
+  background-color: var(--blanc);
+  color: var(--texte);
+  font: inherit;
+  font-size: var(--t-sm);
+  transition: border-color var(--duree) ease;
+}
+
+#content textarea {
+  min-height: 160px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+#content input:focus,
+#content textarea:focus,
+#content select:focus { border-color: var(--sauge); }
+
+#content button,
+#content input[type="submit"] {
+  display: inline-block;
+  min-height: 48px;
+  padding: var(--e-3) var(--e-5);
+  border: 0;
+  background-color: var(--sauge);
+  color: var(--calcaire);
+  font-family: var(--sans);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--duree) ease;
+}
+
+#content button:hover,
+#content input[type="submit"]:hover { background-color: var(--pin); }
+
+/* --- Colonne latérale --------------------------------------------------- */
+
+#sidebar { font-size: var(--t-sm); }
+
+#sidebar_content {
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% 4px;
+  padding-top: var(--e-4);
+  color: var(--texte-doux);
+}
+
+#sidebar_content h1,
+#sidebar_content h2,
+#sidebar_content h3,
+#sidebar_content h4 {
+  margin: var(--e-4) 0 var(--e-2);
+  font-family: var(--sans);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--pin);
+}
+
+#sidebar_content h1:first-child,
+#sidebar_content h2:first-child,
+#sidebar_content h3:first-child { margin-top: 0; }
+
+#sidebar_content p { margin: 0 0 var(--e-3); }
+
+#sidebar_content a {
+  color: var(--sauge-fonce);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+#sidebar_content a:hover { color: var(--pin); }
+
+#sidebar_content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: var(--e-3) auto;
+  box-shadow: 0 0 0 1px var(--filet);
+}
+
+#sidebar_content ul {
+  margin: 0 0 var(--e-3);
+  padding-left: 1.2em;
+}
+
+#sidebar_content .hr {
+  height: 4px;
+  border: 0;
+  margin: var(--e-4) 0;
+  background-image: var(--filet-double);
+}
+
+/* --- Pied de page ------------------------------------------------------- */
+
+#footer {
+  background-color: var(--calcaire-creux);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% 4px;
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+#footer .gutter { padding-top: calc(var(--e-4) + 4px); }
+
+#footer p { margin: 0; }
+
+#footer a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 11px 0;
+  color: var(--sauge-fonce);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+#footer a:hover { color: var(--pin); }
+
+#footer img { display: none; }
+
+#footer h1,
+#footer h2,
+#footer h3 {
+  margin: 0 0 var(--e-2);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-md);
+  color: var(--pin);
+}
+
+/* --- Neutralisation des styles écrits dans l'éditeur --------------------- */
+
+#content font,
+#sidebar_content font,
+#footer font {
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+#content [style*="comic" i],
+#content [style*="Comic Sans" i],
+#content font[face],
+#sidebar_content [style*="comic" i],
+#sidebar_content font[face] { font-family: var(--sans) !important; }
+
+#content [style*="font-size:10px"],
+#content [style*="font-size: 10px"],
+#content [style*="font-size:11px"],
+#content [style*="font-size: 11px"],
+#content [style*="font-size:12px"],
+#content [style*="font-size: 12px"],
+#sidebar_content [style*="font-size:10px"],
+#sidebar_content [style*="font-size: 10px"],
+#sidebar_content [style*="font-size:11px"],
+#sidebar_content [style*="font-size: 11px"],
+#sidebar_content [style*="font-size:12px"],
+#sidebar_content [style*="font-size: 12px"] { font-size: var(--t-sm) !important; }
+
+#content [style*="#9288C4"],
+#content [style*="#9288c4"],
+#sidebar_content [style*="#9288C4"],
+#sidebar_content [style*="#9288c4"] { color: var(--texte-doux) !important; }
+
+#content [style*="font-size:36px"],
+#content [style*="font-size: 36px"] {
+  display: block;
+  font-family: var(--serif);
+  font-size: var(--t-2xl) !important;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  color: var(--pin);
+}
+
+#content [style*="font-size:36px"] strong,
+#content [style*="font-size: 36px"] strong { font-weight: 400; }
+
+.fb-root,
+.fb-like,
+.fb-share,
+.facebook-content,
+.ngh-counter,
+.counter { display: none !important; }
+
+/* --- Modules IONOS : grille et galerie ---------------------------------- */
+
+#content .diyfeModGridGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-6) var(--e-5);
+}
+
+#content .diyfeModGridElement {
+  flex: 1 1 168px;
+  float: none;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+}
+
+#content .diyfeModGridGroup > [style*="clear"] { display: none; }
+
+#content .diyfeModGridContent,
+#content .align-container,
+#content .textwrapper { min-width: 0; }
+
+#content .ccgalerie { margin: var(--e-6) 0; }
+
+#content .ccgalerie img {
+  margin: 0;
+  box-shadow: none;
+}
+
+#content .ccgalerie .scene img {
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  box-shadow: none;
+}
+
+#content div.ccgalerie div.thumb_pro1,
+#content div.ccgalerie div.thumb_pro1:hover,
+#content div.ccgalerie.slideshow .navigation div.thumb_pro1,
+#content div.ccgalerie.slideshow .navigation div.thumb_pro1:hover,
+#content div.ccgalerie.slideshow .navigation div.thumb_pro1.active {
+  width: var(--medaillon) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1;
+  border: 0 !important;
+  padding: 0 !important;
+  background: transparent;
+  border-radius: 50%;
+}
+
+#content .ccgalerie .thumb_pro1 .innerthumbnail {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1;
+  padding: 0 !important;
+  background: transparent;
+}
+
+#content .ccgalerie .thumb_pro1 a {
+  display: block;
+  width: 100%;
+  padding: 0 !important;
+  border-radius: 50%;
+}
+
+#content .ccgalerie .thumb_pro1 .innerthumbnail img {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: 50% 34%;
+  border-radius: 50%;
+  background-color: var(--calcaire-creux);
+  box-shadow: 0 0 0 1px var(--filet);
+  transition: box-shadow var(--duree) ease;
+}
+
+#content .ccgalerie .thumb_pro1:hover .innerthumbnail img {
+  box-shadow: 0 0 0 2px var(--laiton);
+}
+
+#content div.ccgalerie.slideshow .navigation .thumb_pro1:hover .innerthumbnail img,
+#content div.ccgalerie.slideshow .navigation .thumb_pro1.active .innerthumbnail img {
+  box-shadow: 0 0 0 3px var(--sauge);
+}
+
+#content .ccgalerie .thumb_pro1 a:focus-visible {
+  outline: 3px solid var(--laiton);
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
+#content div.ccgalerie.slideshow .navigation {
+  height: auto;
+  min-height: 0;
+}
+
+#content div.ccgalerie.slideshow .navigation::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+#content div.ccgalerie.slideshow .navigation .pause,
+#content div.ccgalerie.slideshow .navigation .fullscreen {
+  position: relative;
+  margin-left: 9px;
+  margin-right: 9px;
+}
+
+#content div.ccgalerie.slideshow .navigation .pause::after,
+#content div.ccgalerie.slideshow .navigation .fullscreen::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+#content .ccgalerie:not(:has(> .scene)) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3);
+}
+
+#content .ccgalerie:not(:has(> .scene)) .thumb_pro1 {
+  float: none !important;
+  margin: 0;
+}
+
+/* --- Mise en page fixe 940 px (écrans larges) --------------------------- */
+
+@media (min-width: 1000px) {
+  #container { width: var(--page); }
+
+  #wrapper { display: block; }
+
+  #header {
+    padding-top: var(--e-6);
+    text-align: left;
+  }
+
+  #header_wrapper {
+    padding-left: var(--e-4);
+    padding-bottom: var(--e-5);
+  }
+
+  #header_wrapper img { height: 132px; }
+
+  #content {
+    width: var(--corps);
+    float: right;
+    margin-top: var(--barre);
+  }
+
+  #content .gutter { padding: var(--e-6) 44px var(--e-7); }
+
+  #sidebar {
+    width: var(--colonne);
+    float: left;
+    padding-bottom: var(--e-6);
+  }
+
+  #navigation ul.mainNav1 { width: var(--page); }
+
+  #navigation ul.mainNav1 > li > a {
+    flex: 1 1 auto;
+    white-space: nowrap;
+  }
+
+  #navigation ul.mainNav1 > li > div.diyfeDropDownSubList,
+  #navigation ul.mainNav1 > li > ul.mainNav2 {
+    padding-right: calc(var(--page) - var(--colonne));
+  }
+
+  #sidebar_content { padding: var(--e-4); }
+}
+
+/* --- Impression --------------------------------------------------------- */
+
+@media print {
+  :root {
+    --calcaire: #ffffff;
+    --calcaire-creux: #ffffff;
+    --blanc: #ffffff;
+    --pin: #000000;
+    --texte: #000000;
+    --texte-doux: #333333;
+    --sauge: #000000;
+    --sauge-fonce: #000000;
+    --laiton: #666666;
+    --laiton-texte: #333333;
+    --filet: #999999;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  #navigation { display: none !important; }
+
+  #header { padding: 0 0 6pt; }
+
+  #header::after { display: none; }
+
+  #header_wrapper img { height: 60px; }
+
+  #container {
+    width: auto;
+    max-width: none;
+  }
+
+  #wrapper { display: block; }
+
+  #content {
+    width: auto;
+    float: none;
+    margin-top: 0;
+    background: none;
+  }
+
+  #content .gutter { padding: 0; }
+
+  #sidebar {
+    width: auto;
+    float: none;
+    margin-top: 12pt;
+    padding-bottom: 0;
+    page-break-inside: avoid;
+  }
+
+  #sidebar_content {
+    padding: 0;
+    background-image: none;
+  }
+
+  #content h1,
+  #content h2,
+  #content h3 { page-break-after: avoid; }
+
+  #content h1,
+  #content h2 { background-image: none; }
+
+  #content h1 { border-bottom: 1pt solid #000000; }
+
+  #content h2 { border-bottom: 0.5pt solid #000000; }
+
+  #content hr { background: #999999; height: 1px; }
+
+  #content img,
+  #sidebar_content img {
+    box-shadow: none;
+    border: 0.5pt solid #666666;
+    max-width: 55mm;
+    page-break-inside: avoid;
+  }
+
+  #content #emotion-header img { max-width: 100%; }
+
+  #content p,
+  #content li,
+  #content blockquote,
+  #content table { page-break-inside: avoid; }
+
+  #content a {
+    color: #000000;
+    text-decoration: underline;
+  }
+
+  #content a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    word-break: break-all;
+  }
+
+  #content form,
+  #footer a { display: none; }
+
+  #footer {
+    width: auto;
+    margin-left: 0;
+    margin-top: 10pt;
+    background: none;
+    background-image: none;
+    border-top: 0.5pt solid #000000;
+  }
+
+  #footer .gutter { padding: 6pt 0 0; }
+}
+
+/* --- Mouvement réduit --------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  #navigation ul.mainNav1 > li > a::after { transition: none; }
+}
+
+</style>
+</head>
+<body>
+<div id="container" class="altcolor">
+<div id="wrapper">
+<div id="header">
+<div id="header_wrapper" class="altcolor"><img src="https://www.mtbrabant.com/s/misc/logo.png" alt="" /></div>
+</div>
+<div class="c"></div>
+<div id="content">
+<div class="gutter">
+<div id="emotion-header"><img src="https://www.mtbrabant.com/s/img/emotionheader.JPG?1786644377.920px.450px" alt="" /></div>
+
+<p><span style="font-size:36px"><strong>Berger Hollandais Poil long / Poil court</strong></span></p>
+
+<p><em>Merci de noter que nous avons arr&ecirc;ter l'&eacute;levage de mudi et vous tournez vers la SCC pour vos recherches</em></p>
+
+<h2>7 chiots sont n&eacute;s le 29 Juin 2026</h2>
+
+<p><strong>2M - 5 F</strong></p>
+
+<p>R&eacute;servations ouvertes sur les futures naissances&nbsp;: sous r&eacute;serve de nos disponibilit&eacute;s pour les saillies ainsi que des al&eacute;as li&eacute;s aux saillies, nous pouvons choisir un &eacute;talon diff&eacute;rent.</p>
+
+<h3>Projection des futures port&eacute;es</h3>
+
+<table>
+<caption>Saillies projet&eacute;es 2026 &ndash; 2028</caption>
+<tr><th>P&eacute;riode</th><th>Accouplement</th><th>Orientation</th></tr>
+<tr><td>2026</td><td>&#9794;&nbsp;Uhinter Fell du Mont Brabant ou autre &times; &#9792;&nbsp;Very Best From You 2 du Mont Brabant</td><td>Poil long, orient&eacute;e compagnie mais famille active</td></tr>
+<tr><td>D&eacute;but 2027</td><td>&#9794;&nbsp;Kare Saran Jackass dit Uros &times; &#9792;&nbsp;Tesla</td><td>Poil long, orient&eacute;e travail</td></tr>
+<tr><td>2026 &ndash; 2027</td><td>&#9794;&nbsp;? &times; &#9792;&nbsp;Rolex New Wave du Mont Brabant</td><td>Poil long, orient&eacute;e travail ou exp&eacute;riment&eacute;</td></tr>
+<tr><td>2027 &ndash; 2028</td><td>&#9794;&nbsp;Upper'Side du Mont Brabant &times; &#9792;&nbsp;Ath&eacute;na Grant du Mont Brabant</td><td>Poil long, orient&eacute;e travail ou exp&eacute;riment&eacute;</td></tr>
+<tr><td>2028</td><td>Port&eacute;e poil court porteur de poil long</td><td>Poil long attendus, orient&eacute;e travail</td></tr>
+</table>
+
+<p>Pour plus d'informations, <a href="https://www.mtbrabant.com/contact/">nous contacter</a>.</p>
+
+<hr />
+
+<h2>Nos reproducteurs</h2>
+
+<div class="diyfeModGridGroup"><div class="diyfeModGridElement"><div class="diyfeModGridContent"><img src="https://www.mtbrabant.com/s/cc_images/cache_5972679.jpg?t=1771879628" alt="" style="max-width: 254px; height:auto" /><p><strong>Very Best Of You2 MTB</strong><br /><a href="#">Lof Select</a><br />Femelle reproductrice</p></div></div><div class="diyfeModGridElement"><div class="diyfeModGridContent"><img src="https://www.mtbrabant.com/s/cc_images/cache_6477315.JPG?t=1669648385" alt="" style="max-width: 253px; height:auto" /><p><strong>Road Trip du Mt Brabant</strong><br /><a href="#">Lof Select</a><br />Etalon FR3 Selectifs 2025 +M3</p></div></div><div class="diyfeModGridElement"><div class="diyfeModGridContent"><img src="https://www.mtbrabant.com/s/cc_images/cache_5971927.JPG?t=1734461547" alt="" style="max-width: 253px; height:auto" /><p><strong>Rolex du Mt Brabant</strong><br /><a href="#">Lof Select</a><br />Femelle reproductrice</p></div></div><div class="diyfeModGridElement"><div class="diyfeModGridContent"><img src="https://www.mtbrabant.com/s/cc_images/cache_17248756.JPG?t=1771879998" alt="" style="max-width: 253px; height:auto" /><p><strong>Uhinter Fell du MTB</strong><br /><a href="#">Lof Select</a><br />Etalon FR Brevet</p></div></div><div class="diyfeModGridElement"><div class="diyfeModGridContent"><img src="https://www.mtbrabant.com/s/cc_images/cache_5971928.JPG?t=1718200803" alt="" style="max-width: 253px; height:auto" /><p><strong>Tesla</strong><br /><a href="#">Lof Select</a><br />Femelle reproductrice</p></div></div><div class="diyfeModGridElement"><div class="diyfeModGridContent"><img src="https://www.mtbrabant.com/s/cc_images/cache_6477274.JPG?t=1779882504" alt="" style="max-width: 215px; height:auto" /><p><strong>Kare Saran J. aka UROS</strong><br /><a href="#">Lof Select</a><br />Etalon FR 1</p></div></div></div>
+
+<h3>Un &eacute;levage document&eacute; depuis 1995</h3>
+
+<p>Vingt-neuf port&eacute;es archiv&eacute;es, de la port&eacute;e <strong>&laquo;&nbsp;-L&nbsp;&raquo; 1995</strong> &agrave; la port&eacute;e <strong>&laquo;&nbsp;A3&nbsp;&raquo; 2025</strong>. Chaque port&eacute;e conserve sa page, ses photos et son pedigree.</p>
+
+<blockquote>Le contact t&eacute;l&eacute;phonique avec la future famille est tr&egrave;s important pour nous&nbsp;: une r&eacute;servation se fait apr&egrave;s une visite &agrave; l'&eacute;levage, jamais par courriel ni par SMS.</blockquote>
+
+<h4>Coordonn&eacute;es</h4>
+<p>3060 route de Salernes, 83570 Entrecasteaux &mdash; <a href="tel:0680505619">06&nbsp;80&nbsp;50&nbsp;56&nbsp;19</a></p>
+</div>
+</div>
+<div id="sidebar">
+<div id="navigation"><ul class="mainNav1"><li class="current hasSubNavigation"><a href="https://www.mtbrabant.com/" class="current level_1"><span>Accueil</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/" class=" level_1"><span>BHPL</span></a><span class="diyfeDropDownSubOpener">&nbsp;</span><div class="diyfeDropDownSubList diyfeCA diyfeCA3"><ul class="mainNav2"><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-a3-2025/" class="current level_2"><span>Portée "A3" 2025</span></a><span class="diyfeDropDownSubOpener">&nbsp;</span><div class="diyfeDropDownSubList diyfeCA diyfeCA3"><ul class="mainNav3"><li><a href="#" class=" level_3"><span>Les chiots</span></a></li><li><a href="#" class=" level_3"><span>Le pedigree</span></a></li></ul></div></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-a2-2025/" class=" level_2"><span>Portée "A2" 2025</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-a1-2025/" class=" level_2"><span>Portée "A1" 2025</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-v2-2024/" class=" level_2"><span>Portée "V2"2024</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-v1-2024/" class=" level_2"><span>Portée "V1"2024</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-u3-2023/" class=" level_2"><span>Portée "U3" 2023</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-u2-2023/" class=" level_2"><span>Portée "U2" 2023</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-u1-2023/" class=" level_2"><span>Portée "U1" 2023</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-t-2022/" class=" level_2"><span>Portée "-T" 2022</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-s2-2021/" class=" level_2"><span>Portée "S2" 2021</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-s1-2021/" class=" level_2"><span>Portée "S1" 2021</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-r-2020/" class=" level_2"><span>Portée "-R" 2020</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-p2-2019/" class=" level_2"><span>Portée "P2" 2019</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-p-2019/" class=" level_2"><span>Portée "-P" 2019</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-o-2018/" class=" level_2"><span>Portée "-O" 2018</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-n-2017/" class=" level_2"><span>Portée "-N" 2017</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-m-2016/" class=" level_2"><span>Portée "-M" 2016</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-j-2014/" class=" level_2"><span>Portée "-J" 2014</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-h-2012/" class=" level_2"><span>Portée "-H" 2012</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-g-2011/" class=" level_2"><span>Portée "-G" 2011</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-f-2010/" class=" level_2"><span>Portée "-F" 2010</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-e-2009/" class=" level_2"><span>Portée "-E" 2009</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-d-2008/" class=" level_2"><span>Portée "-D" 2008</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-c-2007/" class=" level_2"><span>Portée "-C" 2007</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-s-2001/" class=" level_2"><span>Portée "-S" 2001</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-m-1996/" class=" level_2"><span>Portée "-M" 1996</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/portée-l-1995/" class=" level_2"><span>Portée "-L" 1995</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/bhpl-en-france/" class=" level_2"><span>BHPL en France</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl/littérature/" class=" level_2"><span>Littérature</span></a></li></ul></div></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/bhpl-et-travail/" class=" level_1"><span>BHPL et Travail</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/" class=" level_1"><span>La meute</span></a><span class="diyfeDropDownSubOpener">&nbsp;</span><div class="diyfeDropDownSubList diyfeCA diyfeCA3"><ul class="mainNav2"><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/very-best/" class=" level_2"><span>Very Best</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/you/" class=" level_2"><span>You</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/tesla/" class=" level_2"><span>Tesla</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/rolex/" class=" level_2"><span>Rolex</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/pégaz/" class=" level_2"><span>Pégaz</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/jango/" class=" level_2"><span>Jango</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/opium/" class=" level_2"><span>Opium</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/grocky/" class=" level_2"><span>Grocky</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/etch/" class=" level_2"><span>Etch</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/happy/" class=" level_2"><span>Happy</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/maya/" class=" level_2"><span>Maya</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/tara/" class=" level_2"><span>Tara</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/la-meute/gribouille/" class=" level_2"><span>Gribouille</span></a></li></ul></div></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/placement/" class=" level_1"><span>Placement</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/contact/" class=" level_1"><span>Contact</span></a></li><li class=" hasSubNavigation"><a href="https://www.mtbrabant.com/mentions-légales/" class=" level_1"><span>Mentions légales</span></a></li></ul></div>
+<div id="sidebar_content"><h3>&Eacute;levage</h3><p>Fabienne Gu&eacute;neau &mdash; Entrecasteaux (83).</p><p><a href="https://www.mtbrabant.com/contact/">Nous &eacute;crire</a></p></div>
+</div>
+</div>
+<div class="c"></div>
+<div id="footer">
+<div class="gutter"><p><a href="#">Version imprimable</a> | <a href="#">Plan du site</a></p><p>&copy; Fabienne Gu&eacute;neau MAJ Juin 2026</p></div>
+</div>
+<div class="c"></div>
+</div>
+</body>
+</html>

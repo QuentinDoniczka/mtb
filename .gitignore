@@ -1,0 +1,22 @@
+# Contenu et bases de données — jamais versionnés
+wp-content/uploads/
+*.sql
+*.sql.gz
+dumps/
+
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+
+# WordPress core (si jamais rapatrié dans l'arbre)
+/wordpress/
+wp-config.php
+
+# Dépendances
+node_modules/
+vendor/
+
+# Bruit éditeur / OS
+.DS_Store
+Thumbs.db
