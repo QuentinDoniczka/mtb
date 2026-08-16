@@ -1,0 +1,179 @@
+/*
+ * MTB — Jetons de design
+ * Unique domicile des valeurs brutes du thème (couleur, taille, espacement, ratio).
+ * Toute autre feuille consomme ces jetons via var(--…) et n'écrit aucune valeur
+ * brute, hors la courte liste d'exceptions énumérée et justifiée en tête de
+ * base.css (métriques de police, minima tactiles, valeurs recopiées de MASTER
+ * pour lesquelles MASTER lui-même ne définit aucun jeton).
+ *
+ * Source de vérité : design-system/MASTER.md. Les noms sont ceux, courts, de MASTER ;
+ * ils ne sont ni renommés ni complétés. Un jeton absent de MASTER est une question
+ * bloquante pour lead-design-mtb, jamais une invention.
+ *
+ * Ce fichier ne contient que des déclarations de variables : aucune règle de mise en forme.
+ */
+
+:root {
+
+  /* ---------------------------------------------------------------------
+   * Familles typographiques — MASTER §4.1, §4.2
+   * Le second nom de chaque pile est la police de repli métriquement ajustée,
+   * déclarée en @font-face dans base.css (mesures consignées dans
+   * assets/fonts/polices.md). Le générique ferme la pile si le système n'a
+   * ni Georgia ni Arial.
+   * ------------------------------------------------------------------ */
+  --serif: "Newsreader", "Newsreader repli", serif;
+  --sans:  "Public Sans", "Public Sans repli", sans-serif;
+
+  /* ---------------------------------------------------------------------
+   * Couleurs — MASTER §3.1. Quinze jetons, pas un de plus.
+   * Les ratios de contraste autorisés sont tabulés en MASTER §12 : une paire
+   * encre/fond absente de ce tableau est interdite.
+   * ------------------------------------------------------------------ */
+  --calcaire:       #F2F1EA;  /* fond de page */
+  --calcaire-creux: #E7E5DA;  /* surfaces en creux : encart, état vide, ligne survolée */
+  --blanc:          #FBFAF6;  /* surfaces posées : champ, carte parent, carte chien */
+  --pin:            #16241C;  /* encre des titres, et fond du pied de page / du voile */
+  --pin-creux:      #24382C;  /* survol d'une ligne sur fond --pin */
+  --texte:          #22312A;  /* texte courant */
+  --texte-doux:     #4A5A50;  /* texte secondaire — fonds clairs seulement (2,20:1 sur --pin) */
+  --calcaire-ombre: #BDBCB0;  /* texte secondaire sur fond --pin uniquement */
+  --sauge:          #4A6B57;  /* structure : filet haut, fond de bouton, rail de page courante */
+  --sauge-fonce:    #35513F;  /* liens de contenu */
+  --laiton:         #9A7B3F;  /* filet bas, cerne, bordure d'étiquette — JAMAIS de texte */
+  --laiton-texte:   #7A5F2C;  /* étiquettes en petites capitales, chiffres d'index */
+  --laiton-clair:   #E3CB9C;  /* liens et traits sur fond --pin / --sauge */
+  --filet:          #CFCDBF;  /* hachure décorative — ne porte jamais d'information */
+  --oxyde:          #8C3A28;  /* erreur de formulaire uniquement */
+
+  /* ---------------------------------------------------------------------
+   * Élément signature : le filet double — MASTER §2.1
+   * Un trait de 3 px sauge, un vide de 2 px, un trait de 1 px laiton.
+   * Liste close de huit emplacements ; interdit ailleurs. Le socle en rend
+   * quatre — ceux qui sont des styles d'éléments : sous le h1, sous chaque h2,
+   * à la place de chaque hr, au bord gauche d'une citation. Ils sont écrits
+   * dans base.css. Les quatre autres sont des composants (en-tête, pied de
+   * page, bandeau photo, encart « dernière portée ») et appartiennent aux epics
+   * qui les créent.
+   * ------------------------------------------------------------------ */
+  --filet-double: linear-gradient(
+    to bottom,
+    var(--sauge)  0    3px,
+    transparent   3px  5px,
+    var(--laiton) 5px  6px
+  );
+  --filet-double-v: linear-gradient(
+    to right,
+    var(--sauge)  0    3px,
+    transparent   3px  5px,
+    var(--laiton) 5px  6px
+  );
+  --filet-double-h: 6px;  /* hauteur / largeur du filet, à réserver en padding */
+
+  /* ---------------------------------------------------------------------
+   * Échelle typographique fluide — MASTER §4.4
+   * Chaque palier combine un terme rem et un terme vw : aucune taille n'est
+   * exprimée en vw seul, ce qui casserait le zoom à 200 % (MASTER §7.8).
+   * ------------------------------------------------------------------ */
+  --t-xs:   clamp(.8125rem, .78rem + .16vw, .875rem);    /* 13 → 14 px */
+  --t-sm:   clamp(.9375rem, .91rem + .14vw, 1rem);       /* 15 → 16 px */
+  --t-base: clamp(1.0625rem, 1.02rem + .2vw, 1.1875rem); /* 17 → 19 px — texte courant */
+  --t-md:   clamp(1.1875rem, 1.12rem + .3vw, 1.375rem);  /* 19 → 22 px */
+  --t-lg:   clamp(1.375rem, 1.24rem + .6vw, 1.75rem);    /* 22 → 28 px — h3 */
+  --t-xl:   clamp(1.75rem, 1.5rem + 1.1vw, 2.5rem);      /* 28 → 40 px — h2 */
+  --t-2xl:  clamp(2.25rem, 1.75rem + 2.2vw, 3.75rem);    /* 36 → 60 px — h1 */
+  --t-3xl:  clamp(2.75rem, 1.9rem + 3.6vw, 5rem);        /* 44 → 80 px — h1 de bandeau */
+
+  /* ---------------------------------------------------------------------
+   * Espacement — MASTER §5.1, base 4 px
+   * ------------------------------------------------------------------ */
+  --e-1: .25rem;   /*   4 px — ajustement de pastille */
+  --e-2: .5rem;    /*   8 px — écart minimal entre deux cibles tactiles */
+  --e-3: .75rem;   /*  12 px — gouttière de galerie, padding de cellule */
+  --e-4: 1rem;     /*  16 px — padding standard, espace après un paragraphe */
+  --e-5: 1.5rem;   /*  24 px — espace avant un h3, padding de carte */
+  --e-6: 2rem;     /*  32 px — padding d'encart, gouttière de grille */
+  --e-7: 3rem;     /*  48 px — espace avant un h2, gouttière portrait/texte */
+  --e-8: 4.5rem;   /*  72 px — séparation de deux sections courtes */
+  --e-9: 7rem;     /* 112 px — avant/après un bandeau photo */
+
+  --rythme-section: clamp(2.5rem, 6vw, 5.5rem);  /* espace vertical entre deux sections */
+  --marge-page:     clamp(1rem, 5vw, 3rem);      /* marge latérale — 18 px à 360 px (§7.7) */
+
+  /* ---------------------------------------------------------------------
+   * Rayons — MASTER §5.2
+   * ATTENTION : famille distincte des ratios photo ci-dessous, malgré le
+   * préfixe commun « --r- ». MASTER nomme ainsi les deux familles et on ne
+   * renomme pas. --r-0 / --r-1 sont des RAYONS (une longueur).
+   * ------------------------------------------------------------------ */
+  --r-0: 0;    /* tout par défaut : photos, cartes, encarts, tableaux, bandeaux */
+  --r-1: 2px;  /* commandes uniquement : bouton, champ, badge */
+
+  /* ---------------------------------------------------------------------
+   * Bordures — MASTER §5.3
+   * ------------------------------------------------------------------ */
+  --bord-fin:    1px solid var(--filet);        /* séparation décorative, jamais un contrôle */
+  --bord-actif:  1px solid var(--texte-doux);   /* bord d'un champ de formulaire */
+  --bord-fort:   3px solid var(--sauge);        /* soulignement de th, rail de page courante */
+  --cerne-photo: inset 0 0 0 1px rgb(22 36 28 / .22);  /* cerne intérieur de toute photo (§6.6) */
+
+  /* ---------------------------------------------------------------------
+   * Élévation et voiles — MASTER §5.4, §6.4
+   * Aucune ombre portée sur le site, une seule exception : le panneau de
+   * navigation mobile, qui recouvre du contenu.
+   * ------------------------------------------------------------------ */
+  --ombre-panneau: 0 8px 24px rgb(22 36 28 / .18);
+  --voile-photo: linear-gradient(
+    to top,
+    rgb(22 36 28 / .86)  0%,
+    rgb(22 36 28 / .72) 34%,
+    rgb(22 36 28 / .28) 66%,
+    rgb(22 36 28 / .06) 100%
+  );
+
+  /* ---------------------------------------------------------------------
+   * Ratios photo — MASTER §6.1
+   * ATTENTION : famille distincte des rayons ci-dessus. Ces jetons-ci sont
+   * des RATIOS (aspect-ratio), pas des longueurs. Ne jamais employer --r-0
+   * ou --r-1 comme ratio, ni --r-carre comme rayon.
+   * ------------------------------------------------------------------ */
+  --r-portrait: 4 / 5;   /* photo principale d'une fiche chien, photo de chiot */
+  --r-paysage:  3 / 2;   /* vignette de galerie, carte de portée */
+  --r-carre:    1 / 1;   /* vignette d'index */
+  --r-bandeau:  4 / 3;   /* bandeau d'ouverture — redéfini deux fois ci-dessous (§6.5) */
+  --r-libre:    auto;    /* visionneuse uniquement (§6.7) */
+
+  /* ---------------------------------------------------------------------
+   * Canaux de la grille — MASTER §7.1
+   *
+   * Ces deux valeurs sont dupliquées en littéral dans theme.json
+   * (settings.layout.contentSize / wideSize) — MASTER §7.1 les y prescrit
+   * nommément. Seule duplication tolérée du socle. Toute modification se
+   * fait des deux côtés.
+   * ------------------------------------------------------------------ */
+  --l-texte: 36rem;  /* 576 px, ≈ 63 signes à 19 px — settings.layout.contentSize */
+  --l-large: 68rem;  /* 1088 px                    — settings.layout.wideSize    */
+
+  /* ---------------------------------------------------------------------
+   * Points de rupture — MASTER §7.2
+   *
+   * DOCUMENTAIRES UNIQUEMENT. « @media (max-width: var(--bp-nav)) » est
+   * invalide en CSS : une requête média ne lit pas une propriété
+   * personnalisée. Les feuilles écrivent donc la valeur en littéral, avec un
+   * commentaire renvoyant ici. MASTER §7.6 procède lui-même ainsi.
+   * ------------------------------------------------------------------ */
+  --bp-tableau: 48rem;  /* 768 px  — les tableaux passent en lignes empilées (§7.6) */
+  --bp-nav:     60rem;  /* 960 px  — la navigation passe en panneau (§7.3) */
+  --bp-fiche:   64rem;  /* 1024 px — fiche chien et carte parent à deux colonnes (§6.8) */
+}
+
+/* Bandeau d'ouverture : le ratio change deux fois — MASTER §6.5.
+   Un 21/9 sur téléphone ne montrerait qu'une tranche d'herbe.
+   Valeurs en littéral (40rem, 64rem) : voir la note sur les --bp-* ci-dessus.
+   64rem est --bp-fiche ; 40rem est propre au bandeau et n'a pas de jeton. */
+@media screen and (min-width: 40rem) {
+  :root { --r-bandeau: 16 / 9; }
+}
+@media screen and (min-width: 64rem) {
+  :root { --r-bandeau: 21 / 9; }
+}

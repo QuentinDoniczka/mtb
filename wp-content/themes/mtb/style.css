@@ -1,12 +1,24 @@
 /*
-Theme Name: MTB (placeholder d'amorçage)
-Theme URI: https://github.com/QuentinDoniczka/mtb
-Author: Chaine d'agents MTB
-Description: Squelette minimal créé par docker-mtb pour que la stack Docker démarre avant que le
-  thème réel n'existe. À remplacer intégralement par leaddev-front-mtb / dev-front-mtb. Ne contient
-  aucune logique métier, aucune mise en page définitive.
-Version: 0.0.0-placeholder
+Theme Name: MTB — Berger Hollandais du Mont Brabant
+Description: Thème de blocs sur mesure de l'élevage du Mont Brabant : présentation uniquement, aucune règle métier, aucune requête vers un domaine tiers, aucun cadre CSS. Le contenu structuré appartient à l'extension mtb-core.
+Author: Élevage du Mont Brabant
+Version: 0.1.0
+Requires at least: 6.6
+Tested up to: 6.9
+Requires PHP: 8.1
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: mtb
 */
+
+/*
+ * Ce fichier ne porte que l'en-tête de thème. Il n'est jamais mis en file d'attente et ne doit
+ * contenir aucune règle CSS : toutes les règles visuelles vivent dans `assets/css/`
+ * (`tokens.css`, `base.css`, `editor.css`, `blocs/`), servies par `functions.php`.
+ *
+ * Duplication croisée, unique et voulue : `theme.json` écrit en littéral
+ * `settings.layout.contentSize: "36rem"` et `settings.layout.wideSize: "68rem"`, que
+ * `assets/css/tokens.css` redéclare sous les noms `--l-texte` et `--l-large`.
+ * MASTER.md §7.1 prescrit nommément ces deux valeurs des deux côtés. C'est la seule duplication
+ * tolérée du socle ; toute modification se fait des deux côtés à la fois.
+ */

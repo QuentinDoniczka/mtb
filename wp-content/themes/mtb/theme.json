@@ -1,0 +1,90 @@
+{
+	"version": 3,
+	"settings": {
+		"appearanceTools": false,
+		"useRootPaddingAwareAlignments": false,
+		"background": {
+			"backgroundImage": false,
+			"backgroundSize": false
+		},
+		"border": {
+			"color": false,
+			"radius": false,
+			"style": false,
+			"width": false
+		},
+		"color": {
+			"background": false,
+			"button": false,
+			"caption": false,
+			"custom": false,
+			"customDuotone": false,
+			"customGradient": false,
+			"defaultDuotone": false,
+			"defaultGradients": false,
+			"defaultPalette": false,
+			"duotone": [],
+			"gradients": [],
+			"heading": false,
+			"link": false,
+			"palette": [],
+			"text": false
+		},
+		"dimensions": {
+			"aspectRatio": false,
+			"aspectRatios": [],
+			"defaultAspectRatios": false,
+			"minHeight": false
+		},
+		"layout": {
+			"allowCustomContentAndWideSize": false,
+			"allowEditing": false,
+			"contentSize": "36rem",
+			"wideSize": "68rem"
+		},
+		"position": {
+			"sticky": false
+		},
+		"shadow": {
+			"defaultPresets": false,
+			"presets": []
+		},
+		"spacing": {
+			"blockGap": null,
+			"customSpacingSize": false,
+			"defaultSpacingSizes": false,
+			"margin": false,
+			"padding": false,
+			"spacingScale": {
+				"steps": 0
+			},
+			"spacingSizes": [],
+			"units": []
+		},
+		"typography": {
+			"customFontSize": false,
+			"defaultFontSizes": false,
+			"dropCap": false,
+			"fluid": false,
+			"fontFamilies": [],
+			"fontSizes": [],
+			"fontStyle": false,
+			"fontWeight": false,
+			"letterSpacing": false,
+			"lineHeight": false,
+			"textAlign": false,
+			"textColumns": false,
+			"textDecoration": false,
+			"textTransform": false,
+			"writingMode": false
+		},
+		"blocks": {
+			"core/image": {
+				"lightbox": {
+					"allowEditing": false,
+					"enabled": false
+				}
+			}
+		}
+	}
+}

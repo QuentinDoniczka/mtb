@@ -1,0 +1,73 @@
+/*
+ * MTB — Correctifs de la toile de l'éditeur
+ *
+ * Chargée par add_editor_style() après tokens.css et base.css, et JAMAIS servie
+ * au visiteur. Elle n'existe que pour une raison : que l'écran d'édition ne
+ * mente pas sur le rendu du site. Un composant qui n'a pas la même allure dans
+ * l'éditeur est un composant que l'éleveuse emploiera de travers.
+ *
+ * --- Ce qui est vérifié dans le cœur installé (WordPress 6.9) -------------
+ *
+ * La toile est une iframe dont le <body> porte la classe .editor-styles-wrapper.
+ * Les feuilles passées à add_editor_style() y sont réécrites : les sélecteurs
+ * racine reconnus — body, html, :root, et leurs formes :where() — sont
+ * REMPLACÉS par le sélecteur d'enveloppe ; tous les autres sont PRÉFIXÉS par
+ * lui. (wp-includes/js/dist/block-editor.min.js, table des sélecteurs racine.)
+ *
+ * Conséquences, toutes favorables, et aucune ne demande de correctif :
+ *   - le bloc :root de tokens.css atterrit sur .editor-styles-wrapper : les
+ *     jetons sont donc bien définis dans la toile ;
+ *   - les règles html et body de base.css atterrissent au même endroit : fond
+ *     calcaire, encre, familles et interlignes sont ceux du site ;
+ *   - les url() relatives des @font-face sont réécrites par le cœur contre
+ *     l'adresse de la feuille : les deux polices sont chargées dans l'iframe,
+ *     sans requête tierce ;
+ *   - le préfixage AUGMENTE la spécificité des règles d'élément de base.css —
+ *     « h1 » y pèse (0,1,1) au lieu de (0,0,1). Les quatre emplacements du
+ *     filet double (§2.1) passent donc devant les feuilles de blocs du cœur
+ *     sans être recopiés ici. Les recopier serait du CSS mort.
+ *
+ * Vérifié bloc par bloc dans wp-includes/blocks/ : « heading » et « quote »
+ * n'ont aucune feuille d'éditeur ; celle de « separator » ne pose que
+ * padding-block: .1px, sans effet sur le filet. Rien à reprendre.
+ *
+ * L'iframe étant sa propre fenêtre, les clamp() en vw et --marge-page se
+ * calculent sur la largeur de la toile, c'est-à-dire sur la largeur réellement
+ * offerte au contenu. L'échelle fluide du §4.4 est donc juste dans l'éditeur.
+ */
+
+/* =====================================================================
+ * Séparateur neutralisé par un h2 qui le précède — MASTER §2.1
+ *
+ * Sur le site, « un h2 immédiatement suivi d'un <hr> : le <hr> n'est pas
+ * rendu » : base.css le retire avec display: none, puisque le h2 porte déjà
+ * son filet et qu'un second serait le doublon que la liste close interdit.
+ *
+ * Transposer ce display: none tel quel dans la toile serait un PIÈGE, et le
+ * pire des deux mensonges possibles : le bloc existerait dans le contenu mais
+ * ne serait ni visible, ni sélectionnable, ni supprimable. L'éleveuse insère un
+ * séparateur, ne voit rien venir, en insère un deuxième, puis un troisième.
+ *
+ * La toile rend donc ici ce que rend le site — RIEN — mais garde le bloc
+ * atteignable : il reprend sa place dans le flux, sans filet et sans les
+ * marges de --e-7 qui feraient croire à un espacement qui n'existera pas.
+ * Aucune valeur inventée : none, 0, et le display d'origine de l'élément.
+ *
+ * L'adjacence est bien exprimable dans la toile : un bloc y est son propre
+ * élément, et le cœur emploie lui-même le combinateur de frère adjacent entre
+ * deux blocs (wp-includes/blocks/paragraph/editor.min.css). La classe du bloc
+ * porte le sélecteur à (0,2,2) contre (0,1,2) à base.css une fois préfixée, et
+ * à (0,1,2) contre (0,0,2) si le préfixage n'avait pas lieu : la neutralisation
+ * l'emporte dans les deux cas, sans dépendre de l'ordre des feuilles.
+ *
+ * LIMITE NOMMÉE, non comblée : la toile montre que le séparateur ne dessine
+ * rien, elle n'explique pas POURQUOI. Le dire demanderait une apparence d'état
+ * et une phrase française ; §9.1 réserve son apparence aux dix composants du
+ * catalogue et sa formule « Ce bloc n'affiche rien tant que <ce qui manque>. »
+ * ne convient pas à une règle de doublon. Question bloquante, pas invention.
+ * ================================================================== */
+h2 + hr.wp-block-separator {
+  display: block;
+  background-image: none;
+  margin-block: 0;
+}
