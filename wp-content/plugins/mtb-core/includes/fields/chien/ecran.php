@@ -573,7 +573,13 @@ function rendre_galerie( int $post_id ): void {
 	echo '<p class="mtb-champ__etiquette"><strong>Galerie photos</strong></p>';
 	echo '<ul class="mtb-galerie__liste">';
 
-	$rang = 0;
+	/*
+	 * Les photos encore présentes sont retenues avant d'être rendues : il faut connaître leur
+	 * nombre pour savoir laquelle est la dernière. Le rang reste compté sur les photos réellement
+	 * rendues, jamais sur les identifiants stockés — une photo supprimée de la bibliothèque ne doit
+	 * pas laisser de trou dans la numérotation annoncée à l'écran.
+	 */
+	$retenues = array();
 
 	foreach ( $photos as $morceau ) {
 		$photo_id = (int) trim( $morceau );
@@ -582,12 +588,13 @@ function rendre_galerie( int $post_id ): void {
 			continue;
 		}
 
-		/*
-		 * Le rang est compté sur les photos réellement rendues, pas sur les identifiants stockés :
-		 * une photo supprimée de la bibliothèque ne doit pas laisser un trou dans la numérotation
-		 * annoncée à l'écran.
-		 */
-		++$rang;
+		$retenues[] = $photo_id;
+	}
+
+	$total = count( $retenues );
+
+	foreach ( $retenues as $index => $photo_id ) {
+		$rang = $index + 1;
 
 		printf( '<li class="mtb-galerie__photo" data-mtb-photo="%d">', $photo_id );
 
@@ -597,18 +604,25 @@ function rendre_galerie( int $post_id ): void {
 		 * Chaque bouton porte le rang de sa photo : trois boutons par photo tous nommés « Retirer »
 		 * sont indistinguables à la tabulation comme au lecteur d'écran. Le libellé visible est
 		 * complet, donc le nom accessible et le texte lu à voix haute sont le même.
+		 *
+		 * Aux bornes de la liste, le bouton sans effet est désactivé plutôt que retiré : le nombre
+		 * de boutons ne varie pas d'une ligne à l'autre, le parcours au clavier reste régulier, le
+		 * contrôle sort tout seul de l'ordre de tabulation et le lecteur d'écran l'annonce comme
+		 * indisponible. Le bouton existe, il n'est simplement pas utilisable ici.
 		 */
 		printf(
 			'<button type="button" class="button-link mtb-galerie__retirer">%s</button>',
 			esc_html( sprintf( 'Retirer la photo %d', $rang ) )
 		);
 		printf(
-			'<button type="button" class="button-link mtb-galerie__avant">%s</button>',
-			esc_html( sprintf( 'Déplacer la photo %d avant', $rang ) )
+			'<button type="button" class="button-link mtb-galerie__avant"%1$s>%2$s</button>',
+			1 === $rang ? ' disabled="disabled"' : '',
+			esc_html( sprintf( 'Monter la photo %d', $rang ) )
 		);
 		printf(
-			'<button type="button" class="button-link mtb-galerie__apres">%s</button>',
-			esc_html( sprintf( 'Déplacer la photo %d après', $rang ) )
+			'<button type="button" class="button-link mtb-galerie__apres"%1$s>%2$s</button>',
+			$rang === $total ? ' disabled="disabled"' : '',
+			esc_html( sprintf( 'Descendre la photo %d', $rang ) )
 		);
 
 		echo '</li>';

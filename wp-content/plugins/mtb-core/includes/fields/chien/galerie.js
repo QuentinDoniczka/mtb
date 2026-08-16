@@ -59,6 +59,8 @@
 		var rang;
 		var element;
 		var image;
+		var monter;
+		var descendre;
 
 		while ( liste.firstChild ) {
 			liste.removeChild( liste.firstChild );
@@ -77,9 +79,20 @@
 				element.appendChild( image );
 			}
 
+			monter = bouton( 'mtb-galerie__avant', 'Monter la photo ' + rang, index );
+			descendre = bouton( 'mtb-galerie__apres', 'Descendre la photo ' + rang, index );
+
+			/*
+			 * Recalculé ici, à chaque redessin, et non posé une fois : sans cela l'état serait faux
+			 * dès le premier ajout ou retrait. C'est la même règle que pour le rang — une seule
+			 * source, « photos », et tout se déduit d'elle.
+			 */
+			monter.disabled = ( 0 === index );
+			descendre.disabled = ( index === photos.length - 1 );
+
 			element.appendChild( bouton( 'mtb-galerie__retirer', 'Retirer la photo ' + rang, index ) );
-			element.appendChild( bouton( 'mtb-galerie__avant', 'Déplacer la photo ' + rang + ' avant', index ) );
-			element.appendChild( bouton( 'mtb-galerie__apres', 'Déplacer la photo ' + rang + ' après', index ) );
+			element.appendChild( monter );
+			element.appendChild( descendre );
 
 			liste.appendChild( element );
 		}
@@ -110,8 +123,22 @@
 
 		var cible = elements[ position ].querySelector( '.' + classe );
 
-		if ( cible ) {
+		if ( cible && ! cible.disabled ) {
 			cible.focus();
+
+			return;
+		}
+
+		/*
+		 * Le bouton visé vient d'être désactivé par le déplacement même : une photo montée en
+		 * première place ne peut plus monter. Le focus reste alors sur la photo déplacée, au bouton
+		 * « Retirer » qui, lui, est toujours actif — sans ce repli, le focus retomberait dans le
+		 * vide et l'éleveuse perdrait sa place dans la page.
+		 */
+		var repli = elements[ position ].querySelector( '.mtb-galerie__retirer' );
+
+		if ( repli ) {
+			repli.focus();
 
 			return;
 		}
@@ -191,6 +218,12 @@
 			return;
 		}
 
+		/*
+		 * Les bornes restent vérifiées ici bien que les boutons soient désactivés : l'écoute est
+		 * posée sur la liste, et un clic simulé sur un bouton désactivé y remonterait quand même.
+		 * Sans ces gardes, un déplacement vers -1 insérerait la photo en fin de galerie — un
+		 * réordonnancement silencieux, jamais demandé. La ceinture ne coûte rien.
+		 */
 		if ( -1 !== cible.className.indexOf( 'mtb-galerie__avant' ) && position > 0 ) {
 			deplacer( position, position - 1 );
 			dessiner( position - 1, 'mtb-galerie__avant' );

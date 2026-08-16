@@ -150,8 +150,8 @@ correction automatique.
   rien.
 - **Galerie photos** — cliquez sur **Ajouter des photos**, choisissez vos photos, puis
   **Ajouter à la galerie**. Elles s'affichent sur la fiche dans l'ordre de la liste. Sous chaque
-  photo, trois boutons : **Retirer la photo 1**, **Déplacer la photo 1 avant**,
-  **Déplacer la photo 1 après** (le numéro suit le rang de la photo).
+  photo, trois boutons : **Retirer la photo 1**, **Monter la photo 1**, **Descendre la photo 1**. Le
+  numéro suit le rang de la photo : montez celle que vous voulez voir en premier.
 - **Lien pedigree (LOF Select)** — collez l'adresse de la page du chien sur LOF Select, copiée depuis
   la barre du navigateur. C'est ce lien qui remplace un arbre généalogique sur le site : le visiteur y
   trouve l'ascendance complète.
@@ -237,7 +237,7 @@ en cours de saisie avec deux photos de galerie.
 | `captures/chien-menu-ajouter.png` | N'importe quel écran d'administration | Le menu de gauche, l'entrée **Chiens** ouverte, le sous-menu **Ajouter** mis en évidence |
 | `captures/chien-identite.png` | **Chiens** → **Ajouter** | Le champ **Nom d'usage** en haut, puis la section **Identité** en entier, choix **Statut** compris, avec la ligne d'aide sous le statut |
 | `captures/chien-sante.png` | Même écran, section **Santé** | Les huit champs nommés, les trois choix d'**ADN identifié**, et la zone **Autres tests de santé** |
-| `captures/chien-photos.png` | Même écran, section **Photos et pedigree** | La liste **Galerie photos** avec deux photos et leurs boutons **Retirer la photo 1** / **Déplacer…**, le bouton **Ajouter des photos**, et le champ **Lien pedigree (LOF Select)** |
+| `captures/chien-photos.png` | Même écran, section **Photos et pedigree** | La liste **Galerie photos** avec deux photos et leurs boutons **Retirer la photo 1** / **Monter la photo 1** / **Descendre la photo 1**, le bouton **Ajouter des photos**, et le champ **Lien pedigree (LOF Select)** |
 
 Deux captures utiles en complément, si le temps le permet :
 
