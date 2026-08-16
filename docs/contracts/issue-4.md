@@ -350,6 +350,33 @@ contenu.
 Trois valeurs possibles pour `pere['type']` / `mere['type']` : `fiche` · `hors_elevage` ·
 `non_renseigne`. **Aucun identifiant d'état nouveau n'est créé par cette issue.**
 
+## 6 bis. Libellés qui viennent du cœur de WordPress, pas de nous
+
+Ces mots apparaissent à l'écran de Fabienne et **dans la fiche d'aide**, mais **aucun n'existe dans
+le dépôt** : ils sont rendus par WordPress. Ils ne sont donc ni vérifiables par `grep`, ni
+modifiables depuis cette issue.
+
+| Libellé | Où | Remarque |
+|---|---|---|
+| **Publier** | bouton de la boîte de publication | |
+| **Mettre à jour** | même bouton, sur une fiche déjà publiée | |
+| **Mettre à la corbeille** | lien de la boîte de publication | |
+| **Rétablir** | action d'une ligne dans l'onglet Corbeille | **restaure en brouillon**, pas en publié |
+
+> **Le jour où une issue `admin` francisera ou renommera ces actions, c'est cette liste qu'il faut
+> relire** — les trois fiches d'aide du lot les citent, et une fiche qui nomme un bouton disparu perd
+> la confiance de sa lectrice sur tout le reste.
+
+Deux libellés du cœur ont en revanche été **remplacés** par cette issue, parce qu'ils employaient des
+mots interdits (§10.4) : la boîte **« Slug »** du cœur est retirée au profit d'une boîte
+**« Adresse de la page »** portant le même champ `post_name` — on ne retire pas la capacité, on la
+renomme — et **« Image mise en avant »** devient **« Photo principale »** dans les libellés du type.
+
+**Leçon à porter par toute issue future qui enregistre un type de contenu public** : la boîte
+« Slug » est **ajoutée par le cœur lui-même**, elle n'apparaît donc dans aucun fichier du dépôt et
+**aucune relecture de code ne peut la détecter**. Elle ne se voit qu'à l'écran. C'est le premier
+défaut livré par le trou « aucun rendu navigateur » de cette chaîne.
+
 ## 7. Chaînes fournies par le serveur
 
 Le thème les **imprime** ; il ne les compose jamais.

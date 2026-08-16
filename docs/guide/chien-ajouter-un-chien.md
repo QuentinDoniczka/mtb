@@ -181,6 +181,11 @@ règle à suivre.
 sur un grand écran comme sur un téléphone — une photo posée au milieu d'un texte, elle, sortirait du
 cadre.
 
+**Votre texte n'est jamais perdu.** Le site garde les versions précédentes de ce commentaire : si
+vous l'effacez par mégarde et que vous enregistrez, appelez-nous, il se récupère. Les autres champs
+de la fiche, eux, ne sont pas gardés de cette façon — raison de plus pour ne jamais vider un champ
+« pour voir ».
+
 **Vous n'avez pas de couleur à choisir.** Votre texte prend tout seul la mise en forme du site :
 mêmes lettres, mêmes couleurs, même allure que sur toutes les autres pages. C'est ce qui fait que le
 site se tient d'un bout à l'autre, sans que vous ayez à y penser. Écrivez, mettez en gras ou en
@@ -197,12 +202,23 @@ italique si vous voulez, et laissez faire le reste.
 - Revenir sur une fiche autant de fois que vous voulez : **Chiens** → **Tous les chiens** → le nom du
   chien → **Mettre à jour**.
 - Changer le statut, le sexe, le cadrage : rien n'est perdu, l'affichage suit.
+- Supprimer une fiche. Pour supprimer un chien, ouvrez sa fiche et cliquez sur
+  **Mettre à la corbeille**. Elle disparaît aussitôt de la page **La meute**, et le lien vers elle
+  disparaît des fiches où vous l'aviez choisie comme père ou comme mère. Elle reste récupérable
+  depuis la corbeille : ouvrez **Chiens**, cliquez sur **Corbeille** en haut de la liste, puis sur
+  **Rétablir**. Tout ce que vous aviez saisi revient avec elle.
+
+  **Une fiche rétablie revient en brouillon**, c'est-à-dire hors du site : ouvrez-la et cliquez sur
+  **Publier** pour qu'elle réapparaisse sur **La meute**. Tant que vous ne l'avez pas fait, vous la
+  voyez dans **Tous les chiens**, mais les visiteurs, eux, ne la voient pas.
 
 **Ce qui n'a aucune importance :**
 
 - L'ordre dans lequel vous remplissez les sections.
 - Le **Cadrage de la photo** si votre photo est déjà bien centrée : **Centre** convient.
 - La couleur et la taille du texte de votre commentaire : le site s'en occupe.
+- La boîte **Adresse de la page**, tout en bas de l'écran : elle se remplit toute seule à partir du
+  nom d'usage. Ne la modifiez que si l'adresse est fausse.
 
 **Ce qu'il vaut mieux ne pas faire :**
 

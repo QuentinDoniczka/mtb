@@ -171,4 +171,16 @@ function enregistrer_sections( string $type_post, $post ): void {
 	foreach ( $sections as $identifiant => $section ) {
 		add_meta_box( $identifiant, $section[0], $section[1], 'mtb_chien', 'normal', 'high' );
 	}
+
+	/*
+	 * Le cœur ajoute lui-même une boîte pour l'adresse dès qu'un type de contenu a une page
+	 * publique, et son titre emploie un mot interdit à l'écran. On ne se contente pas de la
+	 * retirer : une fiche chien a bien une adresse — /chien/<nom-dusage>/ — et la retirer sans
+	 * rien mettre à la place priverait l'éleveuse de la maîtrise de ses adresses. On la remplace
+	 * donc par la même boîte, nommée dans son vocabulaire.
+	 */
+	remove_meta_box( 'slugdiv', 'mtb_chien', 'normal' );
+
+	// Priorité basse, donc en dernier : c'est une boîte qu'on n'ouvre qu'en cas d'erreur.
+	add_meta_box( 'mtb-chien-adresse', 'Adresse de la page', __NAMESPACE__ . '\\rendre_adresse', 'mtb_chien', 'normal', 'low' );
 }

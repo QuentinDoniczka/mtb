@@ -61,7 +61,13 @@ function enregistrer(): void {
 			'show_in_rest'          => true,
 			'menu_position'         => 22,
 			'menu_icon'             => 'dashicons-pets',
-			'supports'              => array( 'title', 'editor', 'thumbnail' ),
+			/*
+			 * « revisions » n'est pas décoratif ici : c'est la contrepartie du choix de loger le
+			 * commentaire de l'éleveuse dans le contenu de la fiche. Sans lui, une prose écrasée
+			 * puis enregistrée serait définitivement perdue. À savoir en revanche : WordPress ne
+			 * versionne que le titre et le contenu, jamais les champs de la fiche.
+			 */
+			'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions' ),
 			'hierarchical'          => false,
 			/*
 			 * Aucune archive : « La meute » est une page libre composée de composants. Une archive

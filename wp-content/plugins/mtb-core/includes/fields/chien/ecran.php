@@ -277,6 +277,29 @@ function rendre_titre_du_commentaire( $post ): void {
 }
 
 /**
+ * Boîte « Adresse de la page », en remplacement de celle du cœur.
+ *
+ * Le champ porte le nom attendu par WordPress, « post_name » : c'est le cœur qui applique
+ * sanitize_title(), garantit l'unicité de l'adresse et la régénère depuis le nom d'usage quand le
+ * champ est laissé vide. Refaire ce travail nous-mêmes le referait moins bien — et c'est pourquoi
+ * ce champ ne passe surtout pas par notre routine de sauvegarde : l'adresse appartient au contenu,
+ * pas aux champs de la fiche.
+ *
+ * @param mixed $post Fiche en cours d'édition.
+ */
+function rendre_adresse( $post ): void {
+	// Sans urldecode(), une adresse accentuée s'afficherait sous sa forme encodée, illisible.
+	$adresse = $post instanceof \WP_Post ? urldecode( (string) $post->post_name ) : '';
+
+	rendre_champ_texte(
+		'post_name',
+		'Adresse de la page',
+		$adresse,
+		"L'adresse de cette fiche sur le site. Elle se remplit toute seule à partir du nom d'usage ; ne la modifiez que si l'adresse est fausse."
+	);
+}
+
+/**
  * Section « Identité ».
  *
  * @param \WP_Post $post Fiche en cours d'édition.
