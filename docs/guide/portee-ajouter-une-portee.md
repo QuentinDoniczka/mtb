@@ -221,6 +221,12 @@ réécrit toute seule au prochain enregistrement.
 - Revenir sur une portée autant de fois que vous voulez : **Portées** → **Toutes les portées** → son
   identifiant → **Mettre à jour**.
 - Changer la disponibilité, les compteurs, le père, la mère, l'ordre des photos : rien n'est perdu.
+- Retirer une portée du site : ouvrez-la et cliquez sur **Mettre à la corbeille**, dans l'encadré
+  **Publier**. Elle disparaît aussitôt du site, et elle reste récupérable : vous la retrouvez dans
+  **Corbeille**, en haut de la liste **Toutes les portées**.
+- Ressortir une portée de la corbeille : cliquez sur **Rétablir**, tout revient — les champs, les
+  chiots, les photos. La portée revient **en brouillon** : ouvrez-la et cliquez sur **Publier** pour
+  qu'elle réapparaisse sur le site.
 - Corriger l'identifiant après publication, puis corriger l'adresse dans **Adresse de la page** si
   elle ne vous convient plus.
 

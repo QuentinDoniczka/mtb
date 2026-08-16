@@ -672,6 +672,30 @@ telles quelles si le texte est un jour repris :
 « La fiche de chien liée n'existe plus. Choisissez une autre fiche, ou saisissez la mère sans fiche
 sur le site. »
 
+### 18.4 bis Libellés fournis par le cœur de WordPress — **non vérifiables dans le code de l'issue**
+
+Ces libellés apparaissent sur l'écran d'une portée et dans la fiche d'aide, mais **aucune ligne de ce
+module ne les produit** : ils viennent du cœur et l'issue ne les redéfinit pas.
+
+**Publier** · **Mettre à jour** · **Mettre à la corbeille** · **Rétablir** · **Corbeille** (onglet de
+la liste) · le champ de recherche en haut de « Toutes les portées ».
+
+**Où s'arrête exactement la maîtrise de cette issue sur le vocabulaire de la corbeille** : le **seul**
+libellé de corbeille que ce module pose lui-même est `not_found_in_trash` (« Aucune portée dans la
+corbeille. »), et la fiche d'aide ne le cite même pas. Tout le reste du geste — le lien, l'onglet,
+l'action de restauration — est du cœur.
+
+**Pourquoi ils sont groupés ici** : le jour où une issue `admin` voudra franciser ou renommer ces
+actions, **c'est cette liste qu'il faudra relire**, et elle doit être trouvable d'un coup d'œil plutôt
+que dispersée dans le contrat et dans la fiche d'aide. Toute modification de l'un d'eux se répercute
+sur `docs/guide/portee-ajouter-une-portee.md`.
+
+**Comportement du cœur à connaître, vérifié en base sur les trois types de contenu du lot** :
+**WordPress restaure un contenu sorti de la corbeille en `brouillon`, jamais en `publié`.** Une portée
+rétablie revient donc **hors ligne**, champs, chiots et photos intacts, et **rien ne le dit à
+l'éleveuse au moment du clic**. Ce n'est pas un défaut de ce module et il n'est pas corrigé ici — il
+est **documenté dans la fiche d'aide**, à la charge de qui voudra un jour l'adoucir.
+
 ### 18.5 Ce qui n'a pas pu être vérifié
 
 **Le comportement de `ecran.js` dans un navigateur** — clonage du `<template>`, fenêtre de choix des
