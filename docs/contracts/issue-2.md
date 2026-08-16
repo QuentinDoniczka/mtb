@@ -274,7 +274,39 @@ d'exploitation, pas une décision de thème.
 
 **Preuve finale à consigner** : DevTools → Réseau → filtre « domaine ≠ localhost », sur (a) l'accueil,
 (b) une page, (c) `/wp-admin/post.php` en édition, (d) l'insérteur ouvert sur l'onglet Compositions
-**et** l'onglet Média. **Attendu : zéro entrée dans les quatre cas.**
+**et** l'onglet Média.
+
+> ### ⚠️ D6 est tenue POUR LE VISITEUR, et bornée à lui
+>
+> **La rédaction antérieure de ce paragraphe — « Attendu : zéro entrée dans les quatre cas » — était
+> fausse, et le message du commit `8d2217f` annonçait une « exception documentée » qui n'était
+> documentée nulle part.** C'est corrigé ici. Une chaîne future ne doit pas lire « D6 ✅ » sans savoir
+> que la preuve exigée n'a jamais été atteinte côté administration.
+>
+> **Site public — irréprochable, revérifié par `review-mtb` dans la stack** : (a) et (b) sortent
+> **zéro** origine externe et **zéro** `Set-Cookie`. C'est ce que D6 protège, et c'est tenu.
+>
+> **Administration — quinze images restent tirées de `s.w.org`**, comptées dans le cœur installé :
+>
+> | Source | Images | Quand |
+> |---|---|---|
+> | `wp-includes/js/dist/edit-post.min.js` | **10** (`welcome-*.gif` / `.svg`) | guide de bienvenue |
+> | `wp-includes/js/dist/block-library.min.js` | **5** (`images/core/5.3/*.jpg`) | **aperçus de blocs de l'insérteur** |
+>
+> Les cinq secondes ne sont donc **pas** limitées à la première connexion : elles reviennent à chaque
+> parcours de l'insérteur. Aucun filtre PHP ne les atteint, les URL sont écrites en dur dans le
+> JavaScript du cœur.
+>
+> **Décision 15 de `docs/ETAT.md` — appliquée, non rouvrable :**
+> 1. **Le guide de bienvenue est écarté par défaut** → les 10 premières disparaissent, sans rien coûter
+>    à l'éditrice : c'est un modal qu'elle fermerait de toute façon.
+> 2. **Les aperçus de blocs sont conservés.** Le zéro absolu était à portée avec le filtre
+>    `block_type_metadata` déjà en place, mais il retirerait à Fabienne les aperçus visuels **au moment
+>    précis où elle cherche quoi insérer**. C'est la **contrainte 1** (éditable par une
+>    non-développeuse) contre une fuite d'adresse IP vers le CDN de wordpress.org : **la contrainte 1
+>    gagne.**
+> 3. Le résidu est donc **5 images, en administration seulement, pour un compte connecté**. Il est
+>    nommé ici plutôt que masqué.
 
 ---
 
@@ -285,7 +317,22 @@ d'exploitation, pas une décision de thème.
 | `aucune_portee` | sans objet — le socle ne lit aucun contenu structuré | sans objet |
 | `donnee_absente` | sans objet | sans objet |
 | `parent_hors_elevage` | sans objet | sans objet |
-| `page_protegee` | cœur WordPress, `get_the_password_form()` via `core/post-content` | `templates/singular.html` rend le formulaire natif — **BRIEF §8 satisfait sans une ligne de logique**. La mise en forme MASTER §9.5 appartient à l'epic Gabarits. |
+| `page_protegee` | cœur WordPress, `get_the_password_form()` via `core/post-content` | `templates/singular.html` rend le formulaire natif. **BRIEF §8 : formulaire ✅ / exclusion ⏳.** La mise en forme MASTER §9.5 appartient à l'epic Gabarits. |
+
+> **⚠️ BRIEF §8 n'est PAS satisfait par cette issue** — la rédaction antérieure (« satisfait sans une
+> ligne de logique ») était fausse et n'était vraie que du **formulaire**. BRIEF §8 exige aussi qu'une
+> page protégée **n'apparaisse ni dans les index publics, ni dans le sitemap, ni dans la recherche**.
+> Or le cœur **ne filtre pas `has_password`** : son sitemap liste les contenus protégés et la recherche
+> native les retourne.
+>
+> | Volet de BRIEF §8 | État |
+> |---|---|
+> | Formulaire de mot de passe natif rendu | ✅ livré ici |
+> | L'éditrice protège / change / retire le mot de passe seule | ✅ mécanisme natif |
+> | Exclusion des index publics, du sitemap et de la recherche | ⏳ **issue `prive` (#23)** |
+>
+> **À l'attention de #23 : ne pas lire « satisfait » et sauter l'exclusion.** C'est le seul volet qui
+> demande du code, et il n'est pas écrit.
 | `aucun_resultat` (requête vide, 404, recherche) | cœur | `core/query-no-results` dans `index.html`. Formulation **provisoire**, signalée en commentaire ; les libellés MASTER §9.5 (« Page introuvable », les trois liens) appartiennent à l'epic Gabarits. |
 
 ## Chaînes fournies par le serveur
@@ -370,6 +417,14 @@ non-conformité** que `review-mtb` doit remonter.
    « modifier le menu » une ligne du guide. **Dette de conception créée ici, payée par l'issue #18.**
 3. **Question D7 de MASTER §15** (l'en-tête reprend-il le logo actuel en image, ou se compose-t-il en
    typographie seule ?) doit être tranchée **avant** l'epic Gabarits.
+4. **Aucun `<h1>` sur l'accueil, la page de recherche et la 404.** Omission de la rédaction initiale
+   de cette liste, rétablie ici. `templates/index.html` est le gabarit de secours de tout ce qui n'est
+   pas singulier ; `core/query-title {type:"archive"}` ne rend rien hors archive, et aucun `<h1>` ne
+   le remplace sur ces trois vues. **BRIEF §11 et MASTER §12.10 sont donc faux sur l'accueil, la
+   recherche et la 404** — pas sur les pages ni les contenus singuliers, que `singular.html` couvre.
+   Corriger ici aurait demandé `search.html` et `404.html`, or la 404 de MASTER §9.5 exige trois liens
+   (*Accueil*, *Les portées*, *La meute*) vers des pages qui n'existent pas encore : c'eût été
+   empiéter sur l'epic Gabarits et inventer une navigation. **À solder par l'epic Gabarits.**
 
 ---
 
@@ -557,10 +612,17 @@ qui les créent.
 | 2 | Sous chaque `<h2>`, segment de 6 rem | élément | ✅ livré |
 | 3 | À la place de chaque `<hr>` | élément | ✅ livré, avec contre-mesure `hr.wp-block-separator` |
 | 4 | Bord gauche d'une citation (`blockquote`), vertical | élément | ✅ livré (`--filet-double-v`) |
+| 4 bis | Bord gauche de l'**encart d'appel**, vertical | composant | ⏳ **issue de l'encart d'appel** |
 | 5 | Bord bas de l'en-tête du site | composant | ⏳ epic Gabarits |
 | 6 | Bord haut du pied de page | composant | ⏳ epic Gabarits |
 | 7 | Bord bas d'un bandeau photo pleine largeur | composant | ⏳ epic Gabarits |
 | 8 | Au-dessus de l'encart « dernière portée » si *Chiots disponibles* | composant | ⏳ issue de l'encart |
+
+**Correction** : la rédaction antérieure de ce tableau recopiait la ligne 6 de MASTER §2.1 en
+**omettant l'encart d'appel**, que MASTER accorde pourtant au même titre que la citation
+(« Bord gauche d'une citation (`blockquote`) **et de l'encart d'appel** »), puis concluait que les
+quatre emplacements restants étaient les « seuls » disponibles. **L'issue de l'encart d'appel aurait
+lu qu'un filet lui était interdit alors que MASTER le lui donne.** Corrigé en 4 bis.
 
 **Aucun écart à la liste close, aucun jeton concurrent, aucun neuvième emplacement.** La règle
 « jamais deux fois dans le même bloc visuel » est tenue par `h2 + hr { display: none }` (§2.1 :
