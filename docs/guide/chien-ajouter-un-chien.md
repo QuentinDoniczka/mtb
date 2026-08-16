@@ -1,0 +1,239 @@
+# Ajouter un chien
+
+**Quand** : dès qu'un chien doit apparaître sur le site, ou dès que vous avez ses papiers sous la main.
+**Temps** : 5 minutes pour l'essentiel. **Rattrapable** : oui. Tout se modifie ensuite, autant de fois
+que vous voulez.
+
+**Aucun champ n'est obligatoire.** Vous pouvez publier une fiche avec le seul nom du chien et la
+compléter dans six mois. Un champ laissé vide affiche **Non renseigné** sur le site : jamais un tiret,
+jamais un blanc, et jamais une valeur inventée à votre place.
+
+---
+
+## Les étapes
+
+1. Dans le menu de gauche, cliquez sur **Chiens**, puis sur **Ajouter**.
+
+   ![capture: menu de gauche de l'administration, entrée « Chiens » ouverte, sous-menu « Ajouter » mis en évidence](captures/chien-menu-ajouter.png)
+
+2. Tout en haut de la page, dans le grand champ, tapez le **Nom d'usage** du chien : son nom court,
+   celui qui deviendra le titre de sa fiche.
+
+3. Descendez dans la section **Identité** et remplissez ce que vous connaissez. Choisissez le
+   **Statut** : c'est lui qui fait apparaître le chien sur la page **La meute**.
+
+   ![capture: section « Identité » entière, avec le champ « Nom d'usage » visible au-dessus et le groupe de choix « Statut » en bas](captures/chien-identite.png)
+
+4. Continuez dans les sections suivantes — **Parents**, **Taille et robe**, **Santé**,
+   **Titres et brevets**, **Photos et pedigree** — en remplissant seulement ce que vous avez sous la
+   main. Le reste attendra.
+
+5. Dans la colonne de droite, encadré **Photo principale**, cliquez sur
+   **Choisir la photo principale** et prenez la photo qui représente le chien.
+
+6. Cliquez sur **Publier**, en haut à droite.
+
+7. Lisez le message qui s'affiche en haut de la page après l'enregistrement : c'est là que le site
+   vous dit ce qui manque ou ce qui n'a pas été compris.
+
+8. Cliquez sur **Voir la fiche** pour vérifier le résultat sur le site.
+
+> Vous pouvez vous arrêter après l'étape 6 : la fiche existe, elle est en ligne, et vous la reprendrez
+> quand vous voudrez en cliquant sur son nom dans **Tous les chiens**.
+
+---
+
+## Ce qui se met à jour tout seul
+
+- La page **La meute** : le chien rejoint le groupe de son statut, à la bonne place, sans rien
+  recopier.
+- Les fiches des autres chiens : si vous avez choisi ce chien comme père ou comme mère ailleurs, le
+  lien entre les deux fiches se fait tout seul.
+- Les libellés du site s'accordent au sexe : *Reproductrice*, *Retraitée*, *Disparue*, *Née le*,
+  *Décédée le*. **Vous n'avez jamais à corriger un accord à la main.**
+
+---
+
+## Section **Identité**
+
+- **Nom complet (avec affixe)** — le nom inscrit au LOF, affixe compris (pour vos chiens :
+  « du Mont Brabant »). Le nom court, lui, reste tout en haut de la page.
+- **Sexe** — **Mâle** ou **Femelle**. Il sert aussi à accorder les libellés du site.
+- **Variété** — **Poil long** ou **Poil court**.
+- **Date de naissance** — **si vous ne connaissez que l'année, laissez le champ vide.** Le site
+  écrira **Non renseigné**, ce qui vaut mieux qu'une date approximative que quelqu'un recopiera.
+- **Date de décès** — à remplir seulement si le chien est décédé. Laissée vide, rien n'apparaît sur
+  le site.
+- **Statut** — quatre choix : **Reproducteur** · **En cours de confirmation** · **Retraité** ·
+  **Disparu**, plus **Non renseigné**.
+
+### Le statut, en deux phrases
+
+Si vous laissez **Non renseigné**, **le chien n'apparaît pas sur la page La meute**. Vous n'avez pas à
+le deviner : après l'enregistrement, un message vous prévient —
+« Ce chien est enregistré sans statut : il n'apparaîtra pas sur la page « La meute ». Vous pouvez
+renseigner le champ Statut quand vous le souhaitez. » Rouvrez la fiche, choisissez un statut,
+cliquez sur **Mettre à jour**, c'est réglé.
+
+Pour une femelle, le site écrit *Reproductrice*, *Retraitée*, *Disparue*. Vous choisissez le statut,
+le site accorde.
+
+---
+
+## Section **Parents**
+
+Pour le père comme pour la mère, deux façons de faire, au choix :
+
+- **Le parent a déjà sa fiche sur le site** : choisissez-la dans la liste **Père** ou **Mère**. Le
+  lien entre les deux fiches se fait tout seul.
+- **Le parent n'a pas de fiche** : laissez la liste sur **Non renseigné** et remplissez **Nom** et
+  **Élevage** dans l'encadré **Père — étalon extérieur** ou **Mère — hors élevage**. Le parent
+  s'affichera à la même place et de la même façon, simplement sans lien à cliquer.
+
+Un chien ne peut pas être son propre père ni sa propre mère : il n'apparaît pas dans sa propre liste.
+
+---
+
+## Section **Taille et robe**
+
+**Taille**, **Couleur**, **Masque**, **Génétique de robe** : recopiez la mention telle qu'elle figure
+sur le document, avec son unité et sa ponctuation. Rien n'est corrigé, rien n'est mis en majuscules.
+
+---
+
+## Section **Santé**
+
+Huit champs nommés : **Dysplasie des hanches (HD)** · **Dysplasie des coudes (ED)** · **LTV** ·
+**DM** · **SDCA 1** · **SDCA 2** · **ADN identifié** · **Diversité génétique**.
+
+**Recopiez chaque résultat exactement comme il figure sur le document officiel.** Le site ne vérifie
+rien, ne corrige rien, ne reformate rien. **C'est voulu** : le site ne connaît pas les grilles
+officielles, il ne se permet donc jamais de juger une valeur — c'est vous qui savez. Une valeur qui
+commence par un chevron, comme celles de diversité génétique, passe sans dommage.
+
+**ADN identifié** n'est pas une case à cocher : trois réponses possibles.
+
+| Ce que vous choisissez | Ce que ça veut dire | Ce que le site affiche |
+|---|---|---|
+| **Oui** | le test a été fait, il est identifié | Oui |
+| **Non** | le test dit non | Non |
+| **Non renseigné** | vous n'avez pas encore l'information | Non renseigné |
+
+« Non » et « Non renseigné » ne disent pas la même chose, et le site ne remplacera jamais le second
+par le premier.
+
+**Autres tests de santé** — une ligne par test : son nom, puis son résultat. C'est là que va tout test
+qui n'a pas son champ nommé ci-dessus.
+
+![capture: section « Santé » entière, avec les trois choix d'« ADN identifié » et la zone « Autres tests de santé » visibles](captures/chien-sante.png)
+
+---
+
+## Section **Titres et brevets**
+
+**TC** · **CSAU** · **Cotation LOF** · **Confirmation** · **N° LOF** : là aussi, recopiez la mention
+telle quelle, y compris la date et le lieu si le document les porte. Aucune vérification, aucune
+correction automatique.
+
+**Autres titres et brevets** — une ligne par titre.
+**Les résultats d'exposition se notent ici**, pas dans **Résultats de travail**.
+
+---
+
+## Section **Photos et pedigree**
+
+- **Photo principale** — se choisit dans la **colonne de droite**, encadré **Photo principale**.
+  C'est la photo qui représente le chien partout sur le site.
+- **Cadrage de la photo** — cinq choix : **Haut gauche** · **Haut** · **Centre** · **Haut droite** ·
+  **Bas**, **Centre** par défaut. Il sert à choisir quelle partie de la photo reste visible quand elle
+  est recadrée. Si le chien est dans le haut de l'image, choisissez **Haut** ; sinon, ne touchez à
+  rien.
+- **Galerie photos** — cliquez sur **Ajouter des photos**, choisissez vos photos, puis
+  **Ajouter à la galerie**. Elles s'affichent sur la fiche dans l'ordre de la liste. Sous chaque
+  photo, trois boutons : **Retirer la photo 1**, **Déplacer la photo 1 avant**,
+  **Déplacer la photo 1 après** (le numéro suit le rang de la photo).
+- **Lien pedigree (LOF Select)** — collez l'adresse de la page du chien sur LOF Select, copiée depuis
+  la barre du navigateur. C'est ce lien qui remplace un arbre généalogique sur le site : le visiteur y
+  trouve l'ascendance complète.
+
+### Décrire chaque photo
+
+Dans la fenêtre des photos, prenez trente secondes pour écrire ce que montre la photo — le chien de
+profil dans l'herbe, la portée dans son parc. Ce texte n'est pas affiché à l'écran : il est **lu à
+voix haute** aux personnes aveugles qui visitent le site, et il s'affiche à la place de la photo
+quand celle-ci ne se charge pas. Une photo sans description est une photo qui n'existe pas pour elles.
+
+*(Cette zone porte aujourd'hui à l'écran le titre « Texte alternatif », qui n'est pas le nom prévu
+pour le site. Voir « En cas de doute ».)*
+
+![capture: section « Photos et pedigree », liste de la galerie avec deux photos et leurs boutons, bouton « Ajouter des photos » visible](captures/chien-photos.png)
+
+---
+
+## La zone **Commentaire de l'éleveuse**
+
+Sous le nom d'usage, la grande zone de texte intitulée **Commentaire de l'éleveuse** : écrivez-y
+librement ce que vous voulez dire de ce chien. C'est le seul endroit de la fiche où vous n'avez aucune
+règle à suivre.
+
+---
+
+## En cas de doute
+
+**Ce que vous pouvez faire sans risque :**
+
+- Publier une fiche à moitié remplie. Rien ne casse, rien ne s'affiche de travers.
+- Laisser un champ vide. Le site écrit **Non renseigné** et passe à la suite.
+- Revenir sur une fiche autant de fois que vous voulez : **Chiens** → **Tous les chiens** → le nom du
+  chien → **Mettre à jour**.
+- Changer le statut, le sexe, le cadrage : rien n'est perdu, l'affichage suit.
+
+**Ce qui n'a aucune importance :**
+
+- L'ordre dans lequel vous remplissez les sections.
+- Le **Cadrage de la photo** si votre photo est déjà bien centrée : **Centre** convient.
+
+**Ce qu'il vaut mieux ne pas faire :**
+
+- **Ne corrigez jamais un accord à la main** : n'écrivez pas « Reproductrice » ailleurs que dans le
+  champ prévu, ne mettez ni parenthèse ni point au milieu d'un mot. Choisissez le **Sexe**, choisissez
+  le **Statut**, le site fait le reste.
+- **N'inventez jamais une date ni un résultat** pour ne pas laisser un vide. Un vide honnête vaut
+  mieux qu'une date fausse, qui finira recopiée ailleurs.
+- **Ne créez pas une deuxième fiche pour le même chien.** Si vous ne retrouvez pas une fiche, cherchez
+  son nom dans **Tous les chiens** avant d'en ajouter une.
+
+**Deux choses à savoir, en attendant qu'elles soient corrigées :**
+
+- Dans la liste **Père** ou **Mère**, un chien encore en brouillon peut apparaître, mais tant que sa
+  fiche n'est pas publiée, le lien ne se fait pas sur le site : c'est le **Nom** et l'**Élevage** que
+  vous avez saisis qui s'affichent. Publiez la fiche du parent, et le lien apparaît.
+- Dans la fenêtre des photos, la zone de description porte encore le titre « Texte alternatif ». C'est
+  bien la bonne zone.
+
+**Si quelque chose vous inquiète** : ne supprimez rien, notez le nom du chien et l'heure, et
+appelez-nous. Une fiche mal remplie n'a jamais cassé un site.
+
+---
+
+## Captures d'écran à prendre
+
+À faire en une passe, sur une installation contenant au moins deux fiches Chien publiées et une fiche
+en cours de saisie avec deux photos de galerie.
+
+| Fichier | Écran | Ce qui doit être visible |
+|---|---|---|
+| `captures/chien-menu-ajouter.png` | N'importe quel écran d'administration | Le menu de gauche, l'entrée **Chiens** ouverte, le sous-menu **Ajouter** mis en évidence |
+| `captures/chien-identite.png` | **Chiens** → **Ajouter** | Le champ **Nom d'usage** en haut, puis la section **Identité** en entier, choix **Statut** compris, avec la ligne d'aide sous le statut |
+| `captures/chien-sante.png` | Même écran, section **Santé** | Les huit champs nommés, les trois choix d'**ADN identifié**, et la zone **Autres tests de santé** |
+| `captures/chien-photos.png` | Même écran, section **Photos et pedigree** | La liste **Galerie photos** avec deux photos et leurs boutons **Retirer la photo 1** / **Déplacer…**, le bouton **Ajouter des photos**, et le champ **Lien pedigree (LOF Select)** |
+
+Deux captures utiles en complément, si le temps le permet :
+
+| Fichier | Écran | Ce qui doit être visible |
+|---|---|---|
+| `captures/chien-photo-principale.png` | Colonne de droite de l'écran de saisie | L'encadré **Photo principale** et le lien **Choisir la photo principale** |
+| `captures/chien-avis-statut.png` | Après un enregistrement sans statut | Le bandeau d'avertissement en haut de page, texte lisible en entier |
+
+**Aucune capture ne doit montrer de nom de chien, de numéro LOF ou de résultat de test réel** tant que
+le contenu n'a pas été validé : utilisez une fiche d'essai.
