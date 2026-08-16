@@ -471,6 +471,14 @@ function boite_galerie( $post ): void {
  * @param mixed $post Contenu en cours de modification.
  */
 function boite_adresse( $post ): void {
+	/*
+	 * urldecode() est un filet pour un cas de bord, pas un rattrapage courant : une saisie faite
+	 * depuis cet écran ne produit jamais d'adresse encodée, sanitize_title() appliquant
+	 * remove_accents() en contexte « save » — « Élia » y devient « elia », jamais « %C3%89lia ».
+	 * L'appel ne sert qu'à une adresse déjà encodée arrivée par une autre voie que l'écran de
+	 * saisie, où il affiche la forme lisible plutôt que la forme encodée. Comportement mesuré dans
+	 * la stack sur une adresse cyrillique posée directement en base.
+	 */
 	$adresse = $post instanceof \WP_Post ? urldecode( (string) $post->post_name ) : '';
 
 	echo '<p><label for="mtb-portee-adresse">Adresse de la page</label><br>';
