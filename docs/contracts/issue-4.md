@@ -96,22 +96,38 @@ l'éditrice. **Le thème ne le passe jamais.**
 | Fonction | Propriétaire | Comment on l'obtient |
 |---|---|---|
 | `mtb_get_portees_du_chien( int $chien_id ): array` | **issue #3**, `includes/query/portee/bootstrap.php` | appelée sous `function_exists()` |
-| `mtb_resultats_travail_du_chien( int $chien_id, array $args = array() ): array` | **issue #5**, `includes/query/resultat/bootstrap.php` | appelée sous `function_exists()` |
+| `mtb_get_resultats_travail_du_chien( int $chien_id, array $args = array() ): array` | **issue #5**, `includes/query/resultat/bootstrap.php` | appelée sous `function_exists()` |
 
-> **⚠ Le nom réel livré par #5 n'est pas celui qui m'avait été annoncé.** La consigne de lot gelait
-> `mtb_get_resultats_du_chien( int $chien_id )` ; #5 a livré
-> **`mtb_resultats_travail_du_chien( int $chien_id, array $args = array() )`**. Vérifié par `grep` sur
-> `includes/query/` le 2026-08-16. Les deux noms sont consignés ici pour que personne ne code contre
-> le mauvais.
->
-> **La conséquence est une panne silencieuse, pas une erreur** : un gabarit qui teste
-> `function_exists( 'mtb_get_resultats_du_chien' )` obtiendra **toujours `false`**, donc un palmarès
-> **vide en permanence**, sur un site qui répond 200 et ne journalise rien. C'est la classe de panne
-> que D12 vise. **Le nom à appeler est celui de la colonne, pas celui de la consigne.**
->
-> À noter aussi : #5 nomme ses lectures `mtb_resultat_*` / `mtb_resultats_*` et non `mtb_get_*`,
-> ce qui s'écarte de la convention rappelée par le lead et du `mtb_get_derniere_portee()` du contrat
-> #1. **Arbitrage de lot en attente** — remonté, pas tranché par moi.
+**C'est le seul nom à appeler pour le palmarès.** Le segment `_travail_` est délibéré : c'est ce que
+personne n'écrit par hasard depuis `query/chien/`, ce qui écarte définitivement l'ombrage silencieux
+décrit ci-dessus.
+
+Elle renvoie une **structure de tableau**, pas une liste plate — forme **fixe même quand tout est
+vide** (`array( 'colonnes' => array(), 'lignes' => array() )`) :
+
+```php
+array(
+    'colonnes' => array( array( 'cle' => 'discipline', 'libelle' => 'Discipline' ), … ),
+    'lignes'   => array(
+        array(
+            'id'       => int,
+            'cellules' => array(
+                'discipline' => array( 'valeur' => 'ring', 'affichage' => 'RING', 'url' => '', 'etat' => '' ),
+                // même forme pour annee, niveau, conducteur, pays
+            ),
+        ),
+    ),
+)
+```
+
+Cinq colonnes : `discipline` · `annee` · `niveau` · `conducteur` · `pays`. Tri par défaut **année
+croissante** — une carrière se lit dans son sens — les résultats sans année toujours en dernier,
+jamais présentés comme les plus anciens.
+
+La fiche teste `empty( $palmares['lignes'] )` et **ne rend pas la section Palmarès** : pas de titre
+orphelin, pas de tableau vide. Les cinq `colonnes[].libelle` sont ceux que le composant tableau
+recopiera dans `data-libelle` (décision 10) : **ne les réécris pas, ne les abrège pas** — imprime-les
+tels que la fonction les donne.
 
 > **Le palmarès n'est pas chez moi.** La ligne « palmarès (agrège les résultats de travail) » de la
 > checklist de l'issue #4 est **servie par appel, pas par implémentation**. La prochaine chaîne qui
@@ -377,6 +393,33 @@ espaces de bord, puis **échappement au rendu** par `esc_html()`. Le `<` survit 
 s'affiche correctement. Contrat #1 §12 : assainissement **à la frontière d'entrée**, échappement
 **au rendu**, jamais en amont.
 
+### Le second piège : le dé-échappement double
+
+> **La valeur qui atteint `update_post_meta()` doit être ENCORE échappée.**
+
+`update_metadata()` applique `wp_unslash()` de son côté. Une valeur déjà dé-échappée par le code
+appelant est donc dé-échappée **deux fois**, et **un antislash légitime disparaît à chaque
+enregistrement** — `Rex\Test` devient `RexTest`. Comme le piège précédent, c'est une perte de donnée
+d'élevage **par outillage**, silencieuse, sur le type qui porte le plus de valeurs recopiées.
+
+Deux chemins corrects, et il faut en suivre **un jusqu'au bout** : soit ne jamais dé-échapper et
+passer `$_POST` tel quel ; soit dé-échapper pour inspecter et assainir, **puis `wp_slash()` juste
+avant l'écriture**. Prendre le début du second sans sa fin est le défaut exact qui a été livré dans
+le commit `a2ab414` et corrigé ensuite.
+
+**Toutes les écritures de méta passent par une fonction d'écriture unique** qui applique `wp_slash()`.
+Ce n'est pas une redondance : la retirer réintroduit la perte. *(Le nonce et le code d'avis lu en
+`$_GET` ne sont pas des écritures de méta — leur `wp_unslash()` est correct et reste.)*
+
+### Avis par transient — justification
+
+Les avis d'administration transitent par un **transient par utilisateur**, et non par un argument
+d'URL. Motif : c'est le seul mécanisme qui permet de **citer à l'éleveuse la valeur qu'elle a
+tapée**, au lieu d'un code opaque. Le pire mode de panne est un **avis manquant**, jamais une donnée
+perdue. L'interdit de transient du contrat #1 §9 vise les **fonctions de lecture** — pour éviter
+qu'une portée modifiée reste masquée derrière un cache périmé — et ne porte pas sur un message
+d'interface à usage unique.
+
 ## 9. Interdits
 
 - Le thème n'interroge jamais la base : aucun `WP_Query`, `get_post_meta`, `get_posts`, `get_terms`,
@@ -441,5 +484,10 @@ s'affiche correctement. Contrat #1 §12 : assainissement **à la frontière d'en
   apparaître le panneau « Champs personnalisés » — mot interdit à l'écran (§10.4). Aucune erreur,
   aucun avertissement. À rouvrir le jour où un composant ou un import en ligne de commande en aura
   besoin.
+- **Un identifiant de photo devenu mort reste en base** si l'éleveuse enregistre sans toucher à la
+  galerie. **C'est délibéré et il ne faut pas le « corriger »** : ne pas supprimer une donnée qu'elle
+  n'a pas demandé de supprimer est la règle de ce projet, et la lecture filtre déjà les
+  identifiants qui ne désignent plus une photo. Si elle réimporte la photo, la galerie se rétablit
+  seule.
 - **Dettes T5 (`scandir`) et T6 (règles de réécriture) : intouchées**, elles appartiennent à #26 et
   à un travail `seo` ultérieur.

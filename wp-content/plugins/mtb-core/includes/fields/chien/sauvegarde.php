@@ -34,6 +34,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Un champ absent du formulaire vaut le vide, jamais « ne pas toucher » : une section vidée par
  * l'éleveuse doit s'enregistrer vide.
  *
+ * Le wp_unslash() ci-dessous sert à inspecter et assainir la valeur telle qu'elle a été tapée. Il
+ * a une contrepartie obligatoire : toute écriture passe ensuite par ecrire_meta(), qui la
+ * ré-échappe. Ces deux fonctions vont par paire, ne jamais en employer une sans l'autre.
+ *
  * @param string $cle Clé du champ.
  */
 function valeur_postee( string $cle ): string {
@@ -44,6 +48,25 @@ function valeur_postee( string $cle ): string {
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- assainissement fait par l'appelant, champ par champ, avec la fonction propre à ce champ : sanitize_text_field() y viderait une valeur commençant par « < ».
 	return (string) wp_unslash( $_POST[ $cle ] );
+}
+
+/**
+ * Écrit un champ de la fiche. Point de passage unique de toutes les écritures de ce module.
+ *
+ * Le wp_slash() n'est pas une redondance et il ne doit pas être retiré : update_metadata() applique
+ * lui-même un wp_unslash() à la valeur reçue. Une valeur déjà dé-échappée par valeur_postee()
+ * serait donc dé-échappée une seconde fois, et un antislash légitime disparaîtrait à chaque
+ * enregistrement — « Rex\Test » deviendrait « RexTest ». C'est une perte de donnée recopiée, D11,
+ * silencieuse et cumulative.
+ *
+ * Une seule fonction plutôt qu'un wp_slash() sur chaque appel : on ne peut plus en oublier un.
+ *
+ * @param int        $post_id Identifiant de la fiche.
+ * @param string     $cle     Clé du champ.
+ * @param int|string $valeur  Valeur déjà assainie, dé-échappée.
+ */
+function ecrire_meta( int $post_id, string $cle, $valeur ): void {
+	update_post_meta( $post_id, $cle, wp_slash( $valeur ) );
 }
 
 /**
@@ -122,11 +145,11 @@ function enregistrer_textes( int $post_id ): void {
 	}
 
 	foreach ( $cles as $cle ) {
-		update_post_meta( $post_id, $cle, assainir_texte_recopie( valeur_postee( $cle ) ) );
+		ecrire_meta( $post_id, $cle, assainir_texte_recopie( valeur_postee( $cle ) ) );
 	}
 
-	update_post_meta( $post_id, '_mtb_autres_tests', assainir_texte_multiligne( valeur_postee( '_mtb_autres_tests' ) ) );
-	update_post_meta( $post_id, '_mtb_autres_titres', assainir_texte_multiligne( valeur_postee( '_mtb_autres_titres' ) ) );
+	ecrire_meta( $post_id, '_mtb_autres_tests', assainir_texte_multiligne( valeur_postee( '_mtb_autres_tests' ) ) );
+	ecrire_meta( $post_id, '_mtb_autres_titres', assainir_texte_multiligne( valeur_postee( '_mtb_autres_titres' ) ) );
 }
 
 /**
@@ -138,17 +161,17 @@ function enregistrer_listes( int $post_id ): void {
 	$sexe_brut = valeur_postee( '_mtb_sexe' );
 	$sexe      = assainir_sexe( $sexe_brut );
 	signaler_refus( $sexe_brut, $sexe, 'sexe_refuse' );
-	update_post_meta( $post_id, '_mtb_sexe', $sexe );
+	ecrire_meta( $post_id, '_mtb_sexe', $sexe );
 
 	$variete_brut = valeur_postee( '_mtb_variete' );
 	$variete      = assainir_variete( $variete_brut );
 	signaler_refus( $variete_brut, $variete, 'variete_refusee' );
-	update_post_meta( $post_id, '_mtb_variete', $variete );
+	ecrire_meta( $post_id, '_mtb_variete', $variete );
 
 	$statut_brut = valeur_postee( '_mtb_statut' );
 	$statut      = assainir_statut( $statut_brut );
 	signaler_refus( $statut_brut, $statut, 'statut_refuse' );
-	update_post_meta( $post_id, '_mtb_statut', $statut );
+	ecrire_meta( $post_id, '_mtb_statut', $statut );
 
 	// Sans statut, la fiche n'entre dans aucun groupe de « La meute » : elle est prévenue tout de suite.
 	if ( '' === $statut ) {
@@ -158,7 +181,7 @@ function enregistrer_listes( int $post_id ): void {
 	$adn_brut = valeur_postee( '_mtb_adn_identifie' );
 	$adn      = assainir_oui_non( $adn_brut );
 	signaler_refus( $adn_brut, $adn, 'adn_refuse' );
-	update_post_meta( $post_id, '_mtb_adn_identifie', $adn );
+	ecrire_meta( $post_id, '_mtb_adn_identifie', $adn );
 }
 
 /**
@@ -180,8 +203,8 @@ function enregistrer_dates( int $post_id ): void {
 		Avis::ajouter( 'deces_avant_naissance' );
 	}
 
-	update_post_meta( $post_id, '_mtb_date_naissance', $naissance );
-	update_post_meta( $post_id, '_mtb_date_deces', $deces );
+	ecrire_meta( $post_id, '_mtb_date_naissance', $naissance );
+	ecrire_meta( $post_id, '_mtb_date_deces', $deces );
 }
 
 /**
@@ -205,9 +228,9 @@ function enregistrer_parent( int $post_id, string $role ): void {
 		Avis::ajouter( 'pere' === $role ? 'pere_introuvable' : 'mere_introuvable' );
 	}
 
-	update_post_meta( $post_id, $prefixe . 'fiche', $fiche );
-	update_post_meta( $post_id, $prefixe . 'nom', assainir_texte_recopie( valeur_postee( $prefixe . 'nom' ) ) );
-	update_post_meta( $post_id, $prefixe . 'elevage', assainir_texte_recopie( valeur_postee( $prefixe . 'elevage' ) ) );
+	ecrire_meta( $post_id, $prefixe . 'fiche', $fiche );
+	ecrire_meta( $post_id, $prefixe . 'nom', assainir_texte_recopie( valeur_postee( $prefixe . 'nom' ) ) );
+	ecrire_meta( $post_id, $prefixe . 'elevage', assainir_texte_recopie( valeur_postee( $prefixe . 'elevage' ) ) );
 }
 
 /**
@@ -227,13 +250,13 @@ function enregistrer_photos( int $post_id ): void {
 		$cadrage = cadrage_par_defaut();
 	}
 
-	update_post_meta( $post_id, '_mtb_cadrage', $cadrage );
-	update_post_meta( $post_id, '_mtb_galerie', assainir_liste_identifiants( valeur_postee( '_mtb_galerie' ) ) );
+	ecrire_meta( $post_id, '_mtb_cadrage', $cadrage );
+	ecrire_meta( $post_id, '_mtb_galerie', assainir_liste_identifiants( valeur_postee( '_mtb_galerie' ) ) );
 
 	$pedigree_brut = valeur_postee( '_mtb_pedigree' );
 	$pedigree      = assainir_url( $pedigree_brut );
 	signaler_refus( $pedigree_brut, $pedigree, 'pedigree_refuse' );
-	update_post_meta( $post_id, '_mtb_pedigree', $pedigree );
+	ecrire_meta( $post_id, '_mtb_pedigree', $pedigree );
 }
 
 /**
