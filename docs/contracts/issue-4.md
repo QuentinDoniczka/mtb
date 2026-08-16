@@ -246,10 +246,30 @@ que l'auto-référence directe, refusée à la source *et* à la sauvegarde.
 | **Cadrage de la photo** | `_mtb_cadrage` — `haut_gauche` · `haut` · `centre` · `haut_droite` · `bas` (défaut `centre`) |
 | **Galerie photos** | `_mtb_galerie` — liste ordonnée d'identifiants, **modale média du cœur** |
 | **Lien pedigree (LOF Select)** | `_mtb_pedigree` — URL, `esc_url_raw` en entrée |
-| **Commentaire de l'éleveuse** | `post_content` — éditeur de contenu habituel |
+| **Commentaire de l'éleveuse** | `post_content` — éditeur de contenu habituel, **bridé** (voir ci-dessous) |
 
 La modale média est celle du cœur, servie depuis notre domaine : **aucune requête tierce** (D6).
 Rien de maison, rien de nouveau à lui apprendre.
+
+### L'éditeur du commentaire est bridé — délibérément
+
+Deux portes du système de design sont fermées sur l'écran Chien, chacune atteignable en deux clics
+sans rien connaître :
+
+| Retiré | Filtre | Pourquoi |
+|---|---|---|
+| Bouton **« Ajouter un média »** | `wp_editor_settings` → `media_buttons => false` | `média` est un **mot interdit à l'écran** (§10.4). Surtout : une photo insérée au fil de la prose échapperait au traitement des photos du design system. **Les photos ont leur chemin, c'est le champ Galerie photos.** |
+| **Sélecteur de couleur de texte et de fond** (2ᵉ barre d'outils) | `mce_buttons_2` → retrait de `forecolor` et `backcolor` | Met l'éleveuse à deux clics d'une couleur **hors des quinze jetons** de §3.1, et le CSS ne peut rien y faire : la couleur part en **style en ligne**. C'est la dette **T7** transposée à la prose. |
+
+> **Les deux filtres sont GLOBAUX et sont bornés par `get_current_screen()`** (`post_type ===
+> 'mtb_chien'` et `base === 'post'`). Sans cette borne ils éteindraient les mêmes boutons **sur les
+> Pages**, qui appartiennent à l'issue #18 — un débordement hors empreinte **par effet de bord**, le
+> pire genre, puisqu'il n'apparaît dans aucun `git status`. Toute issue future qui touche à ces deux
+> filtres doit reprendre la borne.
+
+**Conséquence assumée pour l'éleveuse** : elle ne peut plus insérer de photo dans le commentaire.
+C'est le prix de la contrainte 2 — le design ne se contourne pas depuis un champ de texte — et la
+fiche d'aide le dit en clair.
 
 ## 4. Listes fermées — clé stockée courte, libellé long affiché
 

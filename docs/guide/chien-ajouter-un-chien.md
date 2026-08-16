@@ -176,6 +176,16 @@ Sous le nom d'usage, la grande zone de texte intitulée **Commentaire de l'élev
 librement ce que vous voulez dire de ce chien. C'est le seul endroit de la fiche où vous n'avez aucune
 règle à suivre.
 
+**Les photos ne s'ajoutent pas ici.** Elles ont leur place à elles, dans **Galerie photos** et dans
+**Photo principale**. C'est ce qui leur donne le bon cadrage et la bonne taille partout sur le site,
+sur un grand écran comme sur un téléphone — une photo posée au milieu d'un texte, elle, sortirait du
+cadre.
+
+**Vous n'avez pas de couleur à choisir.** Votre texte prend tout seul la mise en forme du site :
+mêmes lettres, mêmes couleurs, même allure que sur toutes les autres pages. C'est ce qui fait que le
+site se tient d'un bout à l'autre, sans que vous ayez à y penser. Écrivez, mettez en gras ou en
+italique si vous voulez, et laissez faire le reste.
+
 ---
 
 ## En cas de doute
@@ -192,6 +202,7 @@ règle à suivre.
 
 - L'ordre dans lequel vous remplissez les sections.
 - Le **Cadrage de la photo** si votre photo est déjà bien centrée : **Centre** convient.
+- La couleur et la taille du texte de votre commentaire : le site s'en occupe.
 
 **Ce qu'il vaut mieux ne pas faire :**
 
