@@ -505,6 +505,20 @@ récupérer un style de bloc du cœur, et le lien de cause à effet avec un file
 **Corollaire** : ce thème n'emprunte **aucun** style de bloc au cœur. Tout habillage de bloc passe par
 `assets/css/blocs/<espace>-<nom>.css` et la boucle générique.
 
+## Amendement 2 ter — Piège de méthode : ne pas filtrer les sorties de la stack sur « mtb-core »
+
+**Pour `test-integration-mtb` et toute chaîne qui inspectera la stack.**
+
+La `Description:` du thème, dans `style.css`, se **termine** par les mots « … appartient à l'extension
+mtb-core ». Filtrer une sortie de la stack sur `mtb-core` — `grep -v mtb-core`, ou l'inverse pour
+isoler l'extension — **supprime donc la description du thème**, ou la fait apparaître là où on
+cherchait l'extension.
+
+Conséquence observée : on conclut à tort que l'en-tête du thème est cassé ou tronqué, alors qu'il est
+intact. `get_file_data()` renvoie bien les dix en-têtes complets et `is_block_theme()` renvoie **oui**.
+
+**Vérifier l'en-tête par `get_file_data()`, jamais par un `grep` filtré.**
+
 ## Amendement 3 — Clause `function_exists()` héritée du contrat de l'issue #1
 
 `docs/contracts/issue-1.md` engage le thème sur un point que cette chaîne n'a pas pu voir, les deux
