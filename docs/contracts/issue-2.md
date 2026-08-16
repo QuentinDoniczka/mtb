@@ -297,16 +297,39 @@ d'exploitation, pas une décision de thème.
 > parcours de l'insérteur. Aucun filtre PHP ne les atteint, les URL sont écrites en dur dans le
 > JavaScript du cœur.
 >
-> **Décision 15 de `docs/ETAT.md` — appliquée, non rouvrable :**
-> 1. **Le guide de bienvenue est écarté par défaut** → les 10 premières disparaissent, sans rien coûter
->    à l'éditrice : c'est un modal qu'elle fermerait de toute façon.
-> 2. **Les aperçus de blocs sont conservés.** Le zéro absolu était à portée avec le filtre
->    `block_type_metadata` déjà en place, mais il retirerait à Fabienne les aperçus visuels **au moment
->    précis où elle cherche quoi insérer**. C'est la **contrainte 1** (éditable par une
->    non-développeuse) contre une fuite d'adresse IP vers le CDN de wordpress.org : **la contrainte 1
->    gagne.**
-> 3. Le résidu est donc **5 images, en administration seulement, pour un compte connecté**. Il est
->    nommé ici plutôt que masqué.
+> **Résidu réel : les 15 images. Rien n'est écarté, et c'est délibéré.**
+>
+> **Ni le guide de bienvenue ni les aperçus ne sont neutralisés.** Une rédaction antérieure de ce
+> paragraphe annonçait « guide écarté par défaut, résidu 5 images » : **c'était faux**, aucune ligne du
+> thème ne l'implémentait. La correction est ici. `grep -rniE "welcome|persisted_preferences|user_meta"`
+> sur `wp-content/themes/mtb/` renvoie **zéro occurrence** — c'est vérifiable en une commande.
+>
+> **Pourquoi on n'écarte pas le guide de bienvenue.** Le seul mécanisme disponible consiste à écrire la
+> préférence `welcomeGuide` dans le méta utilisateur `wp_persisted_preferences`. C'est un **détail
+> d'implémentation interne du cœur, pas une API stable** — et il est visiblement en cours de migration :
+> `welcomeGuide` apparaît dans **six paquets JavaScript** du cœur (`edit-post`, `editor`, `edit-site`,
+> `edit-widgets`, `customize-widgets`) sous **deux noms de portée concurrents**, `core/edit-post` **et**
+> `core/preferences`. Épingler cela dans un thème censé tourner **dix ans sur du mutualisé**
+> (décision 4) achèterait dix images contre une dépendance qui **cédera en silence** à une mise à jour,
+> en restaurant les dix images tout en laissant ce contrat affirmer le contraire. **C'est le pire des
+> deux mondes, et c'est exactement le défaut que ce paragraphe corrige.**
+>
+> **Ce n'est pas non plus le rôle du thème.** Écrire des préférences utilisateur est de la
+> simplification d'administration — `mtb-core` `includes/admin/` selon `CLAUDE.md` — ou du
+> provisionnement (`docker/`) en développement. **Pas de la présentation.**
+>
+> **Pourquoi on ne touche pas non plus aux aperçus de blocs.** Le zéro absolu était à portée avec le
+> filtre `block_type_metadata` déjà en place, mais il retirerait à Fabienne les aperçus visuels **au
+> moment précis où elle cherche quoi insérer**. C'est la **contrainte 1** (éditable par une
+> non-développeuse) contre une fuite d'adresse IP vers le CDN de wordpress.org : **la contrainte 1
+> gagne.**
+>
+> **Bilan honnête** : **15 images, en administration seulement, pour un compte connecté.** Zéro pour le
+> visiteur anonyme, qui est ce que D6 protège. L'écart est nommé plutôt que masqué, et il est **moins
+> coûteux qu'un correctif fragile qui tomberait sans bruit**.
+>
+> **Où le solder, si on le veut un jour** : une issue `infra`/`admin` sur `mtb-core`, qui possède
+> `includes/admin/` et survit à un changement de thème — pas ici.
 
 ---
 
