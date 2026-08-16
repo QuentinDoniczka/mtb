@@ -53,18 +53,49 @@ n'atteint l'écran de l'éleveuse. `auth_callback` explicite sur chacune.
 |---|---|---|---|
 | `_mtb_discipline` | `string` | `sanitize_key` — **jamais une liste blanche** (§6, état 3) | **Discipline** |
 | `_mtb_chien_id` | `integer` | `absint` | **Chien concerné** |
-| `_mtb_chien_nom` | `string` | `sanitize_text_field` | **Nom du chien (si le chien n'a pas de fiche)** |
+| `_mtb_chien_nom` | `string` | `assainir_texte_recopie` — **jamais `sanitize_text_field`** | **Nom du chien (si le chien n'a pas de fiche)** |
 | `_mtb_sexe` | `string` | `sanitize_key` | **Sexe** — liste fermée *Mâle* · *Femelle* |
 | `_mtb_annee` | `integer` | `absint` | **Année** |
-| `_mtb_niveau` | `string` | `sanitize_text_field` | **Niveau ou titre obtenu** |
-| `_mtb_conducteur` | `string` | `sanitize_text_field` | **Conducteur** |
-| `_mtb_pays` | `string` | `sanitize_text_field` | **Pays** |
+| `_mtb_niveau` | `string` | `assainir_texte_recopie` — **jamais `sanitize_text_field`** | **Niveau ou titre obtenu** |
+| `_mtb_conducteur` | `string` | `assainir_texte_recopie` — **jamais `sanitize_text_field`** | **Conducteur** |
+| `_mtb_pays` | `string` | `assainir_texte_recopie` — **jamais `sanitize_text_field`** | **Pays** |
 
 Toutes en `single => true`, `show_in_rest => false`.
 
 **Deux filets d'assainissement, délibérément** : à la frontière d'entrée dans `sauvegarde.php` (le
 chemin utilisateur), **et** en `sanitize_callback` de `register_post_meta` (qui couvre tout
 `update_post_meta()`, y compris un futur import WP-CLI qui ne passerait pas par le formulaire).
+Les deux appellent **la même fonction**, `MTB\Core\Content\Resultat\assainir_texte_recopie()` — deux
+filets, une seule définition de « valeur propre ».
+
+### `sanitize_text_field()` est interdite sur une valeur recopiée
+
+Elle passe par `wp_strip_all_tags()`, donc `strip_tags()`. **Sur une valeur commençant par `<`, PHP
+supprime tout jusqu'à un `>` qui n'existe pas : la valeur est vidée, sans erreur et sans
+avertissement.** Le champ exposé est **`_mtb_niveau`** — « Niveau ou titre obtenu » est du texte
+recopié d'un palmarès officiel, où `<60` est plausible — et `_mtb_chien_nom`, qu'on ne réécrit jamais
+non plus. Une donnée d'élevage réelle effacée en silence, c'est **D11 enfreinte par l'outillage**.
+
+`assainir_texte_recopie( $valeur ): string` fait exactement ceci, et rien d'autre :
+
+1. valeur non scalaire → `''` ;
+2. `wp_check_invalid_utf8()` ;
+3. `preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', … )` — les seuls caractères de contrôle ;
+4. `preg_replace( '/[\r\n\t]+/', ' ', … )` — aplatissement des monolignes ;
+5. `trim()`.
+
+**Jamais `strip_tags`, jamais `wp_kses`, jamais `esc_*`.** C'est sûr **parce que** l'échappement est
+systématique **en sortie** et que seul un compte disposant de `edit_post` écrit.
+
+`sanitize_key` reste juste sur `_mtb_discipline` et `_mtb_sexe`, `absint` sur `_mtb_annee` et
+`_mtb_chien_id` : ce sont des **clés canoniques et des entiers**, pas des valeurs recopiées. Et le
+`sanitize_text_field()` appliqué au **nonce** reste : un nonce est une clé.
+
+**Échappement des antislashs** — l'asymétrie qui piège : **les deux API veulent des données encore
+échappées.** `update_metadata()` appelle lui-même `wp_unslash()` puis `sanitize_meta()`. Une valeur
+venue de `$_POST` est déjà échappée ; une chaîne composée par nous (le titre) ne l'est pas et exige
+`wp_slash()`. Vérifié à l'exécution : une valeur à antislash et apostrophe enregistrée trois fois de
+suite rend le même octet.
 
 **Aucune valeur par défaut sur l'année.** Pré-remplir l'année en cours économise trois secondes et
 publie une date fausse le jour d'une saisie rétroactive — D11 tranche, champ vide. Même raison :
@@ -117,8 +148,8 @@ Espace de noms **global**, préfixe `mtb_`, sous `if ( ! function_exists( … ) 
 |---|---|---|
 | `mtb_resultat_disciplines(): array` | `clé => libellé`, ordre gelé (§5.1) | jamais vide |
 | `mtb_resultat_sexes(): array` | `array( 'male' => 'Mâle', 'femelle' => 'Femelle' )` | jamais vide |
-| `mtb_resultats_travail_par_discipline( array $args = array() ): array` | liste ordonnée de **groupes** (§5.3) | **`array()`** |
-| `mtb_resultats_travail_du_chien( int $chien_id, array $args = array() ): array` | `array( 'colonnes' => …, 'lignes' => … )` | `array( 'colonnes' => array(), 'lignes' => array() )` |
+| `mtb_get_resultats_travail_par_discipline( array $args = array() ): array` | liste ordonnée de **groupes** (§5.3) | **`array()`** |
+| `mtb_get_resultats_travail_du_chien( int $chien_id, array $args = array() ): array` | `array( 'colonnes' => …, 'lignes' => … )` | `array( 'colonnes' => array(), 'lignes' => array() )` |
 
 `$args` — deux clés, **et aucune autre**, aujourd'hui ni demain sans révision de ce contrat :
 `ordre` (`'annee_desc'` \| `'annee_asc'`) et `disciplines` (liste de clés ; vide = toutes).
@@ -126,7 +157,7 @@ Espace de noms **global**, préfixe `mtb_`, sous `if ( ! function_exists( … ) 
 > ### Frontière avec la chaîne #4 — le point le plus important de ce contrat
 >
 > **Tout ce qui lit des résultats appartient à `includes/query/resultat/`. La fiche chien
-> `appelle` `mtb_resultats_travail_du_chien()` ; elle ne le réimplémente pas.**
+> `appelle` `mtb_get_resultats_travail_du_chien()` ; elle ne le réimplémente pas.**
 >
 > Le danger n'est pas un `Cannot redeclare` visible : le `function_exists()` imposé par le contrat #1
 > §6 l'empêche. C'est **l'ombrage silencieux** — le chargeur parcourt `query/` par ordre alphabétique
@@ -154,7 +185,7 @@ ou retirer une discipline coûte **une ligne**.
 | `recherche_utilitaire` | **Recherche utilitaire** |
 | `sauvetage` | **Sauvetage** |
 | `truffe` | **Truffe** |
-| `autres` | **Autres disciplines** — *9ᵉ valeur, sous réserve, voir §9 arbitrage 3* |
+| `autres_disciplines` | **Autres disciplines** — 9ᵉ valeur, **arbitrée et retenue**, voir §9 arbitrage 3 |
 
 **On stocke une clé stable, jamais le libellé.** `MASTER.md` §15 D3 marque encore les disciplines
 « à confirmer » : une révision de graphie ne doit jamais obliger à réécrire des lignes existantes.
@@ -356,7 +387,7 @@ Conséquences, toutes obligatoires :
 |---|---|---|---|
 | 1 | Préfixe des clés de méta : `mtb_` (règle de lot) ou `_mtb_` (contrat #1 §6) | **`_mtb_`** | Le contrat #1 est gelé et son arbitrage 8 est motivé : le tiret bas rend la méta protégée, donc invisible du panneau « Champs personnalisés ». C'est la garantie mécanique qu'aucun mot interdit de `MASTER.md` §10.4 n'atteint son écran. Signalé à `/lead-mtb` pour alignement des trois chaînes du lot. |
 | 2 | Discipline en **méta à liste fermée** ou en **taxonomie `mtb_discipline`** | **Méta** | La taxonomie ouvre à l'éleveuse un écran « ajouter un terme » qui **crève la liste close** de la décision 11, impose les mots interdits `taxonomie`/`terme`/`slug` (§10.4), et exige un semis en base — donc un mode de panne silencieux. Elle n'achète aucune performance sur ~30 lignes qu'on charge de toute façon en entier. À `show_ui => false`, on réécrit quand même le `<select>` à la main : tout le coût, la moitié du bénéfice. |
-| 3 | **Neuvième valeur `autres` → « Autres disciplines »** | **Retenue, sous réserve d'arbitrage de `/lead-mtb`** | Relevé sur le site source : la section « Autres disciplines : » contient quatre lignes réelles dont **Agility** et **Brevet Maitre Chien Drogue**, qu'aucune des huit disciplines gelées ne peut exprimer. Sans neuvième valeur, ces lignes sont **perdues à la reprise** — contrainte 4 et D4. Le libellé est **recopié du site source**, donc pas inventé. **Réserve honnête** : une valeur fourre-tout perd la discipline réelle des quatre lignes. La vraie réponse est un fait d'élevage — *ces quatre-là sont-elles des disciplines à part entière, ou la rubrique « Autres » du site actuel ?* — et elle appartient à l'éleveuse. L'architecture garantit qu'ajouter chacune coûte **une ligne** dans `mtb_resultat_disciplines()`, et **aucune donnée n'est encore saisie**. |
+| 3 | **Neuvième valeur `autres_disciplines` → « Autres disciplines »** | **Retenue — arbitrée par `/lead-mtb` le 2026-08-16, qui a révisé la décision 11 à neuf valeurs** | Relevé sur le site source : la section « Autres disciplines : » contient quatre lignes réelles dont **Agility** et **Brevet Maitre Chien Drogue**, qu'aucune des huit disciplines gelées ne peut exprimer. Sans neuvième valeur, ces lignes sont **perdues à la reprise** — contrainte 4 et D4. Le libellé est **recopié du site source**, donc pas inventé. **Réserve honnête** : une valeur fourre-tout perd la discipline réelle des quatre lignes. La vraie réponse est un fait d'élevage — *ces quatre-là sont-elles des disciplines à part entière, ou la rubrique « Autres » du site actuel ?* — et elle appartient à l'éleveuse. L'architecture garantit qu'ajouter chacune coûte **une ligne** dans `mtb_resultat_disciplines()`, et **aucune donnée n'est encore saisie**. |
 | 4 | Graphie des disciplines : décision 11 (`IGP/RCI`, minuscules) ou `MASTER.md` §10.2 (`IGP / RCI`, capitales) | **`MASTER.md` §10.2** | §10 est l'arbitre déclaré des libellés. La décision 11 tranchait le **nombre** et l'**ordre**, pas la typographie. Note : le site source écrit une troisième graphie, `IGP (RCI)` — c'est un intertitre de page, pas un libellé de champ ; il ne fait pas foi. |
 | 5 | Libellé de « chien concerné », **absent de `MASTER.md` §10** | Étiquette de saisie **« Chien concerné »** (formulation du BRIEF §5.3), libellé de colonne publique **« Chien »** (§10.2 tel quel) | Un trou de §10 ne se comble pas par un synonyme inventé. Les deux chaînes retenues existent l'une dans le brief, l'autre dans §10. Signalé à `/lead-mtb` : si « Chien concerné » doit devenir le libellé public, c'est un ajout à §10, pas mon ressort. |
 | 6 | Champ **Sexe** : hors du brief §5.3 | **Ajouté, facultatif** | Le site source imprime ♂/♀ devant chaque nom. Pour le cas majoritaire — un chien sans fiche — l'information serait **perdue**. Libellé et valeurs repris de §10.2, donc rien n'est inventé. Ce n'est pas un élargissement du brief, c'est ce qu'il faut pour ne pas perdre une donnée affichée par le site qu'on reprend. |
@@ -395,6 +426,7 @@ visibles tous les deux.
 |---|---|---|
 | **T-#5-a** | **La liste d'administration des résultats n'a ni colonne Discipline, ni filtre, ni tri par année** — `includes/admin/**` est hors empreinte de ce lot. Sa seule surface de balayage est le titre composé, dans l'ordre de publication. Supportable à zéro résultat, **pénible dès l'import des ~30 lignes** : « trente secondes » vaut pour ajouter, pas pour retrouver. | une issue `admin`, **avant la reprise de contenu** |
 | **T-#5-b** | **Le contrôle « fiche ou nom recopié » est dupliqué** entre `fields/portee/` (#3) et `fields/resultat/` (#5). À **examiner, pas forcément à fusionner** : celui de #3 porte deux sous-champs (*Nom* + *Élevage*, §10.2), le nôtre un seul — le site source imprime une chaîne unique où l'affixe fait partie du nom. Une fusion prématurée imposerait un champ « Élevage » que le domaine ne demande pas ici. | une issue de consolidation |
+| **T-#5-e** | **`assainir_texte_recopie()` est dupliquée dans les trois modules du lot** (`content/resultat/`, `content/chien/`, `portee`). Les empreintes disjointes interdisaient un fichier partagé — c'est le prix assumé du parallélisme, pas un oubli. Trois copies d'une même définition de « valeur propre » finiront par diverger. | une issue de consolidation, qui la hisse dans un module commun |
 | **T-#5-c** | **`docker/fixtures/resultats.json` est incompatible avec ce modèle** : il porte `"discipline": "RING"` / `"IGP"` (des libellés, pas des clés) et `"chien": "rex-du-mont-brabant"` (un slug, pas un identifiant). Non touché — hors empreinte. | l'issue qui livrera `wp mtb import-fixtures` |
 | **T-#5-d** | **Aucune des trois issues du lot ne livre `wp mtb import-fixtures`** (`includes/migration/**` hors des trois empreintes). `provision.sh` se dégrade proprement (`\|\| log AVERTISSEMENT`), mais **Docker restera sans contenu de démonstration** après le lot 2. | une issue `migration`/`infra` |
 
@@ -423,6 +455,10 @@ que de les lisser.
 | 2026-08-16 | §5.3 | Précision : **les six cellules sont toujours émises**, l'exemple est abrégé et non normatif | Deux phrases du contrat se contredisaient. Le consommateur parcourt `colonnes`, jamais les clés de `cellules`. |
 | 2026-08-16 | §6 | Ajout de l'état **3 bis** (discipline entièrement vide) et distinction de `parent_hors_elevage` (nom recopié) d'avec `etat = ''` (fiche liée non consultable) | Le cas « champ jamais rempli » n'était pas couvert et aurait fait imprimer un `h2` vide. |
 | 2026-08-16 | §8 | La liste des classes du cœur admises n'est plus close | Le critère est **l'origine** (une classe du cœur n'émet aucune décision visuelle de notre fait), pas l'énumération. `screen-reader-text` porte même de l'accessibilité. |
+
+| 2026-08-16 | §3 | `sanitize_text_field` → **`assainir_texte_recopie()`** sur les quatre champs recopiés, appelée par les **deux** filets | Relevé par `/lead-mtb` sur l'arbre, après mon premier commit. `strip_tags()` **vide en silence** toute valeur commençant par `<` — or `<60` est un niveau plausible. D11 enfreinte par l'outillage. Vérifié à l'exécution : `<60` saisi par le vrai formulaire ressort exactement `<60`. |
+| 2026-08-16 | §5 | `mtb_resultats_travail_*` → **`mtb_get_resultats_travail_*`** | Le contrat gelé #1 §6 impose le préfixe de lecture `mtb_get_*`. Le segment `_travail_` est conservé, c'est lui qui protège de la collision avec `query/chien/`. **Ce n'était pas cosmétique** : #4 est commitée et appelle `mtb_get_resultats_travail_du_chien()` derrière un `function_exists()` — avec l'ancien nom, le test rendait **toujours faux**, donc un palmarès vide en permanence sur un site qui répond 200, sans une ligne au journal. |
+| 2026-08-16 | §5.1, §9 | Clé de la 9ᵉ discipline `autres` → **`autres_disciplines`** | Graphie arbitrée par `/lead-mtb`, qui a révisé la **décision 11 à neuf valeurs**. Aucune donnée n'était saisie. |
 
 **Correction technique reportée ici pour la chaîne suivante** : le `TypeError` d'une clé de discipline
 purement numérique ne tombait **pas** là où l'analyse statique le plaçait. Le rappel typé passé à

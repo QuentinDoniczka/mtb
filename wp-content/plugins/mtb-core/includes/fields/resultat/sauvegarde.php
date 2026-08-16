@@ -41,15 +41,22 @@ function enregistrer_champs( int $post_id, \WP_Post $post, bool $mise_a_jour ): 
 		return;
 	}
 
+	/*
+	 * Les quatre champs recopiés passent par la même fonction que le sanitize_callback des champs,
+	 * pour qu'il n'existe qu'une seule définition de « valeur propre ». Surtout pas
+	 * sanitize_text_field() : elle passe par strip_tags(), qui vide sans un mot une valeur commençant
+	 * par « < » — un niveau recopié d'un palmarès, un nom de chien. Discipline et sexe sont des clés
+	 * canoniques, année et identifiant de fiche des entiers : eux ne sont pas des valeurs recopiées.
+	 */
 	$valeurs = array(
 		'_mtb_discipline' => sanitize_key( champ_envoye( 'mtb_resultat_discipline' ) ),
 		'_mtb_chien_id'   => absint( champ_envoye( 'mtb_resultat_chien_id' ) ),
-		'_mtb_chien_nom'  => sanitize_text_field( champ_envoye( 'mtb_resultat_chien_nom' ) ),
+		'_mtb_chien_nom'  => \MTB\Core\Content\Resultat\assainir_texte_recopie( champ_envoye( 'mtb_resultat_chien_nom' ) ),
 		'_mtb_sexe'       => sanitize_key( champ_envoye( 'mtb_resultat_sexe' ) ),
 		'_mtb_annee'      => absint( champ_envoye( 'mtb_resultat_annee' ) ),
-		'_mtb_niveau'     => sanitize_text_field( champ_envoye( 'mtb_resultat_niveau' ) ),
-		'_mtb_conducteur' => sanitize_text_field( champ_envoye( 'mtb_resultat_conducteur' ) ),
-		'_mtb_pays'       => sanitize_text_field( champ_envoye( 'mtb_resultat_pays' ) ),
+		'_mtb_niveau'     => \MTB\Core\Content\Resultat\assainir_texte_recopie( champ_envoye( 'mtb_resultat_niveau' ) ),
+		'_mtb_conducteur' => \MTB\Core\Content\Resultat\assainir_texte_recopie( champ_envoye( 'mtb_resultat_conducteur' ) ),
+		'_mtb_pays'       => \MTB\Core\Content\Resultat\assainir_texte_recopie( champ_envoye( 'mtb_resultat_pays' ) ),
 	);
 
 	/*

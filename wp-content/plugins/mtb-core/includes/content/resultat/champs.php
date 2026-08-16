@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/assainissement.php';
+
 /**
  * Enregistre les huit champs, depuis le rappel init 10 de bootstrap.php.
  *
@@ -48,6 +50,11 @@ function enregistrer_champs(): void {
  * détruirait au premier ré-enregistrement une valeur devenue orpheline, et rien ne doit disparaître
  * en silence. La liste close des disciplines vit à l'écran de saisie et au rendu.
  *
+ * Les quatre champs recopiés — nom du chien, niveau, conducteur, pays — passent par
+ * assainir_texte_recopie() et jamais par sanitize_text_field(), qui viderait une valeur commençant
+ * par « < ». La discipline et le sexe sont des clés canoniques, l'année et l'identifiant de fiche
+ * des entiers : eux ne sont pas des valeurs recopiées.
+ *
  * @return array<string, array<string, string>> Définition indexée par clé de champ.
  */
 function definitions(): array {
@@ -64,7 +71,7 @@ function definitions(): array {
 		),
 		'_mtb_chien_nom'  => array(
 			'type'           => 'string',
-			'assainissement' => 'sanitize_text_field',
+			'assainissement' => __NAMESPACE__ . '\\assainir_texte_recopie',
 			'description'    => 'Nom du chien (si le chien n’a pas de fiche)',
 		),
 		'_mtb_sexe'       => array(
@@ -79,17 +86,17 @@ function definitions(): array {
 		),
 		'_mtb_niveau'     => array(
 			'type'           => 'string',
-			'assainissement' => 'sanitize_text_field',
+			'assainissement' => __NAMESPACE__ . '\\assainir_texte_recopie',
 			'description'    => 'Niveau ou titre obtenu',
 		),
 		'_mtb_conducteur' => array(
 			'type'           => 'string',
-			'assainissement' => 'sanitize_text_field',
+			'assainissement' => __NAMESPACE__ . '\\assainir_texte_recopie',
 			'description'    => 'Conducteur',
 		),
 		'_mtb_pays'       => array(
 			'type'           => 'string',
-			'assainissement' => 'sanitize_text_field',
+			'assainissement' => __NAMESPACE__ . '\\assainir_texte_recopie',
 			'description'    => 'Pays',
 		),
 	);

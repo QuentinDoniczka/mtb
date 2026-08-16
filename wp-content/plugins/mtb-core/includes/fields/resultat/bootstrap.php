@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once MTB_CORE_DIR . 'includes/content/resultat/assainissement.php';
 require_once __DIR__ . '/controle-chien.php';
 require_once __DIR__ . '/ecran.php';
 require_once __DIR__ . '/sauvegarde.php';

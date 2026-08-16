@@ -36,7 +36,7 @@ if ( ! function_exists( 'mtb_resultat_disciplines' ) ) {
 			'recherche_utilitaire' => 'Recherche utilitaire',
 			'sauvetage'            => 'Sauvetage',
 			'truffe'               => 'Truffe',
-			'autres'               => 'Autres disciplines',
+			'autres_disciplines'   => 'Autres disciplines',
 		);
 	}
 }
@@ -58,7 +58,7 @@ if ( ! function_exists( 'mtb_resultat_sexes' ) ) {
 	}
 }
 
-if ( ! function_exists( 'mtb_resultats_travail_par_discipline' ) ) {
+if ( ! function_exists( 'mtb_get_resultats_travail_par_discipline' ) ) {
 	/**
 	 * Résultats publiés, groupés par discipline.
 	 *
@@ -70,14 +70,14 @@ if ( ! function_exists( 'mtb_resultats_travail_par_discipline' ) ) {
 	 *                                          rien à afficher. Une discipline sans aucune ligne
 	 *                                          n'apparaît pas.
 	 */
-	function mtb_resultats_travail_par_discipline( array $args = array() ): array {
+	function mtb_get_resultats_travail_par_discipline( array $args = array() ): array {
 		return \MTB\Core\Query\Resultat\par_discipline(
 			\MTB\Core\Query\Resultat\normaliser_args( $args, 'annee_desc' )
 		);
 	}
 }
 
-if ( ! function_exists( 'mtb_resultats_travail_du_chien' ) ) {
+if ( ! function_exists( 'mtb_get_resultats_travail_du_chien' ) ) {
 	/**
 	 * Palmarès d'une fiche chien : ses résultats publiés, sans colonne Chien.
 	 *
@@ -89,7 +89,7 @@ if ( ! function_exists( 'mtb_resultats_travail_du_chien' ) ) {
 	 * @return array<string, mixed> Deux clés toujours présentes : « colonnes » et « lignes », toutes
 	 *                              deux à un tableau vide quand le chien n'a aucun résultat.
 	 */
-	function mtb_resultats_travail_du_chien( int $chien_id, array $args = array() ): array {
+	function mtb_get_resultats_travail_du_chien( int $chien_id, array $args = array() ): array {
 		return \MTB\Core\Query\Resultat\du_chien(
 			$chien_id,
 			\MTB\Core\Query\Resultat\normaliser_args( $args, 'annee_asc' )
