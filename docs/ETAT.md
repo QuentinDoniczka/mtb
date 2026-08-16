@@ -10,7 +10,7 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
-**Phase : bootstrap terminé le 2026-08-15. Premier lot (#1 #2) en cours.**
+**Phase : lot 1 clos le 2026-08-16. Le socle existe. Prochain lot : les trois types de contenu.**
 
 | Étape | État |
 |-------|------|
@@ -20,13 +20,16 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 | Board GitHub (issues + milestones) | ✅ 10 epics, 25 issues — [projet 10](https://github.com/users/QuentinDoniczka/projects/10) |
 | Design system (`design-system/MASTER.md`) | ✅ 16 sections — vocabulaire en §10 |
 | Stack Docker (`compose.yaml`) | ✅ 4 services, boot vérifié — `cp .env.example .env && make up` |
-| Extension `mtb-core` | ⚠️ **squelette placeholder** posé par `docker-mtb` pour que la stack démarre — à écraser par #1 |
-| Thème `mtb` | ⚠️ **squelette placeholder** (thème classique) posé par `docker-mtb` — à écraser par #2, qui livre un thème **de blocs** |
+| Extension `mtb-core` | ✅ squelette + chargeur à auto-découverte (#1) — aucun type de contenu encore |
+| Thème `mtb` | ✅ thème **de blocs**, `theme.json` verrouillé, CSS à la main, 2 polices auto-hébergées (#2) |
 | Reprise du contenu (52 URL) | ❌ rien |
 | Guide de l'éleveuse (`docs/guide/`) | ❌ rien |
 
-**Prochaine action** : `/lead-mtb #3 #4 #5` (epic 2 — les trois types de contenu), une fois le lot #1 #2
-clos. Les trois questions qui bloquaient ce lot (Q8, Q9, Q10) sont tranchées.
+**Prochaine action** : `/lead-mtb #3 #4 #5` (epic 2 — les trois types de contenu). Empreintes
+**disjointes**, vérifiées par `github-boards` après le lot 1 : trois chaînes en parallèle, sans réserve.
+Les trois questions qui bloquaient ce lot (Q8, Q9, Q10) sont tranchées.
+
+Board : **27 issues**, milestone 1 fermé, milestone 12 « Dette technique » ouvert (#26 `scandir`, #27 réécritures).
 
 **Comptes de développement** — `make up` puis http://localhost:8080/wp-admin/ : `admin`/`mtb-dev-admin`,
 éditrice `fabienne`/`mtb-dev-editrice` (rôle **Éditeur** natif, délibérément pas Administrateur).
@@ -102,3 +105,4 @@ Vérifiés sur le site source le 2026-08-14. Toute autre donnée d'élevage se l
 | Lot | Epic | Issues | Résultat | Commit |
 |-----|------|--------|----------|--------|
 | 0 | Bootstrap | — | Dépôt + board (10 epics, 25 issues) + `MASTER.md` + stack Docker vérifiée | `38d0935` puis amorçage |
+| 1 | 1. Infrastructure | #1, #2 | Extension `mtb-core` (chargeur à auto-découverte) + thème de blocs `mtb` (`theme.json` verrouillé, 2 polices auto-hébergées). Review **OK avec réserves**, D9 vérifié à froid. Milestone 1 fermé. 8 dettes tracées, 2 devenues issues (#26, #27). | `93dc6a5` |
