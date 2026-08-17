@@ -1,0 +1,31 @@
+{
+	"apiVersion": 3,
+	"name": "mtb/galerie-photos",
+	"title": "Galerie photos",
+	"category": "mtb",
+	"icon": "format-gallery",
+	"description": "Affiche une série de photos en vignettes. Chaque vignette ouvre la photo en grand.",
+	"keywords": [ "photos", "galerie", "vignettes" ],
+	"attributes": {
+		"photos": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "integer"
+			}
+		}
+	},
+	"supports": {
+		"html": false,
+		"className": false,
+		"customClassName": false,
+		"anchor": false,
+		"align": false,
+		"reusable": false,
+		"multiple": true
+	},
+	"render": "file:./render.php",
+	"editorScript": "mtb-galerie-photos-editeur",
+	"editorStyle": "mtb-galerie-photos-editeur-style",
+	"style": "mtb-galerie-photos-style"
+}

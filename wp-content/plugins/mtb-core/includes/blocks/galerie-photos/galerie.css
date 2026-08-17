@@ -1,0 +1,219 @@
+/*
+ * MTB — Composant « Galerie photos » (bloc `mtb/galerie-photos`)
+ *
+ * Servie AU VISITEUR ET DANS LA TOILE DE L'ÉDITEUR, par la poignée déclarée en
+ * `"style"` dans block.json (contrat #8 §2). C'est la raison d'être du chemin :
+ * `wp_enqueue_block_style()` est côté visiteur uniquement, donc une feuille
+ * posée dans le thème laisserait la toile entièrement nue et obligerait à
+ * recopier la grille dans `editor.css` — deux vérités sur le rendu même dont
+ * dépend D7 (contrat #8 §3.1, arbitrage 1).
+ *
+ * --- DÉROGATION NOMMÉE — dette T15 ------------------------------------------
+ * Le contrat #1 §8 gèle que l'extension n'émet aucune règle visuelle. Cette
+ * feuille en est une dérogation, prise en connaissance de cause et tracée :
+ *
+ *   1. elle est COUPLÉE AUX JETONS DU THÈME `mtb` : chaque var(--…) vient de
+ *      `themes/mtb/assets/css/tokens.css` (poignée `mtb-jetons` sur le site,
+ *      `add_editor_style()` dans la toile). MASTER §13 interdisant toute valeur
+ *      brute hors de tokens.css, elle ne peut PAS être durcie par des replis
+ *      `var(--e-3, .75rem)` : thème échangé, la grille survit mais la
+ *      discipline photographique (ratio, fond, cerne, gouttière) disparaît ;
+ *   2. elle nomme deux lignes de la grille du thème (`large-debut` /
+ *      `large-fin`), donc elle encode la structure de `base.css` ;
+ *   3. son domicile propre est
+ *      `themes/mtb/assets/css/blocs/mtb-galerie-photos.css`, que
+ *      `mtb_feuilles_de_blocs()` ramasse toute seule d'après le nom du bloc ;
+ *   4. LE DÉPLACEMENT FUTUR EST UNE COPIE PUIS LA SUPPRESSION DE LA POIGNÉE
+ *      `"style"` de block.json. Sans cette suppression, les deux chemins
+ *      chargent la même feuille deux fois.
+ *
+ * --- Conventions -------------------------------------------------------------
+ * Aucune valeur brute (MASTER §13) hors la liste close du contrat #8 §7, toutes
+ * recopiées de MASTER, aucune n'ayant de jeton : `9rem`, `min(100%, …)`, `1fr`,
+ * `auto-fill` (§6.7), `50% 38%` (§6.2), plus `inset(50%)` — la géométrie de
+ * masquage que MASTER §7.6 écrit lui-même, versée à la liste close par le
+ * contrat #8 §19.6, la section 7 renvoyant à « une technique de masquage » sans
+ * en nommer aucune. Ne comptent pas comme valeurs brutes :
+ * 0, 100 %, "" et les mots-clés CSS (convention de `base.css:25-26`).
+ *
+ * Aucune requête média : la grille du §6.7 est fluide par construction, elle
+ * n'en demande aucune. Aucune transition, aucune animation — aucun jeton de
+ * durée n'existe et on n'en invente pas (contrat #2) : il n'y a donc rien que
+ * `prefers-reduced-motion` puisse avoir à neutraliser.
+ *
+ * --- Spécificité : pourquoi les sélecteurs sont doublés ----------------------
+ * Les sélecteurs d'une seule classe qu'écrivait la section 7 du contrat #8 ont
+ * été re-gelés à DEUX classes par son §19.1, sur le défaut mesuré ci-dessous et
+ * sans aucun écart visuel.
+ * Les feuilles passées à `add_editor_style()` sont RÉÉCRITES par le cœur : dans
+ * la toile, tout sélecteur non racine de `base.css` est préfixé par
+ * `.editor-styles-wrapper`, ce qui l'alourdit d'une classe (constat consigné
+ * dans `editor.css:25-28`). `img` y pèse donc (0,1,1) et `a` (0,1,1), tandis que
+ * cette feuille-ci, injectée dans l'iframe comme feuille de bloc, n'est pas
+ * réécrite. Un sélecteur d'une seule classe (0,1,0) y PERDRAIT :
+ * `block-size: auto` de `base.css:131-136` l'emporterait sur le `100%` du cadre
+ * et l'aperçu de l'éditrice montrerait des images débordant du cadre 3/2, au
+ * lieu du rognage `cover` du site. Deux classes du balisage gelé (contrat #8
+ * §4) portent chaque règle à (0,2,0), qui gagne dans les deux contextes sans
+ * dépendre de l'ordre des feuilles, et sans un seul `!important`.
+ */
+
+/* =====================================================================
+ * 1. Placement dans le canal large — MASTER §7.1, §7.4 pt 5
+ *
+ * Les noms de lignes sont ceux de `base.css:479-485` : MASTER §7.1 nomme ses
+ * lignes -debut / -fin, jamais -start / -end.
+ * (0,2,0) contre (0,1,0) à `base.css:515` : gagne sans dépendre de l'ordre de
+ * source. La règle porte sur le <div> racine et non sur le <ul>, parce que
+ * `base.css:507-510` neutralise les marges du cœur à (0,3,0) sur l'enfant
+ * direct du canal ; à un seul niveau de balisage, le placement perdrait la
+ * course. Omettre cette règle rendrait la galerie dans le canal TEXTE : 3
+ * colonnes au lieu de 7 au-delà de ~640 px, §7.4 pt 5 non tenu.
+ * ================================================================== */
+.mtb-canal > .mtb-galerie-photos {
+  grid-column: large-debut / large-fin;
+}
+
+/* =====================================================================
+ * 2. La grille — MASTER §6.7, recopiée telle quelle
+ *
+ * `repeat(auto-fill, minmax(min(100%, 9rem), 1fr))` est écrit par MASTER
+ * lui-même : ni `9rem`, ni `1fr`, ni `auto-fill` n'a de jeton.
+ * À 360 px : canal = 324 px, plancher de piste 144 px, gouttière 12 px, donc
+ * 2 colonnes de 156 × 104 px — exactement la largeur disponible, aucun
+ * défilement horizontal (§7.7). À 1280 px zoomé 200 % : 3 colonnes. Le pire cas
+ * du système (piste sur son plancher) fait 144 × 96 px, très au-dessus de la
+ * cible tactile de 44 px, et --e-3 (12 px) tient l'écart minimal --e-2 (8 px)
+ * entre deux cibles (§5.1, §6.7).
+ * ================================================================== */
+.mtb-galerie-photos .mtb-galerie-photos__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr));
+  gap: var(--e-3);
+  /* MASTER §7.1 : le canal large est plafonné à 68 rem, pas à la largeur de
+     l'écran. Le plafond est porté par le <ul>, hors de portée du sélecteur `>`
+     de `base.css:507-510`, ce qui évite un second !important au thème. */
+  max-inline-size: var(--l-large);
+  margin-inline: auto;
+  margin-block: 0;
+  /* `base.css:127` remet à zéro la marge des <ul>, pas leur retrait : sans
+     cette ligne, le retrait de liste du navigateur décalerait la grille. */
+  padding: 0;
+  list-style: none;
+}
+
+/* =====================================================================
+ * 3. Le cadre — MASTER §6.1, §6.3, §6.6, §8.2
+ *
+ * « Le cadre porte l'image, jamais l'inverse » : c'est le lien qui déclare le
+ * ratio, donc aucune image ne dicte la hauteur d'une ligne et le décalage
+ * cumulé pendant le chargement est nul (§6.9).
+ *
+ * Pas de `overflow: hidden` : `object-fit: cover` rogne déjà, et §7.8 comme §13
+ * l'interdisent sur un conteneur susceptible de contenir du texte — celui-ci
+ * contient le texte `alt` quand le fichier ne charge pas (§6.6).
+ * ================================================================== */
+.mtb-galerie-photos .mtb-galerie-photos__lien {
+  /* Support du cerne posé en ::after (section 4). */
+  position: relative;
+  display: block;
+  aspect-ratio: var(--r-paysage);
+  /* §6.6 : le même fond sert au PNG détouré (jamais de damier) et à l'image qui
+     ne charge pas (jamais de pictogramme cassé). */
+  background-color: var(--calcaire-creux);
+  /* AUCUN `border-radius` ICI : le contrat #8 §19.1 l'a retiré de sa section
+     7.3, et voici pourquoi. --r-0 vaut 0, donc la valeur initiale — la
+     déclaration n'aurait aucun effet propre, mais à (0,2,0) elle battrait le
+     `border-radius: var(--r-1)` que `base.css:465-470` pose sur :focus-visible
+     et l'anneau du §8.1 perdrait ses coins de 2 px sur une vignette. Absente,
+     l'anneau reprend la forme que §8.1 lui donne, et l'image reste bien en
+     --r-0 par sa propre règle (section 5), ce qu'exige §5.2. */
+  /* Pas cosmétique : `base.css:248-254` souligne tout <a>. En cas d'échec de
+     chargement, le soulignement se dessinerait en travers du texte `alt`. §8.2
+     borne le soulignement permanent au lien « dans le contenu ». */
+  text-decoration: none;
+  /* Encre du texte `alt` affiché dans le cadre en échec — §6.6.
+     --texte-doux sur --calcaire-creux : 5,79:1, §12.3 ✓ */
+  color: var(--texte-doux);
+  font-family: var(--sans);
+  font-size: var(--t-sm);
+}
+
+/* =====================================================================
+ * 4. Le cerne de toute photo — MASTER §6.6, en ::after et pas autrement
+ *
+ * Deux raisons dures, dont une évite un défaut réel :
+ *   1. `base.css:465-470` pose un `box-shadow` sur :focus-visible. Un cerne
+ *      porté par le lien lui-même serait REMPLACÉ au focus : la photo perdrait
+ *      son cerne au clavier, exactement là où on en a le plus besoin ;
+ *   2. un `box-shadow` `inset` de parent est peint SOUS ses enfants ; posé sur
+ *      le cadre, il serait masqué par l'image pleine boîte.
+ * Le ::after est au-dessus de l'image et présent dans les quatre états : image
+ * chargée, image en échec, PNG détouré, cadre sans image. Étant à l'intérieur
+ * du <a>, il n'intercepte aucun clic : pas de `pointer-events: none`, l'un des
+ * contournements IONOS que MASTER §1.1 a jetés.
+ * Ce box-shadow est un cerne INTÉRIEUR, pas une ombre portée : même statut que
+ * celui de `base.css:393` au survol d'un bouton, l'interdit du §13 visant
+ * l'ombre douce sur carte.
+ * ================================================================== */
+.mtb-galerie-photos .mtb-galerie-photos__lien::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--cerne-photo);
+}
+
+/* =====================================================================
+ * 5. L'image — MASTER §6.2, règle unique de cadrage
+ *
+ * `object-position: var(--point-interet, 50% 38%)` est recopié VERBATIM de
+ * §6.2. Le repli n'est pas un durcissement de jeton (ceux-là sont interdits par
+ * §13) : `--point-interet` n'est pas un jeton, il n'existe aujourd'hui aucune
+ * source de donnée pour le point d'intérêt d'une vignette (question Q-8-A), et
+ * sans le repli la déclaration serait invalide à la valeur calculée, ce qui
+ * ramènerait le cadrage au 50% 50% du navigateur et perdrait le défaut que
+ * MASTER impose. `50% 38%` : sur un chien en pied, la tête est au-dessus du
+ * centre géométrique.
+ *
+ * Aucun `filter:`, jamais : la robe est une donnée d'élevage (§6.6, §13).
+ * Aucun `border-radius: 50%` (§2.2), aucun rayon > 2 px, aucun filet double
+ * (§2.1 liste des *jamais*), aucune ombre, aucun texte superposé (§6.4).
+ * ================================================================== */
+.mtb-galerie-photos .mtb-galerie-photos__image {
+  display: block;
+  inline-size: 100%;
+  /* Bat le `block-size: auto` de `base.css:131-136` dans les DEUX contextes :
+     (0,2,0) contre (0,0,1) sur le site et (0,1,1) dans la toile réécrite. Sans
+     cette victoire, une photo portrait déborderait du cadre 3/2. */
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+  border-radius: var(--r-0);
+}
+
+/* =====================================================================
+ * 6. Le nom accessible de la vignette — PORTEUR D'ACCESSIBILITÉ
+ *
+ * À NE JAMAIS « NETTOYER ». Une vignette est un lien dont l'unique contenu est
+ * une image ; quand la médiathèque n'a pas de description, `alt=""` et le lien
+ * se retrouve sans nom accessible (WCAG 2.4.4 et 4.1.2). Le <span> « Photo N
+ * sur T » le lui donne sans écraser la description quand elle existe.
+ * Sans cette règle, « Photo 3 sur 12 » s'imprime sous chaque vignette : le mode
+ * de panne est du texte visible, jamais un lien cassé.
+ *
+ * Technique de masquage recopiée de MASTER §7.6 (« retiré à l'œil, gardé au
+ * lecteur d'écran »), donc SANS `display: none` ni `visibility: hidden`, qui
+ * retireraient l'élément de l'arbre d'accessibilité, et SANS `overflow: hidden`
+ * sur un conteneur de texte, que §13 interdit.
+ * ================================================================== */
+.mtb-galerie-photos .mtb-galerie-photos__rang {
+  /* Hors flux : sinon le texte pousserait sous la photo, le cadre portant un
+     ratio et non une hauteur fixe. */
+  position: absolute;
+  clip-path: inset(50%);
+  /* 100 % et 0 ne sont pas des valeurs de design : ils bornent la boîte au
+     cadre pour qu'elle n'ajoute jamais de zone défilable, ni horizontale
+     (§7.7) ni verticale. */
+  inline-size: 100%;
+  block-size: 0;
+}

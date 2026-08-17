@@ -1,0 +1,94 @@
+/*
+ * MTB — « Galerie photos » : ce que l'éditeur montre en plus du site
+ *
+ * Servie par la poignée déclarée en `"editorStyle"` dans block.json : elle
+ * n'atteint JAMAIS le visiteur. La grille, le cadre, le cerne et le cadrage
+ * vivent dans `galerie.css`, qui habille la page ET la toile — cette feuille ne
+ * les recopie pas (ce serait la dette T9 sur le rendu dont dépend D7).
+ *
+ * Il ne reste donc que deux choses :
+ *   1. l'apparence d'état vide du §9.1, qui n'existe que dans l'éditeur (côté
+ *      public, un bloc sans photo n'est pas rendu du tout — §9.3, D12) ;
+ *   2. une COPIE À L'IDENTIQUE de la règle de masquage de `__rang`. Elle est
+ *      volontairement dans les deux feuilles : elle est porteuse
+ *      d'accessibilité, et son mode de panne dans l'aperçu — « Photo 3 sur
+ *      12 » imprimé sous chaque vignette — ferait croire à l'éleveuse que le
+ *      bloc est cassé. Contrat #8 §6 et §7.6.
+ *
+ * Même dérogation et même dette T15 qu'en tête de `galerie.css` : les jetons
+ * viennent du thème `mtb`, sans repli possible (§13).
+ *
+ * Valeurs brutes, liste close : `1px dashed`, recopié du §9.1 (« Contour tireté
+ * 1 px --laiton »), plus les métriques d'étiquette du tableau du §4.5 — graisse
+ * `600`, interligne `1.4`, interlettre `.16em` — que MASTER écrit colonne par
+ * colonne sans en définir de jeton (même convention que `base.css:19-20`), et
+ * que le contrat #8 §19.6 a versées à sa liste close.
+ */
+
+/* =====================================================================
+ * 1. L'état vide — MASTER §9.1, apparence commune aux dix composants
+ *
+ * Le crochet `.mtb-etat-vide` est le crochet PARTAGÉ retenu par le contrat #8
+ * §4.3 (arbitrage 10) : les règles ci-dessous ne sont donc pas préfixées par le
+ * crochet local `.mtb-galerie-photos__vide`, pour qu'une règle unique dans
+ * `editor.css` absorbe un jour les copies des dix composants et que leur
+ * suppression suffise, sans toucher au JavaScript (dette T13).
+ *
+ * Sa diffusion aux chaînes sœurs est INCOMPLÈTE dans ce lot — constaté sur
+ * l'arbre livré, à arbitrer au niveau du lot, pas ici : `derniere-portee` et
+ * `grille-chiens` portent bien `mtb-etat-vide`, mais `grille-chiens` nomme son
+ * étiquette `__composant` ; `bandeau-ouverture` et `liste-portees` portent
+ * `mtb-bloc-vide` ; `fiche-information` n'a qu'un crochet local. Superposition
+ * inoffensive tant que les déclarations restent celles du §9.1, mais elles ne
+ * sont pas encore les six mêmes.
+ *
+ * L'état doit se lire comme voulu, jamais comme une panne : contour tireté, fond
+ * en creux, une étiquette qui nomme le composant et une phrase qui dit ce qui
+ * manque.
+ * ================================================================== */
+.mtb-etat-vide {
+  /* 1 px --laiton : 3,15:1 sur --calcaire-creux, usage NON TEXTUEL, §12.3 ✓ */
+  border: 1px dashed var(--laiton);
+  border-radius: var(--r-0);
+  background-color: var(--calcaire-creux);
+  padding: var(--e-6);
+  /* 5,79:1 sur --calcaire-creux, §12.3 ✓ */
+  color: var(--texte-doux);
+  font-family: var(--sans);
+  font-size: var(--t-sm);
+  /* §9.1 : « aligné à gauche » — en logique d'écriture, donc `start`. */
+  text-align: start;
+}
+
+/* Le nom du composant, en étiquette laiton : ligne « h4 » du tableau du §4.5.
+   « GALERIE PHOTOS » fait deux mots, sous le plafond de trois que §4.5 impose
+   aux majuscules interlettrées.
+   PAIRE ARBITRÉE, à ratifier (question Q-8-C) : §9.1 mandate cette étiquette sur
+   fond --calcaire-creux, or §12.3 a omis de tabuler --laiton-texte sur ce fond.
+   Ratio recalculé indépendamment avec la formule du §3 : 4,75:1 — AA pour du
+   texte normal, et l'étiquette est en --t-xs, donc « normal » au sens WCAG. */
+.mtb-etat-vide__nom {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+}
+
+/* =====================================================================
+ * 2. Le nom accessible de la vignette — copie conforme de `galerie.css`
+ *
+ * Technique de MASTER §7.6 : ni `display: none`, ni `visibility: hidden` (qui
+ * retirent l'élément de l'arbre d'accessibilité), ni `overflow: hidden` sur un
+ * conteneur de texte (§13). Deux classes du balisage gelé, comme dans
+ * `galerie.css`, pour que les deux copies ne puissent pas se départager
+ * autrement qu'à l'identique.
+ * ================================================================== */
+.mtb-galerie-photos .mtb-galerie-photos__rang {
+  position: absolute;
+  clip-path: inset(50%);
+  inline-size: 100%;
+  block-size: 0;
+}
