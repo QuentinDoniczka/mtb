@@ -101,6 +101,18 @@
   line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: .12em;
+}
+
+/* white-space est une propriété du CONTEXTE, pas de la primitive : il est donc scopé
+   ici, pas dans la règle nue ci-dessus (contrat §10.4a). MESURÉ à 360 px, iframe de
+   même origine : badge 238 px dans un canal de 324 px, aucun débordement. La feuille
+   sœur mtb-liste-portees.css a mesuré l'inverse DANS SON contexte — badge à côté
+   d'une vignette de 144 px, où nowrap déborde et rompt le 360 px. Les deux mesures
+   sont vraies ; nowrap n'appartient donc qu'à cet encart. (0,2,0) bat la primitive
+   nue (0,1,0) sans dépendre de l'ordre du registre de blocs.
+   Au hissage de la primitive (T-#12-a) : elle prendra normal, JAMAIS nowrap — un
+   repli est toujours préférable à un débordement. */
+.mtb-derniere-portee .mtb-dispo {
   white-space: nowrap;
 }
 

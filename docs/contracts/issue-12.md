@@ -667,6 +667,45 @@ dans son bloc de code normatif. On suit §3.3 — normative, spécifique, avec s
 ne bricole aucun substitut d'ombre interne. `lead-design-mtb` doit ajouter la pastille à la liste
 d'exceptions du §13.*
 
+### 10.4a Amendement — primitive nue, surcharge de contexte scopée
+
+**Ajouté après le gel, sur arbitrage de `/lead-mtb`. Vaut pour les quatre composants restants.**
+
+`white-space: nowrap` **sort** de la règle nue `.mtb-dispo` et devient
+`.mtb-derniere-portee .mtb-dispo { white-space: nowrap }`.
+
+**Le défaut réel, mesuré des deux côtés.** Cette feuille déclarait `.mtb-dispo { white-space: nowrap }`
+**nue** ; `mtb-liste-portees.css` (#13) déclare `.mtb-dispo { white-space: normal }` **nue**. Les deux
+pèsent (0,1,0) : sur une page portant les deux blocs, **le gagnant dépend de l'ordre du registre de
+blocs — indéterminé**. Et les deux mesures sont vraies dans leur propre contexte :
+
+| Contexte | Largeur disponible | `nowrap` |
+|---|---|---|
+| Encart #12, canal plein | **324 px** pour un badge de **238 px** | tient, aucun débordement (mesuré à 360 px, iframe de même origine) |
+| Carte #13, à côté d'une vignette de 144 px | ≈ **156 px** | **déborde**, rompt le 360 px — échec AA bloquant |
+
+> **La distinction, et c'est elle qui sert aux autres composants : scoper la PRIMITIVE est la faute
+> (elle garantit des implémentations divergentes du badge — T9 rejouée) ; scoper une SURCHARGE DE
+> CONTEXTE par-dessus une primitive restée nue est légitime, et c'est la seule façon d'exprimer qu'un
+> contexte diffère.**
+>
+> Le test : la déclaration décrit-elle **ce qu'est le badge** (couleur, forme, pastille, casse,
+> interlettre) ou **la place dont il dispose ici** ? Le premier appartient à la primitive nue et se
+> déplacera sans renommage ; le second appartient au bloc et **ne se déplace pas**.
+
+`.mtb-derniere-portee .mtb-dispo` pèse (0,2,0) et bat la primitive nue **sans dépendre de l'ordre de
+chargement**. Ce n'est pas un retour au scoping refusé par le lot : la primitive reste **nue**, et la
+doctrine « nues partout, jamais scopées » est intacte.
+
+**Conséquence pour T-#12-a, retenue par `/lead-mtb`** : au hissage vers une feuille partagée, la
+primitive prendra **`normal`, jamais `nowrap`** — un repli est toujours préférable à un débordement.
+Amendement du présent §10.4 porté à `lead-design-mtb`.
+
+*Écarts restants entre les deux déclarations de la primitive, laissés en l'état par `/lead-mtb` faute
+de casse mesurable aujourd'hui : `gap` (`--e-2` ici, `--e-1` chez #13) · `padding` composé
+différemment · `font-family` absente chez #13 · `border-radius: inherit` sur `.mtb-photo::after` et
+`.mtb-dispo--passee::before { background-color: transparent }`, qui n'existent que chez #13.*
+
 ### 10.5 Mise en page, photo, lien
 
 - **Une seule colonne, aucune requête média de mise en page.** L'encart est enfant de
