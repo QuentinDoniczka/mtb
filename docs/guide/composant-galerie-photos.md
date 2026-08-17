@@ -197,6 +197,10 @@ enregistrer.
 - Une photo verticale est rognée en haut et en bas dans sa vignette.
 - Dans la fenêtre des photos, la zone de description porte encore le titre « Texte alternatif ». C'est
   bien la bonne zone.
+- **Dans la page en cours de modification, la galerie est plus étroite que sur le site, et montre donc
+  moins de colonnes.** C'est normal : la page en cours de modification s'affiche dans une fenêtre plus
+  étroite que celle du site. Les photos et leur ordre sont les bons. Cliquez sur **Aperçu**, ou ouvrez
+  la page sur le site : c'est le rendu qui compte.
 - Le composant **Galerie photos** ne se propose pas dans une fiche de portée, de chien ou de résultat.
   C'est voulu : ces fiches ont déjà leur champ **Galerie photos**.
 

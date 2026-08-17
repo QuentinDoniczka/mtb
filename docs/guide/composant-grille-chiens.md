@@ -159,6 +159,10 @@ enregistrer.
      l'avertissement affiché après l'enregistrement d'une fiche sans statut vous disait ;
   2. sa fiche n'est **pas publiée** (elle est encore en brouillon) ;
   3. sa fiche est **protégée par un mot de passe** : elle n'apparaît dans aucune grille, et c'est voulu.
+- **Dans la page en cours de modification, la grille est plus étroite que sur le site, et montre donc
+  moins de colonnes.** C'est normal : la page en cours de modification s'affiche dans une fenêtre plus
+  étroite que celle du site. Les photos, les noms et les groupes sont les bons. Cliquez sur **Aperçu**,
+  ou ouvrez la page sur le site : c'est le rendu qui compte.
 - Le composant **Grille de chiens** ne se propose pas dans une fiche de portée, de chien ou de résultat.
   C'est voulu : ces fiches se remplissent, elles ne se composent pas.
 
