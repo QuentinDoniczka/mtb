@@ -192,6 +192,32 @@ add_action( 'wp_enqueue_scripts', 'mtb_feuilles_du_site' );
  * fichiers. `wp_loaded` garantit que tous les blocs, cœur comme extension, sont enregistrés.
  */
 function mtb_feuilles_de_blocs(): void {
+	/*
+	 * Pourquoi cet enregistrement : `mtb-jetons` n'est déclaré que par `mtb_feuilles_du_site()`, sur
+	 * `wp_enqueue_scripts`, qui ne se déclenche jamais en administration. Chaque feuille ci-dessous
+	 * en dépend, et `WP_Dependencies::all_deps()` abandonne l'élément entier — sans erreur ni
+	 * avertissement — dès qu'une dépendance est introuvable : aucune feuille de bloc n'atteignait la
+	 * toile de l'éditeur, pour les dix composants du catalogue.
+	 *
+	 * L'enregistrement est préféré au retrait de `deps`, qui marcherait aujourd'hui mais retirerait
+	 * une garantie d'ordre : la première feuille sœur qui en aurait besoin casserait en silence.
+	 * Contrepartie assumée et documentée : `tokens.css` entre deux fois dans la toile de l'éditeur,
+	 * une fois par `add_editor_style()` et une fois par cette dépendance — le même fichier, octet
+	 * pour octet, donc impossible à faire diverger, et jamais servi au visiteur.
+	 *
+	 * La garde `is_admin()` n'est pas de la coquetterie : `wp_loaded` se déclenche avant
+	 * `wp_enqueue_scripts`, et `wp_enqueue_style()` sur une poignée déjà enregistrée ne met pas sa
+	 * source à jour — une pré-inscription côté site figerait la source et la version servies au
+	 * visiteur.
+	 */
+	if ( is_admin() && ! wp_style_is( 'mtb-jetons', 'registered' ) ) {
+		$jetons = get_theme_file_path( 'assets/css/tokens.css' );
+
+		if ( file_exists( $jetons ) ) {
+			wp_register_style( 'mtb-jetons', get_theme_file_uri( 'assets/css/tokens.css' ), array(), (string) filemtime( $jetons ) );
+		}
+	}
+
 	foreach ( array_keys( WP_Block_Type_Registry::get_instance()->get_all_registered() ) as $nom_de_bloc ) {
 		// Un nom de bloc vaut `espace/nom` ; le contrôle interdit qu'une clé exotique du registre
 		// serve à composer un chemin de fichier.

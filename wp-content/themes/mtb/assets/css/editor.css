@@ -71,3 +71,98 @@ h2 + hr.wp-block-separator {
   background-image: none;
   margin-block: 0;
 }
+
+/* =====================================================================
+ * L'état vide côté éditeur — MASTER §9.1, règle transverse du §9 (D12)
+ *
+ * UNE SEULE APPARENCE POUR LES DIX COMPOSANTS DU CATALOGUE. §9.1 la déclare
+ * « identique pour les dix composants » et la domicilie nommément dans cette
+ * feuille. Six chaînes émettent donc exactement les mêmes trois crochets et
+ * aucune ne redéclare ce cadre dans sa propre feuille : deux sources pour une
+ * seule apparence, c'est la divergence que cette centralisation existe pour
+ * fermer.
+ *
+ * ELLE N'EXISTE QUE DANS L'ÉDITEUR. Côté public, un composant sans contenu
+ * n'est pas rendu du tout (§9) : il n'y a aucun balisage à habiller, donc
+ * aucune règle publique à écrire. C'est ce qui permet à l'éleveuse de voir ce
+ * qui manque sans qu'un visiteur voie une page cassée.
+ *
+ * AUCUN NOM DE BLOC N'EST ÉCRIT ICI, et ce n'est pas une élégance : une
+ * exception chez l'un des dix ferait de cette feuille commune une négociation
+ * par bloc, et les neuf sœurs suivantes la copieraient.
+ *
+ * --- La paire qui manque à MASTER §12.3, recalculée, à faire ratifier -------
+ *
+ * §9.1 demande « le nom du composant en étiquette laiton » et §3.1 écrit que
+ * --laiton ne porte JAMAIS de texte : la seule encre conforme est
+ * --laiton-texte, que §3.1 décrit précisément comme l'encre des « étiquettes en
+ * petites capitales ». Or §12.3 NE TABULE PAS ce couple. Recalcul indépendant
+ * avec la formule du §3 — c_lin = c/12,92 si c ≤ 0,03928, sinon
+ * ((c+0,055)/1,055)^2,4 ; L = 0,2126·R + 0,7152·V + 0,0722·B ;
+ * ratio = (L_clair + 0,05) / (L_sombre + 0,05) :
+ *
+ *   --laiton-texte   #7A5F2C → 0,19462 / 0,11442 / 0,02519 → L = 0,1250
+ *   --calcaire-creux #E7E5DA → 0,79910 / 0,78372 / 0,70108 → L = 0,7810
+ *   ratio = (0,7810 + 0,05) / (0,1250 + 0,05) = 0,83102 / 0,17503 = 4,75:1
+ *
+ * 4,75:1 → AA pour du texte normal. C'EST UN AMENDEMENT À FAIRE RATIFIER PAR
+ * lead-design-mtb, pas une valeur inventée : la formule est celle du §3, le
+ * calcul a été refait ici indépendamment, et il complète une LIGNE MANQUANTE du
+ * §12.3. Les deux autres paires du cadre y sont déjà tabulées, et le même
+ * calcul les reproduit : --texte-doux sur --calcaire-creux = 5,79:1 (AA), et le
+ * contour --laiton sur --calcaire-creux = 3,15:1, « non textuel » — au-dessus
+ * des 3:1 qu'exige une bordure (critère 1.4.11), et le cadre ne porte de toute
+ * façon aucune information par son seul contour : la phrase la porte.
+ *
+ * --- Ce que §9.1 ne dit pas, et qui n'est donc pas écrit --------------------
+ *
+ * Ni famille, ni graisse, ni interlettre, ni --t-xs pour l'étiquette. §4.5 en
+ * donne une recette pour sa ligne « h4 / étiquette » (Public Sans 600, --t-xs,
+ * .16em), mais §9.1 ne s'y réfère pas et chiffre le texte du cadre à --t-sm ;
+ * importer cette recette serait une décision visuelle prise ici. Question
+ * posée à lead-design-mtb, pas comblée en silence.
+ * ================================================================== */
+
+.mtb-etat-vide {
+  /* Contour TIRETÉ : c'est lui qui fait lire « emplacement en attente » plutôt
+     que « surface du site ». 1 px est chiffré par §9.1 lui-même, c'est la seule
+     longueur brute de cette section. */
+  border: 1px dashed var(--laiton);
+  border-radius: var(--r-0);
+  background-color: var(--calcaire-creux);
+  padding: var(--e-6);
+  font-size: var(--t-sm);
+  color: var(--texte-doux);
+  /* §9.1 : « aligné à gauche ». Forme logique, comme base.css:328 et :361 —
+     dans un document français elle EST la gauche, et le cadre ne dépend plus
+     d'un alignement hérité de son entourage. */
+  text-align: start;
+}
+
+.mtb-etat-vide__nom {
+  /* MÉCANIQUE, pas une valeur de design : le crochet est porté par un span,
+     donc en ligne. Sans ceci la phrase ne serait pas une deuxième ligne. */
+  display: block;
+
+  color: var(--laiton-texte);
+
+  /* LES CAPITALES SONT POSÉES ICI, JAMAIS TAPÉES DANS LE JAVASCRIPT, et cela
+     vaut pour les cinq composants sœurs. Le script émet « Bandeau
+     d'ouverture », en casse naturelle. Trois raisons :
+       · une sœur recopie le titre de son bloc sans risque de coquille ;
+       · les accents des capitales françaises (« ENCART DERNIÈRE PORTÉE ») sont
+         produits par le moteur de rendu, pas par la frappe ;
+       · le texte reste lisible par un lecteur d'écran, qui épellerait lettre à
+         lettre des capitales littérales. */
+  text-transform: uppercase;
+}
+
+.mtb-etat-vide__phrase {
+  /* MÉCANIQUE, pas une valeur de design. La toile PRÉFIXE les règles d'élément
+     de base.css (voir l'en-tête de ce fichier) : « p » y pèse (0,1,1) au lieu
+     de (0,0,1) et son margin-block-end de --e-4 (base.css:241) l'emporterait
+     sur une classe seule. Cette feuille étant préfixée elle aussi, la règle
+     pèse (0,2,0) et la remise à zéro tient — sans quoi le rembourrage de --e-6
+     serait déséquilibré, plus large en bas que sur les trois autres côtés. */
+  margin: 0;
+}

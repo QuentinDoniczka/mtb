@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/bandeau-ouverture",
+	"title": "Bandeau d'ouverture",
+	"description": "Une photo en haut d'une page, avec le titre de la page et une phrase de présentation.",
+	"category": "mtb",
+	"icon": "cover-image",
+	"keywords": [ "bandeau", "photo", "titre", "accroche", "ouverture" ],
+	"usesContext": [ "postId", "postType" ],
+	"attributes": {
+		"photo": {
+			"type": "integer",
+			"default": 0
+		},
+		"titre": {
+			"type": "string",
+			"default": ""
+		},
+		"accroche": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"align": false,
+		"alignWide": false,
+		"anchor": false,
+		"customClassName": false,
+		"html": false,
+		"lock": false,
+		"multiple": false,
+		"renaming": false,
+		"reusable": false
+	},
+	"example": {
+		"attributes": {
+			"titre": "Titre de la page",
+			"accroche": "Une phrase de présentation, sous le titre."
+		},
+		"viewportWidth": 800
+	},
+	"render": "file:./render.php",
+	"editorScript": "mtb-bandeau-ouverture-editeur"
+}

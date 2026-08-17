@@ -565,3 +565,213 @@ textarea[aria-invalid="true"] {
   text-transform: uppercase;
   text-decoration: none;
 }
+
+/* =====================================================================
+ * 7. Bouton du cœur — MASTER §8.4, §8.1, §4.5, §12.3, §12.4
+ *    Dette T7 du contrat #2, payée par le contrat #6 §12.
+ *
+ * AJOUT EN FIN DE FICHIER, JAMAIS UNE LIGNE AU-DESSUS : six chaînes partagent
+ * cet arbre de travail sur `main` et ce fichier est le seul qu'elles se
+ * partagent. Toute chaîne qui viendra ajouter ici le fera de la même façon.
+ *
+ * ────────────────────────────────────────────────────────────────────
+ * DETTE T7-BIS, CRÉÉE SCIEMMENT ET À NE PAS DÉCOUVRIR PAR SURPRISE :
+ * les déclarations des règles 1 à 5 ci-dessous DUPLIQUENT celles des lignes
+ * 370-410 (`button`, `input[type=submit]`, `input[type=button]`). Le correctif
+ * propre est d'ajouter les deux sélecteurs doublés aux quatre listes de
+ * sélecteurs existantes — un diff de quatre lignes — ce que la consigne
+ * append-only interdit tant que six chaînes écrivent en parallèle.
+ * RISQUE EN ATTENDANT : une modification du bouton faite d'un seul côté passe
+ * inaperçue. Le bouton du site est donc décrit à DEUX endroits de ce fichier,
+ * et il faut les changer ENSEMBLE. À solder par `refacto-mtb`, hors lot
+ * parallèle.
+ * ────────────────────────────────────────────────────────────────────
+ *
+ * POURQUOI LE SÉLECTEUR EST DOUBLÉ. Le cœur imprime ses styles globaux EN LIGNE
+ * DANS LE `head`, après nos feuilles : l'ordre de source ne peut donc pas
+ * gagner et il faut la spécificité. Chaque classe est écrite deux fois pour
+ * porter le sélecteur à (0,2,0) sans recourir à `!important` — même dispositif
+ * qu'au lien d'évitement ci-dessus.
+ *
+ * CE QUE LE CŒUR IMPOSE, RELEVÉ SUR LE RENDU RÉEL (WordPress 6.9 de la pile,
+ * pas supposé) :
+ *   · `:root :where(.wp-element-button, .wp-block-button__link)` (0,0,1)
+ *     → `background-color:#32373c`, `color:#fff`, `border-width:0`,
+ *       `padding: calc(.667em + 2px) calc(1.333em + 2px)`, `text-decoration:none`
+ *       et, plus grave, `font-family/font-size/font-weight/letter-spacing/
+ *       line-height/text-transform: inherit`. À (0,0,1) contre (0,0,1) au
+ *       `button` de la ligne 370, l'ORDRE tranche — et il tranche pour le cœur.
+ *   · `:where(.wp-block-button__link)` (0,0,0) de la feuille du bloc
+ *     → `border-radius:9999px` (une gélule, quand §13 plafonne le rayon à 2 px)
+ *       et `text-decoration:none`, qui PERD contre le `a` (0,0,1) de la
+ *       ligne 248 : d'où le soulignement laiton constaté sur le bouton du cœur.
+ *   · `.wp-block-button__link` (0,1,0) → `display:inline-block`,
+ *     `text-align:center`.
+ *
+ * `.wp-element-button` EST DANS LA LISTE, et ce n'est pas un ajout gratuit : le
+ * cœur le cible à (0,1,0) et (0,0,1), ce qui bat le `button` (0,0,1) de la
+ * ligne 370. Le bouton du bloc Recherche — donc celui de la page 404 et de la
+ * page de résultats — est AUJOURD'HUI en `#32373c` dans une gélule malgré ce
+ * fichier. Même défaut, même famille, même correctif.
+ *
+ * `min-block-size: 48px`, `inline-flex` et le centrage ne sont pas des valeurs
+ * de design : 48 px est le minimum tactile écrit en pixels par MASTER §8.4 (il
+ * couvre les 44 px du §12.10 avec de la marge), et un `a` ne centre pas son
+ * libellé comme un `button`. Même justification qu'à la ligne 366.
+ * ================================================================== */
+
+/* 1. Apparence unique du bouton — MASTER §8.4 : fond `--sauge`, libellé
+      `--calcaire` 700 majuscules (5,25:1, §12.4), rayon `--r-1`, ≥ 48 px. */
+.wp-block-button__link.wp-block-button__link,
+.wp-element-button.wp-element-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 48px;
+  padding-inline: var(--e-4);
+  padding-block: var(--e-2);
+  border: 0;
+  border-radius: var(--r-1);
+  background-color: var(--sauge);
+  color: var(--calcaire);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  /* Retire le soulignement laiton que la règle `a` de la ligne 248 pose sur un
+     bouton, faute de quoi le libellé serait souligné en majuscules. */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 2. Survol — fond `--pin` (14,23:1, §12.5) + cerne intérieur 1 px `--laiton`.
+      `color` est OBLIGATOIRE ici : `a:hover` (0,1,1), ligne 256, pose `--pin`
+      sur l'encre, soit pin sur pin — un libellé invisible. */
+.wp-block-button__link.wp-block-button__link:hover,
+.wp-element-button.wp-element-button:hover {
+  background-color: var(--pin);
+  color: var(--calcaire);
+  box-shadow: inset 0 0 0 1px var(--laiton);
+}
+
+/* 3. Actif — MASTER §8.4. */
+.wp-block-button__link.wp-block-button__link:active,
+.wp-element-button.wp-element-button:active {
+  transform: translateY(1px);
+}
+
+/* 4. Désactivé — MASTER §8.4, §12.3 : `--texte-doux` sur `--calcaire-creux`
+      mesure 5,79:1, le bouton reste LISIBLE. Un `a` n'a pas d'attribut
+      `disabled` : `aria-disabled` est le seul crochet possible. Le second
+      signal reste le libellé, qui change (« Envoi en cours… »), jamais la
+      couleur seule (§12.9). */
+.wp-block-button__link.wp-block-button__link[aria-disabled="true"],
+.wp-element-button.wp-element-button[aria-disabled="true"] {
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* 5. Focus — anneau du §8.1, PLACÉ EN DERNIER À DESSEIN. Il est à égalité de
+      spécificité (0,2,1) avec le survol et avec l'état désactivé : c'est donc
+      l'ordre de source qui tranche, et il doit trancher POUR LE FOCUS. Survolé
+      ET focalisé, on garde l'anneau complet et on perd le cerne de survol —
+      perte nulle, le survol reste signalé par son fond `--pin`. Focalisé ET
+      désactivé — cas réel, car un élément `aria-disabled` reste focalisable —
+      on garde l'anneau au lieu du `box-shadow: none`. La visibilité du focus
+      est bloquante, le cerne est décoratif. L'`outline` de la ligne 465
+      s'applique de toute façon ; c'est l'anneau clair intérieur qui est en jeu,
+      celui qui garantit ≥ 3,77:1 sur n'importe quel fond (§12.8). */
+.wp-block-button__link.wp-block-button__link:focus-visible,
+.wp-element-button.wp-element-button:focus-visible {
+  box-shadow: 0 0 0 2px var(--calcaire);
+}
+
+/* 6. Variation « Contour » du bloc Bouton, ramenée à l'apparence unique du
+      §8.4 — MASTER n'y définit QU'UN bouton.
+      Sans cela, la variation donne `background-color: initial` +
+      `color: currentColor`, donc avec notre encre un bouton CALCAIRE SUR
+      CALCAIRE, illisible, atteignable en un clic : un échec AA franc, pas une
+      imperfection.
+
+      MESURE, ET ELLE CONTREDIT LE CONTRAT #6 §12 : sur le cœur de cette pile,
+      ces règles sont écrites `:root :where(.wp-block-button.is-style-outline >
+      .wp-block-button__link)`, donc (0,0,1) — la règle 1 les bat DÉJÀ toute
+      seule et ce bloc-ci est inerte aujourd'hui. Il est conservé parce que le
+      contrat l'impose et parce qu'il n'a pas toujours été inerte : sur un cœur
+      qui n'enveloppe pas ces règles dans `:where()`, elles pèsent (0,4,0). D'où
+      la classe répétée TROIS fois, qui porte le sélecteur à (0,5,0) : à (0,4,0)
+      il y aurait égalité, et une égalité se tranche par l'ordre de source —
+      c'est-à-dire en faveur du cœur. Un garde-fou qui perd les égalités ne
+      garde rien.
+
+      Contrepartie honnête : la variation devient un réglage qui ne change rien,
+      donc trompeur dans l'éditeur. Un bouton trompeur mais lisible vaut mieux
+      qu'un bouton honnête et invisible. Le vrai correctif est de retirer la
+      variation par `block_type_metadata` dans functions.php — hors empreinte,
+      dette T14. */
+.wp-block-button.is-style-outline > .wp-block-button__link.wp-block-button__link.wp-block-button__link,
+.wp-block-button .wp-block-button__link.is-style-outline.is-style-outline.is-style-outline {
+  padding-inline: var(--e-4);
+  padding-block: var(--e-2);
+  border: 0;
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+/* =====================================================================
+ * 8. La piste large employée en entier — MASTER §7.1
+ *    Amendement 6 du contrat #6. Complète la règle de la ligne 522.
+ *
+ * AJOUT EN FIN DE FICHIER, JAMAIS UNE LIGNE AU-DESSUS, pour la même raison
+ * que la section 7 : six chaînes partagent cet arbre de travail sur `main` et
+ * ce fichier est le seul qu'elles se partagent.
+ *
+ * CE QUE CETTE DÉCLARATION RÉPARE, MESURÉ AU NAVIGATEUR ET NON DÉDUIT. La
+ * ligne 531 pose `margin-inline: auto` sur `.mtb-canal > .alignwide` pour le
+ * centrer dans la piste `large`, puisqu'il y est plafonné à --l-large. Or sur
+ * un ÉLÉMENT DE GRILLE une marge automatique annule l'étirement : la piste
+ * cesse d'imposer sa largeur, l'élément est dimensionné en `fit-content` sur
+ * son contenu, et les marges automatiques absorbent tout le reste de la piste.
+ * C'est exactement le mécanisme que le commentaire de la ligne 502 décrit déjà
+ * pour les autres enfants du canal — .alignwide en était exclue, donc jamais
+ * réparée. Constat sur la pile, un groupe `alignwide` à texte court : 170,7 px
+ * de large à 1280 px de fenêtre, pour une piste de 1184 px et un plafond de
+ * 1088 px. `grid-column` et `max-inline-size` étaient justes ; seule la
+ * largeur employée était fausse.
+ *
+ * `100 %` est une MÉCANIQUE, pas une valeur de design : c'est « toute la piste
+ * que la grille du §7.1 m'a donnée », que le plafond --l-large de la ligne 530
+ * ramène ensuite à sa borne. Le centrage de la ligne 531 est conservé — il
+ * redevient même effectif, puisqu'un élément plafonné et non plus rétréci a
+ * enfin du mou à répartir de part et d'autre. C'est pour cela que
+ * `inline-size: 100%` est retenu plutôt que `margin-inline: 0`, qui rendrait
+ * la même largeur mais collée au bord de la piste, contre l'intention que la
+ * ligne 531 écrit noir sur blanc.
+ *
+ * POURQUOI CETTE FORME TIENT SANS SÉLECTEUR DOUBLÉ. Ici on ne combat pas le
+ * cœur mais une déclaration à nous, dans notre propre feuille : sélecteur
+ * identique et donc spécificité identique à la ligne 522, si bien que c'est
+ * l'ORDRE DE SOURCE qui tranche — et il tranche pour la déclaration appendue.
+ * Doubler la classe n'apporterait rien et masquerait ce fait.
+ *
+ * ────────────────────────────────────────────────────────────────────
+ * DETTE T18, CRÉÉE SCIEMMENT ET À NE PAS DÉCOUVRIR PAR SURPRISE, exactement
+ * de la même famille que T7-bis ci-dessus : cette déclaration vit LOIN de la
+ * règle qu'elle complète (ligne 522), et rien à la ligne 522 ne signale
+ * qu'elle est complétée deux cents lignes plus bas. Le correctif propre est
+ * d'ajouter `inline-size: 100%` dans le bloc de la ligne 522 — un diff d'une
+ * ligne — ce que la consigne append-only interdit tant que six chaînes
+ * écrivent en parallèle dans ce fichier.
+ * RISQUE EN ATTENDANT : quelqu'un qui relit la ligne 522 pour comprendre le
+ * canal large y voit une règle incomplète ; quelqu'un qui la modifie peut
+ * laisser cette déclaration orpheline, ou la contredire, sans qu'aucun outil
+ * ne le signale. Le canal large porte la grille de chiens, la liste de
+ * portées et les tableaux de résultats (§7.1) : les deux endroits se lisent
+ * ENSEMBLE. À solder par `refacto-mtb`, hors lot parallèle.
+ * ────────────────────────────────────────────────────────────────────
+ * ================================================================== */
+.mtb-canal > .alignwide { inline-size: 100%; }

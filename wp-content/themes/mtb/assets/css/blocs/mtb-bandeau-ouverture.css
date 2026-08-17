@@ -1,0 +1,480 @@
+/*
+ * MTB — Bandeau d'ouverture
+ * Habillage du bloc `mtb/bandeau-ouverture` (extension mtb-core). Le balisage
+ * est GELÉ par docs/contracts/issue-6.md §5 : cette feuille est écrite contre
+ * lui, crochet par crochet, et ne cible aucune classe qu'il n'émet pas. Si le
+ * rendu réel diffère du §5, c'est une rupture de contrat à signaler — jamais un
+ * sélecteur à réécrire ici.
+ *
+ * PREMIÈRE FEUILLE DE BLOC DU CATALOGUE. Neuf composants sœurs copieront ces
+ * conventions ; elles sont donc écrites, pas seulement suivies :
+ *
+ *   1. UNE FEUILLE PAR BLOC, nommée `[espace]-[nom].css` — ici
+ *      `mtb-bandeau-ouverture.css` pour `mtb/bandeau-ouverture`. Le nom est
+ *      MÉCANIQUE : `mtb_feuilles_de_blocs()` (themes/mtb/functions.php:194-224)
+ *      parcourt le registre des blocs sur `wp_loaded` et sert
+ *      `assets/css/blocs/[espace]-[nom].css` s'il existe, poignée
+ *      `mtb-bloc-[espace]-[nom]`, dépendance `mtb-jetons`. RIEN À DÉCLARER
+ *      nulle part — et un fichier mal nommé n'est JAMAIS servi, sans erreur,
+ *      sans avertissement, sur un site qui répond 200.
+ *   2. JETONS SEULS. Aucune valeur brute hors la liste close ci-dessous, sur le
+ *      modèle de l'en-tête de base.css. Un besoin de couleur, de taille ou
+ *      d'espacement que MASTER ne chiffre pas est une question bloquante pour
+ *      `lead-design-mtb`, jamais une valeur choisie ici.
+ *   3. CROCHETS `mtb-[bloc]__[element]` et `mtb-[bloc]--[etat]`, en français,
+ *      sans accent. Un modificateur ne s'émet QUE si une règle le cible : une
+ *      classe morte est un nom que l'une des neuf sœurs orthographiera mal.
+ *   4. ON STYLISE LA CLASSE, JAMAIS LA BALISE, quand l'extension peut changer
+ *      de balise à balisage égal (voir le titre, §5 du fichier).
+ *   5. AUCUNE règle hors de cette feuille, aucun `!important`, aucun `@import`,
+ *      aucune origine tierce, aucune image, aucun octet de JavaScript.
+ *
+ * CETTE FEUILLE N'ATTEINT PAS L'IFRAME DE L'ÉDITEUR — dette T11 du contrat §16,
+ * commune aux dix composants. CONSTATÉ, pas supposé, et la cause n'est pas celle
+ * qu'on suppose : `_wp_get_iframed_editor_assets()` déclenche bien
+ * `enqueue_block_assets` et la feuille est mise en file, mais elle déclare
+ * `deps: mtb-jetons` et `mtb-jetons` n'est enregistré que sur
+ * `wp_enqueue_scripts`, qui ne se déclenche jamais en administration :
+ * `WP_Styles::do_items()` ne peut pas résoudre la dépendance et ABANDONNE
+ * L'ÉLÉMENT EN SILENCE. La toile ne reçoit donc que ce que déclare
+ * `add_editor_style()` (functions.php:56) — tokens.css, base.css, editor.css.
+ * Dans l'éditeur, l'aperçu est donc structurellement juste et visuellement faux :
+ * lisible et modifiable, mais pas ce que verra le visiteur. Correctif d'UNE
+ * LIGNE — enregistrer `mtb-jetons` aussi en administration — dans functions.php,
+ * hors empreinte. Ne pas partir sur un reversement dans `add_editor_style()`.
+ *
+ * LARGEUR : UNE SEULE RÈGLE, celle de la section 0 — contrat, amendement 3, qui
+ * REMPLACE le §7 (« refus motivé, repli acté »). Le §7 constatait que
+ * `core/post-content` émet son propre conteneur, si bien que tout bloc inséré
+ * était PETIT-FILS de `.mtb-canal` alors que base.css ne place que les enfants
+ * directs : le bandeau rendait à la largeur du canal texte, et `alignwide` /
+ * `alignfull` n'y changeaient rien. Le gabarit `singular.html` pose désormais la
+ * grille sur l'enveloppe elle-même, les blocs insérés redeviennent enfants
+ * directs d'un `.mtb-canal`, et la piste `pleine` de base.css:534 redevient
+ * atteignable. Ce que la largeur N'EMPLOIE TOUJOURS PAS, et c'est la moitié de
+ * sa valeur : aucun `100vw` ni aucune unité de fenêtre, aucune règle
+ * `overflow-x` globale (la chaîne précédente a refusé ce troc à raison : il met
+ * en jeu la contrainte AA bloquante des 360 px), aucune largeur fixe, aucune
+ * requête média nouvelle, aucun `max-inline-size`.
+ *
+ * VALEURS BRUTES EMPLOYÉES — liste CLOSE, toutes RECOPIÉES de MASTER, aucune
+ * inventée, aucune ne dispose d'un jeton (en créer un serait l'invention que le
+ * contrat interdit) :
+ *
+ *   1. `32rem`, plafond de hauteur de la photo — MASTER §6.5, mot pour mot
+ *      (« `21/9`, plafonné à `max-block-size: 32rem` »). Porté par la PHOTO et
+ *      non par le bandeau : une accroche longue ne peut donc jamais être
+ *      rognée.
+ *   2. `50% 38%`, point d'intérêt par défaut — MASTER §6.2, avec sa
+ *      justification chiffrée : sur une photo de chien en pied, la tête est
+ *      au-dessus du centre géométrique. La forme `var(--point-interet, …)` est
+ *      celle que §6.2 écrit littéralement ; ce bloc n'offre pas le réglage de
+ *      cadrage (trois réglages seulement, contrat §3), donc rien ne définit
+ *      `--point-interet` et le repli EST le comportement. Le jour où le
+ *      cadrage arrive (dette T17), il arrive sur `__photo` et cette ligne ne
+ *      change pas.
+ *   3. `300 %`, `200 %` et `150 %`, les trois tailles de fond du voile.
+ *      DÉRIVÉES du palier 34 % de `--voile-photo` lui-même, pas choisies :
+ *        · le bloc de texte porte le voile en `background-size: 100% 300%`
+ *          ancré en bas : il n'expose donc que le premier tiers du dégradé,
+ *          0 % → 33,3 %, et 33,3 % ≤ 34 %, donc l'opacité y reste partout
+ *          ≥ 0,72 — 0,86 en bas, 0,7227 en haut. Le seuil de MASTER §6.4
+ *          devient STRUCTUREL : il ne dépend plus de la hauteur du bloc de
+ *          texte, donc ni de la longueur de l'accroche, ni du zoom, ni de la
+ *          retenue de l'éleveuse.
+ *        · `::before` mesure `200 %` de cette hauteur (2H) et porte le MÊME
+ *          jeton en `100% 150%` : 1,5 × 2H = 3H, exactement la hauteur de
+ *          dégradé du bloc de texte, ancrée en haut. Il expose donc
+ *          33,3 % → 100 %, soit 0,7227 → 0,06. Les deux morceaux se raccordent
+ *          EXACTEMENT à 0,7227 : le rendu est le dégradé du §6.4 à
+ *          l'identique, de hauteur 3H, dont le palier tombe pile sur le bord
+ *          haut du texte.
+ *        · sans ce second morceau, le seul bloc de texte dessinerait une ARÊTE
+ *          FRANCHE à 0,72 en travers de la photo — une barre sombre visible sur
+ *          une photo claire, qu'aucune lecture du §6.4 n'autorise. L'arête ne
+ *          disparaît pas, elle passe d'un saut de 72 % à un saut de 6 %.
+ *        · `3` est la seule valeur défendable : en dessous, l'opacité au bord
+ *          haut du texte tombe sous 0,72 et l'AA casse ; au-dessus, on
+ *          assombrit la photo plus que MASTER ne le demande.
+ *   4. Les graisses, interlignes, interlettres et mesures du tableau de MASTER
+ *      §4.5, colonne par colonne — `600` / `1.02` / `18ch` pour le « h1 de
+ *      bandeau », `-.015em` recopié de la ligne `h1` (§4.5 est muet sur
+ *      l'interlettre du bandeau et un `p` vaudrait `normal` : la recopie est
+ *      NÉCESSAIRE à l'identité `h1`/`p`), `400` / `1.45` pour l'accroche,
+ *      `24ch` de mesure d'accroche (§6.5). Même exception que le point 4 de
+ *      l'en-tête de base.css.
+ *
+ * Ne comptent pas comme valeurs brutes : `0`, `100 %` et les mots-clés CSS
+ * (`left bottom`, `end`, `cover`…), qui ne portent aucune décision de design.
+ *
+ * UNE SÉLECTION, PAS UNE VALEUR NEUVE : l'écart titre → accroche. MASTER ne le
+ * chiffre nulle part ; `--e-4` est CHOISI dans l'échelle existante du §5.1
+ * (« espace après un paragraphe »). À ratifier par `lead-design-mtb`, comme
+ * l'amendement 5 du contrat #2 a ratifié les marges de `h1`.
+ *
+ * DEUX MÉCANIQUES AJOUTÉES APRÈS MESURE, hors de la spécification initiale et
+ * signalées comme telles : `min-inline-size: 0` sur les enfants de la grille et
+ * `overflow-wrap: break-word` sur le titre et l'accroche. Ni l'une ni l'autre
+ * n'est une valeur de design : la première est la mécanique de base.css:519, la
+ * seconde est la règle de coupe écrite au §4.5. Sans elles, à 360 px avec la
+ * racine forcée à 32px (zoom du texte seul à 200 %), le titre élargissait la
+ * piste de grille au-delà de la bande et se faisait rogner par son
+ * `overflow: clip` — DU TEXTE PERDU EN SILENCE, donc un échec AA. Constaté au
+ * navigateur, pas déduit. Justification détaillée à chaque endroit.
+ *
+ * ABSENCES DÉLIBÉRÉES — une absence écrite est une décision, une absence muette
+ * est un oubli :
+ *
+ *   · AUCUNE requête média, AUCUN point de rupture. Le ratio du bandeau change
+ *     deux fois (§6.5) et ces deux requêtes vivent déjà dans tokens.css, sur le
+ *     jeton `--r-bandeau`. En écrire ici — même sous forme de requête de
+ *     conteneur — inscrirait `16/9` et `21/9` à côté de tokens.css : deux
+ *     vérités pour un jeton, piège garanti pour les neuf composants suivants.
+ *   · AUCUNE hauteur fixe, AUCUNE taille en `vw` seul, AUCUNE largeur fixe
+ *     (§7.7, §7.8, §13). La hauteur de la bande est `max(ratio, contenu)` par
+ *     construction de la grille : aucune hauteur ne peut rogner du texte. Le
+ *     rognage HORIZONTAL, lui, était possible — voir les deux mécaniques
+ *     ajoutées ci-dessus, qui le ferment.
+ *   · AUCUN CHEVRON OUVRANT dans ces commentaires — pas une balise, pas même un
+ *     signe « inférieur à » : on écrit `h1`, jamais h-un-entre-chevrons, et
+ *     « Safari 15 et antérieurs » plutôt que le signe. La règle est ainsi
+ *     vérifiable d'une seule recherche, ce qui est tout son intérêt pour les
+ *     neuf feuilles sœurs. Ce n'est pas une coquetterie. `functions.php`
+ *     fournit `path`, donc le cœur PEUT écrire cette feuille EN LIGNE dans le
+ *     HTML — poignée `…-inline-css`, constaté sur une version plus courte de ce
+ *     fichier. Il ne le fait que tant que le total des feuilles à `path` reste
+ *     sous `styles_inline_size_limit` (20 000 octets par défaut) ; au-delà elle
+ *     repart en `link`. La règle vaut donc QUELLE QUE SOIT la taille du
+ *     fichier, puisque celle-ci décide seule du mode de livraison : dès que la
+ *     feuille est en ligne, un chevron de commentaire se retrouve dans le
+ *     document, et la recette du contrat §17 — « compter les occurrences de h1
+ *     ouvrant dans la page, attendu 1 » — rapporte alors 5 sur une page
+ *     parfaitement conforme. Les neuf sœurs héritent de la règle.
+ *   · AUCUNE règle de lien. `--laiton-clair` sur le composé du voile mesure
+ *     4,09:1 — ÉCHEC AA pour du texte normal — et MASTER ne définit aucune
+ *     encre de lien pour un fond « voile sur photo ». Le contrat interdit donc
+ *     tout format dans ces deux champs (§3, arbitrage 4). Écrire une règle de
+ *     lien ici serait livrer l'échec proprement habillé.
+ *   · AUCUN `filter` sur la photo (§6.6) : un filtre falsifie la robe, qui est
+ *     une donnée d'élevage.
+ *   · AUCUN `z-index`, AUCUN `order`, AUCUN `flex-direction: reverse` : l'ordre
+ *     du balisage — photo PUIS texte — suffit à la superposition (contrat §5).
+ *   · AUCUNE transition, AUCUNE animation, donc AUCUN bloc
+ *     `prefers-reduced-motion` : rien ne bouge dans ce composant, et une
+ *     requête qui ne désactive rien serait du code mort.
+ *   · AUCUNE règle de focus. Rien n'est focalisable dans le bandeau — ni lien,
+ *     ni bouton, ni image cliquable. L'anneau du §8.1 vit dans base.css, il
+ *     s'applique déjà à tout, y compris posé sur une photographie (≥ 3,77:1,
+ *     §12.8), et cette feuille n'écrit aucun `outline: none`.
+ *   · AUCUNE règle `@media print`. Le « §9.6 » auquel MASTER renvoie n'existe
+ *     pas dans le document — lacune déjà consignée par le contrat #2,
+ *     amendement 5 — et une feuille d'impression doit être GLOBALE, pas dix
+ *     fragments recopiés dans dix feuilles de blocs.
+ *   · AUCUNE apparence d'état vide. Côté public, un bandeau sans photo, sans
+ *     titre et sans accroche ne rend RIEN (contrat §8, règle transverse du
+ *     §9) : il n'y a pas de balisage à habiller. Côté éditeur, l'état vide est
+ *     un balisage écrit à la main portant les trois crochets gelés au niveau du
+ *     lot — `mtb-etat-vide`, `__nom`, `__phrase` — et son apparence, IDENTIQUE
+ *     POUR LES DIX COMPOSANTS, vit dans `editor.css` (§9.1, amendement 1 du
+ *     contrat). Ni cette feuille ni ses neuf sœurs ne la redéclarent.
+ *   · AUCUNE dépendance à `mtb-photo`, que l'extension émet pourtant sur
+ *     `__photo` (contrat §9, arbitrage 2). Aucun `.mtb-photo` n'existe dans le
+ *     thème : le traitement photo partagé n'a pas encore de domicile. `__photo`
+ *     et `__image` sont donc habillés nommément, et la classe générique reste le
+ *     point d'accroche gratuit du jour où ce domicile existera.
+ *   · AUCUNE règle ciblant `--sans-texte`, `--avec-photo`, `--sans-accroche`,
+ *     `wp-block-mtb-bandeau-ouverture`, `attachment-full` ou `size-full` :
+ *     l'extension n'émet pas les trois premières (arbitrage 1) et les trois
+ *     dernières sont des classes du cœur, pas notre interface.
+ */
+
+/* =====================================================================
+ * 0. La pleine largeur — MASTER §6.5, §7.1 ; contrat, amendement 3
+ *
+ * §6.5 ouvre par « pleine largeur de la fenêtre » : le bandeau est l'un des
+ * trois seuls habitants du canal `pleine` (§7.1). La règle est PORTÉE PAR LE
+ * THÈME, et c'est une frontière, pas un choix d'implémentation : l'extension
+ * n'émet JAMAIS `alignfull`, `alignwide` ni aucune classe de mise en page
+ * (contrat §5, §13), donc il n'y a aucune classe du cœur à attendre — c'est au
+ * thème de placer le bloc dans sa piste, sous son propre nom.
+ *
+ * CONDITIONNÉE À `.mtb-canal >` : hors d'une grille de canal — dans une colonne,
+ * un groupe, ou n'importe quel conteneur qui n'est pas la grille du §7.1 — les
+ * noms de lignes `pleine-debut` / `pleine-fin` n'existent pas, et la règle ne
+ * doit rien faire plutôt que de tomber sur une grille étrangère. C'est aussi ce
+ * qui la rend inerte le jour où un gabarit ne poserait pas le canal.
+ *
+ * (0,2,0) contre (0,1,0) à `.mtb-canal > *` (base.css:515) : la piste est
+ * acquise par spécificité, jamais par l'ordre des feuilles.
+ * ================================================================== */
+
+.mtb-canal > .mtb-bandeau-ouverture {
+  grid-column: pleine-debut / pleine-fin;
+}
+
+/* =====================================================================
+ * 1. La bande — MASTER §6.5, §2.1, §5.1
+ * ================================================================== */
+
+.mtb-bandeau-ouverture {
+  /* Une grille à cellule unique empile la photo et le texte SANS aucune
+     hauteur déclarée : la hauteur de la bande vaut `max(ratio, contenu)` par
+     construction, donc un titre long ou un zoom à 200 % l'agrandit au lieu de
+     rogner quoi que ce soit (§7.8). */
+  display: grid;
+  grid-template-columns: 1fr;
+
+  /* Zéro au-dessus : le bandeau OUVRE la page et doit affleurer l'en-tête.
+     `--e-9` dessous, valeur que §5.1 réserve à « avant/après un bandeau
+     photo » ; elle fusionne avec la marge haute du bloc suivant au lieu de s'y
+     ajouter. */
+  margin-block: 0 var(--e-9);
+
+  /* Fond légitime du §3.2, qui sert DEUX états d'un seul aplat : la bande sans
+     photo, et le pied qui apparaît quand le texte dépasse la hauteur du ratio.
+     Jamais un vide calcaire derrière du texte clair. */
+  background-color: var(--pin);
+
+  /* Filet double en bord bas — 7ᵉ des huit emplacements de la liste close du
+     §2.1. UN SEUL par bloc visuel : c'est pour cela que le filet du `h1` est
+     neutralisé plus bas. Le `padding` réserve les 6 px, donc la photo ne peut
+     pas les recouvrir. */
+  padding-block-end: var(--filet-double-h);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% var(--filet-double-h);
+
+  /* Borne le dégradé haut du voile, qui peindrait sinon par-dessus l'en-tête
+     quand le bloc de texte est haut. `clip` ne crée AUCUN conteneur de
+     défilement ; la déclaration `hidden` qui précède couvre Safari 15 et
+     antérieurs, et eux seuls. Ce n'est pas une entorse au §7.8 : l'interdit y
+     vise les conteneurs de texte à HAUTEUR CONTRAINTE, et cette bande n'a ni
+     `block-size` ni `max-block-size` — sa hauteur est entièrement dictée par
+     son contenu, donc aucun texte ne peut être rogné. */
+  overflow: hidden;
+  overflow: clip;
+}
+
+/* Photo et texte occupent la même cellule : c'est toute la superposition. */
+.mtb-bandeau-ouverture > * {
+  grid-area: 1 / 1;
+  /* Un élément de grille vaut `min-inline-size: auto` par défaut : sa taille
+     minimale de contenu l'empêche de rétrécir, si bien qu'un mot très long
+     élargit la piste AU-DELÀ de la bande, qui le rogne alors par son
+     `overflow: clip`. MESURÉ, pas supposé : à 360 px avec la racine forcée à
+     32px (zoom du texte seul à 200 %), le titre à 88 px poussait ses frères à
+     534 px dans une bande de 281 px — soit du texte perdu en silence. Même
+     mécanique et même justification qu'à base.css:519 (§7.7). */
+  min-inline-size: 0;
+}
+
+/* =====================================================================
+ * 2. Le cadre de la photo — MASTER §6.5, §6.6
+ * ================================================================== */
+
+.mtb-bandeau-ouverture__photo {
+  /* Le ratio commande la hauteur. Un étirement la rendrait DÉFINIE et
+     annulerait `aspect-ratio` : `start` rend le résultat déterministe sur tous
+     les moteurs plutôt que de parier sur la sémantique de l'étirement. */
+  align-self: start;
+  aspect-ratio: var(--r-bandeau);
+  /* §6.5 : plafond porté par la photo, jamais par la bande. */
+  max-block-size: 32rem;
+
+  /* §6.6 : fond de l'emplacement pour un PNG détouré (jamais de damier, jamais
+     de trou) ET pour une photo qui ne charge pas (l'emplacement garde son
+     ratio, aucun pictogramme cassé). */
+  background-color: var(--calcaire-creux);
+  /* §6.6 : cerne intérieur sur TOUTE photo, sans exception — le bord de
+     l'image existe même sur un ciel blanc. Ce n'est pas une ombre portée, que
+     le §13 interdit. */
+  box-shadow: var(--cerne-photo);
+}
+
+.mtb-bandeau-ouverture__image {
+  /* Supprime l'espace de ligne de base sous l'image. */
+  display: block;
+  /* (0,1,0) contre (0,0,1) à `img` : bat le `block-size: auto` de
+     base.css:131, sans quoi la photo imposerait sa hauteur au cadre. */
+  inline-size: 100%;
+  block-size: 100%;
+  /* §6.2, §6.3 : LE CADRE GAGNE TOUJOURS. Ni bande noire, ni déformation, ni
+     hauteur variable selon la source. */
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+
+  /* §6.6 : habille le texte alternatif que le navigateur imprime lui-même
+     quand le fichier ne charge pas. Aucun pictogramme de remplacement. */
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+/* =====================================================================
+ * 3. Le bloc de texte et le voile — MASTER §6.4, §6.5
+ * La pièce centrale : c'est le bloc de texte qui porte le voile, pas la photo.
+ * ================================================================== */
+
+.mtb-bandeau-ouverture__texte {
+  /* §6.4, §6.5 : le texte vit dans le tiers bas de la bande. */
+  align-self: end;
+  /* Bloc contenant du dégradé haut — c'est ce qui rend son `block-size: 200%`
+     calculable. */
+  position: relative;
+
+  /* Le texte ne touche jamais le bord de la bande. `--marge-page` plutôt qu'un
+     `--e-*` : c'est la valeur qui rendra le bloc juste SANS modification le
+     jour où le bandeau passera pleine fenêtre, où elle sera exactement la
+     marge de page. */
+  padding-inline: var(--marge-page);
+  /* §6.4, mot pour mot. */
+  padding-block-end: var(--e-6);
+
+  /* Voile : voir l'arithmétique en tête de fichier. Le bloc n'expose que le
+     premier tiers du dégradé, 0,86 → 0,7227, quelle que soit sa hauteur. */
+  background-image: var(--voile-photo);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 300%;
+}
+
+/* Rétablit la portion 33,3 % → 100 % du MÊME dégradé au-dessus du texte, soit
+   0,7227 → 0,06 : l'arête franche tombe d'un saut de 72 % à un saut de 6 %.
+   Aucun `z-index` n'est nécessaire — le pseudo-élément est entièrement AU-DESSUS
+   du bloc de texte, il ne recouvre aucun glyphe. */
+.mtb-bandeau-ouverture__texte::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: 200%;
+  background-image: var(--voile-photo);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% 150%;
+  /* Purement décoratif : il ne doit intercepter aucun clic sur ce qui est
+     au-dessus de lui. */
+  pointer-events: none;
+}
+
+/* =====================================================================
+ * 4. Le titre — MASTER §4.5 (« h1 de bandeau »), §6.5, §2.1
+ *
+ * ICI SE JOUE L'INVISIBILITÉ DU MÉCANISME `h1` / `p`. L'extension rend le
+ * titre en `h1` quand le bandeau est le premier bloc de la page, en `p`
+ * sinon, AVEC LA MÊME CLASSE (contrat §5). Le sélecteur est donc UNE CLASSE
+ * SEULE — jamais `h1.…`, jamais `p.…`, jamais `h1, p` — et toute propriété que
+ * base.css pose sur `h1` OU sur `p` est redéclarée. Un seul écart entre les
+ * deux variantes rendrait le mécanisme visible, et c'est un critère de recette,
+ * pas une intention.
+ * ================================================================== */
+
+.mtb-bandeau-ouverture__titre {
+  /* Neutralise `h1 { margin-block: --e-7 --e-5 }` ET `p { margin-block-end:
+     --e-4 }` : sans cela l'écart titre/accroche changerait selon la balise. */
+  margin: 0;
+  /* Neutralise la réserve du filet de `h1`, `padding-block-end: calc(--e-4 +
+     6px)`, qui n'a pas lieu d'être ici. */
+  padding: 0;
+
+  /* §2.1 : JAMAIS DEUX FILETS DOUBLES DANS LE MÊME BLOC VISUEL — la bande
+     porte déjà le sien en bord bas. La forme raccourcie est choisie
+     délibérément : `background-image: none` seul laisserait
+     `background-repeat`, `-position` et `-size` de la règle `h1` en place, donc
+     TROIS propriétés calculées différentes entre `h1` et `p`. Le
+     raccourci les remet toutes à leur valeur initiale, et le diff de
+     `getComputedStyle()` exigé par le contrat §5 devient exactement vide. */
+  background: none;
+
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--t-3xl);
+  line-height: 1.02;
+  /* Recopié de la ligne `h1` du §4.5, qui est muet pour le bandeau : sans
+     cette ligne un `p` vaudrait `normal` et les deux variantes divergeraient.
+     À ratifier. */
+  letter-spacing: -.015em;
+  /* Un identifiant long (« Berger Hollandais du Mont Brabant ») se répartit sur
+     ses lignes au lieu de laisser un mot seul (§4.5, §9.4). */
+  text-wrap: balance;
+  /* Règle de coupe du §4.5, appliquée à un titre qui porte justement un nom
+     complet avec affixe : « un affixe long à 360 px ne doit jamais provoquer de
+     défilement horizontal ». `hyphens: auto` (hérité de `body`) ne suffit pas —
+     il dépend d'un dictionnaire de coupure que le navigateur n'a pas toujours.
+     MESURÉ : sans cette ligne, à 360 px avec la racine à 32px, un mot du titre
+     dépassait la bande et se faisait rogner. */
+  overflow-wrap: break-word;
+  /* §6.5 : 5,71:1 au pire point du voile, 14,23:1 sur `--pin` plein. */
+  color: var(--calcaire);
+  /* §4.5, mesure du « h1 de bandeau ». */
+  max-inline-size: 18ch;
+}
+
+/* Écart titre → accroche. MASTER ne le chiffre pas : `--e-4` est une SÉLECTION
+   dans l'échelle du §5.1, pas une valeur neuve. Porté par le frère adjacent
+   plutôt que par une marge du titre, pour qu'un bandeau sans accroche n'ait
+   aucun espace résiduel sous son titre. */
+.mtb-bandeau-ouverture__titre + .mtb-bandeau-ouverture__accroche {
+  margin-block-start: var(--e-4);
+}
+
+/* =====================================================================
+ * 5. L'accroche — MASTER §4.5 (« Chapô / accroche »), §6.5
+ * ================================================================== */
+
+.mtb-bandeau-ouverture__accroche {
+  /* Neutralise `p { margin-block-end: --e-4 }` : l'écart au-dessus est porté
+     par la règle du frère adjacent, jamais deux fois. */
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-md);
+  line-height: 1.45;
+  /* §4.5 dit `--texte` pour un chapô sur fond clair ; §6.5 le remplace par
+     `--calcaire` dans le bandeau, où le fond est le voile ou `--pin`. */
+  color: var(--calcaire);
+  /* §6.5, mot pour mot : « largeur maximale 24ch ». */
+  max-inline-size: 24ch;
+  /* Même règle de coupe du §4.5 que sur le titre : une accroche peut contenir
+     un nom complet avec affixe. */
+  overflow-wrap: break-word;
+}
+
+/* =====================================================================
+ * 6. La bande sans photo — MASTER §6.5, §12.5
+ *
+ * C'EST L'ÉTAT QUI PART AUJOURD'HUI : `docs/migration/source/` est vide, aucune
+ * photo n'est importée. §6.5 est littéral — sans image le bandeau NE DISPARAÎT
+ * PAS et NE GARDE PAS SON RATIO : il devient une bande de texte sur fond
+ * `--pin`, `padding-block: --e-8`, mêmes styles de titre, 14,23:1.
+ *
+ * Ce n'est pas une dégradation polie, c'est le même dispositif débarrassé de la
+ * photo : l'aplat `--pin` sur toute la largeur du canal, 72 px d'air en haut et
+ * en bas, un titre Newsreader 600 de 44 à 80 px sur 18 signes de mesure, une
+ * accroche Newsreader 400 sur 24 signes, et le filet double gravé en bord bas.
+ * Aucun ornement ne lui manque, parce qu'aucun ne lui est disponible : le filet
+ * est déjà employé une fois et le §2.1 en interdit un second. Sa présence vient
+ * du rapport 44/80 px contre 17 px de prose et du seul aplat sombre de la page
+ * hormis le pied — exactement la « vraie page de titre » que revendique le
+ * §11.1.
+ *
+ * Le modificateur décrit LA SORTIE RENDUE, jamais le champ enregistré : champ
+ * vide, pièce jointe supprimée, fichier non-image, tous produisent cette même
+ * bande. Une pièce jointe supprimée ne laisse jamais un cadre vide.
+ *
+ * Placé en fin de fichier : l'ordre de source suffirait, et la spécificité
+ * (0,2,0) contre (0,1,0) rend la neutralisation stable de toute façon.
+ * ================================================================== */
+
+.mtb-bandeau-ouverture--sans-photo .mtb-bandeau-ouverture__texte {
+  /* Il n'y a plus rien à voiler, et sur `--pin` plein le voile serait inerte. */
+  background-image: none;
+  /* §6.5, mot pour mot : `--e-8` DES DEUX CÔTÉS. Écrase le
+     `padding-block-end: --e-6` de l'état photo. */
+  padding-block: var(--e-8);
+}
+
+.mtb-bandeau-ouverture--sans-photo .mtb-bandeau-ouverture__texte::before {
+  /* Supprime le dégradé haut, qui n'aurait rien à raccorder. */
+  content: none;
+}
