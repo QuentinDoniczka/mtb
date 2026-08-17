@@ -124,8 +124,8 @@ du tableau de la page Travail et du palmarès du chien. Il reste récupérable d
 2. En haut de la liste, cliquez sur **Corbeille**.
 3. Sur la ligne voulue, cliquez sur **Rétablir**. Le lien apparaît quand la souris passe sur la ligne.
    Le bandeau **Résultat de travail sorti de la corbeille.** s'affiche.
-4. **Le résultat revient en Brouillon, c'est-à-dire pas encore publié.** Il est de retour dans la
-   liste, mais il ne s'affiche toujours nulle part sur le site.
+4. **Le résultat revient en Brouillon, c'est-à-dire hors du site.** Vous le voyez de nouveau dans la
+   liste, mais les visiteurs, eux, ne le voient pas.
 5. Ouvrez-le et cliquez sur **Publier**. Il réapparaît alors dans le tableau de la page Travail et
    dans le palmarès du chien.
 
@@ -160,8 +160,8 @@ de la page Travail, sans palmarès puisqu'il n'y a pas de fiche.
 - La colonne **Pays** n'apparaît pas du tout : aucun résultat n'a de pays. C'est voulu.
 - La liste **Chien concerné** ne propose aucune fiche : il n'y a pas encore de fiche de chien sur le
   site. Utilisez **Nom du chien (si le chien n'a pas de fiche)**.
-- Un résultat sorti de la corbeille n'apparaît nulle part sur le site : il est revenu en
-  **Brouillon**, donc pas encore publié. Ouvrez-le et cliquez sur **Publier**.
+- Un résultat sorti de la corbeille reste invisible pour les visiteurs : il est revenu en
+  **Brouillon**, donc hors du site. Ouvrez-le et cliquez sur **Publier**.
 
 **Ce n'est pas normal, signalez-le :**
 
