@@ -178,10 +178,16 @@
  *     POUR LES DIX COMPOSANTS, vit dans `editor.css` (§9.1, amendement 1 du
  *     contrat). Ni cette feuille ni ses neuf sœurs ne la redéclarent.
  *   · AUCUNE dépendance à `mtb-photo`, que l'extension émet pourtant sur
- *     `__photo` (contrat §9, arbitrage 2). Aucun `.mtb-photo` n'existe dans le
- *     thème : le traitement photo partagé n'a pas encore de domicile. `__photo`
- *     et `__image` sont donc habillés nommément, et la classe générique reste le
- *     point d'accroche gratuit du jour où ce domicile existera.
+ *     `__photo` (contrat §9, arbitrage 2). L'absence est MAINTENUE, et sa raison
+ *     a changé : `.mtb-photo` existe désormais, mais dans les feuilles des
+ *     composants #12 et #13, que `wp_enqueue_block_style` ne sert QUE si l'un de
+ *     ces blocs rend sur la page. S'y appuyer donnerait au bandeau une apparence
+ *     dépendant de ses voisins — c'est très exactement le défaut que la section 2
+ *     corrige. `__photo` et `__image` restent donc habillés nommément, à
+ *     déclarations identiques à celles des sœurs, et le domicile commun du
+ *     traitement photo — une dette de LOT, sans numéro dans ce contrat, à ne pas
+ *     confondre avec la T17 du §16 qui est le réglage de cadrage — reste hors de
+ *     cette feuille.
  *   · AUCUNE règle ciblant `--sans-texte`, `--avec-photo`, `--sans-accroche`,
  *     `wp-block-mtb-bandeau-ouverture`, `attachment-full` ou `size-full` :
  *     l'extension n'émet pas les trois premières (arbitrage 1) et les trois
@@ -286,10 +292,76 @@
      de trou) ET pour une photo qui ne charge pas (l'emplacement garde son
      ratio, aucun pictogramme cassé). */
   background-color: var(--calcaire-creux);
-  /* §6.6 : cerne intérieur sur TOUTE photo, sans exception — le bord de
-     l'image existe même sur un ciel blanc. Ce n'est pas une ombre portée, que
-     le §13 interdit. */
+
+  /* §6.6 : encre et taille du texte de remplacement, « à l'intérieur » de
+     l'emplacement. C'est `__image` qui les porte AUSSI (§2, seconde règle), et
+     c'est elle qui décide : le navigateur peint le texte `alt` avec les styles
+     de l'`img` elle-même, pas avec ceux hérités du cadre. La redite ici n'est
+     donc pas ce qui rend le texte lisible — elle ferme la DERNIÈRE différence
+     mesurable entre un bandeau seul sur sa page et un bandeau accompagné : les
+     règles nues `.mtb-photo` des feuilles #12 et #13 posent ces deux mêmes
+     déclarations sur ce cadre quand elles sont servies, et sans cette redite le
+     cadre héritait autrement selon ses voisins. Inerte au pixel — le cadre n'a
+     aucun nœud de texte propre et aucune de ses longueurs n'est en `em` — mais
+     l'invariance est le point : elle se vérifie, l'argument non. */
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+
+  /* Bloc conteneur du cerne ci-dessous, et RIEN D'AUTRE : sans décalage, un
+     `relative` ne déplace aucun pixel. Il fait cependant passer le cadre dans
+     la couche des éléments positionnés, donc peint APRÈS le contenu en flux —
+     sans effet ici, parce que le seul frère qui doit le recouvrir,
+     `__texte`, est lui aussi positionné (§3) et le SUIT dans le document :
+     à `z-index: auto` des deux côtés, l'ordre du balisage décide, et il décide
+     comme avant. */
+  position: relative;
+}
+
+/* §6.6, LE CERNE — sur TOUTE photo, sans exception : le bord de l'image existe
+   même sur un ciel blanc. Ce n'est pas une ombre portée, que le §13 interdit.
+   NE PAS « SIMPLIFIER » en `box-shadow: var(--cerne-photo)` porté par le cadre :
+   c'était le défaut livré ici, et il est INVISIBLE plutôt que faux, ce qui est
+   pire. `--cerne-photo` est une ombre INTÉRIEURE (tokens.css:118) ; une ombre
+   intérieure se peint au-dessus du fond de son élément mais SOUS ses
+   descendants, et l'`img` remplit EXACTEMENT la boîte du cadre (100 % × 100 %,
+   ni rembourrage ni bordure) : le cerne s'affichait sur le cadre vide et
+   disparaissait à la seconde où la photo chargeait. Portée sur l'`img`, l'ombre
+   est masquée de la même façon par le contenu remplacé. Ce pseudo-élément,
+   positionné, se peint après le contenu en flux : c'est le seul endroit d'où le
+   cerne reste visible AU-DESSUS de la photo. Mesuré au pixel par la chaîne #12
+   (`mtb-grille-chiens.css:221`), reproduit par la chaîne #13
+   (`mtb-liste-portees.css:151`), et déjà corrigé à l'identique pour #14 ; la
+   vérification est de LIRE ce `::after` dans le navigateur, jamais la source.
+
+   ÉCRIT SUR LE CROCHET DU BLOC, pas sur `.mtb-photo`, et c'est le fond de la
+   correction : l'extension émet bien les deux classes sur le cadre
+   (`bandeau-ouverture/render.php:150`), mais les règles nues `.mtb-photo` et
+   `.mtb-photo::after` vivent dans les feuilles des composants #12 et #13, que
+   `wp_enqueue_block_style` ne sert QUE si l'un de ces blocs rend sur la page.
+   Le bandeau y gagnait donc son cerne — et son `position: relative` — par
+   CONTAMINATION, seulement quand un composant sœur l'accompagnait ; seul sur sa
+   page, il n'avait rien. Une feuille de bloc doit suffire à son bloc. Les
+   déclarations sont celles des sœurs à l'identique, donc la fusion des deux
+   règles sur la même page est sans effet : l'apparence du bandeau ne dépend plus
+   de ce qui l'entoure. Le domicile commun de `.mtb-photo` est une dette de LOT
+   et il n'est pas ici — ne pas la confondre avec la T17 du contrat §16, qui est
+   le réglage de cadrage.
+
+   `border-radius: inherit` est INERTE sur ce cadre, qui ne déclare aucun rayon :
+   il est écrit pour que cette règle soit MOT POUR MOT celle des deux sœurs, si
+   bien que le jour de la mise en commun la déduplication soit une suppression et
+   jamais un arbitrage. Le jour où un rayon arriverait sur le cadre, le cerne le
+   suivrait sans qu'on y revienne.
+
+   `pointer-events: none` : le pseudo couvre toute la photo et ne doit jamais
+   intercepter un clic ni un survol destiné à ce qui est au-dessous. */
+.mtb-bandeau-ouverture__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   box-shadow: var(--cerne-photo);
+  pointer-events: none;
 }
 
 .mtb-bandeau-ouverture__image {

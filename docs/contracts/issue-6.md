@@ -910,3 +910,90 @@ texte (`float`), jamais habillée », et il en donne la raison — les 360 px sa
 Le comportement d'avant était donc une **infraction au §6.8** que la grille neutralise. Reste un
 réglage **trompeur** dans l'éditeur, même famille que la variation « Contour » : **dette T19**,
 correctif propre par `block_type_metadata`, hors de l'empreinte d'une chaîne de composant.
+
+---
+
+## Amendement 7 — Le cerne du §6.6 : deux fautes, dont une invisible
+
+**Ajouté le 2026-08-18**, sur défaut **HIGH** de la revue de lot. Ne remplace rien : complète
+l'amendement 5, dont il tire la conséquence que personne n'avait écrite. Empreinte inchangée —
+`mtb-bandeau-ouverture.css` et ce fichier.
+
+### Faute 1 — une déclaration conforme en apparence, inerte en fait
+
+La feuille portait `box-shadow: var(--cerne-photo)` **sur le cadre `__photo`**. `--cerne-photo` est une
+ombre `inset` (`tokens.css:118`) ; une ombre intérieure se peint au-dessus du fond de son élément mais
+**sous ses descendants**, et l'`img` remplit exactement la boîte du cadre. **Le cerne existait sur le
+cadre vide et disparaissait à la seconde où la photo chargeait.** Mesuré : `__photo` et `__image`
+partagent le même rectangle au centième de pixel près (`0 / 32 / 1194.662 / 511.988`).
+
+C'est la faute la plus coûteuse du système, parce qu'elle **relit juste** : le §6.6 est cité, le jeton
+est le bon, la ligne passe toute revue de source. Seul le navigateur la contredit. Les cinq composants
+sœurs l'avaient déjà rencontrée et résolue ; `mtb-grille-chiens.css:221` l'interdit même par son nom.
+
+**Recette gelée pour tout composant qui affiche une photo** — le cerne se porte sur un pseudo-élément,
+jamais sur le cadre, jamais sur l'`img` :
+
+```css
+.…__photo::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: inherit; box-shadow: var(--cerne-photo); pointer-events: none;
+}
+```
+
+Le cadre prend `position: relative` pour lui servir de bloc conteneur. `pointer-events: none` n'est pas
+décoratif : le pseudo couvre toute la photo et intercepterait sinon les clics.
+
+### Faute 2 — une apparence qui dépendait des voisins
+
+`render.php:150` émet `class="mtb-bandeau-ouverture__photo mtb-photo"`, et l'amendement 5 laisse
+`.mtb-photo` **nue, définie dans les feuilles des composants #12 et #13**. Or
+`wp_enqueue_block_style` ne sert une feuille de bloc **que si ce bloc rend sur la page**.
+
+**Conséquence, mesurée, que l'amendement 5 n'avait pas tirée** : le bandeau recevait `position:
+relative`, le `::after` et le cerne **par contamination**, seulement quand un composant sœur
+l'accompagnait.
+
+| Page mesurée | `__photo` `position` | `::after` `content` | Cerne |
+|---|---|---|---|
+| `/essai-6-a-…/` — bandeau seul | `static` | `none` | **absent** |
+| `/ti3-les-six/` — six composants | `relative` | `""` | présent |
+
+**La recette de lot mesurait la seconde page.** C'est ainsi que le défaut a traversé l'intégration :
+la page de contrôle la plus riche est la moins révélatrice, parce qu'elle est la seule où toutes les
+feuilles sont servies.
+
+### Règle que ce contrat gèle pour les dix composants
+
+> **Une feuille de bloc doit suffire à son bloc.** Aucun composant ne tire son apparence d'une classe
+> partagée tant que cette classe vit dans une feuille servie conditionnellement. Les déclarations sont
+> **recopiées à l'identique** sous le crochet du bloc — donc la fusion reste sans effet quand plusieurs
+> feuilles se rencontrent, et le hissage de l'amendement 5 restera une **suppression**, jamais un
+> arbitrage.
+>
+> **Toute recette visuelle se constate sur une page ne portant QUE le composant visé.** Une page
+> multi-composants ne prouve rien sur l'autonomie d'une feuille.
+
+Appliqué ici : `__photo` déclare sous son propre crochet `background-color`, `color`, `font-size`,
+`position` et le `::after` — mêmes jetons, mêmes valeurs que les sœurs.
+
+### Vérifié au navigateur, WordPress 6.9, port 3005
+
+Après correctif, **toutes** les propriétés mesurées du cadre, de son `::after`, de l'`img` et des deux
+rectangles sont **identiques** entre `/essai-6-a-…/` (feuille du bandeau seule) et `/ti3-les-six/`
+(cinq feuilles sœurs en plus) : cerne `rgba(22, 36, 28, 0.22) 0px 0px 0px 1px inset` sur le `::after`,
+`box-shadow: none` sur le cadre — donc aucun doublement. Géométrie inchangée par rapport à l'état
+fautif : le correctif ne déplace aucun pixel. `elementFromPoint` sur la photo rend l'`img` ou
+`__texte`, **jamais le `::after`**. À 360 px : ratio `4 / 3`, aucun défilement horizontal, aucun
+rognage du titre, cerne présent.
+
+### Le §6.6 n'admet pas d'exception ici, et c'est une décision
+
+La question a été posée : sur un bandeau pleine fenêtre il n'y a pas de fond calcaire autour de la
+photo, donc la justification du §6.6 (« le bord de l'image existe toujours contre le fond calcaire »)
+pourrait ne pas porter. **Le cerne est maintenu.** §6.6 range le cerne parmi les comportements
+**obligatoires** et l'écrit « sur **toute** photo » ; §6.5 décrit le bandeau en détail et **n'écrit
+aucune exception**. Le bord haut de la photo rencontre l'en-tête et son bord bas le filet double sur
+`--pin` : il y a bien des bords à tenir. Surtout, **une exception doit être écrite** par
+`lead-design-mtb` — jamais obtenue par une règle inerte, qui donne le pire des deux : ni le cerne, ni
+la trace de la décision de s'en passer.
