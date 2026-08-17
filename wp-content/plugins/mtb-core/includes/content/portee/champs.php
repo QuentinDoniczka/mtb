@@ -333,6 +333,11 @@ function assainir_disponibilite( $valeur ): string {
  * Le retour est une chaîne, jamais un entier : absint( '' ) vaudrait 0, ce qui affirmerait qu'il
  * n'y a aucun mâle alors que l'éleveuse n'a rien saisi.
  *
+ * Une saisie qui n'est pas une suite de chiffres est refusée, jamais réparée : retirer les
+ * caractères gênants ferait de « -3 » un « 3 » et de « 12 chiots » un « 12 », c'est-à-dire un
+ * effectif d'élevage inventé, en silence. La sauvegarde conserve alors la valeur précédente et cite
+ * la saisie, comme elle le fait pour une date impossible.
+ *
  * @param mixed $valeur Valeur brute.
  *
  * @return string Suite de chiffres, ou chaîne vide.
@@ -348,9 +353,7 @@ function assainir_compteur( $valeur ): string {
 		return '';
 	}
 
-	$chiffres = preg_replace( '/[^0-9]/', '', $brut );
-
-	return is_string( $chiffres ) ? $chiffres : '';
+	return 1 === preg_match( '/^[0-9]+$/', $brut ) ? $brut : '';
 }
 
 /**

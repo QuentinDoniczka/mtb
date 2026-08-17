@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/ecran.php';
 require_once __DIR__ . '/sauvegarde.php';
 require_once __DIR__ . '/avis.php';
+require_once __DIR__ . '/messages.php';
 
 add_action( 'add_meta_boxes', __NAMESPACE__ . '\\declarer_boites', 10, 1 );
 add_action( 'edit_form_after_title', __NAMESPACE__ . '\\intituler_le_commentaire', 10, 1 );
@@ -28,6 +29,8 @@ add_filter( 'use_block_editor_for_post_type', __NAMESPACE__ . '\\ecarter_editeur
 add_filter( 'enter_title_here', __NAMESPACE__ . '\\texte_fantome_du_titre', 10, 2 );
 add_filter( 'get_sample_permalink_html', __NAMESPACE__ . '\\masquer_adresse_de_la_page', 10, 2 );
 add_filter( 'redirect_post_location', __NAMESPACE__ . '\\taire_le_message_de_publication', 10, 2 );
+add_filter( 'post_updated_messages', __NAMESPACE__ . '\\messages_enregistrement', 10, 1 );
+add_filter( 'bulk_post_updated_messages', __NAMESPACE__ . '\\messages_par_lot', 10, 2 );
 add_filter( 'mce_buttons_2', __NAMESPACE__ . '\\retirer_la_couleur_du_texte', 10, 2 );
 add_filter( 'wp_editor_settings', __NAMESPACE__ . '\\reglages_de_l_editeur', 10, 2 );
 

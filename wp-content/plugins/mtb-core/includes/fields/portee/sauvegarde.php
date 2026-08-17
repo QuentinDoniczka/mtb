@@ -65,8 +65,9 @@ function enregistrer_champs( int $post_id, \WP_Post $post, bool $mise_a_jour ): 
 	enregistrer_date( $post_id, $brut, $catalogue, $avis );
 
 	ecrire( $post_id, '_mtb_disponibilite', $brut['_mtb_disponibilite'] ?? '', $catalogue );
-	ecrire( $post_id, '_mtb_males', $brut['_mtb_males'] ?? '', $catalogue );
-	ecrire( $post_id, '_mtb_femelles', $brut['_mtb_femelles'] ?? '', $catalogue );
+
+	enregistrer_compteur( $post_id, $brut, $catalogue, $avis, '_mtb_males', 'Nombre de mâles' );
+	enregistrer_compteur( $post_id, $brut, $catalogue, $avis, '_mtb_femelles', 'Nombre de femelles' );
 
 	ecrire( $post_id, '_mtb_chiots', chiots_soumis( $brut ), $catalogue );
 	ecrire( $post_id, '_mtb_galerie', galerie_soumise( $brut ), $catalogue );
@@ -106,6 +107,36 @@ function enregistrer_date( int $post_id, array $brut, array $catalogue, array &$
 	}
 
 	ecrire( $post_id, '_mtb_date_naissance', $lue, $catalogue );
+}
+
+/**
+ * Écrit un compteur de chiots, ou conserve le précédent et le dit.
+ *
+ * Même règle que pour la date : un champ vidé est une intention, on écrit le vide ; une saisie non
+ * vide qu'on ne sait pas lire n'en est pas une. « 0 » reste « 0 » — c'est un fait d'élevage — et le
+ * vide reste le vide.
+ *
+ * @param int    $post_id   Identifiant de la portée.
+ * @param array  $brut      Données soumises, déjà déséchappées.
+ * @param array  $catalogue Catalogue des champs.
+ * @param array  $avis      Avis en construction, complété par référence.
+ * @param string $cle       Clé du compteur.
+ * @param string $libelle   Libellé exact du champ, tel qu'il est à l'écran.
+ */
+function enregistrer_compteur( int $post_id, array $brut, array $catalogue, array &$avis, string $cle, string $libelle ): void {
+	$saisie = isset( $brut[ $cle ] ) && is_scalar( $brut[ $cle ] ) ? trim( (string) $brut[ $cle ] ) : '';
+
+	$lue = Champs\assainir_compteur( $saisie );
+
+	if ( '' !== $saisie && '' === $lue ) {
+		$conservee = (string) get_post_meta( $post_id, $cle, true );
+
+		$avis[] = avis( 'warning', phrase_compteur_refuse( $libelle, $saisie, $conservee ) );
+
+		return;
+	}
+
+	ecrire( $post_id, $cle, $lue, $catalogue );
 }
 
 /**

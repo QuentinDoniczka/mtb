@@ -290,6 +290,10 @@ de sexe par défaut. **Une portée sans disponibilité n'affiche aucun badge** �
 trois états et il n'y a pas de quatrième. Défaulter les vieilles portées sur *Portée passée* serait
 une invention.
 
+*Ceci dit l'**intention**. Le **mécanisme** qui la réalise est en section 11 : le serveur renvoie
+toujours un `affichage` non vide, et c'est au composant de tester `disponibilite['valeur'] !== ''`
+avant de rendre un badge. Ne pas coder d'après cette phrase seule.*
+
 ### 8.1 La dérogation à `issue-1.md` §10 — écrite ici parce qu'elle doit l'être
 
 `issue-1.md` §10 pose : « **un champ absent du `$_POST` est traité comme vide, jamais comme "ne pas
@@ -454,11 +458,35 @@ intégralement valable ; **les noms de clés, non** — ils sont ceux de l'envel
 où chaque valeur porte son `libelle`, sa `valeur` brute et son `affichage` fini.
 
 Concrètement, le serveur fournit finis : le titre public (« Portée A3 2025 ») · le libellé de
-disponibilité (« Chiots disponibles » / « Tous réservés » / « Portée passée » ; `''` = **aucun
-badge**) · la date **à la fois brute et formatée** · son libellé (« Née le ») · l'effectif (« 3 mâles,
-2 femelles ») · le libellé de sexe d'un chiot (« Mâle » / « Femelle ») · `chiots_colonnes` · le
-message d'absence de liste (« Liste des chiots non renseignée. ») · les libellés « Père » / « Mère » ·
-le rôle d'un chien dans une portée.
+disponibilité (voir l'encadré ci-dessous) · la date **à la fois brute et formatée** · son libellé
+(« Née le ») · l'effectif (« 3 mâles, 2 femelles ») · le libellé de sexe d'un chiot (« Mâle » /
+« Femelle ») · `chiots_colonnes` · le message d'absence de liste (« Liste des chiots non
+renseignée. ») · les libellés « Père » / « Mère » · le rôle d'un chien dans une portée.
+
+> ### ⚠️ Disponibilité — la règle qui décide s'il y a un badge
+>
+> **La première rédaction de cette section disait « `''` = aucun badge ». C'est faux depuis
+> l'enveloppe de la section 19.5, et le code ne le fait pas.**
+>
+> Quand aucune disponibilité n'est choisie, `disponibilite` vaut :
+> ```php
+> array( 'libelle' => 'Disponibilité', 'valeur' => '', 'affichage' => 'Non renseigné' )
+> ```
+> `affichage` **n'est jamais vide** : c'est la règle générale de l'enveloppe, et elle est correcte.
+>
+> **La règle sûre, à appliquer par tout composant :**
+>
+> > **Un badge de disponibilité ne se rend que si `disponibilite['valeur'] !== ''`.
+> > On teste `valeur`, jamais `affichage`.**
+>
+> Un composant qui imprimerait `affichage` sans ce test afficherait un badge « **Non renseigné** » —
+> soit un **quatrième état**, alors que `MASTER.md` §3.3 n'en gèle que **trois** (`disponible`,
+> `reserve`, `passee`), chacun avec sa pastille et son ratio de contraste mesuré. Le quatrième n'a ni
+> forme, ni couleur, ni preuve d'accessibilité : il est **interdit**.
+>
+> *Cette contradiction entre deux sections de ce contrat est exactement le défaut contre lequel les
+> avertissements de péremption ont été introduits — il en restait un, trouvé par la revue et non par
+> moi.*
 
 L'effectif accorde le singulier (« 1 mâle, 0 femelle ») et **n'existe pas** si les deux compteurs sont
 vides — on n'écrit pas « 0 mâle » quand on ne sait pas.

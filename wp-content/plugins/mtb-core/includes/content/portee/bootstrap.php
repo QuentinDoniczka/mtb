@@ -32,7 +32,9 @@ function enregistrer(): void {
 			'public'            => true,
 			'show_in_rest'      => true,
 			'show_in_nav_menus' => true,
-			'menu_position'     => 20,
+			// 20 est la position des Pages : les trois types du lot se rangent en 21, 22, 23, d'un seul
+			// tenant, sans que les Commentaires ne viennent les couper en deux.
+			'menu_position'     => 21,
 			'menu_icon'         => 'dashicons-pets',
 			'capability_type'   => 'post',
 			'map_meta_cap'      => true,

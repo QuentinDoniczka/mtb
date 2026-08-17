@@ -121,9 +121,13 @@ function avis( string $niveau, string $texte ): array {
 /**
  * Retire le message du cœur quand il annoncerait une publication qui n'a pas eu lieu.
  *
- * Le cœur compose son message après l'enregistrement : ayant reçu « Publier », il annonce
- * « Portée publiée. » quand bien même la portée vient d'être ramenée en brouillon faute d'un champ
- * obligatoire. C'est le seul rôle qui reste à ce filtre — les avis, eux, passent par le transient.
+ * Le cœur choisit son message après l'enregistrement : ayant reçu « Publier », il pose le code 6
+ * quand bien même la portée vient d'être ramenée en brouillon faute d'un champ obligatoire. Ce code
+ * s'affiche « Portée publiée. » — depuis « messages.php », et non depuis les libellés du type de
+ * contenu, qui ne servent que l'éditeur de blocs. La phrase serait juste dans sa forme et fausse
+ * dans les faits : on retire donc le code.
+ *
+ * C'est le seul rôle qui reste à ce filtre — les avis, eux, passent par le transient.
  *
  * @param mixed $adresse Adresse de redirection proposée.
  * @param mixed $post_id Identifiant du contenu enregistré.
@@ -210,6 +214,28 @@ function phrase_date_refusee( string $saisie, string $conservee ): string {
 	}
 
 	return $phrase . 'Vous pouvez l’écrire sous la forme 04/03/2024.';
+}
+
+/**
+ * Compose la phrase d'un compteur refusé, en citant la saisie.
+ *
+ * Le zéro est nommé : l'aide du champ dit qu'il est une réponse, la phrase de refus ne doit pas
+ * laisser croire l'inverse.
+ *
+ * @param string $libelle   Libellé exact du champ, tel qu'il est à l'écran.
+ * @param string $saisie    Ce que l'éleveuse a tapé.
+ * @param string $conservee Valeur précédemment enregistrée, ou chaîne vide.
+ *
+ * @return string Phrase à afficher.
+ */
+function phrase_compteur_refuse( string $libelle, string $saisie, string $conservee ): string {
+	$phrase = 'Le champ « ' . $libelle . ' » n’a pas été modifié : « ' . $saisie . ' » n’est pas un nombre. ';
+
+	if ( '' !== $conservee ) {
+		$phrase .= 'La valeur précédente a été conservée. ';
+	}
+
+	return $phrase . 'Indiquez un nombre, zéro compris, ou laissez le champ vide.';
 }
 
 /**
