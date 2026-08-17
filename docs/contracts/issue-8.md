@@ -1086,9 +1086,33 @@ Conséquence mécanique, si le mécanisme de la section 3.1 est exact : les cinq
 habille donc aussi le cadre vide de `grille-chiens` (le conteneur oui, l'étiquette non, celle-ci
 s'appelant `__composant`). **Ce n'est pas un défaut de #8**, qui suit ses sections 4.3 et 10 arbitrage 10
 à la lettre ; c'est un arbitrage `/lead-mtb`, à trancher **avec** la section 19.7 plutôt que dossier par
-dossier. Noté aussi : `derniere-portee` écrit son étiquette en casse mixte (« Encart dernière portée ») là
+dossier. ~~Noté aussi : `derniere-portee` écrit son étiquette en casse mixte (« Encart dernière portée ») là
 où #8 et MASTER §9.1 l'écrivent en capitales — sans effet visuel (`text-transform: uppercase`), mais
-**divergent à l'oreille d'un lecteur d'écran**.
+**divergent à l'oreille d'un lecteur d'écran**.~~ **La divergence était réelle, mais le tort était du
+côté de #8 : voir §19.13.**
+
+### 19.13 Correction — l'étiquette d'état vide s'écrit en casse naturelle
+
+`editeur.js` tapait `'GALERIE PHOTOS'` en capitales littérales. `editor.css:149-157` énonce pourtant la
+règle du lot **mot pour mot**, et c'est `derniere-portee` — noté ci-dessus comme divergent — qui la
+suivait :
+
+> « **LES CAPITALES SONT POSÉES ICI, JAMAIS TAPÉES DANS LE JAVASCRIPT**, et cela vaut pour les cinq
+> composants sœurs […] le texte reste lisible par un lecteur d'écran, qui épellerait lettre à lettre des
+> capitales littérales. »
+
+`editeur.js` déclare désormais `var NOM_AFFICHE = 'Galerie photos'` — **le titre de `block.json`
+recopié tel quel**, donc celui que l'éleveuse lit dans l'inséreur — et `text-transform: uppercase` pose
+les capitales.
+
+**Pourquoi le défaut a survécu à toute la recette** : l'apparence est *identique*, la feuille
+transformant déjà. Seul le DOM les distingue. Vérifié dans la toile de `/essai-8-galerie-vide/` :
+`textContent` de `.mtb-etat-vide__nom` vaut `Galerie photos` (`G`, `a`, `l` — codes 71, 97, 108),
+`getComputedStyle().textTransform` vaut `uppercase`, et le cadre affiche « GALERIE PHOTOS » comme
+avant. **Un contrôle à l'œil ne pouvait pas trouver ce défaut ; il faut relever le `textContent`.**
+
+Reste hors de cette empreinte, et remonté au lead : `fiche-information/editeur.js:108` tape
+`'FICHE D\'INFORMATION'`, **même défaut, autre chaîne**.
 
 ### 19.12 Crochets émis sans règle — conforme, et à ne pas combler
 

@@ -29,6 +29,15 @@
 	var PHRASE_AUCUN_CHOIX = "Ce bloc n'affiche rien tant qu'aucune photo n'est choisie.";
 	var PHRASE_INDISPONIBLE = "Ce bloc n'affiche rien tant qu'aucune photo choisie n'est disponible.";
 
+	/*
+	 * Le titre du bloc, recopié de block.json et en CASSE NATURELLE. Les capitales sont posées par
+	 * « text-transform » sur .mtb-etat-vide__nom (themes/mtb/assets/css/editor.css), jamais tapées
+	 * ici : un lecteur d'écran épellerait lettre à lettre des capitales littérales, alors qu'il lit
+	 * normalement un texte que le rendu met en capitales. L'apparence est la même dans les deux cas,
+	 * et c'est ce qui rend la faute invisible à l'œil — seul le DOM la montre.
+	 */
+	var NOM_AFFICHE = 'Galerie photos';
+
 	/**
 	 * Cadre d'état vide, jamais rendu par le serveur : il n'existe que dans l'éditeur.
 	 *
@@ -40,7 +49,7 @@
 		return el(
 			'div',
 			{ className: 'mtb-etat-vide mtb-galerie-photos__vide' },
-			el( 'p', { className: 'mtb-etat-vide__nom' }, 'GALERIE PHOTOS' ),
+			el( 'p', { className: 'mtb-etat-vide__nom' }, NOM_AFFICHE ),
 			el( 'p', { className: 'mtb-etat-vide__phrase' }, phrase ),
 			bouton
 		);
