@@ -163,7 +163,7 @@ function rendre_ecran( \WP_Post $post ): void {
  * @return array<string, string> Valeur vers libellé, l'option vide en premier.
  */
 function options_disciplines( string $selection ): array {
-	$options = array( '' => '— Choisir —' );
+	$options = array( '' => 'Non renseigné' );
 
 	foreach ( liste_disciplines() as $cle => $libelle ) {
 		$options[ $cle ] = $libelle;
@@ -184,7 +184,7 @@ function options_disciplines( string $selection ): array {
  * @return array<string, string> Valeur vers libellé, l'option vide en premier.
  */
 function options_sexes( string $selection ): array {
-	$options = array( '' => '— Choisir —' );
+	$options = array( '' => 'Non renseigné' );
 
 	foreach ( liste_sexes() as $cle => $libelle ) {
 		$options[ $cle ] = $libelle;

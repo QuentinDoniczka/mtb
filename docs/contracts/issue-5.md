@@ -38,7 +38,7 @@ frontière thème/extension, états spéciaux figés).
 | `show_in_rest` | `false` | **Décision porteuse** : fait retomber WordPress sur l'écran d'édition **classique**. La boîte de saisie est visible d'emblée — pas de chargement de Gutenberg, pas de panneau latéral à dérouler, pas de double clic de publication. C'est ce qui achète les trente secondes. Coût assumé : invisible en REST ; aucun consommateur n'en a besoin. |
 | `supports` | **`false`** — surtout pas `array()` | Pas de boîte de titre : le titre est composé au serveur (§4). Un champ de titre qu'elle remplit et que le serveur écrase à l'enregistrement est un mensonge fait à l'éditrice. **Correction du 2026-08-16, constatée en Docker :** ma première rédaction disait `array()` vide, et elle produisait **l'inverse exact** de l'intention. `WP_Post_Type::set_props()` (`wp-includes/class-wp-post-type.php`) teste `} elseif ( false !== $this->supports ) {` puis ajoute d'office **`title`, `editor`, `autosave`**. Un tableau vide est lu comme « rien de demandé », pas comme « rien du tout ». Seul `false` supprime réellement toute prise en charge. Corollaire vérifié : `wp_insert_post_empty_content` ne bloque pas, un résultat entièrement vide se publie. |
 | `capability_type` | `'post'`, `map_meta_cap => true` | Le rôle **Éditeur natif** de Fabienne possède déjà `edit_posts`, `edit_others_posts`, `publish_posts`, `delete_posts`… Elle peut créer, modifier et supprimer un résultat **le jour de la livraison, sans qu'aucune ligne ne touche à un rôle**. `add_cap()` est interdit hors issue dédiée (contrat #1 §10). |
-| `show_in_menu` | menu de **premier niveau**, `menu_position` **25** | Jamais `'edit.php?post_type=mtb_chien'` : le menu disparaîtrait entièrement tant que `mtb_chien` n'est pas enregistré — l'état exact du dépôt pendant que la chaîne #4 tourne. |
+| `show_in_menu` | menu de **premier niveau**, `menu_position` **23** | Jamais `'edit.php?post_type=mtb_chien'` : le menu disparaîtrait entièrement tant que `mtb_chien` n'est pas enregistré — l'état exact du dépôt pendant que la chaîne #4 tourne. |
 | `menu_icon` | **aucun** | L'extension n'émet aucune décision visuelle. Les trois menus du lot portent donc l'icône par défaut du cœur. Relève d'une issue `admin`. |
 
 **Une boîte du cœur est retirée depuis `fields/resultat/`** : `remove_meta_box( 'slugdiv', 'mtb_resultat', 'normal' )`. WordPress ajoute d'office à tout écran classique une boîte intitulée **« Slug »**, et la propose dans « Options de l'écran » — mot **proscrit** par `MASTER.md` §10.4, et sans le moindre objet pour un type de contenu qui n'a aucune adresse publique.
@@ -86,6 +86,24 @@ non plus. Une donnée d'élevage réelle effacée en silence, c'est **D11 enfrei
 
 **Jamais `strip_tags`, jamais `wp_kses`, jamais `esc_*`.** C'est sûr **parce que** l'échappement est
 systématique **en sortie** et que seul un compte disposant de `edit_post` écrit.
+
+### La première option d'une liste fermée est « Non renseigné »
+
+**Jamais un « — Choisir — » inventé.** `MASTER.md` §10.3 gèle « Donnée absente → **Non renseigné** », et
+la discipline comme le sexe d'un chien sont des **faits d'élevage**. La règle vaut pour les deux listes
+de cet écran, **Discipline** et **Sexe**.
+
+*Correction du 2026-08-17, relevée par `review-mtb` en HIGH.* Mes deux listes rendaient
+« — Choisir — » alors que `fields/portee/` et `fields/chien/` rendaient déjà « Non renseigné ». Le
+défaut n'était pas cosmétique : **le même champ *Sexe*, sur deux écrans que l'éleveuse ouvre dans la
+même séance, s'ouvrait sur deux mots différents** — et les deux fiches d'aide gravaient le désaccord.
+Corrigé dans le code **et** dans la fiche.
+
+**La valeur stockée reste `''`** : seul le libellé change, aucune donnée n'est concernée.
+
+`— Aucune fiche —`, première option du sélecteur de fiche chien, est **conservée** : ce n'est pas
+l'absence d'un fait, c'est une **consigne** qui renvoie au champ voisin « Nom du chien ». Écart
+signalé à `/lead-mtb` plutôt que corrigé — voir Q-h.
 
 `sanitize_key` reste juste sur `_mtb_discipline` et `_mtb_sexe`, `absint` sur `_mtb_annee` et
 `_mtb_chien_id` : ce sont des **clés canoniques et des entiers**, pas des valeurs recopiées. Et le
@@ -452,8 +470,9 @@ visibles tous les deux.
 | **Q-a** | **La neuvième valeur `autres`, et la question de fond derrière** : Cavage, Agility, Brevet Maître Chien Drogue et Qualification Chien de sauvetage sont-elles des disciplines à part entière, ou la rubrique « Autres » du site actuel ? Sans réponse, quatre lignes du site source sont mal classées ou perdues. **Ne bloque pas le code** — seulement la reprise. | la reprise des résultats | **l'éleveuse**, via `/lead-mtb`. Recoupe `MASTER.md` §15 D3. |
 | **Q-b** | ~~Valeurs stockées de `_mtb_sexe` par la chaîne #4~~ | — | ✅ **Tranchée le 2026-08-16 par `/lead-mtb`, sur lecture du code de #4 et non sur déclaration** : `content/chien/choix.php:45-46` et `query/resultat/bootstrap.php:55` stockent **les mêmes clés canoniques**, `male` et `femelle`. Aucune divergence. Le repli « valeur brute telle quelle si la clé est inconnue » reste en place comme filet, sans avoir à servir. |
 | **Q-c** | **`post_updated_messages` depuis `fields/resultat/`** : le contrat #1 §2 ne liste pas ce hook dans le groupe `fields`. Sans lui, l'écran affiche **« Article publié. »** — mot proscrit par `MASTER.md` §10.2 — sur l'écran même que livre cette issue. **Retenu** : il est dans l'empreinte et sert directement l'objet de l'issue. | rien | `/lead-mtb`, pour confirmation |
-| **Q-d** | **`menu_position`** : **25** retenu. #3 et #4 choisissent les leurs sans me voir ; une collision ne casse rien (WordPress décale) mais rend l'ordre du menu imprévisible d'une installation à l'autre. | rien | `/lead-mtb`, réserver 21/22/25 |
+| **Q-d** | ~~`menu_position`~~ | — | ✅ **Tranchée le 2026-08-17 par `/lead-mtb`** (revue de lot, M3) : **portée 21, chien 22, résultat 23**, contigus. Mon `25` faisait passer mon menu **après « Commentaires »** — ordre réel constaté : *Pages · Portées · Chiens · **Commentaires** · Résultats de travail*. Trois écrans jumeaux doivent se toucher. Vérifié après correction : `20 Pages · 21 Portées · 22 Chiens · 23 Résultats de travail · 25 Commentaires`. |
 | **Q-e** | **Où placer le sexe dans la cellule Chien**, et **la règle CSS qui supprime l'étiquette d'une cellule vide sous 48 rem** : ni l'un ni l'autre n'existe dans `MASTER.md` §7.6. Ce sont des décisions de rendu, pas de contrat. | le rendu de #15 | **`lead-design-mtb`**, puis révision de `MASTER.md` §7.6 |
+| **Q-h** | **`— Aucune fiche —`**, première option du sélecteur de fiche chien (`controle-chien.php`). Ni la revue ni le lead ne l'ont relevée, et je ne l'ai pas alignée sur « Non renseigné » : sa sémantique diffère — ce n'est pas l'absence d'un fait, c'est une **consigne** qui renvoie au champ voisin. La remplacer perdrait l'instruction ; la garder laisse un idiome typographique qu'un prochain relecteur rouvrira. **À trancher une fois pour les trois types**, s'ils ont des sélecteurs de relation équivalents. | rien | `/lead-mtb` |
 | **Q-g** | **`MASTER.md` §10.2 fige la liste des disciplines à huit et ne contient pas « Autres disciplines ».** Le code en livre neuf (§9 arbitrage 3). Si la neuvième est confirmée, §10.2 a besoin d'une ligne — **hors de mon empreinte**, je n'y touche pas. Si elle est refusée, c'est une ligne à retirer de `mtb_resultat_disciplines()`, et aucune donnée n'est saisie. | rien | `/lead-mtb`, puis `lead-design-mtb` |
 | **Q-f** | **Le champ Conducteur sera vide sur toutes les lignes reprises** : le site source ne nomme aucun conducteur. Sa seule mention approchante, `Prop. Ferrari`, désigne un **propriétaire** — **ne pas l'y verser à la reprise**, ce serait requalifier un fait (D11). Corollaire RGPD : cette issue ne publie **rien de nouveau**. | la reprise, pas le code | issue `contenu` |
 
@@ -478,6 +497,9 @@ que de les lisser.
 | 2026-08-17 | §5.3 | **Forme des cellules convertie au vocabulaire du lot** : `texte` → `affichage`, `donnees.<champ>` → `cellules.<champ>['valeur']`, `vide` supprimé, `donnees` supprimé, son `id` remonté en clé de premier niveau de la ligne | #3 et #4 livraient `valeur`/`affichage` ; deux vocabulaires pour la même chose, et le thème lira les trois en epic Gabarits. `colonnes` + `lignes` est conservé — meilleur pour du tabulaire, et `colonnes[].libelle` est ce que #15 recopie dans `data-libelle`. |
 | 2026-08-17 | §5.3 | **Le signal de vacuité passe de `valeur` à `affichage`** | En convertissant, le test `'' === $valeur` devenait faux pour une année devenue `int` (`'' === 0` ne vaut pas `true`) : une année manquante aurait cessé d'être signalée comme vide, **sans que la page change à l'œil** — seule l'étiquette repliée sous 48 rem aurait disparu. `'' === $affichage` est indépendant du type et supprime le piège au lieu de le contourner. Le calcul des colonnes, lui, reste **interne** et sur `valeur` : y appliquer la règle publique ferait apparaître la colonne Conducteur sur tous les tableaux, contre l'arbitrage 7. |
 | 2026-08-17 | §6 cas 4 | **`mtb_chien` ne refuse pas la corbeille** — l'affirmation inverse était un faux positif de WP-CLI | Le binaire WP-CLI du conteneur refuse la corbeille pour tout type qui n'est ni `post` ni `page`. Depuis l'administration, la corbeille fonctionne. Le sous-cas est désormais **exercé**, et c'était le seul de la recette D12 qui n'avait jamais tourné. |
+
+| 2026-08-17 | §3 | **Première option des listes Discipline et Sexe : « — Choisir — » → « Non renseigné »** | `review-mtb`, HIGH **H4**. `MASTER.md` §10.3 gèle le libellé d'absence, et les deux champs portent des faits d'élevage. Mes deux écrans frères étaient déjà conformes : le mien était le seul à diverger, et **les deux fiches d'aide gravaient le désaccord**. Valeur stockée inchangée (`''`). |
+| 2026-08-17 | §2 | **`menu_position` 25 → 23** | `review-mtb`, MEDIUM **M3**, et réponse à ma question Q-d. À 25, mon menu passait après « Commentaires » ; les trois écrans jumeaux se touchent désormais. |
 
 **Correction technique reportée ici pour la chaîne suivante** : le `TypeError` d'une clé de discipline
 purement numérique ne tombait **pas** là où l'analyse statique le plaçait. Le rappel typé passé à

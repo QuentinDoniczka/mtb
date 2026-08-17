@@ -57,7 +57,7 @@ function arguments(): array {
 		'show_ui'             => true,
 		'show_in_menu'        => true,
 		'show_in_admin_bar'   => true,
-		'menu_position'       => 25,
+		'menu_position'       => 23,
 
 		/*
 		 * false fait retomber WordPress sur l'écran d'édition classique : la saisie est visible

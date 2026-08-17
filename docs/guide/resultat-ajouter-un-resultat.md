@@ -37,7 +37,7 @@ connaissez qu'une partie, et le compléter plus tard.
 
 ### Discipline
 
-Une liste à dérouler. Elle s'ouvre sur **— Choisir —**, puis propose neuf choix :
+Une liste à dérouler. Elle s'ouvre sur **Non renseigné**, puis propose neuf choix :
 **RING** · **IGP / RCI** · **Mondioring** · **Obéissance** · **Pistage** · **Recherche utilitaire** ·
 **Sauvetage** · **Truffe** · **Autres disciplines**.
 
@@ -61,8 +61,11 @@ n'appartiennent pas à l'élevage.
 
 ### Sexe
 
-**— Choisir —**, **Mâle** ou **Femelle**. Utile pour un chien qui n'a pas de fiche. Si vous avez choisi
-une fiche, c'est le sexe indiqué sur la fiche qui s'affiche.
+Une liste à dérouler. Elle reste sur **Non renseigné** tant que vous ne choisissez pas, et propose
+**Mâle** ou **Femelle**. Ce **Non renseigné** est le nom du choix dans la liste, pas un texte que
+verront les visiteurs : si vous ne choisissez pas, rien ne s'affiche à côté du nom du chien sur le
+site. Utile pour un chien qui n'a pas de fiche. Si vous avez choisi une fiche, c'est le sexe indiqué
+sur la fiche qui s'affiche.
 
 ### Année
 
@@ -93,8 +96,11 @@ tout.
 1. **Entre les deux champs du chien, la fiche l'emporte.** Si vous choisissez une fiche dans
    **Chien concerné**, c'est elle qui compte, et le nom recopié ne sert à rien. Le champ
    **Nom du chien (si le chien n'a pas de fiche)** ne sert que si vous laissez **— Aucune fiche —**.
-2. **Le champ Pays est le seul qui n'affiche rien quand il est vide.** Un pays vide veut dire « en
-   France », pas « on ne sait pas ». Tous les autres champs laissés vides affichent **Non renseigné**.
+2. **Deux champs ne se signalent pas quand ils sont vides : Pays et Sexe.** Un **Pays** vide veut dire
+   « obtenu en France », pas « on ne sait pas » : rien ne s'affiche à sa place. Un **Sexe** vide ne
+   s'affiche pas non plus à côté du nom du chien, et rien ne manque à l'œil. Ces deux blancs-là sont
+   normaux, vous n'avez rien à corriger. Tous les autres champs laissés vides affichent
+   **Non renseigné**.
 3. **Rien n'est obligatoire et rien n'est pré-rempli, surtout pas l'année.** Une année déjà inscrite
    vous ferait publier une date fausse le jour où vous saisissez un résultat ancien. À vous de la
    taper.
