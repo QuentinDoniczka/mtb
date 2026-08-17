@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/derniere-portee",
+	"title": "Encart dernière portée",
+	"category": "mtb",
+	"icon": "pets",
+	"description": "Affiche la portée née le plus récemment, avec sa date de naissance et sa disponibilité. Elle se met à jour toute seule dès qu’une nouvelle portée est publiée : il n’y a rien à recopier.",
+	"keywords": [ "portée", "portee", "chiots", "disponibilité", "disponibilite", "accueil" ],
+	"textdomain": "mtb-core",
+	"attributes": {
+		"accroche": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"align": false,
+		"anchor": false,
+		"customClassName": false,
+		"html": false,
+		"multiple": false,
+		"reusable": false
+	},
+	"editorScript": "mtb-derniere-portee-editeur",
+	"render": "file:./render.php"
+}
