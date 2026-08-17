@@ -267,6 +267,18 @@ ressemble pas au site est un composant employé de travers. Trois écarts, tous 
 (`text-transform`) : la restitution vocale reste normale et le texte reste lisible si la feuille manque.
 ⚑ **précédent** : l'extension n'émet jamais de MAJUSCULES décoratives.
 
+> **Amendement 2 (revue d'intégration du lot)** — le code livré en `a9250e4` tapait
+> `'FICHE D\'INFORMATION'` en capitales littérales, **contre cette règle déjà écrite ici**. Corrigé :
+> `editeur.js` émet `Fiche d'information`, recopié du `title` de `block.json`. Rien à changer au
+> contrat, qui avait raison ; la régression était invisible à l'œil, `editor.css` transformant déjà.
+> **Se vérifie au `textContent`, jamais à l'écran.**
+>
+> ⚑ **Dérive constatée, non corrigée ici** : les crochets réellement livrés sont `mtb-etat-vide` /
+> `mtb-etat-vide__nom` / `mtb-etat-vide__phrase` — les crochets **communs aux dix composants**, portés
+> par `editor.css` du thème — et non les `mtb-fiche-information__etat-vide*` gelés ci-dessus par
+> l'arbitrage 5. Décision de lot postérieure à ce contrat. **Non touchée par cette chaîne** : renommer
+> supposerait d'écrire dans `editor.css`, hors de son empreinte. Pour `review-mtb`.
+
 ### `save`, `$content` : l'articulation `InnerBlocks` sans build
 
 ```js
@@ -342,14 +354,19 @@ réordonner quoi que ce soit.
 
 ## 5. L'image — attributs attendus
 
-`wp_get_attachment_image( $photo_id, 'large', false, array( 'class' => 'mtb-fiche-information__image', 'alt' => $description_brute ) )`
+`wp_get_attachment_image( $photo_id, 'large', false, array( 'class' => 'mtb-fiche-information__image', 'alt' => $description_brute, 'loading' => 'lazy', 'decoding' => 'async' ) )`
+
+> **Amendement 1 (revue d'intégration du lot)** — `loading` et `decoding` sont désormais **écrits
+> explicitement**. L'arbitrage 9 ci-dessous, qui les laissait au cœur, est **renversé** ; le motif est
+> consigné à sa ligne. Le balisage gelé du §4 les portait déjà : la contradiction interne est levée.
 
 | Attribut | Traitement | Pourquoi |
 |---|---|---|
 | `src` + `srcset` | par le cœur | MASTER §6.9. **Aucune taille d'image à enregistrer** : le ratio est imposé par `aspect-ratio` + `object-fit: cover`, pas par une vignette recadrée. Seules les **largeurs** comptent, et `medium` 300 / `medium_large` 768 / `large` 1024 / `full` couvrent un emplacement de 576 px au plus, y compris à densité 2. `thumbnail` est écarté du `srcset` par `wp_calculate_image_srcset()`, qui n'y met que les tailles de même rapport. **Corollaire : `functions.php` ne se rouvre pas pour les images.** |
 | `sizes` | **laissé au cœur**, non déclaré | Déclarer `sizes` supposerait d'écrire `36rem` dans l'extension, c'est-à-dire **une valeur de mise en page du thème** (`--l-texte`) — interdit par le contrat #1 §8. |
-| `loading` / `fetchpriority` | **non forcés** : `wp_get_loading_optimization_attributes()` du cœur décide | **Écart nommé** : MASTER §6.9 écrit « toute image hors bandeau : `loading="lazy"` » sans nuance, BRIEF §12 dit « chargement différé **sous la ligne de flottaison** ». Le cœur rend `lazy` partout **sauf** sur la première image dans la fenêtre, qui reçoit `eager` + `fetchpriority="high"` — ce qui sert **mieux l'intention du brief**. À ratifier dans MASTER §6.9 ; la conformité littérale coûterait un `'loading' => 'lazy'`. |
-| `decoding="async"` | oui, par le cœur | MASTER §6.9 |
+| `loading="lazy"` | **forcé** (amendement 1) | MASTER §6.9 à la lettre, et comme les deux composants sœurs `galerie-photos` et `grille-chiens`. Le pari initial sur le cœur était faux **en fait** : `wp_get_loading_optimization_attributes()` (`wp-includes/media.php`) ne rend pas `lazy` « partout sauf la première image dans la fenêtre » — il **omet purement l'attribut** tant que le compteur global d'images de la page reste sous `wp_omit_loading_attr_threshold()` (3 par défaut). Une fiche 2ᵉ ou 3ᵉ image de la page était donc chargée **immédiatement même très bas dans la page** — c'est le défaut mesuré sur `/ti3-les-six/`. Le seuil compte les images dans **l'ordre de rendu des blocs** : ni le composant ni le brief ne maîtrisent ce nombre. |
+| `fetchpriority` | **jamais émis**, conséquence de `loading="lazy"` | `wp_maybe_add_fetchpriority_high_attr()` sort avant d'agir quand `loading` vaut `lazy`. Sans ce forçage, une fiche pouvait recevoir `fetchpriority="high"` dès qu'aucun bandeau ne l'avait prise avant elle. **Cas limite assumé** : une fiche **peut** ouvrir une page, et `lazy` lui coûte alors sa priorité. Ouvrir une page est le rôle de `mtb/bandeau-ouverture`, qui porte `eager` + `fetchpriority="high"` ; la fiche est une brique de corps de page. |
+| `decoding="async"` | **forcé** (amendement 1) | MASTER §6.9. Même valeur que le défaut du cœur : écrite pour que les deux attributs se lisent au même endroit. |
 | `width` / `height` | oui, dimensions réelles | MASTER §6.9, décalage cumulé nul. Redondants tant que la feuille charge, **indispensables si elle ne charge pas**. |
 | `alt` | **du seul champ de la médiathèque** ; vide → `alt=""` | MASTER §6.5, §10.2, D7. **Jamais** le nom du fichier, **jamais** le titre du média, **jamais** une chaîne composée. Elle ne peut pas produire d'image sans alternative accessible. |
 | `class` | `mtb-fiche-information__image` | déplace `attachment-large size-large` (§3) |
@@ -829,7 +846,7 @@ empilées · (l) photo portrait dans l'emplacement paysage · (m) PNG à transpa
 | 6 | **Crochet de position** : back émettait `--photo-dessus`/`--photo-dessous`, front démontrait n'en avoir aucun usage | **Aucune classe de position. `data-position` sur la racine, pour la testabilité seule** | Le front écrit la feuille et a démontré arithmétiquement qu'**une seule** règle (`figure { margin-block-end: --e-4 }`) est juste dans les deux positions. Un crochet émis et jamais lu est du poids mort **et** une invitation à s'en servir pour un `order`. Le `data-position` reste parce qu'il a une valeur réelle : `review-mtb` et `test-integration-mtb` peuvent affirmer la valeur enregistrée sans déduire l'ordre du DOM. |
 | 7 | **Phrase de l'état vide** : deux rédactions concurrentes, l'une inexacte, l'autre lourde | **« Ce bloc n'affiche rien tant que vous n'avez pas ajouté un titre, du texte ou une photo. »** | La forme « Ce bloc n'affiche rien tant que … » est imposée par §9.1. L'état vide n'apparaît que si les **trois** manquent, et **une seule** suffit à faire rendre le bloc : le **« ou »** est donc exact là où un « et » ment. Voix active, français simple (§10.1). La rédaction back omettait le titre ; la rédaction front enfilait trois négations. |
 | 8 | **Paire `--laiton-texte` sur `--calcaire-creux`** absente de §12 mais exigée par §9.1 | **Employée. 4,75:1, recalculée, AA. À porter dans MASTER §12.3** | La contradiction est **dans MASTER**. La prescription explicite de §9.1 gagne, le ratio est AA, l'apparence n'existe que dans l'éditeur. Même forme que l'amendement 5 du contrat #2 : extrapolation minimale, nommée, ratifiable. Le repli (`--texte`, listée) est écrit mais **n'est pas pris** — il perdrait le caractère laiton pour rien. |
-| 9 | **`loading`/`fetchpriority`** : §6.9 exige `lazy` sans nuance, le cœur décide depuis WP 6.3 | **Laissés au cœur, écart nommé** | `wp_get_loading_optimization_attributes()` rend `lazy` partout **sauf** la première image dans la fenêtre — c'est exactement « chargement différé **sous la ligne de flottaison** » de BRIEF §12, donc **mieux aligné sur l'intention** que la lettre de §6.9. À ratifier dans MASTER §6.9. La conformité littérale coûterait un `'loading' => 'lazy'`. |
+| 9 | **`loading`/`fetchpriority`** : §6.9 exige `lazy` sans nuance, le cœur décide depuis WP 6.3 | ~~Laissés au cœur, écart nommé~~ → **RENVERSÉ par l'amendement 1 : `'loading' => 'lazy'` et `'decoding' => 'async'` écrits explicitement.** | La prémisse de l'arbitrage était **fausse en fait**, et la revue d'intégration du lot l'a mesuré : le cœur ne rend pas `lazy` « partout sauf la première image dans la fenêtre », il **omet l'attribut** sous le seuil de `wp_omit_loading_attr_threshold()` (3 images). Sur `/ti3-les-six/`, la fiche était 2ᵉ image, **sous la ligne de flottaison et sans `loading`** — l'inverse de l'intention de BRIEF §12 qu'on croyait servir. Le seuil dépend d'un compteur global et de l'ordre de rendu des blocs, que le composant ne maîtrise pas : la lettre de §6.9 est aussi la seule règle **prévisible**. Plus rien à ratifier dans MASTER §6.9 : le code s'y conforme. |
 | 10 | **Dette T7** (bouton du cœur hors jetons), dite « payée par la première issue de composants » | **Hors périmètre. T7 reste ouverte** | `allowedBlocks` rend `core/button` **mécaniquement inatteignable dans une fiche** : y écrire du CSS serait écrire pour un cas que le bloc ne peut pas produire. Et `assets/css/blocs/core-button.css` n'est le fichier « au nom unique » d'**aucune** des six chaînes : deux qui l'écrivent s'écrasent. La formulation d'`ETAT.md` **n'est pas décidable par une chaîne** quand six tournent. **À attribuer nommément par `/lead-mtb`.** |
 | 11 | **`example` dans `block.json`** — back le livrait sous réserve d'approbation | **Livré** | Les deux chaînes ne contiennent **aucun fait d'élevage** : ni nom de chien, ni date, ni LOF, ni résultat, ni nom de race. Le retirer priverait l'éleveuse de l'aperçu **au moment précis où elle cherche quoi insérer** — c'est l'arbitrage de la décision 15, où la contrainte 1 gagne. `photo_id` reste à `0` : **zéro image distante**. |
 
@@ -866,8 +883,9 @@ empilées · (l) photo portrait dans l'emplacement paysage · (m) PNG à transpa
    écart image ↔ légende `--e-2` (MASTER ne le chiffre nulle part → §6.8) · marge basse d'une liste dans
    la prose `--e-4` (→ §5.1) · retrait et marqueurs de liste **laissés à l'agent utilisateur**, aucune
    valeur écrite (→ §5.1) · les cinq valeurs de cadrage en **mots-clés CSS** plutôt qu'en pourcentages
-   inventés (→ §6.2, où la question D5 prévoit déjà une révision après import des photos) ·
-   `loading`/`fetchpriority` laissés au cœur (→ §6.9).
+   inventés (→ §6.2, où la question D5 prévoit déjà une révision après import des photos).
+   ~~`loading`/`fetchpriority` laissés au cœur (→ §6.9)~~ — **retiré : l'amendement 1 aligne le code
+   sur la lettre de §6.9, il n'y a plus d'extrapolation à ratifier de ce côté.** Il en reste **quatre**.
 8. **Trois limites nommées, non comblées** : le glyphe d'image cassée que certains moteurs dessinent est
    hors de portée du CSS (§6.6 « aucun pictogramme cassé ») — à constater dans les trois moteurs ·
    la règle « largeur naturelle × 1,5 » de §6.6 n'est franchissable que par un original < 384 px,

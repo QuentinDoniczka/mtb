@@ -105,7 +105,10 @@
 		return el(
 			'div',
 			{ className: 'mtb-etat-vide mtb-fiche-information__vide' },
-			el( 'p', { className: 'mtb-etat-vide__nom' }, 'FICHE D\'INFORMATION' ),
+			// Casse naturelle, recopiée du titre de block.json : les capitales sont posées par
+			// « text-transform » dans editor.css du thème (:149), jamais tapées ici. Un lecteur
+			// d'écran épellerait lettre à lettre des capitales littérales.
+			el( 'p', { className: 'mtb-etat-vide__nom' }, 'Fiche d\'information' ),
 			el(
 				'p',
 				{ className: 'mtb-etat-vide__phrase' },

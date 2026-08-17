@@ -133,15 +133,31 @@ function figure( int $photo_id, string $description, string $legende, string $ca
 		return '';
 	}
 
+	/*
+	 * « loading » et « decoding » sont écrits explicitement, comme dans les deux composants sœurs
+	 * (galerie-photos/rendu.php, grille-chiens/balisage.php). Laissés au cœur, ils dépendent d'un
+	 * compteur global d'images et de l'ordre de rendu des blocs, que ce module ne maîtrise pas :
+	 * une fiche parmi les trois premières images de la page ne recevait aucun « loading » — donc un
+	 * chargement immédiat même très bas dans la page, ce qui est le défaut mesuré — et pouvait se
+	 * voir poser « fetchpriority=high » si aucun bandeau ne l'avait prise avant elle.
+	 *
+	 * Le cas limite est assumé : une fiche PEUT ouvrir une page, et « lazy » lui coûte alors sa
+	 * priorité de chargement. C'est le rôle de « mtb/bandeau-ouverture », qui porte « eager » et la
+	 * priorité haute, d'ouvrir une page. La fiche est une brique de corps de page ; la traiter comme
+	 * telle est vrai dans la grande majorité des cas, et le cœur ne tranchait ni mieux ni de façon
+	 * prévisible.
+	 */
 	$image = wp_get_attachment_image(
 		$photo_id,
 		'large',
 		false,
 		array(
-			'class' => 'mtb-fiche-information__image',
+			'class'    => 'mtb-fiche-information__image',
 			// Passée brute : wp_get_attachment_image applique esc_attr, l'échapper ici doublerait
 			// l'encodage et ferait apparaître « &amp; » dans une description contenant « & ».
-			'alt'   => $description,
+			'alt'      => $description,
+			'loading'  => 'lazy',
+			'decoding' => 'async',
 		)
 	);
 
