@@ -3,11 +3,20 @@
 **Gelé le 2026-08-17.** Contraignant à partir d'ici. En cas de divergence avec un plan, un commentaire
 de code ou un rapport d'agent, **ce document fait foi**.
 
-> **Amendé le 2026-08-17 après observation en navigateur — voir §13.** Trois affirmations de la
-> rédaction initiale étaient fausses et sont corrigées à la source : le canal large est **inatteignable**
-> (donc la grille rend **2 colonnes, jamais 4**), la catégorie `mtb` **a été livrée** par une chaîne
-> sœur, et le `position: relative` du nom **ne suffisait pas** à le rendre sélectionnable. Les
-> paragraphes concernés portent la correction ; §13 en tient le journal.
+> **Amendé DEUX FOIS le 2026-08-17 après observation en navigateur — voir §13.**
+>
+> **Première passe.** Trois affirmations de la rédaction initiale étaient fausses et sont corrigées à la
+> source : le canal large est **inatteignable** (donc la grille rend **2 colonnes, jamais 4**), la
+> catégorie `mtb` **a été livrée** par une chaîne sœur, et le `position: relative` du nom **ne suffisait
+> pas** à le rendre sélectionnable.
+>
+> **Seconde passe, de finition.** Cinq décisions changent : le filtre de catégorie local **est
+> supprimé** (§3, arbitrage 15), le module **expose désormais une fonction globale de rendu** pour #16 et
+> #17 (§3 bis, et cela contredit la lettre du §3 et du §10 d'origine), la seconde phrase d'état vide
+> **est reformulée** et son **choix dépend maintenant de la base** et non du seul réglage (§8), le
+> crochet `mtb-etat-vide__composant` devient **`mtb-etat-vide__nom`** (§4, §8), et le cerne photo passe
+> **obligatoirement par un pseudo-élément** (§6). Les paragraphes concernés portent la correction ; §13
+> en tient le journal.
 
 Il hérite intégralement de [`issue-1.md`](issue-1.md) — nommage (§6), français littéral sans i18n (§7),
 frontière thème/extension (§8), états spéciaux (§9), recette d'un module `blocks/` **sans étape de
@@ -59,8 +68,14 @@ wp-content/plugins/mtb-core/includes/blocks/grille-chiens/
 
 wp-content/themes/mtb/assets/css/blocs/mtb-grille-chiens.css
 docs/contracts/issue-14.md
-docs/guide/composant-grille-de-chiens.md
+docs/guide/composant-grille-chiens.md
 ```
+
+> **Renommée le 2026-08-17 (`git mv`), et c'est une convention de lot, non un goût.** La fiche
+> s'appelait `composant-grille-de-chiens.md`. Les dix fiches de composants suivent désormais
+> **`composant-<nom-du-bloc>.md`**, et le bloc s'appelle `grille-chiens` : trois conventions
+> différentes cohabitaient sur le disque, et l'issue #25 doit composer un sommaire par-dessus dix
+> fiches. Le nom du fichier se déduit donc du nom du bloc, sans exception.
 
 **Lus, jamais modifiés** : `includes/query/chien/{bootstrap,lecture}.php`,
 `includes/content/chien/choix.php`, `themes/mtb/assets/css/{tokens,base}.css`,
@@ -89,9 +104,15 @@ construction**.
 | Filtre exposé | **`mtb_grille_chiens_tailles_image`** — voir §7 |
 | Espace de noms PHP | `MTB\Core\Blocks\GrilleChiens` |
 
-**Aucune fonction `mtb_*` globale n'est déclarée par cette issue.** Le module ne réserve aucun nom de
-lecture et n'expose aucune surface publique au thème hors du bloc lui-même. **Rien ne peut donc ombrer
-`query/chien/` ni `query/portee/`** (décision 19).
+| Fonction globale de rendu | **`mtb_grille_chiens_rendu()`** — voir §3 bis, **ajoutée à la finition** |
+
+**Le module ne réserve aucun nom de LECTURE** et ne redéclare aucune fonction `mtb_get_*`. **Rien ne
+peut donc ombrer `query/chien/` ni `query/portee/`** (décision 19).
+
+> **Amendement de finition.** La rédaction d'origine disait « **aucune** fonction `mtb_*` globale n'est
+> déclarée par cette issue » et le §10 en faisait un interdit. **Ce n'est plus vrai**, sur ordre du lot :
+> une fonction globale de rendu est désormais exposée, pour la raison écrite au §3 bis. L'interdit
+> d'origine est **remplacé, pas contourné** — sa forme exacte est réécrite au §10.
 
 **`block.json` — décisions à ne pas « corriger »** :
 
@@ -110,23 +131,83 @@ lecture et n'expose aucune surface publique au thème hors du bloc lui-même. **
   appeler `statuts()`). Assumé et **borné** : la seule autorité au rendu est `statuts()`. Une divergence
   ne peut produire qu'un repli en mode groupé, **jamais un statut inventé**.
 
-### La catégorie de blocs `mtb` — arbitrage rendu
+### La catégorie de blocs `mtb` — arbitrage RÉVISÉ, et la dette T-#14-b est SOLDÉE
 
-`"category": "mtb"` est conservé, **et** `bootstrap.php` ajoute un filtre `block_categories_all`
-**idempotent** qui n'insère la catégorie (libellé **« Mont Brabant »**, gelé par le contrat #1 §10) que
-si aucune catégorie de ce slug n'existe déjà.
+**Décision en vigueur : `"category": "mtb"` dans `block.json`, et RIEN D'AUTRE.** Le module **ne porte
+aucun filtre `block_categories_all`**. La catégorie « Mont Brabant » est déclarée **une seule fois pour
+tout le catalogue** par `includes/blocks/categorie-mtb/`, livré par l'issue #6, comme le contrat #1 §10
+l'exigeait depuis le début.
 
-**Pourquoi cette exception assumée** : le contrat #1 §10 confie `includes/blocks/categorie-mtb/` à « la
-première issue de composants », mais **aucune chaîne du lot ne l'a dans son empreinte** et
-`includes/blocks/` était vide. Or `register_block_type()` **ne valide pas** la catégorie : aucune
-erreur, aucun `_doing_it_wrong` — l'insérteur construit ses sections depuis les catégories
-**enregistrées**, et un bloc dont la catégorie n'y figure pas **n'est rendu nulle part**, tout en
-restant trouvable par la recherche. C'est la pire panne possible : **muette et à moitié vraie**, une DoD
-cochée sur un composant que Fabienne ne trouve pas.
+**Pourquoi le filtre local a existé, et pourquoi il n'existe plus.** Au gel, `includes/blocks/` était
+vide et aucune chaîne du lot n'avait `categorie-mtb/` dans son empreinte. Or `register_block_type()` **ne
+valide pas** la catégorie : ni erreur, ni `_doing_it_wrong` — l'insérteur construit ses sections depuis
+les catégories **enregistrées**, et un bloc dont la catégorie n'y figure pas **n'est rendu nulle part**
+tout en restant trouvable par la recherche. La pire panne possible : **muette et à moitié vraie**, une
+DoD cochée sur un composant que Fabienne ne trouve pas. Un filtre local **idempotent** était le
+garde-fou proportionné à ce risque.
 
-Le filtre vit **entièrement dans mon dossier**, ne touche aucun fichier hors empreinte, et
-l'idempotence garantit que trois filtres frères se composent sans dégât. Dette **T-#14-b** : le jour où
-`categorie-mtb/` est livré, ce filtre se supprime en une ligne.
+`categorie-mtb/` étant livré et **vérifié en exécution**, le garde-fou n'a plus d'objet et devient une
+**déclaration en double** — la forme exacte de la dette T9, en trois exemplaires dans ce lot. Il est
+donc supprimé. Dette **T-#14-b : SOLDÉE.**
+
+**Vérifié en exécution le 2026-08-17**, après suppression : `apply_filters( 'block_categories_all' )`
+rend **exactement une** entrée de slug `mtb`, intitulée « Mont Brabant », et le bloc est enregistré avec
+`category: mtb`, titre « Grille de chiens ». Constaté aussi dans l'insérteur de la toile : le bloc est
+présent avec son titre et sa description en français.
+
+> **À ne pas « corriger » par prudence.** Réintroduire un filtre local ici, même idempotent, recrée la
+> déclaration en double. Si l'insérteur perdait un jour la rubrique, le correctif est dans
+> `categorie-mtb/`, **jamais ici**.
+
+## 3 bis. La fonction de rendu réutilisable — interface pour #16 et #17
+
+**Ajoutée à la finition, sur ordre du lot.** C'est la seule surface publique du module hors du bloc.
+
+```php
+mtb_grille_chiens_rendu( string $statut = 'tous' ): string
+```
+
+**Pourquoi elle existe.** La décision 17 a mis les trois types `mtb_` sur l'**écran d'édition
+classique** : aucun bloc ne peut donc être inséré dans une fiche. Or `archive-chien.html` et la page
+« La meute » de l'issue #16 ont besoin **exactement de ce rendu**. Sans interface, #16 et #17 le
+réécriraient — trois balisages de grille à faire diverger, l'inverse de la contrainte 3.
+
+**Contrat de la fonction, gelé :**
+
+| Point | Engagement |
+|---|---|
+| Retour | Le balisage du §4, **tel que le visiteur le voit**. N'imprime rien |
+| État vide | **Jamais rendu.** Côté visiteur un composant sans contenu ne s'affiche pas (MASTER §9) : la fonction rend `''` |
+| Argument inconnu | Retombe sur `tous`. **Jamais un statut inventé** — même assainissement que le bloc, par `statut_demande()` |
+| Extension désactivée | À appeler **sous `function_exists()`** |
+| Chemin de code | **Un seul**, celui du bloc : la fonction appelle `rendu()` avec `$rendu_de_bloc = false`. Aucune ligne de balisage n'est recopiée |
+
+**Trois choix de forme, à ne pas « corriger »** :
+
+1. **Espace de noms GLOBAL, dans un second bloc `namespace { }`** de `bootstrap.php`, syntaxe à
+   accolades. Un thème conforme n'écrit jamais `MTB\` : c'est la frontière **vérifiable par recherche**
+   entre le thème et l'extension (contrat #1 §8). PHP n'admet deux espaces de noms dans un fichier
+   qu'avec cette syntaxe, et interdit alors tout code hors des accolades — d'où la garde `ABSPATH` dans
+   le premier bloc. **Vérifié : les quatre fichiers PHP du module passent `php -l` en 8.1.**
+2. **Le nom ne commence pas par `mtb_get_`, et c'est délibéré** : une fonction `mtb_get_*` rend des
+   **données**, jamais du HTML. `mtb_grille_chiens_*` est réservé à ce module ; aucun autre ne peut
+   l'ombrer.
+3. **Le second paramètre de `rendu()` n'est pas un drapeau de confort.**
+   `get_block_wrapper_attributes()` lit le bloc en cours dans une propriété statique du cœur : hors du
+   rendu d'une instance, elle vaut `null` et la fonction **émet un avertissement PHP**. D'où
+   `attributs_conteneur()`, qui compose le conteneur en demandant la classe générée au cœur plutôt qu'en
+   la recopiant. **Vérifié : `wp_get_block_default_classname()` existe bien en WordPress 6.9**
+   (`wp-includes/block-supports/generated-classname.php:19`), la garde `function_exists()` reste
+   correcte, et **les deux chemins produisent le même jeu de classes dans le même ordre** :
+   `class="mtb-grille-chiens wp-block-mtb-grille-chiens"`.
+
+> **Honnêteté sur son utilité réelle, à lire avant de s'appuyer dessus.** Dans un thème de blocs, un
+> gabarit est un fichier **HTML** et ne peut pas appeler de PHP. Le chemin de réutilisation le plus
+> probable pour #16 et #17 est donc d'**insérer le bloc** dans le gabarit :
+> `<!-- wp:mtb/grille-chiens {"statut":"reproducteur"} /-->`. Cette fonction sert le cas d'un
+> `render.php` de gabarit, d'un motif dynamique ou d'un futur bloc de niveau gabarit. **Les deux chemins
+> mènent au même code**, et c'est tout ce qui compte. Elle n'a aujourd'hui **aucun appelant** : c'est
+> normal, elle est livrée *pour* #16 et #17.
 
 ## 4. Le balisage rendu — littéral, exhaustif, gelé
 
@@ -135,8 +216,14 @@ balisage. Aucun style en ligne, aucun attribut visuel, nulle part.
 
 ### Mode groupé (le défaut). Mode filtré = le même balisage, avec une seule `<section>`.
 
+> **Ordre réel des deux classes de racine, mesuré : `class="mtb-grille-chiens wp-block-mtb-grille-chiens"`.**
+> L'exemple ci-dessous les écrit dans l'autre sens ; c'est l'exemple qui est inexact, pas le code.
+> `get_block_wrapper_attributes()` place la classe passée en `extra` **avant** celle que le cœur génère,
+> et les deux chemins de rendu (bloc et §3 bis) produisent le même ordre. **Aucun sélecteur du projet ne
+> dépend de cet ordre** : c'est une précision de lecture, pas une décision.
+
 ```html
-<div class="wp-block-mtb-grille-chiens mtb-grille-chiens">
+<div class="mtb-grille-chiens wp-block-mtb-grille-chiens">
 	<section class="mtb-grille-chiens__groupe" data-statut="reproducteur">
 		<h2 class="mtb-grille-chiens__titre-groupe">Reproducteurs</h2>
 		<ul class="mtb-grille-chiens__liste" role="list">
@@ -193,7 +280,7 @@ balisage. Aucun style en ligne, aucun attribut visuel, nulle part.
 | `mtb-grille-chiens__lien` | `<a>` | **seulement si un permalien utilisable existe** |
 | `mtb-grille-chiens__nom-texte` | `<span>` | **oui, toujours** — dans l'`<a>` quand il y en a un, dans le `<h3>` sinon |
 | `mtb-grille-chiens--vide` + `mtb-etat-vide` | racine | état vide, **éditeur seulement** |
-| `mtb-etat-vide__composant` / `mtb-etat-vide__phrase` | deux `<p>` | état vide, **éditeur seulement** |
+| **`mtb-etat-vide__nom`** / `mtb-etat-vide__phrase` | deux `<p>` | état vide, **éditeur seulement**. **`__nom` remplace le `__composant` de la rédaction initiale** — crochet gelé pour les six composants du lot, voir §8 |
 
 ### Ce qui justifie chaque choix, et ce qu'il ne faut pas « corriger »
 
@@ -261,7 +348,7 @@ jetons de `tokens.css`**, à l'exception des trois littéraux justifiés ci-dess
 |---|---|
 | La grille sur `__liste` : colonnes, gouttière, retrait de puces, `align-items: start` | La typographie du `h2` de groupe **et son filet double de 6 rem** |
 | Le canal large sur `.mtb-grille-chiens` (voir ci-dessous) | Le rapport d'espace `--e-7` / `--e-4` autour du `h2` |
-| Le cadre carré : `--r-carre`, fond `--calcaire-creux`, `--cerne-photo` | La typographie du `h3` et son `--e-5` au-dessus |
+| Le cadre carré : `--r-carre`, fond `--calcaire-creux`, `--cerne-photo` **par pseudo-élément — voir ci-dessous** | La typographie du `h3` et son `--e-5` au-dessus |
 | L'image : `object-fit: cover`, point d'intérêt, typographie du texte `alt` de repli | La couleur, le soulignement `--laiton` et le survol du lien (§8.2) |
 | Les cinq classes de cadrage → `object-position` | L'anneau de focus du §8.1 **quand `:has()` manque** |
 | `position: relative` de la carte et le calque étiré du lien | `img { max-inline-size: 100% }`, `box-sizing`, `hyphens: auto` |
@@ -274,6 +361,49 @@ bloc pose donc `max-inline-size: var(--l-large)` et un centrage sur `.mtb-grille
 correcte et voulue : **quand le bloc est imbriqué dans un conteneur plus étroit, le conteneur gagne** —
 la grille se dégrade en colonnes, elle ne casse pas. Le support `align` restant à `false`, Fabienne
 n'a **aucun réglage de largeur** (MASTER §14).
+
+### Le cerne photo passe OBLIGATOIREMENT par un pseudo-élément — corrigé à la finition
+
+**Défaut mesuré, puis corrigé.** `tokens.css:118` définit `--cerne-photo` comme une ombre **INTÉRIEURE**
+(`inset 0 0 0 1px …`). La feuille la posait en `box-shadow` sur `.mtb-grille-chiens__cadre-photo`, et
+`.mtb-grille-chiens__photo` remplit ce cadre **exactement** (`100 %`, `100 %`, `object-fit: cover`) : le
+contenu remplacé de l'`<img>` se peint par-dessus l'ombre intérieure du cadre, et **le cerne était
+invisible dès que la photo chargeait**. MASTER §6.6 l'exige sur **toute** photo — il ne l'était sur
+aucune. La même mesure a été faite indépendamment par une chaîne sœur sur `.mtb-photo`.
+
+**Recette en vigueur, dite « V9 », identique à celle de `mtb-fiche-information.css` (#7) :**
+
+```css
+.mtb-grille-chiens__cadre-photo       { position: relative; /* référent du ::after, et rien d'autre */ }
+.mtb-grille-chiens__cadre-photo::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: inherit; box-shadow: var(--cerne-photo); pointer-events: none;
+}
+```
+
+Quatre points qu'il ne faut pas « simplifier » :
+
+- **`pointer-events: none` est obligatoire.** Le pseudo couvre toute la photo et intercepterait sinon le
+  clic du calque étiré du lien, qui rend la carte entière cliquable.
+- **Le pseudo n'est PAS scopé au cas photographié** : le cerne existe aussi sur le `<div>` vide de
+  `--absente` et quand la photo échoue. Même silhouette avec ou sans photo (§7, MASTER §9.4).
+- **Le `position: relative` du cadre ne casse pas l'ancrage du calque du lien.** Le calque se résout sur
+  le plus proche **ancêtre** positionné de l'`<a>` — chaîne `<a>` → `<h3>` → `<li>.__carte`. Le cadre est
+  un **frère** du `<h3>`, donc jamais dans cette chaîne. **Vérifié en navigateur** par
+  `elementFromPoint()` au centre de chaque cadre : chaque sonde rend le lien de **sa** carte, avec son
+  propre `href`. La panne nommée dans la feuille — toute la grille menant à un seul chien — n'a pas lieu.
+- **Aucun `overflow: hidden`** sur le cadre : MASTER §7.8 l'interdit sur un conteneur de texte, et ce
+  cadre porte le texte de remplacement de l'image.
+
+**Vérifié en navigateur, dans la toile de l'éditeur** : `box-shadow` du cadre = `none`, `::after` =
+`rgba(22,36,28,.22) 0 0 0 1px inset` avec `pointer-events: none`, et le cerne **visible à l'œil sur une
+photo BLANC PUR** injectée dans le DOM vivant — le pire cas de §6.6, « photo pâle, ciel blanc ».
+`content: ""`, `inset: 0`, `border-radius: inherit` et `pointer-events: none` **ne sont pas des valeurs
+de design** : la liste close des littéraux ci-dessous est inchangée.
+
+> **Cette recette n'est PAS spécifique à ce bloc.** Elle vaut pour toute boîte photo dont l'`<img>`
+> remplit exactement le cadre — c'est-à-dire tous les composants à photo du catalogue. Dette **T-#14-g**,
+> aggravée d'un exemplaire : à hisser dans un crochet mutualisé du thème.
 
 ### Les trois seuls littéraux autorisés dans la feuille, et leur justification
 
@@ -423,22 +553,37 @@ contenu ne s'affiche pas.
 **Fabienne dans l'éditeur : l'apparence de MASTER §9.1.**
 
 ```html
-<div class="wp-block-mtb-grille-chiens mtb-grille-chiens mtb-grille-chiens--vide mtb-etat-vide">
-	<p class="mtb-etat-vide__composant">Grille de chiens</p>
+<div class="mtb-grille-chiens mtb-grille-chiens--vide mtb-etat-vide wp-block-mtb-grille-chiens">
+	<p class="mtb-etat-vide__nom">Grille de chiens</p>
 	<p class="mtb-etat-vide__phrase">Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut.</p>
 </div>
 ```
 
-**Les deux phrases exactes, gelées :**
+**Les deux phrases exactes, gelées — REFORMULÉES ET REDISTRIBUÉES à la finition.** Ce ne sont plus deux
+phrases choisies sur le réglage, mais **deux états distincts de la base**, et c'est la correction de
+fond :
 
-| Réglage | Phrase |
-|---|---|
-| Tous les statuts, groupés | **« Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut. »** |
-| Un statut choisi | **« Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a le statut « Reproducteur ». »** |
+| État réel | Phrase | Réglage concerné |
+|---|---|---|
+| **Aucune fiche de chien publiée ne porte de statut** — la base est à remplir | **« Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut. »** | **tous les réglages**, y compris un statut choisi |
+| **Des fiches portent un statut, mais aucune celui qui est choisi** | **« Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée ne porte le statut « Retraité ». »** | un statut choisi, seulement |
 
-- La phrase est **vraie dans les deux cas indistinguables** — aucune fiche publiée, ou des fiches
-  publiées dont aucune ne porte de statut. **Aucun chien n'est compté** : ce serait une requête sur un
-  type que le module ne possède pas (décision 19).
+- **Pourquoi la distinction compte.** L'ancienne règle choisissait sur le seul réglage : avec un statut
+  choisi et une base vide, elle affirmait « aucune fiche ne porte le statut « Retraité » » alors que le
+  vrai problème était qu'**aucune fiche ne porte de statut du tout**. Vrai à la lettre, trompeur en
+  pratique, et elle envoyait Fabienne chercher le mauvais geste.
+- **Le second état n'est PAS une erreur de l'éleveuse.** Préparer une grille de retraités avant qu'un
+  chien le soit est légitime ; la phrase le constate, elle ne le reproche pas.
+- **Aucune des deux phrases ne présume le genre des chiens** (décision 13). Le sujet grammatical est
+  « aucune fiche de chien publiée » — l'accord porte sur la **fiche**. Le statut est un **libellé cité
+  entre guillemets français**, jamais un adjectif accordé à un chien : ni « Retraitée », ni « Retraité(e) ».
+- Le départage se lit sur le **tableau de groupes déjà rendu** par la fonction propriétaire
+  (`array() !== tous_les_groupes()`). **Aucun chien n'est compté, aucune requête n'est refaite** : ce
+  serait interroger un type que le module ne possède pas (décision 19). Un seul appel, mémorisé, sert le
+  filtrage **et** ce départage.
+- **Les trois branches sont vérifiées en exécution** : base sans statut + réglage `tous` → phrase 1 ;
+  base sans statut + réglage `retraite` → **phrase 1** ; base avec des statuts + réglage `retraite` →
+  phrase 2, « … ne porte le statut « Retraité ». ».
 - Elle est **actionnable** : elle nomme les deux conditions, publier **et** donner un statut, et elle
   recoupe exactement l'avis d'enregistrement que le contrat #4 §8 affiche déjà quand une fiche est
   enregistrée sans statut.
@@ -451,16 +596,24 @@ contenu ne s'affiche pas.
 - **L'étiquette est écrite en casse normale.** Les majuscules de §9.1 sont un `text-transform` de
   `editor.css` : les mettre en dur en PHP serait une décision visuelle, et un lecteur d'écran
   **épellerait**.
-- **Les classes `mtb-etat-vide*` sont PARTAGÉES, non scopées au bloc, et c'est délibéré.** MASTER §9.1
-  exige **une seule apparence pour les dix composants** du catalogue. Une classe
-  `mtb-grille-chiens__etat-vide` la rendrait **mécaniquement impossible** et garantirait neuf copies
-  divergentes — la dette T9 en dix exemplaires. Le modificateur scopé `--vide` est conservé sur la
-  racine pour qu'un ajustement propre à ce bloc reste possible plus tard. **Arbitrage assumé contre la
-  lettre de la convention `mtb-<bloc>__<element>` du contrat #1 §8** : la contrainte de §9.1 est plus
-  forte, et le lot suivant en héritera.
-- **L'apparence elle-même vit dans `editor.css`, hors empreinte.** Les crochets existent, l'apparence
-  non : **MASTER §9.1 n'est satisfait qu'à moitié par cette issue.** Dette **T-#14-c**, à énoncer et non
-  à cocher.
+- **Les classes `mtb-etat-vide*` sont PARTAGÉES et restent NUES, jamais scopées sous une classe de bloc**
+  — arbitrage du lot entier, et c'est délibéré. MASTER §9.1 exige **une seule apparence pour les dix
+  composants** du catalogue. Une classe `mtb-grille-chiens__etat-vide` la rendrait **mécaniquement
+  impossible** et garantirait neuf copies divergentes — la dette T9 en dix exemplaires. Nues, elles
+  pourront être hissées dans une feuille partagée **sans renommage**. Le modificateur scopé `--vide`
+  reste sur la racine pour qu'un ajustement propre à ce bloc soit possible plus tard, **jamais pour
+  reproduire l'apparence commune**. **Arbitrage assumé contre la lettre de la convention
+  `mtb-<bloc>__<element>` du contrat #1 §8** : la contrainte de §9.1 est plus forte.
+- **Les trois crochets sont GELÉS pour le lot** : `.mtb-etat-vide`, **`.mtb-etat-vide__nom`**,
+  `.mtb-etat-vide__phrase`. La rédaction initiale écrivait `__composant` ; **le lot a retenu `__nom`**, que
+  cinq composants frères émettent aussi. Le module les **émet**, l'issue #6 en **livre l'apparence** dans
+  `editor.css` : ce module ne la redéfinit jamais.
+- **T-#14-c : SOLDÉE.** L'apparence vit bien dans `editor.css`, hors empreinte, et **elle est désormais
+  livrée** par #6 (`.mtb-etat-vide`, `.mtb-etat-vide__nom`, `.mtb-etat-vide__phrase`). **Vérifié dans la
+  toile** : fond `--calcaire-creux`, filet tireté `--laiton`, rembourrage `--e-6`, et
+  `text-transform: uppercase` sur `__nom` — les majuscules de §9.1 sont donc bien obtenues **par le CSS**
+  et non écrites en dur en PHP, exactement comme la puce suivante l'exigeait. **MASTER §9.1 est
+  satisfait.**
 
 ### Comment le contexte éditeur est distingué du contexte visiteur
 
@@ -518,7 +671,13 @@ notice, aucun statut inventé**.
 - **Le module ne modifie aucun fichier de `includes/query/` ni de `includes/content/`**, et ne
   réimplémente **aucune** requête sur `mtb_chien` (décision 19). Le filtrage porte sur le tableau de
   groupes **déjà rendu** par la fonction propriétaire.
-- **Le module ne déclare aucune fonction `mtb_*` globale** : rien ne peut ombrer une chaîne sœur.
+- **Le module ne déclare AUCUNE fonction de lecture globale** — aucun `mtb_get_*`, aucun nom qu'une
+  chaîne sœur ou `includes/query/` pourrait revendiquer. **Interdit réécrit à la finition** : la forme
+  d'origine (« aucune fonction `mtb_*` globale ») est remplacée par celle-ci, parce que le module expose
+  désormais **une** fonction globale, `mtb_grille_chiens_rendu()` (§3 bis). Elle rend du **HTML**, pas des
+  données ; elle est gardée par `function_exists()` ; et le préfixe `mtb_grille_chiens_` est réservé à ce
+  module. **Toute autre fonction globale reste interdite ici**, et une nouvelle demanderait un amendement
+  de ce contrat.
 - **`render.php` ne déclare AUCUNE fonction.** WordPress l'inclut **une fois par instance de bloc** :
   deux blocs sur la même page donneraient `Cannot redeclare function …`, un `E_COMPILE_ERROR` hors de
   toute portée de `try/catch` — **site par terre**. Il contient une garde `ABSPATH` et **une seule**
@@ -541,7 +700,7 @@ notice, aucun statut inventé**.
 | **2** | **Forme des cinq classes de cadrage** : `__photo--centre` contre `__cadre-photo--cadrage-centre` | **`mtb-grille-chiens__cadre-photo--cadrage-<clé en tirets>`** | L'infixe `--cadrage-` distingue sans effort un cadrage de `--absente`. **Et les tirets sont impératifs** : le geste naturel côté serveur est `'…--' . $cadrage`, qui produirait `--cadrage-haut_gauche` — **deux cadrages sur cinq muets**, la photo retombant sur le défaut, en silence. Le remplacement `_` → `-` puis `sanitize_html_class()` est obligatoire. |
 | **3** | **Photo absente : `--absente` ou `--vide` ?** | **`--absente`** | Aligné sur le vocabulaire gelé du projet : MASTER §9.3 s'intitule « Donnée absente » et l'état du contrat #1 §9 s'appelle `donnee_absente`. Et `--vide` est déjà pris par l'état vide du bloc entier : le même mot pour deux choses différentes est le prochain arbitrage 1. |
 | **4** | **Titre de groupe : `__titre` ou `__titre-groupe` ?** | **`__titre-groupe`** | Explicite. Le bloc n'a qu'un type de titre aujourd'hui ; il en aura peut-être deux demain. |
-| **5** | **La classe utilitaire partagée `mtb-photo` est-elle émise par le plugin ?** (MASTER §6.2 écrit son sélecteur `.mtb-photo > img`) | **Non. Le plugin n'émet que `mtb-<bloc>` et `mtb-<bloc>__<element>`** | Le contrat #1 §8 est littéral sur ces deux formes, et une classe utilitaire partagée est un objet **du thème**. La feuille scope donc son traitement photo à `.mtb-grille-chiens__cadre-photo`. **Coût assumé et tracé** : le prochain composant à cadre photo recopiera la règle de §6.2 — dette **T-#14-g**, à hisser dans un crochet mutualisé du thème **avant qu'elle existe en cinq exemplaires**. C'est une décision à prendre **une fois pour tous les composants**, pas bloc par bloc. |
+| **5** | **La classe utilitaire partagée `mtb-photo` est-elle émise par le plugin ?** (MASTER §6.2 écrit son sélecteur `.mtb-photo > img`) | **Non. Le plugin n'émet que `mtb-<bloc>` et `mtb-<bloc>__<element>`** | Le contrat #1 §8 est littéral sur ces deux formes, et une classe utilitaire partagée est un objet **du thème**. La feuille scope donc son traitement photo à `.mtb-grille-chiens__cadre-photo`. **Coût assumé et tracé** : le prochain composant à cadre photo recopiera la règle de §6.2 — dette **T-#14-g**, à hisser dans un crochet mutualisé du thème **avant qu'elle existe en cinq exemplaires**. C'est une décision à prendre **une fois pour tous les composants**, pas bloc par bloc. **Amendement de finition, à remonter au lot** : l'arbitrage du lot veut désormais que `.mtb-photo` reste une classe **nue**, jamais scopée sous une classe de bloc, précisément pour pouvoir être hissée **sans renommage**. Ce module, lui, **n'émet pas `.mtb-photo` du tout** — il émet `__cadre-photo`. La décision reste bonne au regard du contrat #1 §8, mais elle a une conséquence qu'il faut dire : **le hissage que le lot prépare ne couvrira pas ce composant**, qui devra être repris à la main. Point d'attention du lot, pas une dérive à corriger ici : changer les classes émises modifierait le balisage gelé du §4. |
 | **6** | **Canal large : `alignwide` émis par le plugin, ou règle de canal du thème ?** | **Décision maintenue, mais elle N'ATTEINT PAS son but — voir §13, point 1.** La feuille pose `max-inline-size: var(--l-large)` sur `.mtb-grille-chiens`, et **ce plafond est inerte** : le bloc n'est jamais enfant direct de `.mtb-canal`, donc il hérite du canal **texte** (36 rem). Le canal large exigerait `grid-column: large-debut / large-fin` sur un enfant direct de `.mtb-canal`, ce que le bloc ne peut pas être | `alignwide` est une classe de **mise en page**, interdite au plugin (contrat #1 §8 et §13) ; et la règle de canal du thème vit dans `base.css`/`theme.json`, **hors empreinte des six chaînes du lot**. Aucune des deux moitiés n'avait vu la troisième voie, qui est légitime — la feuille **est** du thème — et qui **supprime la dette** au lieu de la reporter. Imbriqué dans un conteneur plus étroit, le conteneur gagne : dégradation, pas casse. |
 | **7** | **Piste minimale de la grille : `9rem` ou `14rem` ?** Le plan thème livrait `9rem` et remontait la question à la chaîne design | **`14rem`** | **MASTER §9.4 est le seul endroit du document qui chiffre cet objet** — il parle d'« une grille de **4 colonnes** » pour une grille de chiens — et `14rem` est la seule valeur qui la produit. Le `9rem` du §6.7 chiffre une **galerie** : objet différent, gouttière différente. Emprunter le nombre d'un autre objet est le plus faible des deux appuis. Six vignettes de 155 px sous un nom de 28 px est un rapport que le plan thème jugeait lui-même « discutable » sur un site dont la matière première est la photographie. **Contrepartie assumée : 1 colonne à 360 px** — une photo de 324 px de large, ce qui sert BRIEF §10 mieux que deux vignettes de 146 px, et supprime la coupure d'un nom long. Valeur absente de `tokens.css`, **signalée à la chaîne design, réversible en un littéral**. |
 | **8** | **Mémorisation des groupes entre deux instances du bloc** | **Variable statique de fonction. Jamais `wp_cache_set()`, jamais de transient** | Sur une installation dotée d'un cache objet **persistant** (Redis, Memcached), `wp_cache_set()` avec expiration 0 **survit à la requête** : la grille resterait périmée après qu'elle a modifié un chien. C'est exactement l'échec que le contrat #1 §9 reproche aux transients, obtenu par une autre porte. Une statique de fonction ne franchit jamais la limite de la requête et n'est pas une variable globale. |
@@ -551,21 +710,24 @@ notice, aucun statut inventé**.
 | **12** | **Le nom d'usage est-il répété au centre d'un emplacement photo vide** (lettre de MASTER §9.2) ? | **Non**, et le filet double de §9.2 est retiré lui aussi | Les deux plans convergeaient, pour la même raison. Détail et remontée à la chaîne design en §7. |
 | **13** | **`<span class="__nom-texte">` autour du texte du nom** : demandé par le thème, non planifié par le serveur | **Émis, et toujours** — y compris sans lien | Coût d'un `<span>`, gain réel : le nom redevient **sélectionnable** malgré le calque étiré. Toujours émis pour que la feuille n'ait qu'une forme à cibler. **Honnêteté** : un glissement démarré sur du texte de lien déclenche un glisser-déposer dans Chrome — le gain est **partiel** et vérifiable seulement en navigateur. |
 | **14** | **Fiche protégée par mot de passe dans la grille** (question du plan thème) | **Sans objet : elle en est absente à la source** | Vérifié dans le code propriétaire, `lecture.php:167` : `'has_password' => false`. Le préfixe « Protégé : » du cœur n'atteint donc jamais la grille, et rien ne fuit. La dette **T8** n'est ni aggravée ni soldée par cette issue. |
-| **15** | **Catégorie de blocs `mtb`** | **Filtre `block_categories_all` idempotent dans le `bootstrap.php` du module** | Détail et mode de panne exact en §3. |
+| **15** | **Catégorie de blocs `mtb`** | **PÉRIMÉ. Décision en vigueur : `"category": "mtb"` seul, aucun filtre.** La rédaction d'origine — un filtre `block_categories_all` idempotent dans le `bootstrap.php` du module — était le garde-fou d'un temps où `categorie-mtb/` n'existait pas | `categorie-mtb/` est livré par #6 et vérifié en exécution : la catégorie est déclarée **une fois pour tout le catalogue**, comme le contrat #1 §10 l'exigeait. Garder le filtre en faisait une **déclaration en double**, la forme même de la dette T9. Détail, mode de panne d'origine et vérification en §3. Dette T-#14-b **soldée**. |
 | **16** | **`RadioControl` ou `SelectControl` pour le réglage ?** | **`RadioControl`, `initialOpen: true`** | Les cinq choix sont visibles sans rien déplier — même argument que l'arbitrage 1 du contrat #4 (« un champ jamais déplié est un champ jamais rempli »), **même contrôle que le champ Statut de la fiche Chien** qu'elle connaît déjà, cinq cibles au lieu d'une liste déroulante, et lisible à 200 % de zoom. |
 
 ## 12. Points restés ouverts — ni comblés, ni oubliés
 
-- **La feuille de bloc n'atteint pas l'iframe de l'éditeur.** `wp_enqueue_block_style()` s'accroche sur
-  `render_block_{$nom}`, `wp_enqueue_scripts` ou `wp_footer` : **aucun des trois ne s'exécute dans la
-  toile de l'éditeur**, qui ne reçoit que `add_editor_style()` et `enqueue_block_assets`. Conséquence
-  pour Fabienne : dans l'éditeur elle voit la structure habillée par **`base.css` seul** — vrais `h2`
-  avec leur filet, vrais `h3` cliquables, mais **photos empilées pleine largeur**, sans grille et sans
-  carré. **Lisible, jamais cassé, et long à faire défiler.** Les trois correctifs possibles
-  (`add_editor_style` sur le dossier, boucle passée sur `enqueue_block_assets`, sous-ensemble recopié
-  dans `editor.css`) vivent **tous** dans `functions.php` ou `editor.css`, hors empreinte des six
-  chaînes. Dette **T-#14-h** — elle concerne **toutes** les futures feuilles de blocs, pas seulement
-  celle-ci.
+- **~~La feuille de bloc n'atteint pas l'iframe de l'éditeur.~~ Dette T-#14-h : SOLDÉE par l'issue #6.**
+  Le diagnostic écrit ici était **incomplet, et sa conclusion fausse**. La cause réelle, mesurée par une
+  chaîne sœur : les feuilles de blocs sont mises en file avec `'deps' => array( 'mtb-jetons' )`, or
+  `mtb-jetons` n'est enregistré que par `mtb_feuilles_du_site()` sur `wp_enqueue_scripts`, **qui ne se
+  déclenche jamais en administration** — et `WP_Dependencies::all_deps()` **abandonne l'élément entier,
+  sans erreur ni avertissement**, dès qu'une dépendance est introuvable. Ce n'était donc pas le crochet
+  de `wp_enqueue_block_style()` qui manquait, mais **une dépendance non résolue**, pour les dix
+  composants du catalogue à la fois. Le correctif de #6 enregistre `mtb-jetons` en administration, dans
+  `functions.php` — **hors de l'empreinte de ce module, et il ne fallait donc pas le contourner ici.**
+  **Vérifié dans la toile le 2026-08-17** : `mtb-bloc-mtb-grille-chiens-css` et `mtb-jetons-css` sont
+  tous deux présents dans l'iframe, la grille rend `grid-template-columns: 272px 272px` avec
+  `gap: 32px`, et le cadre mesure **272 × 272** en `aspect-ratio: 1 / 1`. Ce que Fabienne voit dans
+  l'éditeur est désormais ce que le visiteur voit.
 - **La feuille est probablement imprimée en pied de page** sur le site public (le rendu du bloc a lieu
   après `wp_head` dans un thème de blocs), d'où un bref affichage non habillé. À observer avant de
   décider ; le mécanisme est hors empreinte. Même dette.
@@ -577,7 +739,9 @@ notice, aucun statut inventé**.
   requêtes par pièce jointe distincte. **Tenable à 17 chiens, pas extensible à 40.** Dette **T-#14-a**,
   à payer par une option d'hydratation ou une lecture allégée **chez le propriétaire du type**, jamais
   ici.
-- **Deux trous réels du contrat #4, contournés proprement et signalés** :
+- **Deux trous réels du contrat #4, contournés proprement et signalés.** **Les deux contournements sont
+  validés par le lot et restent écrits comme dettes** : ils ne se corrigent **pas** ici, et #16/#17
+  buteront sur le même mur — c'est précisément pourquoi ils doivent rester lisibles.
   1. **`mtb_get_chien()` ne renvoie aucune URL de fiche** — aucune clé `lien` dans ses 24 clés, alors
      que `pere`/`mere` en portent une. Le bloc appelle donc `get_permalink()` **depuis l'extension**, sur
      un identifiant que la fonction propriétaire lui a donné : l'interdit du contrat #1 §8 vise le
@@ -604,12 +768,72 @@ notice, aucun statut inventé**.
   public n'a jamais été observé sur ce projet). Colonnes réelles à 360 px et à 200 % de zoom, rendu du
   texte `alt` d'une image en échec, comportement de la sélection de texte, support de `:has()`, et
   l'endroit où la feuille est imprimée : **à vérifier en navigateur.**
-- **Aucune fiche de chien n'existe en base**, et `wp mtb import-fixtures` n'est livré par personne
-  (contrat #4 §11). **La démonstration de ce lot est donc un état vide**, sauf si des fiches d'essai
-  **explicitement fictives** sont saisies — décision de lot, et **aucun nom, LOF ou date réels ne sera
-  inventé pour la combler** (D11).
+- **~~Aucune fiche de chien n'existe en base.~~ Ce n'est plus vrai depuis le 2026-08-17** : deux fiches
+  d'essai **explicitement fictives**, publiées avec le statut « Reproducteur », existent en base —
+  `#116 « Essai fictif A (a supprimer) »` et `#117 « Essai fictif B (a supprimer) »`. Elles n'ont **pas**
+  été créées par cette chaîne, et **aucun fait d'élevage n'a été inventé** : leur nom dit ce qu'elles
+  sont et qu'elles sont à supprimer, elles n'ont ni photo, ni sexe, ni date, ni LOF, ni généalogie
+  (D11 tenue). Elles ont permis de **vérifier le rendu réel de la grille**, ce que l'état vide seul ne
+  permettait pas. `wp mtb import-fixtures` n'est toujours livré par personne (contrat #4 §11), et **elles
+  sont à retirer avant toute recette de production**.
 
 ## 13. Journal des amendements — après observation en navigateur
+
+### Passe 2 — la finition, 2026-08-17
+
+Le composant était livré et commité (`009eaa7`). Cette passe **ne l'a pas redessiné** : elle a payé trois
+dettes, retiré une déclaration en double, corrigé un défaut visuel mesuré et ouvert une interface pour la
+suite. **Sept points, dont cinq amendent ce contrat.**
+
+**1. Le filtre `block_categories_all` local est SUPPRIMÉ.** La passe 1 avait écrit « le filtre local N'A
+PAS été retiré, et c'est délibéré », au motif qu'on ne supprime pas un garde-fou en s'appuyant sur un
+livrable écrit en parallèle. **Ce motif est périmé** : `categorie-mtb/` n'est plus « écrit en parallèle »,
+il est **livré et vérifié en exécution**. Trois modules déclaraient la même catégorie — la dette T9 dans
+sa forme la plus littérale. Vérifié après suppression : `apply_filters( 'block_categories_all' )` rend
+**exactement une** entrée `mtb`, « Mont Brabant ». **T-#14-b soldée.** Voir §3 et l'arbitrage 15.
+
+**2. Une fonction globale de rendu est exposée** pour #16 et #17 : `mtb_grille_chiens_rendu()`. Elle
+**contredit la lettre du §3 et du §10 d'origine**, et l'interdit a été **réécrit** plutôt que contourné.
+Voir §3 bis pour son contrat, ses trois choix de forme et l'honnêteté sur son utilité réelle dans un thème
+de blocs.
+
+**3. Le cerne photo était invisible dès qu'une photo chargeait**, et personne ne l'avait vu — le
+commentaire de la feuille affirmait le contraire. `--cerne-photo` est une ombre **intérieure**, que le
+contenu remplacé de l'`<img>` recouvrait entièrement. Corrigé par la recette V9, en pseudo-élément.
+**Leçon à porter, et elle vaut pour tout le catalogue** : une ombre `inset` sur une boîte qu'un `<img>`
+remplit exactement **n'existe pas**, quoi qu'en dise le CSS. Voir §6.
+
+**4. La seconde phrase d'état vide est reformulée, et son choix ne dépend plus du réglage seul.**
+L'ancienne règle pouvait affirmer « aucune fiche ne porte le statut « Retraité » » alors que le vrai
+problème était qu'aucune fiche ne portait **de statut du tout** — vrai à la lettre, trompeur en pratique.
+Voir §8.
+
+**5. `mtb-etat-vide__composant` devient `mtb-etat-vide__nom`**, crochet gelé pour les six composants du
+lot. Voir §4 et §8.
+
+**6. Les deux dettes d'apparence de l'éditeur sont soldées par l'issue #6**, pas par ce module :
+**T-#14-h** (la feuille n'atteignait pas la toile — et le diagnostic écrit en passe 1 était **faux**, voir
+§12) et **T-#14-c** (l'apparence de l'état vide, désormais dans `editor.css`). Le correctif vivait dans
+`functions.php` : il ne fallait pas le contourner ici, et il ne l'a pas été.
+
+**7. Ce qui a été vérifié dans la toile de l'éditeur, avec deux fiches d'essai fictives en base** —
+`debug.log` à **0 octet** : les deux feuilles présentes dans l'iframe (`mtb-bloc-mtb-grille-chiens-css`,
+`mtb-jetons-css`) ; la grille à `272px 272px` et `gap: 32px` ; le cadre à **272 × 272**, `aspect-ratio:
+1 / 1`, fond `--calcaire-creux`, rayon nul ; le cerne sur le `::after` avec `pointer-events: none`, et
+**visible à l'œil sur une photo blanc pur** ; le calque du lien **correctement ancré carte par carte**
+(chaque sonde rend le lien de sa carte) ; le nom **sélectionnable** sur ses deux lignes ; l'apparence
+d'état vide de #6 avec ses majuscules obtenues par le CSS ; le titre de groupe « Reproducteurs » ; et les
+**deux phrases exactes** dans leurs trois branches.
+
+> **Une mesure fausse, corrigée, à ne pas refaire.** Une première sonde `elementFromPoint()` au **centre
+> du rectangle englobant** du nom rendait le lien, ce qui semblait contredire le point 3 de la passe 1. La
+> sonde était fausse : le nom tient sur **deux lignes**, et le milieu du rectangle englobant d'un élément
+> en ligne tombe **entre les deux boîtes de ligne**, là où le `<span>` n'a aucune boîte. Sondé sur chaque
+> boîte de ligne (`getClientRects()`), le `<span>` répond aux quatre sondes. **Le point 3 de la passe 1
+> tient. Sur un texte en ligne qui se coupe, on sonde les boîtes de ligne, jamais le rectangle
+> englobant.**
+
+### Passe 1 — après le premier rendu réel du projet, 2026-08-17
 
 **2026-08-17.** `dev-integration-mtb` a été le premier agent du projet à **observer un rendu réel** de
 données d'élevage (dette T10). Trois affirmations de la rédaction initiale de ce contrat étaient
@@ -649,10 +873,15 @@ au gel, ce ne l'est plus** : `includes/blocks/categorie-mtb/` a été livré pen
 **Les deux coexistent sans dégât, vérifié en exécution** : `apply_filters( 'block_categories_all' )` rend
 **une seule** entrée `mtb`, « Mont Brabant », en tête. C'est exactement ce que l'idempotence promettait.
 
-**Le filtre local N'A PAS été retiré, et c'est délibéré.** Supprimer un garde-fou en s'appuyant sur un
-livrable écrit en parallèle rouvrirait la panne muette que le §3 décrit — un bloc absent de l'insérteur,
-sans une erreur. La suppression est **une ligne, dans le seul dossier du bloc**, pour une issue de
-suite : dette **T-#14-b**, désormais **payable** au lieu d'ouverte.
+**Le filtre local N'A PAS été retiré** à cette passe, et c'était délibéré : supprimer un garde-fou en
+s'appuyant sur un livrable écrit **en parallèle** rouvrirait la panne muette que le §3 décrit — un bloc
+absent de l'insérteur, sans une erreur. La suppression est **une ligne, dans le seul dossier du bloc**,
+pour une issue de suite : dette **T-#14-b**, alors **payable** au lieu d'ouverte.
+
+> **Périmé par la passe 2, ci-dessus : le filtre EST retiré et T-#14-b est SOLDÉE.** `categorie-mtb/`
+> n'était plus « écrit en parallèle » mais livré et vérifié. Le raisonnement ci-dessus reste consigné
+> parce qu'il était juste **au moment où il a été écrit** — et parce qu'il dit à quelle condition on
+> retire un garde-fou : quand le livrable dont il couvrait l'absence est **constaté**, pas annoncé.
 
 ### 3. `position: relative` seul ne rendait pas le nom sélectionnable
 
@@ -697,6 +926,9 @@ photo à **même silhouette** qu'un chien avec photo, **un seul arrêt de tabula
 de focus de §8.1 sur la carte entière, **aucun `fetchpriority`**, **aucune origine tierce**, un nom de
 63 caractères coupé sur 4 lignes sans débordement, et **1 colonne de 324 px à 360 px sans défilement
 horizontal**.
+
+> **Périmé par la passe 2** : T-#14-h est **soldée** par l'issue #6, et les deux feuilles atteignent
+> désormais la toile. Le paragraphe suivant décrit l'état d'avant le correctif.
 
 **Et T-#14-h est confirmée à la lettre** : dans la toile de l'éditeur, la feuille n'entrant pas dans
 l'iframe, les photos s'empilent pleine largeur, sans grille et sans carré. Lisible, jamais cassé, et

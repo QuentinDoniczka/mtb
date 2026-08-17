@@ -22,14 +22,20 @@
  * inventée, aucune ne dispose d'un jeton (en créer un serait l'invention que le
  * contrat interdit) :
  *
- *   1. `14rem`, piste minimale de la grille. MASTER §9.4 est le seul endroit du
- *      document qui chiffre cet objet — « une grille de 4 colonnes » pour une
- *      grille de chiens — et 14rem est la seule valeur qui la produit dans le
- *      canal large. Contrat §6 et arbitrage 7. Le `9rem` du §6.7 chiffre une
- *      GALERIE : autre objet, autre gouttière (`--e-3`). Conséquence assumée :
- *      une seule colonne à 360 px, soit une photo de 324 px de large.
- *      Valeur absente de tokens.css, signalée à la chaîne design, réversible en
- *      une ligne.
+ *   1. `14rem`, piste minimale de la grille. JUSTIFICATION AMENDÉE — contrat §6
+ *      et §13 point 1 : la première était fausse. Elle disait que 14rem était
+ *      « la seule valeur qui produit les 4 colonnes de MASTER §9.4 dans le canal
+ *      large » ; or le canal large est INATTEIGNABLE (mesuré, voir le §1
+ *      ci-dessous) et la grille rend 2 colonnes, jamais 4. Ce qui fait tenir la
+ *      valeur, et qui est mesuré : dans le canal réellement obtenu — le canal
+ *      texte, 36 rem — 14rem donne 2 colonnes de 272 px là où 9rem en donnerait
+ *      3 de 186 px ; et à 360 px, 1 photo pleine largeur de 324 px au lieu de 2
+ *      vignettes de 146 px, la coupure d'un nom en moins. BRIEF §10 fait des
+ *      photographies la matière première du site : la décision survit à
+ *      l'effondrement de son argument d'origine, mais POUR UNE AUTRE RAISON, et
+ *      c'est celle-ci qu'il faut lire. Le `9rem` du §6.7 chiffre une GALERIE :
+ *      autre objet, autre gouttière (`--e-3`). Valeur absente de tokens.css,
+ *      signalée à la chaîne design, réversible en une ligne.
  *   2. `50% 38%`, point d'intérêt par défaut. Recopié de MASTER §6.2, qui en
  *      donne la justification chiffrée : sur une photo de chien en pied, la tête
  *      est au-dessus du centre géométrique. C'est aussi, par le contrat §6, la
@@ -42,7 +48,8 @@
  *      rapport, pas passé en douce.
  *
  * Ne comptent pas comme valeurs brutes : 0, 100 %, le `z-index: 1` d'empilement
- * du §5 et les mots-clés CSS (`left top`, `center bottom`…), qui ne portent
+ * du §5, le `content: ""` / `inset: 0` / `pointer-events: none` du cerne du §4 et
+ * les mots-clés CSS (`left top`, `center bottom`, `inherit`…), qui ne portent
  * aucune décision de design. C'est ce qui permet d'écrire quatre des cinq
  * cadrages sans un seul chiffre.
  *
@@ -80,18 +87,28 @@
  */
 
 /* =====================================================================
- * 1. Le canal large, réclamé par la feuille elle-même — MASTER §7.1
+ * 1. La largeur de la grille — et le canal large, qu'elle N'OBTIENT PAS
  *
- * §7.1 range les grilles de chiens dans le canal large. Le plugin n'émet pas
- * `alignwide` : c'est une classe de MISE EN PAGE, donc interdite à l'extension
- * (contrat #1 §8) ; et la règle de canal du thème vit dans base.css, hors de
- * cette empreinte. La feuille du bloc réclame donc le canal elle-même
+ * MASTER §7.1 range les grilles de chiens dans le canal large. Le plugin n'émet
+ * pas `alignwide` : c'est une classe de MISE EN PAGE, donc interdite à
+ * l'extension (contrat #1 §8) ; et la règle de canal du thème vit dans base.css,
+ * hors de cette empreinte. La feuille pose donc le plafond elle-même
  * (contrat §6, arbitrage 6).
  *
- * `max-inline-size` est un PLAFOND, pas une revendication : imbriqué dans un
- * conteneur plus étroit — le canal texte, une colonne — c'est le conteneur qui
- * gagne. Sémantique voulue : la grille se dégrade en colonnes, elle ne casse
- * pas.
+ * MESURÉ EN NAVIGATEUR, ET CE PLAFOND EST INERTE — contrat §13 point 1. La
+ * chaîne d'ancêtres réelle est
+ * `.mtb-canal > .entry-content > .mtb-grille-chiens`, et base.css confine
+ * l'enfant DIRECT de `.mtb-canal` — donc `.entry-content`, donc tout le contenu
+ * de la page — au canal texte (36 rem = 576 px). Les 1088 px de `--l-large` sont
+ * un plafond au-dessus du conteneur : la grille rend 2 colonnes de 272 px.
+ * MASTER §7.1 n'est donc PAS tenu, et le correctif — un `grid-column` sur un
+ * enfant direct de `.mtb-canal` — vit dans templates/, base.css ou theme.json,
+ * hors de cette empreinte. Dette T-#14-i, arbitrage de l'epic Gabarits.
+ *
+ * Les deux déclarations restent : `max-inline-size` est un PLAFOND, pas une
+ * revendication. Il borne la grille le jour où un conteneur plus large que le
+ * canal texte l'accueille, et ne casse rien dans un conteneur plus étroit —
+ * c'est alors le conteneur qui gagne, la grille se dégrade en colonnes.
  * ================================================================== */
 .mtb-grille-chiens {
   max-inline-size: var(--l-large);
@@ -148,8 +165,9 @@
  * page nul, et il ne dépend pas du serveur.
  *
  * `--absente` (photo absente, contrat §7) n'a AUCUNE règle propre, et c'est une
- * décision : la règle ci-dessous lui donne déjà le ratio, le fond et le cerne,
- * donc exactement la même silhouette qu'une carte photographiée (§9.4). Rien ne
+ * décision : les deux règles ci-dessous lui donnent déjà le ratio, le fond et le
+ * cerne — aucune des deux n'est scopée au cas photographié —, donc exactement la
+ * même silhouette qu'une carte photographiée (§9.4). Rien ne
  * s'y ajoute — ni pictogramme d'appareil photo, ni silhouette de chien, ni image
  * de remplacement (§9.2, §13), ni filet double (§2.1 l'interdit sur une
  * vignette et gagne sur la lettre de §9.2), ni nom d'usage répété au centre : il
@@ -162,13 +180,54 @@
      détouré : jamais de damier, jamais de trou (§6.6). C'est aussi le fond de
      l'emplacement quand la photo est absente ou ne charge pas. */
   background-color: var(--calcaire-creux);
-  /* Cerne intérieur sur TOUTE photo (§6.6) : le bord de l'image existe toujours
-     contre le fond calcaire, même sur un ciel blanc. C'est un cerne, pas une
-     ombre portée — l'interdit du §13 vise les ombres douces sur cartes. */
-  box-shadow: var(--cerne-photo);
   /* §5.2 : rayon nul sur les photos. Écrit plutôt que supposé, parce que c'est
      la seule surface de ce bloc à laquelle un arrondi pourrait être appliqué. */
   border-radius: var(--r-0);
+  /* Référent du ::after qui porte le cerne, et rien d'autre — voir la règle
+     suivante. Ce `position: relative` NE TOUCHE PAS l'ancrage du calque étiré du
+     §5 : le cadre est un FRÈRE du <h3> qui contient le lien, jamais son ancêtre,
+     donc il n'entre pas dans la chaîne de blocs conteneurs du calque, qui
+     continue de se résoudre sur `.mtb-grille-chiens__carte`. Et le cadre
+     précédant le <h3> dans l'ordre du document, le calque — positionné lui aussi,
+     en `z-index: auto` — se peint toujours par-dessus lui : la photo reste
+     cliquable. La panne évitée est nommée au §5 : toute la grille menant à un
+     seul chien. */
+  position: relative;
+}
+
+/* LE CERNE — recette V9, identique à `.mtb-fiche-information__photo::after`
+   livrée par la chaîne #7 (lire le piège n° 2 de son en-tête). NE PAS
+   « SIMPLIFIER » en un `box-shadow` sur le cadre ou sur l'image : `--cerne-photo`
+   est une ombre INTÉRIEURE, et l'<img> remplit le cadre EXACTEMENT (100 %, 100 %,
+   `cover`). Son contenu remplacé se peint donc par-dessus une ombre intérieure
+   portée par le cadre, et le cerne disparaît dès que la photo charge — c'était le
+   défaut mesuré ici. Posée sur l'image elle-même, l'ombre serait recouverte de la
+   même façon. Ce pseudo-élément, positionné, se peint après le contenu en flux :
+   c'est le seul endroit d'où le cerne reste visible AU-DESSUS de la photo.
+   Vérification attendue : inspecter ce ::after et CONSTATER le cerne.
+
+   Il n'est PAS scopé au cas photographié, délibérément : MASTER §6.6 veut le
+   cerne sur TOUTE photo, et le contrat §7 avec MASTER §9.4 exigent la même
+   silhouette avec ou sans photo. Le cerne est donc là aussi sur le <div> vide de
+   `--absente` et quand la photo ne charge pas.
+
+   `pointer-events: none` est OBLIGATOIRE : le pseudo couvre toute la photo et
+   intercepterait sinon le clic et le survol du calque étiré du §5, qui rend la
+   carte entière cliquable — une panne bien pire que le cerne manquant. Il laisse
+   du même coup le texte de remplacement sélectionnable.
+
+   `border-radius: inherit` : le rayon reste celui du cadre sans le recopier, donc
+   sans figer une seconde fois une décision qui n'est écrite qu'à un endroit.
+
+   Aucun `overflow: hidden` n'entre ici : §7.8 l'interdit sur un conteneur de
+   texte, et ce cadre porte le texte de remplacement de l'image. */
+.mtb-grille-chiens__cadre-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
 }
 
 /* MASTER §6.2, la règle unique de cadrage, scopée au cadre de ce bloc plutôt
@@ -276,6 +335,14 @@
    `position: relative`, le calque s'étirerait jusqu'au bloc entier et TOUTE la
    grille mènerait à UN SEUL chien. Contrôlé par `elementFromPoint()` au centre
    de chaque vignette : chaque sonde renvoie le lien de SA carte.
+
+   Le `position: relative` du cadre photo (§4, référent de son cerne) n'y change
+   rien, et il faut le savoir avant de toucher au §4 : le cadre est un FRÈRE du
+   <h3>, donc jamais un ancêtre de cet `<a>` — il ne peut pas devenir le bloc
+   conteneur du calque. Le seul effet d'un frère positionné serait l'ordre de
+   peinture, et le cadre précède le <h3> dans le document : le calque, positionné
+   en `z-index: auto` lui aussi, reste donc au-dessus de la photo et continue d'y
+   recevoir le clic — le cerne du cadre, lui, est en `pointer-events: none`.
 
    Le calque est peint par-dessus le nom (il vient après le <span> dans l'ordre
    du document) : c'est le `z-index: 1` du <span> ci-dessus qui rétablit

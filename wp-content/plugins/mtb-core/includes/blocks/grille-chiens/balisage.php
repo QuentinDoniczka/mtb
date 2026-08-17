@@ -22,9 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Trois sorties possibles, et rien d'autre : la grille, l'état vide de l'éditeur, ou la chaîne
  * vide. Côté visiteur, un composant sans contenu ne s'affiche pas — pas même son conteneur.
  *
- * @param array<string, mixed> $attributs Attributs de l'instance.
+ * @param array<string, mixed> $attributs     Attributs de l'instance.
+ * @param bool                 $rendu_de_bloc Vrai quand WordPress rend une instance du bloc — le
+ *                                            cas de render.php. Faux pour un appel de gabarit, qui
+ *                                            rend la vue du visiteur et rien d'autre.
  */
-function rendu( array $attributs ): string {
+function rendu( array $attributs, bool $rendu_de_bloc = true ): string {
 	if ( ! lecture_disponible() ) {
 		return '';
 	}
@@ -37,14 +40,47 @@ function rendu( array $attributs ): string {
 	}
 
 	if ( '' === $sections ) {
-		return contexte_editeur() ? balisage_etat_vide( $statut ) : '';
+		/*
+		 * L'état vide n'existe que pour l'éleveuse, dans l'aperçu de l'éditeur — lequel passe par le
+		 * rendu du bloc. Appelée depuis un gabarit, la grille vide ne rend rien du tout.
+		 */
+		if ( ! $rendu_de_bloc || ! contexte_editeur() ) {
+			return '';
+		}
+
+		return balisage_etat_vide( $statut, array() !== tous_les_groupes() );
 	}
 
-	return sprintf(
-		'<div %s>%s</div>',
-		get_block_wrapper_attributes( array( 'class' => 'mtb-grille-chiens' ) ),
-		$sections
-	);
+	return sprintf( '<div %s>%s</div>', attributs_conteneur( $rendu_de_bloc ), $sections );
+}
+
+/**
+ * Les attributs du conteneur de la grille.
+ *
+ * get_block_wrapper_attributes() lit le bloc en cours de rendu dans une propriété statique du cœur :
+ * hors du rendu d'un bloc — un appel de gabarit — cette propriété vaut null et la fonction émet un
+ * avertissement PHP. Le conteneur est donc composé ici, avec exactement les mêmes classes et dans le
+ * même ordre : la nôtre, puis celle que le cœur génère, demandée au cœur plutôt que recopiée. Rien
+ * d'autre ne peut manquer, les « supports » de block.json étant tous fermés.
+ *
+ * @param bool $rendu_de_bloc Vrai quand WordPress rend une instance du bloc.
+ */
+function attributs_conteneur( bool $rendu_de_bloc ): string {
+	if ( $rendu_de_bloc ) {
+		return get_block_wrapper_attributes( array( 'class' => 'mtb-grille-chiens' ) );
+	}
+
+	$classes = 'mtb-grille-chiens';
+
+	if ( function_exists( 'wp_get_block_default_classname' ) ) {
+		$generee = wp_get_block_default_classname( 'mtb/grille-chiens' );
+
+		if ( is_string( $generee ) && '' !== $generee ) {
+			$classes .= ' ' . $generee;
+		}
+	}
+
+	return sprintf( 'class="%s"', esc_attr( $classes ) );
 }
 
 /**
@@ -254,40 +290,62 @@ function balisage_groupe( $groupe ): string {
 /**
  * L'état vide, visible de l'éleveuse seule.
  *
- * Deux lignes : le nom du composant, puis ce qui manque. La phrase est vraie dans les deux cas
- * qu'on ne peut pas distinguer — aucune fiche publiée, ou des fiches dont aucune n'a de statut — et
- * elle nomme les deux gestes à faire. Aucun chien n'est compté : ce serait interroger un type de
- * contenu que ce module ne possède pas.
+ * Deux lignes : le nom du composant, puis ce qui manque. Les classes « mtb-etat-vide* » sont
+ * partagées par tous les composants du catalogue, pour que l'état vide ait une seule apparence ; le
+ * modificateur « --vide », lui, reste propre à ce bloc.
  *
  * L'étiquette est écrite en casse normale : la mettre en majuscules serait une décision visuelle, et
- * un lecteur d'écran épellerait.
+ * un lecteur d'écran épellerait le mot lettre par lettre.
  *
- * @param string $statut « tous », ou une clé de statut.
+ * get_block_wrapper_attributes() est appelée directement ici, et non par attributs_conteneur() : cet
+ * état n'est atteignable que pendant le rendu d'une instance du bloc, rendu() l'ayant vérifié avant
+ * d'appeler, donc la propriété du cœur que cette fonction lit est toujours renseignée à cet endroit.
+ *
+ * @param string $statut                   « tous », ou une clé de statut.
+ * @param bool   $des_fiches_ont_un_statut Vrai si des fiches publiées portent un statut, quel qu'il
+ *                                         soit.
  */
-function balisage_etat_vide( string $statut ): string {
+function balisage_etat_vide( string $statut, bool $des_fiches_ont_un_statut ): string {
 	return sprintf(
-		'<div %s><p class="mtb-etat-vide__composant">%s</p><p class="mtb-etat-vide__phrase">%s</p></div>',
+		'<div %s><p class="mtb-etat-vide__nom">%s</p><p class="mtb-etat-vide__phrase">%s</p></div>',
 		get_block_wrapper_attributes( array( 'class' => 'mtb-grille-chiens mtb-grille-chiens--vide mtb-etat-vide' ) ),
 		esc_html( 'Grille de chiens' ),
-		esc_html( phrase_etat_vide( $statut ) )
+		esc_html( phrase_etat_vide( $statut, $des_fiches_ont_un_statut ) )
 	);
 }
 
 /**
- * La phrase de l'état vide, selon le réglage de l'instance.
+ * La phrase de l'état vide, selon le réglage de l'instance et ce que la base contient.
  *
- * Le nom du statut est demandé au singulier au module qui détient le vocabulaire, dans sa forme
- * masculine canonique : ni accord, ni pluriel détourné, ni invention. L'appel est sûr, car un
- * statut autre que « tous » n'a pu franchir statut_demande() que si ce vocabulaire est présent.
+ * Deux situations à ne pas confondre, et c'est tout l'objet de cette fonction : aucune fiche publiée
+ * ne porte de statut — la base est à remplir — ou d'autres chiens sont bien publiés et c'est
+ * seulement le statut choisi qui ne ramène personne. Le second cas n'est pas une erreur de
+ * l'éleveuse, et la phrase ne doit pas le lui laisser croire.
  *
- * @param string $statut « tous », ou une clé de statut.
+ * Aucun chien n'est compté pour trancher : la réponse vient du tableau de groupes que la fonction de
+ * lecture a déjà rendu, jamais d'une requête de ce module.
+ *
+ * Aucune des deux phrases ne suppose le genre des chiens : le sujet grammatical est « aucune fiche de
+ * chien publiée » — l'accord porte sur la fiche — et le statut est un libellé cité entre guillemets,
+ * jamais un adjectif accordé. Ce libellé est demandé au singulier au module qui détient le
+ * vocabulaire, dans sa forme masculine canonique : ni accord, ni pluriel détourné, ni invention.
+ * L'appel est sûr, car un statut autre que « tous » n'a pu franchir statut_demande() que si ce
+ * vocabulaire est présent.
+ *
+ * @param string $statut                   « tous », ou une clé de statut.
+ * @param bool   $des_fiches_ont_un_statut Vrai si des fiches publiées portent un statut, quel qu'il
+ *                                         soit.
  */
-function phrase_etat_vide( string $statut ): string {
-	if ( 'tous' === $statut ) {
+function phrase_etat_vide( string $statut, bool $des_fiches_ont_un_statut ): string {
+	/*
+	 * Sans aucun statut en base, les deux cas indistinguables — aucune fiche publiée, ou des fiches
+	 * publiées dont aucune n'a de statut — reçoivent la même phrase, vraie des deux.
+	 */
+	if ( 'tous' === $statut || ! $des_fiches_ont_un_statut ) {
 		return "Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut.";
 	}
 
 	$libelle = \MTB\Core\Content\Chien\libelle_statut( $statut, '' );
 
-	return "Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a le statut « " . $libelle . ' ».';
+	return "Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée ne porte le statut « " . $libelle . ' ».';
 }

@@ -119,20 +119,21 @@ function lecture_disponible(): bool {
 }
 
 /**
- * Les groupes à rendre, tels que la fonction de lecture les a construits.
+ * Tous les groupes rendus par la fonction de lecture, avant le moindre filtrage.
  *
- * Le filtrage porte sur les groupes déjà rendus : le module n'interroge jamais la base lui-même, ni
- * ne redécide de l'ordre, ni de ce qu'est un groupe vide.
+ * Deux besoins s'en servent, et un seul appel les sert : les groupes à rendre, et la question « des
+ * fiches publiées portent-elles un statut ? » que la phrase d'état vide doit trancher. Aucun chien
+ * n'est compté et aucune requête n'est refaite : le module ne possède ni le type de contenu ni ses
+ * requêtes.
  *
  * La mémorisation est une statique de fonction, jamais un transient ni le cache d'objets : sur une
  * installation dotée d'un cache persistant, la grille resterait périmée après la modification d'une
  * fiche. Une statique ne franchit pas la limite de la requête.
  *
- * @param string $statut « tous », ou une clé de statut.
- *
- * @return array<int, mixed> Liste de groupes ; tableau vide si aucun ne correspond.
+ * @return array<int, mixed> Liste de groupes ; tableau vide si aucune fiche publiée n'a de statut,
+ *                           ou si la fonction de lecture est absente.
  */
-function groupes( string $statut ): array {
+function tous_les_groupes(): array {
 	static $memo = null;
 
 	if ( ! lecture_disponible() ) {
@@ -140,16 +141,33 @@ function groupes( string $statut ): array {
 	}
 
 	if ( null === $memo ) {
-		$memo = mtb_get_chiens_par_statut();
+		$lus  = mtb_get_chiens_par_statut();
+		$memo = is_array( $lus ) ? $lus : array();
 	}
 
+	return $memo;
+}
+
+/**
+ * Les groupes à rendre, tels que la fonction de lecture les a construits.
+ *
+ * Le filtrage porte sur les groupes déjà rendus : le module n'interroge jamais la base lui-même, ni
+ * ne redécide de l'ordre, ni de ce qu'est un groupe vide.
+ *
+ * @param string $statut « tous », ou une clé de statut.
+ *
+ * @return array<int, mixed> Liste de groupes ; tableau vide si aucun ne correspond.
+ */
+function groupes( string $statut ): array {
+	$tous = tous_les_groupes();
+
 	if ( 'tous' === $statut ) {
-		return $memo;
+		return $tous;
 	}
 
 	$retenus = array();
 
-	foreach ( $memo as $groupe ) {
+	foreach ( $tous as $groupe ) {
 		if ( is_array( $groupe ) && isset( $groupe['statut'] ) && $statut === $groupe['statut'] ) {
 			$retenus[] = $groupe;
 		}
