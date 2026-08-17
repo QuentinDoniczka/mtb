@@ -1340,3 +1340,35 @@ qui remplit exactement la boîte, ce qui effacerait le cerne. **Vérifié dans n
 présente pas.** `galerie.css` pose le cerne sur `.mtb-galerie-photos__lien::after`, au-dessus de
 l'image et présent dans les quatre états, précisément pour cette raison — elle est écrite dans le
 commentaire de la section 4 depuis la livraison initiale. Rien à corriger.
+
+---
+
+## 21. Amendement du 2026-08-18 — l'arbitrage 5 reste bon, la règle qu'il citait a bougé
+
+**Ce qui change** : le contrat #1 §5 a été amendé le 2026-08-18. Il admet désormais **une** catégorie
+de fonctions globales en plus des fonctions de lecture : les **fonctions de composant** — rendre le
+balisage d'un composant, ou répondre à la question d'état qui décide de ce rendu. Cinq conditions
+cumulatives, dont la cinquième : **jamais une lecture de données**. Le détail est dans l'amendement 1
+du contrat #1, en fin de fichier.
+
+**Ce que devient l'arbitrage 5 (§10)** : sa décision — `render_block()` plutôt qu'une fonction
+`mtb_galerie_photos_*` — **reste retenue**, et reste le défaut du projet. L'amendement de #1 n'oblige
+personne à ouvrir une fonction de composant ; il dit seulement qu'en écrire une n'est plus une
+infraction. Quand `render_block()` suffit, on n'ouvre rien : zéro surface nouvelle, une seule
+implémentation, l'argument de l'arbitrage 5 est intact.
+
+**Ce qui n'est plus exact dans sa justification** : la phrase « une fonction de rendu globale en serait
+une dérogation » l'était au moment où elle a été écrite, et ne l'est plus. Trois chaînes sœurs du même
+lot en ont livré une chacune — #6, #7, #14 — sans le savoir, chacune aveugle aux autres. La règle a
+bougé après coup ; le jugement de cette chaîne, lui, n'est pas en cause. **La ligne du §10 n'est pas
+réécrite** : elle se lit avec cet amendement.
+
+**Ce qui reste vrai sans réserve** : la fonction de normalisation `_mtb_galerie` n'a toujours aucun
+client, et la fonction de rendu interne de ce module reste **sous espace de noms**, donc hors surface
+globale. Rien à changer dans le code livré.
+
+**Reste ouvert pour #16 et #17** : dans un thème de blocs, un gabarit est un fichier HTML et n'exécute
+aucun PHP — ni `render_block()`, ni une fonction de composant. La galerie d'une fiche est le cas le
+plus difficile du lot, parce que son bloc prend un attribut `photos` explicite qu'un gabarit ne peut
+pas connaître. Point ouvert consigné dans l'amendement 1 du contrat #1, **à trancher au brainstorm de
+#16/#17**, pas ici.

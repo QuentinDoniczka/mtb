@@ -1165,3 +1165,47 @@ docs/guide/composant-liste-portees.md      ← nom imposé au lot : composant-<n
 
 §1 annonçait `docs/guide/composant-liste-de-portees.md` : **faux**. La convention du lot est
 `composant-<nom-du-bloc>.md`, et le bloc s'appelle `liste-portees`.
+
+---
+
+## 19. Amendement du 2026-08-18 — §18.6 reste bon, la règle qu'il appliquait a bougé
+
+**Ce qui change** : le contrat #1 §5 a été amendé le 2026-08-18. Il admet désormais **une** catégorie
+de fonctions globales en plus des fonctions de lecture : les **fonctions de composant** — rendre le
+balisage d'un composant, ou répondre à la question d'état qui décide de ce rendu. Cinq conditions
+cumulatives, dont la cinquième : **jamais une lecture de données** (décision 19 — le type qui possède
+la donnée possède sa lecture). Le détail est dans l'amendement 1 du contrat #1, en fin de fichier.
+
+**Ce que devient §18.6** : sa décision — exposer la **classe de rendu sous espace de noms**,
+`\MTB\Core\Blocks\ListePortees\Rendu::bloc()`, appelée sous garde `class_exists()` — **reste retenue**.
+Elle ne coûte aucune surface globale, elle assainit ses attributs elle-même, et elle ne laisse aucune
+décision d'état à son appelant. Rien à changer dans le code livré.
+
+**Ce qui demande une nuance** : la phrase « **le nom de classe ci-dessus n'est PAS une interface de
+thème** » reste vraie **pour ce module**, et pour la bonne raison — la frontière stricte du §13. Mais
+elle ne décrit plus l'état du projet : trois chaînes sœurs du même lot ont livré une fonction de
+composant globale, destinée précisément à être appelée depuis un gabarit — #6, #7, #14. Si un jour
+`liste-portees` en avait besoin, la porte existe désormais, aux cinq conditions du §5 amendé. **La
+ligne du §18.6 n'est pas réécrite** : elle se lit avec cet amendement.
+
+**Une réserve que §18.6 ne pouvait pas voir, et qui vaut pour tout le monde** : dans un thème de blocs,
+**un gabarit est un fichier HTML et n'exécute aucun PHP**. `archive-portee.html` (#16) ne peut donc
+appeler ni `Rendu::bloc()`, ni `render_block()`, ni une fonction de composant. Son chemin réel est
+l'insertion du bloc par son commentaire :
+
+```html
+<!-- wp:mtb/liste-portees {"nombre":"","annee":""} /-->
+```
+
+**Ce chemin convient à ce module** : la liste se remplit toute seule à partir de ce qui est publié, et
+ses deux attributs ont des valeurs par défaut qui veulent dire « tout ». C'est la galerie d'une fiche
+qui n'a pas de réponse, parce que son bloc prend un attribut `photos` explicite qu'un gabarit ne peut
+pas connaître. Point ouvert consigné dans l'amendement 1 du contrat #1, **à trancher au brainstorm de
+#16/#17**.
+
+**Enfin, un constat du §18.6 devenu faux** : « le bloc vit dans `.entry-content`, petit-fils du canal,
+la règle `.mtb-canal > .alignwide` ne s'applique jamais » (dette T-#13-h, également écrite en tête de
+`mtb-liste-portees.css`). **Soldé par #6** : `templates/singular.html` donne maintenant la classe
+`mtb-canal` au contenu lui-même, et `base.css` corrige le `margin-inline` qui annulait l'étirement de
+l'élément de grille. `alignwide` est actif sur ce module. Le commentaire de la feuille est resté en
+arrière et **appartient à une chaîne de correction, pas à ce document**.

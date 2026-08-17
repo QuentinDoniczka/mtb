@@ -140,6 +140,11 @@ Quatre constantes, définies par `define()` (et non `const`, qui les enfermerait
 Plus les fonctions de lecture `mtb_*` de `includes/query/`. **Rien d'autre ne sort dans l'espace
 global. Aucune variable globale, jamais.**
 
+> **Amendé le 2026-08-18** — une seconde catégorie de fonctions est désormais admise, sous conditions
+> strictes : les **fonctions de composant exposées aux gabarits**. Voir l'amendement en fin de fichier,
+> qui en donne la règle, la liste et ses limites. La phrase ci-dessus reste vraie pour tout le reste,
+> et **« aucune variable globale, jamais » n'est pas amendé**.
+
 Un seul hook est exposé par cette issue :
 
 | Hook | Type | Signature | Usage |
@@ -498,3 +503,94 @@ en `WP_DEBUG`. C'est voulu — les masquer serait contraire à la tâche « sans
   dossiers d'`includes/`) : hors empreinte de l'issue #1. Relève de la configuration serveur et de
   l'issue `infra` de mise en ligne — **à signaler à ce moment-là, pas à contourner ici**.
 - **Nom affiché de la catégorie de blocs** : « Mont Brabant » retenu, confirmable par l'éleveuse.
+
+---
+
+# Amendement — 2026-08-18, après la revue du lot 2
+
+## Amendement 1 — §5 s'ouvre à **une** catégorie nommée : les fonctions de composant
+
+### Ce qui a été constaté
+
+§5 gèle la surface globale à quatre constantes plus les fonctions de lecture de `includes/query/`,
+« rien d'autre ». Le lot 2 en a livré trois de plus :
+
+- `mtb_bandeau_ouverture_porte_le_titre()` — `blocks/bandeau-ouverture/titre-principal.php` (#6) ;
+- `mtb_fiche_information_balisage()` — `blocks/fiche-information/interface.php` (#7) ;
+- `mtb_grille_chiens_rendu()` — `blocks/grille-chiens/bootstrap.php` (#14).
+
+Pendant ce temps, **deux chaînes sœurs ont refusé d'en créer une en citant ce même §5** : l'arbitrage 5
+du contrat #8 (« une fonction de rendu globale en serait une dérogation ») et le §18.6 du contrat #13
+(« le nom de classe ci-dessus n'est PAS une interface de thème »). Quatre mécanismes de réutilisation
+coexistaient donc dans un même lot, dont deux que le thème avait interdiction d'employer — et
+`titre-principal.php:196` annonçait le sien comme « seule voie sanctionnée pour un gabarit ».
+
+Six chaînes travaillant en parallèle sur un contrat qu'aucune ne pouvait renégocier : c'est la règle
+qui a manqué, pas le jugement de leurs auteurs.
+
+### Décision
+
+**Les trois fonctions restent.** Elles sont livrées, préfixées, gardées et documentées ; les retirer
+pour satisfaire un paragraphe coûterait du code qui marche contre une cohérence de papier. C'est donc
+le paragraphe qui s'ouvre — d'une seule porte, nommée et étroite.
+
+**§5 admet désormais une seconde catégorie : les fonctions de composant.** Une fonction n'y entre que
+si elle remplit **les cinq conditions à la fois** :
+
+1. **Objet** — elle rend le balisage d'un composant, ou répond à la question d'état qui décide de ce
+   rendu. Rien d'autre n'entre par cette porte.
+2. **Nom** — `mtb_<composant>_<verbe>`, le composant nommé comme son bloc, tirets remplacés par des
+   tirets bas : `mtb/grille-chiens` → `mtb_grille_chiens_*`.
+3. **Garde** — déclarée sous `if ( ! function_exists( … ) )`, dans un bloc `namespace { }` explicite
+   (amendement 3 du contrat #2).
+4. **Documentée** — dans le contrat de l'issue qui la livre : forme exacte du retour, et ce qu'elle
+   rend quand elle ne peut pas décider ou n'a rien à afficher.
+5. **Jamais une lecture de données** — décision 19 : *le type qui possède la donnée possède sa
+   lecture*. Une fonction de composant qui a besoin d'une donnée appelle `mtb_get_*()` de
+   `includes/query/`, comme n'importe quel autre appelant. Elle n'interroge jamais la base.
+
+Ce qui **n'est pas** amendé : « aucune variable globale, jamais » reste littéral, et la surface reste
+close par ailleurs. Aucune autre catégorie ne s'ouvrira sans un amendement de ce contrat.
+
+### Les trois fonctions admises
+
+| Fonction | Rend | Nature |
+|---|---|---|
+| `mtb_bandeau_ouverture_porte_le_titre( int $post_id = 0 ): bool` | `true` si le bandeau porte le `h1` de la page ; `false` dès qu'elle ne peut pas décider | question d'état |
+| `mtb_fiche_information_balisage( array $arguments = array() ): string` | le balisage complet, racine comprise, ou la chaîne vide | rendu |
+| `mtb_grille_chiens_rendu( string $statut = 'tous' ): string` | le balisage de la grille, ou la chaîne vide ; jamais l'état vide de l'éditeur | rendu |
+
+`porte_le_titre` n'est pas une fonction de rendu : c'est une question. Elle entre dans la catégorie
+parce qu'elle n'existe que pour arbitrer **un rendu contre un autre** — l'unique `h1` de la page — et
+qu'elle n'imprime rien, ne rend aucun HTML et ne lit aucune donnée d'élevage.
+
+### Ce que les contrats #8 et #13 deviennent
+
+Leur choix reste **valide et reste le défaut** : quand `render_block()` ou une classe sous espace de
+noms suffit, on n'ouvre pas de fonction globale. L'amendement ne rend obligatoire aucune fonction de
+composant ; il dit seulement qu'en écrire une n'est plus une infraction. Les deux contrats reçoivent
+chacun leur propre amendement daté, qui renvoie ici.
+
+### Point ouvert, à traiter par le brainstorm de #16 et #17 — **ne pas le découvrir en cours de chaîne**
+
+Dans un thème de blocs, **un gabarit est un fichier HTML : il n'exécute aucun PHP**. Aucune des trois
+fonctions ci-dessus n'est donc appelable depuis `templates/`. Leurs appelants réels sont côté PHP :
+l'extension elle-même, ou un futur module.
+
+Le chemin réel des gabarits de #16 et #17 sera le plus souvent **l'insertion du bloc**, par son
+commentaire, dans le gabarit ou dans une composition :
+
+```html
+<!-- wp:mtb/grille-chiens {"statut":"reproducteur"} /-->
+```
+
+**Cela fonctionne pour la grille de chiens et la liste de portées**, qui se remplissent elles-mêmes à
+partir de ce qui est publié. **Cela ne fonctionne pas pour la galerie d'une fiche**, dont le bloc prend
+un attribut `photos` explicite qu'un gabarit ne peut pas connaître : les photos dépendent du contenu
+affiché, que le gabarit ne lit pas.
+
+Il n'y a donc **pas encore de réponse** pour la galerie d'une fiche, et ce n'est pas à cet amendement
+de l'inventer. Les trois pistes à instruire, dans cet ordre : un bloc de contexte qui lit sa propre
+fiche par `mtb_get_*()` au lieu de recevoir ses photos en attribut ; un motif rendu côté serveur ; ou
+un gabarit PHP, qui sortirait du thème de blocs et se paierait cher. **À trancher au brainstorm de
+#16/#17, avant tout gel de contrat.**
