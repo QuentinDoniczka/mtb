@@ -183,14 +183,16 @@ enregistrer.
   page n'a pas de titre. » : la page n'a pas encore de titre et aucune photo n'est choisie. **Ce qu'il
   faut faire** : donnez un titre à la page, ou choisissez une photo dans la colonne de droite, panneau
   **Photo**, bouton **Choisir une photo**. L'encadré est remplacé par le bandeau dès que l'un des deux
-  est fait. Cet encadré **ne contient aucun bouton** : c'est un emplacement en attente, pas un
-  réglage.
+  est fait. C'est un emplacement en attente : il ne casse rien et ne demande rien d'urgent.
 - **Cet encadré n'est jamais visible par les visiteurs.** Une page dont le bandeau est encore vide
   n'affiche **pas de bandeau du tout** : ni cadre, ni trou, ni message — la page reste normale.
   L'encadré n'existe que pour vous, pendant que vous modifiez. **Vous ne pouvez pas casser la page
   avec un bandeau vide.**
-- Vous retrouverez le même encadré, au même dessin, sur les autres composants du site : c'est partout
-  la même chose, et cela veut toujours dire « il manque quelque chose ici, rien de grave ».
+- Vous retrouverez un encadré de la même famille sur les autres composants du site : le même contour
+  en tirets, le nom du composant, puis une phrase qui dit ce qui manque. Cela veut partout dire la
+  même chose — « il manque quelque chose ici, rien de grave ». Le détail change d'un composant à
+  l'autre : certains ajoutent un bouton pour compléter tout de suite, comme **Ajouter des photos**
+  dans la **Galerie photos**. Fiez-vous à la phrase, c'est elle qui vous dit quoi faire.
 - **Dans la fenêtre des photos, la zone où se décrit la photo porte encore le titre
   « Texte alternatif ».** C'est bien la bonne zone : c'est là qu'on écrit ce que montre la photo, pour
   les personnes aveugles. Ce nom-là n'est pas celui prévu pour le site, il sera corrigé.
@@ -201,6 +203,8 @@ enregistrer.
 **Ce n'est pas normal, signalez-le :**
 
 - Le bouton **+** ne propose aucune rubrique **Mont Brabant**.
+- **L'encadré d'attente apparaît sans son contour en tirets, sans le nom du composant, ou sans sa
+  phrase.** Ces trois-là sont toujours présents : s'il en manque un, signalez-le.
 - Après **Mettre à jour**, la page publiée montre le titre deux fois alors que le bandeau est bien le
   premier élément de la page.
 - Le message « Le fichier choisi n'est pas une photo. Choisissez une photo. » s'affiche alors que vous
@@ -242,7 +246,7 @@ Trois captures utiles en complément, si le temps le permet :
 | Nom de fichier attendu | Écran | Ce qui doit être visible |
 |---|---|---|
 | `captures/bandeau-avertissement-position.png` | Une page où le bandeau est placé **après** un paragraphe | L'avertissement jaune au-dessus du bandeau, phrase entière lisible : « Ce bandeau n'est pas le premier bloc de la page : le titre s'affichera deux fois. Déplacez-le tout en haut. » |
-| `captures/bandeau-etat-vide.png` | Bandeau fraîchement inséré dans une page **sans titre**, sans photo | L'encadré d'attente en entier : son **contour en tirets**, et ses deux lignes **BANDEAU D'OUVERTURE** puis « Ce bloc n'affiche rien tant qu'aucune photo n'est choisie et que la page n'a pas de titre. », phrase entière lisible. **Aucun bouton ne doit apparaître dans cet encadré** ; s'il en apparaît un, ne prenez pas la capture et signalez-le |
+| `captures/bandeau-etat-vide.png` | Bandeau fraîchement inséré dans une page **sans titre**, sans photo | L'encadré d'attente en entier : son **contour en tirets**, et ses deux lignes **BANDEAU D'OUVERTURE** puis « Ce bloc n'affiche rien tant qu'aucune photo n'est choisie et que la page n'a pas de titre. », phrase entière lisible |
 | `captures/bandeau-sur-le-site.png` | La page **publiée**, vue sur le site, **fenêtre large** | Le bandeau complet : la photo, le titre dessus, l'accroche en dessous, et **les deux bords de la fenêtre visibles** pour montrer qu'il va d'un bord à l'autre — pour qu'elle reconnaisse le résultat auquel se fier |
 
 **Un libellé de cette fiche vient de WordPress et n'a pas encore été relevé à l'écran** : l'entrée du

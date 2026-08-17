@@ -214,9 +214,10 @@ s'affichent ensuite tout seuls partout sur le site. Une portée recomposée à l
 - **Une photo que vous avez supprimée de la fenêtre des photos ne s'affiche plus.** L'emplacement
   disparaît complètement — pas de trou, pas d'avertissement, pas de page cassée. Choisissez une autre
   photo, ou laissez la fiche sans photo.
-- **Dans la page en cours de modification, la photo n'a pas encore sa vraie allure** : elle peut
-  s'afficher entière, sans son liseré et sans son cadrage. **Le texte et la photo sont les bons, seule
-  l'allure diffère.** Fiez-vous à **Aperçu** ou à la page publiée. C'est en cours de correction.
+- **Dans la page en cours de modification, la fiche est plus étroite que sur le site.** C'est normal :
+  la page en cours de modification s'affiche dans une fenêtre plus étroite que celle du site. Le
+  texte, la photo, son liseré et son cadrage sont les bons. Cliquez sur **Aperçu**, ou ouvrez la page
+  sur le site : c'est le rendu qui compte.
 - **Un titre très long va à la ligne** au lieu d'être coupé par des points de suspension. C'est voulu :
   on ne raccourcit jamais vos mots.
 - **Le texte ne se colle pas.** Voir plus haut : il contenait un titre ou un tableau. Tapez-le, ou

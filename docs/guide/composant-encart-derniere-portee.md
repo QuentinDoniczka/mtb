@@ -188,8 +188,10 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
   l'encart montre toujours la plus récente, avec sa mention exacte. Si vous préférez ne rien annoncer
   pendant cette période, dites-le nous : c'est un choix qui vous appartient, pas une panne.
 - **Une portée protégée par mot de passe n'apparaît jamais dans l'encart.** C'est voulu.
-- **Dans la page en cours de modification, l'encart n'a pas encore tout à fait son allure définitive.**
-  Le texte, la photo et la disponibilité sont les bons. Fiez-vous à **Aperçu** ou à la page publiée.
+- **Dans la page en cours de modification, l'encart est plus étroit que sur le site.** C'est normal :
+  la page en cours de modification s'affiche dans une fenêtre plus étroite que celle du site. Le
+  texte, la photo et la disponibilité sont les bons. Cliquez sur **Aperçu**, ou ouvrez la page sur le
+  site : c'est le rendu qui compte.
 - **Encart dernière portée** est en gris dans la liste du bouton **+** : la page en a déjà un.
 - **Encart dernière portée** ne se propose pas dans une fiche de portée, de chien ou de résultat : ces
   fiches se remplissent, elles ne se composent pas.

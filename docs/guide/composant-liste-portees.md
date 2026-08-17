@@ -207,12 +207,10 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
   une quand vous en aurez, ou laissez ainsi : la liste reste juste.
 - **Une portée protégée par mot de passe n'apparaît jamais dans la liste.** C'est voulu.
 - **Une portée en brouillon n'apparaît pas** : elle n'est pas publiée.
-- **Dans la page en cours de modification, la liste n'a pas encore tout à fait son allure définitive** —
-  les espaces et la taille des photos peuvent différer. Les noms, les dates et les mentions sont les
-  bons. Fiez-vous à **Aperçu** ou à la page publiée. C'est en cours de correction.
-- **Sur le site, la liste n'est pas plus large que le texte de la page**, alors qu'elle devrait l'être.
-  C'est un défaut connu, déjà signalé, qui ne vient pas de vous et ne se règle pas depuis la page. Il
-  sera corrigé pour tous les composants à la fois.
+- **Dans la page en cours de modification, la liste est plus étroite que sur le site.** C'est normal :
+  la page en cours de modification s'affiche dans une fenêtre plus étroite que celle du site. Les
+  noms, les dates, les photos et les mentions sont les bons. Cliquez sur **Aperçu**, ou ouvrez la page
+  sur le site : c'est le rendu qui compte.
 - **Liste de portées** ne se propose pas dans une fiche de portée, de chien ou de résultat : ces fiches
   se remplissent, elles ne se composent pas.
 
