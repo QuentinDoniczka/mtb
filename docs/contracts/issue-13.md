@@ -929,8 +929,8 @@ deux chaînes ne peut trancher seule, et aucune ne peut écrire dans `base.css` 
 | Point | Décision |
 |---|---|
 | **`__nextHasNoMarginBottom: true`** sur `TextControl` et `SelectControl` | **Ratifié.** Sans ce drapeau, le cœur 6.9 émet *« Bottom margin styles for wp.components.* is deprecated since 6.7 »* à chaque ouverture du panneau. Il demande au composant **du cœur** son espacement courant : aucune règle visuelle de l'extension, aucun libellé gelé touché |
-| **`fetchpriority="high"`** sur la vignette | **Le cœur l'ajoute**, aucune ligne de `rendu.php` ne l'émet (vérifié par `grep`). §7.6 dit « pas de `fetchpriority` » et c'est tenu **au sens du code**. On ne combat pas l'heuristique LCP du cœur |
-| **`loading="lazy"`** dans le balisage de §7.1 | Même famille : **c'est le cœur qui décide**, `rendu.php` ne l'émet pas. L'illustration de §7.1 montrait le HTML final, pas le code source |
+| **`fetchpriority="high"`** sur la vignette | ~~**Le cœur l'ajoute**, aucune ligne de `rendu.php` ne l'émet (vérifié par `grep`). §7.6 dit « pas de `fetchpriority` » et c'est tenu **au sens du code**. On ne combat pas l'heuristique LCP du cœur.~~ **RENVERSÉ, voir §17.5** |
+| **`loading="lazy"`** dans le balisage de §7.1 | ~~Même famille : **c'est le cœur qui décide**, `rendu.php` ne l'émet pas. L'illustration de §7.1 montrait le HTML final, pas le code source.~~ **RENVERSÉ, voir §17.5** |
 | **`sizes="auto, 144px"`** sur les images différées | Réécriture du cœur (mécanisme *auto-sizes* de 6.7+). Le couple `144px` ↔ `9rem` reste la valeur à tenir **des deux côtés** |
 | `absint( $photo['id'] )` → **`(int) $photo['id']`** | **Correction de `refacto-mtb`, et son motif est juste** : `absint( -5 )` rend `5` et aurait servi à charger **une autre pièce jointe**, tout en rendant inatteignable la moitié `< 0` de la garde `<= 0`. Comportement identique sur toute donnée réelle, un identifiant de pièce jointe étant toujours positif |
 | Volume de commentaires de la feuille | `refacto-mtb` l'a ramenée de **22 825 à 15 079 octets** sans toucher une règle (24 règles, 93 déclarations, confirmées par `dev-integration-mtb`), puis la correction de §17.2 la porte à **16 400 o / 94 déclarations**. Le poids restant n'est pas dans cette empreinte : `functions.php:217` fournit `path`, donc **la feuille est écrite EN LIGNE dans chaque page** portant le bloc, jamais mise en cache — à solder par **#18**, avec T-#13-c |
@@ -973,6 +973,35 @@ fatale** pendant plusieurs minutes (un module d'une chaîne sœur à moitié éc
 portées ont été réduites de quatre à une par une chaîne sœur en cours d'essai, et une chaîne sœur a
 piloté un navigateur sur la même base. Conformément au contrat #3 §18.5, **tout résultat rapporté ici a
 été réobtenu après stabilisation**.
+
+### 17.5 Correction — `loading` et `decoding` sont posés par le bloc (renverse §17.3)
+
+Deux lignes de §17.3 laissaient au cœur le soin de décider du chargement des vignettes, au motif que
+`rendu.php` n'émettant rien, la consigne « pas de `fetchpriority` » de §7.6 était tenue *au sens du
+code*. **Le raisonnement était faux, et l'essai d'intégration du lot l'a mesuré.**
+
+Ce qui a été observé sur le rendu réel, avant correction :
+
+| Page | Mesure |
+|---|---|
+| `/ti3-les-six/` | `mtb-liste-portees__image` **sans `loading`** alors que la vignette est sous la ligne de flottaison |
+| `/jonction-13-quatre/` | **deux** `mtb-liste-portees__image` portant `fetchpriority="high"` **en même temps** |
+
+Deux priorités hautes simultanées s'annulent : le navigateur n'apprend rien de plus qu'avec aucune. Et
+« tenu au sens du code » ne veut rien dire pour une exigence de performance, qui se lit **sur la page
+livrée**, pas dans le source. Une liste de portées est une grille de vignettes de `9rem` — aucune n'est
+le sujet d'ouverture, et le cœur ne peut pas le savoir.
+
+`rendu.php` passe désormais `'loading' => 'lazy'` et `'decoding' => 'async'` à
+`wp_get_attachment_image()`, **dans la forme et pour la raison des deux sœurs** qui documentaient déjà
+le piège : `galerie-photos/rendu.php` (§10 arbitrage du contrat #8) et `grille-chiens/balisage.php:218`.
+La valeur explicite bat `wp_get_loading_optimization_attributes()`, et `fetchpriority` n'est alors plus
+émis du tout.
+
+Mesuré après correction, sur les deux mêmes pages : `loading="lazy" decoding="async"` sur **toutes** les
+vignettes, **zéro `fetchpriority`**. §7.6 est maintenant tenue au sens qui compte. La ligne
+`sizes="auto, 144px"` de §17.3 reste exacte et le devient pour de bon — le préfixe `auto, ` du cœur
+(6.7+) est **conditionné à `loading="lazy"`**, exactement comme sur la galerie sœur.
 
 ---
 

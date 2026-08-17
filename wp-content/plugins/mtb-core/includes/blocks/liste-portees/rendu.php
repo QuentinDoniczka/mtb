@@ -235,17 +235,28 @@ final class Rendu {
 			'medium',
 			false,
 			array(
-				'class' => 'mtb-liste-portees__image',
+				'class'    => 'mtb-liste-portees__image',
 				// Alternative passée brute : wp_get_attachment_image() échappe ses attributs, et la
 				// pré-échapper ferait lire « &#039; » à un lecteur d'écran.
-				'alt'   => self::texte( $photo['alt'] ?? '' ),
+				'alt'      => self::texte( $photo['alt'] ?? '' ),
 				/*
 				 * « 144px » et la largeur de vignette « 9rem » de
 				 * assets/css/blocs/mtb-liste-portees.css sont UNE valeur écrite dans DEUX fichiers.
 				 * Changer l'une sans l'autre livre un srcset qui mentira au navigateur, sans le
 				 * moindre symptôme visible.
 				 */
-				'sizes' => '144px',
+				'sizes'    => '144px',
+				/*
+				 * « loading » et « decoding » sont passés explicitement, comme dans la galerie et la
+				 * grille de chiens. Sans eux, le cœur décide : depuis WordPress 6.3 il désigne les
+				 * premières grandes images de la page comme image principale et leur pose « eager »
+				 * et « fetchpriority=high ». Une liste de portées est une grille de vignettes de
+				 * 9rem : aucune n'est le sujet d'ouverture, et deux d'entre elles portaient une
+				 * priorité haute simultanée — deux priorités hautes s'annulent, le navigateur
+				 * n'apprend rien. La valeur explicite gagne, et « fetchpriority » n'est plus émis.
+				 */
+				'loading'  => 'lazy',
+				'decoding' => 'async',
 			)
 		);
 
