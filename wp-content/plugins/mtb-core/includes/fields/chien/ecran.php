@@ -568,7 +568,7 @@ function rendre_photos( \WP_Post $post ): void {
 		'Cadrage de la photo',
 		cadrages(),
 		'' === $cadrage ? cadrage_par_defaut() : $cadrage,
-		"Indiquez la zone de la photo à garder visible quand elle est recadrée. Par défaut, c'est le centre."
+		"Indiquez la zone de la photo à garder visible quand elle est recadrée. « Centre » est le cadrage par défaut : il garde la tête du chien, un peu au-dessus du milieu de la photo."
 	);
 
 	rendre_galerie( $id );

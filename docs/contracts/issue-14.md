@@ -835,11 +835,49 @@ question **D5** de MASTER, qui prévoit déjà de revérifier `50% 38%` après l
 choisir ne change **rien** à ce que l'éleveuse voit — c'est le propre de l'option par défaut d'une liste
 fermée, les quatre autres agissant normalement. Deux conséquences à porter au lot, **non corrigées ici** :
 
-- L'aide de l'écran de saisie, `includes/fields/chien/ecran.php:571`, dit « **Par défaut, c'est le
-  centre.** » C'est la phrase que ce contrat interdit : elle promet un centre géométrique. Elle doit dire
-  « le cadrage par défaut, qui garde la tête du chien ». **Hors empreinte de ce correctif.**
+- ~~L'aide de l'écran de saisie, `includes/fields/chien/ecran.php:571`, dit « **Par défaut, c'est le
+  centre.** »~~ → **corrigé, voir la passe 3 bis ci-dessous.**
 - Rendre « Centre » distinct du défaut supposerait un **sixième** cadrage nommé dans MASTER §6.2, ou une
   révision du repli. **Décision de `lead-design-mtb`, pas de cette chaîne.**
+
+### Passe 3 bis — la seule phrase que l'éleveuse lit, 2026-08-18
+
+La passe 3 a fermé la divergence **de comportement** et laissé ouvert un défaut **de texte**. Il est
+corrigé ici, et c'est le seul changement de cette passe.
+
+`includes/fields/chien/ecran.php:571`, aide du champ « Cadrage de la photo » :
+
+| | Texte |
+|---|---|
+| **Avant** | « Indiquez la zone de la photo à garder visible quand elle est recadrée. **Par défaut, c'est le centre.** » |
+| **Après** | « Indiquez la zone de la photo à garder visible quand elle est recadrée. **« Centre » est le cadrage par défaut : il garde la tête du chien, un peu au-dessus du milieu de la photo.** » |
+
+**Pourquoi c'était le vrai défaut.** Le comportement était juste dès la passe 3 ; c'est la phrase qui
+promettait un centre géométrique, exactement ce que le § « `centre` vaut `50% 38%` » de ce contrat
+interdit. Et de toute cette affaire — deux feuilles de style, un arbitrage, six mesures — **c'est la
+seule ligne que Fabienne lit réellement**. Elle nomme désormais l'option et dit ce qu'elle fait, si bien
+que « Centre » ne se lit plus comme une promesse non tenue mais comme le défaut qu'il est.
+
+Conforme à MASTER §10.1 (français simple et actif, phrases courtes, vocabulaire de l'éleveuse) et §10.4
+(aucun terme interdit) : ni pourcentage, ni `object-position`, ni « valeur par défaut du champ », ni
+« média », ni « image mise en avant ».
+
+**Ce qui n'a délibérément pas bougé** :
+
+- **Les cinq libellés** de `includes/content/chien/choix.php:79-87` — *Haut gauche · Haut · Centre ·
+  Haut droite · Bas* — sont **recopiés verbatim de MASTER §6.2**. Vérifiés un par un : aucun ne promet un
+  centrage géométrique. Les renommer contredirait MASTER.
+- **`cadrage_par_defaut()` renvoie toujours `'centre'`** : arbitrage rendu, non un oubli. Aucune des cinq
+  clés n'encode 38 % ; lui en faire renvoyer une autre remplacerait le cadrage sur la tête par un cadrage
+  haut sur les 17 fiches.
+- Le seul autre emploi du mot « centre » dans l'extension est un **commentaire de code**
+  (`includes/admin/medias/bootstrap.php:51`), invisible pour l'éleveuse.
+
+**Vérifié** : `php -l` dans le conteneur — aucune erreur de syntaxe ; la chaîne est intacte et bien
+accentuée dans le conteneur ; l'accueil et `/ti3-les-six/` répondent `200`, et
+`/wp-admin/post-new.php?post_type=mtb_chien` répond `302` (redirection de connexion, pas une erreur 500).
+**Non vérifié** : la phrase n'a pas été lue dans l'écran de saisie connecté — aucune session
+d'administration n'a été ouverte.
 
 ### Passe 2 — la finition, 2026-08-17
 
