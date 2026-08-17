@@ -1,0 +1,324 @@
+/*
+ * MTB — Grille de chiens
+ * Habillage du bloc `mtb/grille-chiens` (extension mtb-core). Le balisage est
+ * gelé par docs/contracts/issue-14.md §4 : cette feuille est écrite contre lui,
+ * crochet par crochet, et ne cible aucune classe qu'il n'émet pas.
+ *
+ * Mise en file d'attente : automatique, rien n'est déclaré nulle part.
+ * `mtb_feuilles_de_blocs()` (themes/mtb/functions.php) parcourt le registre des
+ * blocs sur `wp_loaded` et sert `assets/css/blocs/<espace>-<nom>.css` s'il
+ * existe. Dépendance garantie : `mtb-jetons` (tokens.css). Aucune autre.
+ *
+ * CETTE FEUILLE N'ATTEINT PAS L'IFRAME DE L'ÉDITEUR. `wp_enqueue_block_style()`
+ * s'accroche sur `render_block_*`, `wp_enqueue_scripts` ou `wp_footer` : aucun
+ * des trois ne s'exécute dans la toile de l'éditeur, qui ne reçoit que
+ * `add_editor_style()`. Dans l'éditeur, la structure est donc habillée par
+ * base.css seul — vrais titres avec leur filet, mais photos empilées pleine
+ * largeur, sans grille et sans carré. Lisible, jamais cassé, long à faire
+ * défiler. Dette T-#14-h du contrat §12 ; le correctif vit dans functions.php ou
+ * editor.css, hors de cette empreinte.
+ *
+ * VALEURS BRUTES EMPLOYÉES — liste CLOSE, toutes recopiées de MASTER, aucune
+ * inventée, aucune ne dispose d'un jeton (en créer un serait l'invention que le
+ * contrat interdit) :
+ *
+ *   1. `14rem`, piste minimale de la grille. MASTER §9.4 est le seul endroit du
+ *      document qui chiffre cet objet — « une grille de 4 colonnes » pour une
+ *      grille de chiens — et 14rem est la seule valeur qui la produit dans le
+ *      canal large. Contrat §6 et arbitrage 7. Le `9rem` du §6.7 chiffre une
+ *      GALERIE : autre objet, autre gouttière (`--e-3`). Conséquence assumée :
+ *      une seule colonne à 360 px, soit une photo de 324 px de large.
+ *      Valeur absente de tokens.css, signalée à la chaîne design, réversible en
+ *      une ligne.
+ *   2. `50% 38%`, point d'intérêt par défaut. Recopié de MASTER §6.2, qui en
+ *      donne la justification chiffrée : sur une photo de chien en pied, la tête
+ *      est au-dessus du centre géométrique. C'est aussi, par le contrat §6, la
+ *      valeur du cadrage « Centre ».
+ *   3. L'anneau de focus de MASTER §8.1, recopié tel quel : `2px` d'épaisseur et
+ *      `2px` de décalage. Ces deux littéraux sont ceux que base.css énumère déjà
+ *      (point 3 de son en-tête) ; le contrat §6 exige que l'anneau soit « celui
+ *      de MASTER §8.1, un seul, recopié », ce qui les emporte nécessairement.
+ *      Ils s'ajoutent aux trois littéraux du contrat §6 : écart signalé au
+ *      rapport, pas passé en douce.
+ *
+ * Ne comptent pas comme valeurs brutes : 0, 100 %, le `z-index: 1` d'empilement
+ * du §5 et les mots-clés CSS (`left top`, `center bottom`…), qui ne portent
+ * aucune décision de design. C'est ce qui permet d'écrire quatre des cinq
+ * cadrages sans un seul chiffre.
+ *
+ * ABSENCES DÉLIBÉRÉES — une absence écrite est une décision, une absence muette
+ * est un oubli :
+ *
+ *   · AUCUNE requête média. La grille est intrinsèque (`auto-fill` + `minmax`) :
+ *     les 360 px du §7.7 et le zoom 200 % du §7.8 sont tenus sans point de
+ *     rupture, donc sans en inventer un.
+ *   · AUCUNE hauteur fixe, AUCUN `overflow: hidden`, AUCUNE taille en `vw`
+ *     seul, AUCUNE largeur fixe (§7.7, §7.8).
+ *   · AUCUNE règle `@media print`. Le « §9.6 » auquel MASTER §7.6 renvoie
+ *     n'existe pas dans le document, et le contrat #2 l'a déjà consigné. En
+ *     écrire serait une invention visuelle ; et une feuille d'impression doit
+ *     être GLOBALE, pas dix règles recopiées dans dix feuilles de blocs.
+ *   · AUCUNE apparence d'état vide (`--vide`, `mtb-etat-vide*`). Deux raisons
+ *     cumulées : cette feuille n'atteint pas l'éditeur, seul contexte où l'état
+ *     vide est rendu (contrat §8) — ce serait du CSS mort ; et MASTER §9.1 exige
+ *     UNE SEULE apparence pour les dix composants du catalogue, qui vit dans
+ *     editor.css, hors empreinte. La figer ici garantirait neuf copies
+ *     divergentes. Dette T-#14-c.
+ *   · AUCUN effet de survol sur la photo : ni zoom, ni assombrissement, ni
+ *     `filter` (interdit §6.6 et §13 — il falsifierait la robe, qui est une
+ *     donnée d'élevage), ni ombre. Le survol est déjà signalé, gratuitement, par
+ *     `a:hover` de base.css sur toute la surface de la carte, puisque le calque
+ *     étiré appartient au lien.
+ *   · AUCUNE transition, AUCUNE animation : aucun jeton de durée n'existe et le
+ *     contrat #2 interdit d'en inventer un. Rien à honorer pour
+ *     `prefers-reduced-motion`, faute de mouvement à réduire.
+ *   · AUCUN filet double, AUCUN médaillon rond, AUCUN fond ni rembourrage de
+ *     carte : §2.1 interdit le filet sur une carte ou une vignette, §2.2
+ *     abandonne les médaillons, et `--blanc` sur `--calcaire` ne fait que
+ *     1,18:1 — invisible, et il faudrait alors inventer un rembourrage.
+ *   · AUCUN `url()`, AUCUN `@import`, AUCUNE origine tierce, AUCUNE image.
+ */
+
+/* =====================================================================
+ * 1. Le canal large, réclamé par la feuille elle-même — MASTER §7.1
+ *
+ * §7.1 range les grilles de chiens dans le canal large. Le plugin n'émet pas
+ * `alignwide` : c'est une classe de MISE EN PAGE, donc interdite à l'extension
+ * (contrat #1 §8) ; et la règle de canal du thème vit dans base.css, hors de
+ * cette empreinte. La feuille du bloc réclame donc le canal elle-même
+ * (contrat §6, arbitrage 6).
+ *
+ * `max-inline-size` est un PLAFOND, pas une revendication : imbriqué dans un
+ * conteneur plus étroit — le canal texte, une colonne — c'est le conteneur qui
+ * gagne. Sémantique voulue : la grille se dégrade en colonnes, elle ne casse
+ * pas.
+ * ================================================================== */
+.mtb-grille-chiens {
+  max-inline-size: var(--l-large);
+  margin-inline: auto;
+}
+
+/* =====================================================================
+ * 2. La grille — sur __liste, jamais sur la racine (contrat §4)
+ * ================================================================== */
+
+/* `auto-fill` et JAMAIS `auto-fit` : MASTER §9.4 exige qu'un seul chien dans une
+   grille de 4 colonnes garde sa largeur de colonne et reste à gauche ;
+   `auto-fit` étirerait sa carte sur toute la ligne. Piège nommé par le
+   contrat §6.
+
+   `min(100%, 14rem)` : sous 14rem de large, la piste suit le conteneur au lieu
+   de déborder — c'est ce qui tient les 360 px du §7.7 sans requête média, et ce
+   qui protège l'imbrication dans une colonne étroite.
+
+   `align-items: start` : chaque carte se dimensionne sur son propre contenu, un
+   nom qui passe sur deux lignes n'étire pas la photo de ses voisines. */
+.mtb-grille-chiens__liste {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: var(--e-6);
+  align-items: start;
+  /* Le `role="list"` du balisage rend la sémantique de liste que `list-style:
+     none` retire sous Safari/VoiceOver ; le retrait du retrait natif de <ul> est
+     nécessaire, sinon la grille est décalée de 40 px sur sa gauche. */
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+/* =====================================================================
+ * 3. La carte — c'est une vignette, pas une carte (contrat §6)
+ * Ni fond, ni rembourrage, ni bordure. La « carte chien » de MASTER §3.2 désigne
+ * la carte parent de §7.4, qui porte du contenu ; ici le <li> ne porte que la
+ * photo carrée et le nom d'usage, et rien d'autre (contrat §5).
+ * ================================================================== */
+.mtb-grille-chiens__carte {
+  /* Référence du calque étiré du lien (§5 ci-dessous). */
+  position: relative;
+  /* Un élément de grille a `min-inline-size: auto` : sans cela un nom très long
+     élargirait sa colonne au lieu d'être coupé (§7.7). Même défaut et même
+     correctif que `.mtb-canal > *` dans base.css. */
+  min-inline-size: 0;
+}
+
+/* =====================================================================
+ * 4. Le cadre et la photo — MASTER §6.1, §6.2, §6.3, §6.6
+ *
+ * Le cadre porte l'image, jamais l'inverse (§6) : c'est l'`aspect-ratio` du
+ * CADRE qui réserve la boîte, avant même que l'image existe. Décalage de mise en
+ * page nul, et il ne dépend pas du serveur.
+ *
+ * `--absente` (photo absente, contrat §7) n'a AUCUNE règle propre, et c'est une
+ * décision : la règle ci-dessous lui donne déjà le ratio, le fond et le cerne,
+ * donc exactement la même silhouette qu'une carte photographiée (§9.4). Rien ne
+ * s'y ajoute — ni pictogramme d'appareil photo, ni silhouette de chien, ni image
+ * de remplacement (§9.2, §13), ni filet double (§2.1 l'interdit sur une
+ * vignette et gagne sur la lettre de §9.2), ni nom d'usage répété au centre : il
+ * est déjà dans le <h3> juste dessous, un lecteur d'écran le lirait deux fois.
+ * ================================================================== */
+.mtb-grille-chiens__cadre-photo {
+  /* Vignette d'index — §6.1. */
+  aspect-ratio: var(--r-carre);
+  /* Le fond fait la séparation d'une photo pâle et remplit le fond d'un PNG
+     détouré : jamais de damier, jamais de trou (§6.6). C'est aussi le fond de
+     l'emplacement quand la photo est absente ou ne charge pas. */
+  background-color: var(--calcaire-creux);
+  /* Cerne intérieur sur TOUTE photo (§6.6) : le bord de l'image existe toujours
+     contre le fond calcaire, même sur un ciel blanc. C'est un cerne, pas une
+     ombre portée — l'interdit du §13 vise les ombres douces sur cartes. */
+  box-shadow: var(--cerne-photo);
+  /* §5.2 : rayon nul sur les photos. Écrit plutôt que supposé, parce que c'est
+     la seule surface de ce bloc à laquelle un arrondi pourrait être appliqué. */
+  border-radius: var(--r-0);
+}
+
+/* MASTER §6.2, la règle unique de cadrage, scopée au cadre de ce bloc plutôt
+   qu'à une classe utilitaire partagée `.mtb-photo` : le plugin n'émet que
+   `mtb-<bloc>` et `mtb-<bloc>__<element>` (contrat §11, arbitrage 5). Dette
+   T-#14-g : le prochain composant à cadre photo recopiera cette règle, à hisser
+   dans un crochet mutualisé du thème AVANT qu'elle existe en cinq exemplaires.
+
+   `display: block` : sans lui l'image reste de niveau ligne, s'assied sur la
+   ligne de base et dépasse le cadre de quelques pixels — et aucun
+   `overflow: hidden` n'est autorisé ici (§7.8).
+
+   Le cadre gagne toujours (§6.3) : une photo portrait dans ce carré est rognée
+   en haut et en bas, une paysage sur les côtés. Le cadrage choisit laquelle des
+   extrémités on garde. Ni bande noire, ni fond flouté, ni image déformée, ni
+   hauteur variable selon la source.
+
+   Les deux dernières déclarations ne servent qu'au cas « la photo ne charge
+   pas » (§6.6) : le texte alternatif s'affiche alors dans le cadre, en
+   `--texte-doux` sur `--calcaire-creux` — 5,79:1, §12.3. Aucun pictogramme
+   cassé n'est ajouté. */
+.mtb-grille-chiens__photo {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+/* Les cinq cadrages de la liste fermée de MASTER §6.2 — « Cadrage de la photo »
+   en administration (§10.2). Quatre s'écrivent en mots-clés, donc sans un seul
+   chiffre ; le cinquième est le défaut de la règle ci-dessus :
+
+     Haut gauche  → left top
+     Haut         → center top
+     Centre       → 50% 38%   (le repli de `--point-interet`)
+     Haut droite  → right top
+     Bas          → center bottom
+
+   `--cadrage-centre` N'A DONC PAS DE RÈGLE, et c'est délibéré. Le contrat §6
+   arbitre que « Centre » vaut le défaut justifié de §6.2 — la tête du chien,
+   au-dessus du centre géométrique — et NON le centre géométrique : le lire
+   géométriquement enterrerait ce défaut sur les 17 fiches d'un coup. Le laisser
+   retomber sur le repli est la seule écriture où « Centre » et le défaut ne
+   peuvent pas diverger. « Haut » reste distinct, en 0 % vertical, si bien que
+   les cinq choix restent discernables.
+
+   Le repli couvre en outre le cas où le serveur émettrait une clé inattendue :
+   la photo est cadrée par le défaut de MASTER, jamais laissée au centre
+   géométrique du navigateur. */
+.mtb-grille-chiens__cadre-photo--cadrage-haut-gauche { --point-interet: left top; }
+.mtb-grille-chiens__cadre-photo--cadrage-haut        { --point-interet: center top; }
+.mtb-grille-chiens__cadre-photo--cadrage-haut-droite { --point-interet: right top; }
+.mtb-grille-chiens__cadre-photo--cadrage-bas         { --point-interet: center bottom; }
+
+/* =====================================================================
+ * 5. Le nom, le lien, la cible cliquable — MASTER §8.2, §9.4, §12.10
+ * ================================================================== */
+
+/* Aucune troncature à `…` sur un nom de chien (§9.4) : il se coupe, il ne se
+   perd pas. `hyphens: auto` vient déjà du corps (base.css). Vérifié en
+   navigateur sur un nom de 63 caractères : quatre lignes, aucun débordement de
+   la piste.
+
+   `position: relative` SEUL NE SUFFIT PAS à remonter le texte au-dessus du
+   calque étiré, et c'était le défaut : le pseudo-élément `::after` du lien est
+   le DERNIER enfant de l'`<a>`, donc il vient APRÈS ce <span> dans l'ordre du
+   document. Deux éléments positionnés en `z-index: auto` s'empilant dans cet
+   ordre, le calque se peignait par-dessus le nom et captait le pointeur —
+   `document.elementFromPoint()` sur le texte du nom renvoyait l'`<a>`, jamais le
+   <span>, et le nom n'était donc PAS sélectionnable. `z-index: 1` le fait passer
+   à l'étape de peinture suivante, devant le calque, ce qui rend le contrat §11
+   arbitrage 13 effectif. Le <span> restant à l'intérieur de l'`<a>`, le lien
+   reste activable sur toute sa surface, nom compris.
+
+   `z-index` n'est pas une valeur de design mais une primitive d'empilement, au
+   même titre que 0 ou 100 % : elle ne porte aucune décision visuelle et ne
+   demande donc aucun jeton.
+
+   Le <span> est toujours émis, même sans lien (contrat §11, arbitrage 13) : la
+   feuille n'a ainsi qu'une forme à cibler. Sans lien, il n'y a aucun calque et
+   `z-index` est sans effet. */
+.mtb-grille-chiens__nom-texte {
+  position: relative;
+  z-index: 1;
+  overflow-wrap: break-word;
+}
+
+/* La carte entière est cliquable avec UN SEUL <a> dans le balisage : deux liens
+   vers la même fiche doubleraient les arrêts de tabulation et la verbosité au
+   lecteur d'écran (contrat §4), et l'image n'est jamais un lien. Le calque porte
+   donc la cible ≥ 44 px du §12.10 — la piste de 14rem ne descend jamais
+   au-dessous de 224 px de large, et la carte est plus haute que large.
+
+   Le calque est transparent : ni couleur, ni fond. La couleur du lien, son
+   soulignement `--laiton` et son survol restent ceux de base.css (§8.2), et le
+   soulignement n'est JAMAIS retiré, même sur un titre de vignette — c'est le
+   signal non chromatique du lien (§8.2, §12.9).
+
+   ANCRAGE — vérifié en navigateur, et c'est la panne la plus grave que ce
+   composant puisse avoir : `inset: 0` se résout sur le plus proche ancêtre
+   positionné, donc sur `.mtb-grille-chiens__carte` ci-dessus. Sans ce
+   `position: relative`, le calque s'étirerait jusqu'au bloc entier et TOUTE la
+   grille mènerait à UN SEUL chien. Contrôlé par `elementFromPoint()` au centre
+   de chaque vignette : chaque sonde renvoie le lien de SA carte.
+
+   Le calque est peint par-dessus le nom (il vient après le <span> dans l'ordre
+   du document) : c'est le `z-index: 1` du <span> ci-dessus qui rétablit
+   l'ordre. */
+.mtb-grille-chiens__lien::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* =====================================================================
+ * 6. Anneau de focus — MASTER §8.1, un seul, recopié
+ *
+ * Le calque étiré rend le lien aussi grand que la carte, mais l'anneau du
+ * navigateur ne cernerait que le texte du nom. On le déplace sur la carte
+ * entière pour que la zone qui réagit et la zone qui s'annonce soient la même.
+ *
+ * `:has(… :focus-visible)` et JAMAIS `:focus-within`, qui s'allumerait aussi au
+ * clic souris : MASTER §8.1 — « le survol n'utilise jamais d'anneau ». Focus et
+ * survol ne se confondent pas.
+ *
+ * Tout est enfermé dans le MÊME `@supports` : sans `:has()`, la neutralisation
+ * n'est pas appliquée non plus et le lien conserve l'anneau de base.css. Il n'y
+ * a donc jamais d'`outline: none` sans remplacement conforme (§13).
+ *
+ * §12.8 a déjà prouvé cet anneau à ≥ 3,77:1 sur n'importe quel fond,
+ * photographie comprise — anneau clair collé à l'élément, anneau sombre juste
+ * dehors, `--calcaire` et `--pin` encadrant toute la plage de luminance. La
+ * preuve est réutilisée, aucune paire n'est recalculée ici.
+ * ================================================================== */
+@supports selector(:has(*)) {
+  .mtb-grille-chiens__carte:has(.mtb-grille-chiens__lien:focus-visible) {
+    outline: 2px solid var(--pin);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--calcaire);
+    border-radius: var(--r-1);
+  }
+
+  /* Remplacement conforme au §8.1 ci-dessus, sur le même geste de focus : sans
+     cette neutralisation les deux anneaux se superposeraient, l'un autour du
+     nom, l'autre autour de la carte. */
+  .mtb-grille-chiens__lien:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,32 @@
+{
+	"apiVersion": 3,
+	"name": "mtb/grille-chiens",
+	"title": "Grille de chiens",
+	"description": "Affiche les fiches de chien publiées, avec leur photo et leur nom, groupées par statut.",
+	"category": "mtb",
+	"icon": "grid-view",
+	"attributes": {
+		"statut": {
+			"type": "string",
+			"default": "tous",
+			"enum": [
+				"tous",
+				"reproducteur",
+				"en_cours_de_confirmation",
+				"retraite",
+				"disparu"
+			]
+		}
+	},
+	"supports": {
+		"align": false,
+		"anchor": false,
+		"html": false,
+		"customClassName": false,
+		"reusable": false,
+		"multiple": true,
+		"interactivity": false
+	},
+	"editorScript": "mtb-grille-chiens-editeur",
+	"render": "file:./render.php"
+}
