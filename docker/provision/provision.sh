@@ -39,6 +39,7 @@ wait_for "la base de données" db_reachable
 log "attente du cœur WordPress (wp-load.php, déposé par le conteneur wordpress)…"
 wait_for "wp-load.php" test -f "${WP_PATH}/wp-load.php"
 
+installation_fraiche=0
 if ! $WP core is-installed 2>/dev/null; then
 	log "installation de WordPress en français (fr_FR)…"
 	$WP core install \
@@ -49,6 +50,7 @@ if ! $WP core is-installed 2>/dev/null; then
 		--admin_email="${WP_ADMIN_EMAIL}" \
 		--locale=fr_FR \
 		--skip-email
+	installation_fraiche=1
 else
 	log "WordPress déjà installé — étape ignorée."
 fi
@@ -74,8 +76,15 @@ $WP option update WPLANG fr_FR >/dev/null
 $WP option update timezone_string "Europe/Paris" >/dev/null
 $WP option update date_format "d/m/Y" >/dev/null
 $WP option update blogdescription "Élevage de bergers hollandais du Mont Brabant" >/dev/null
-$WP rewrite structure "/%postname%/" --hard >/dev/null
-$WP rewrite flush --hard >/dev/null
+# "wp rewrite ... --hard" écrit un .htaccess et avertit qu'il ne sait pas détecter la
+# configuration du serveur web depuis WP-CLI — bénin ici : l'image "wordpress:php8.1-apache"
+# active déjà mod_rewrite et AllowOverride (permaliens vérifiés fonctionnels dans la stack).
+# On filtre ce seul avertissement connu pour ne pas noyer un vrai avertissement futur.
+filtrer_avertissement_htaccess() {
+	grep -v '^Warning: Regenerating a .htaccess file requires special configuration' || true
+}
+$WP rewrite structure "/%postname%/" --hard 2>&1 >/dev/null | filtrer_avertissement_htaccess
+$WP rewrite flush --hard 2>&1 >/dev/null | filtrer_avertissement_htaccess
 
 log "activation du thème mtb…"
 if [ -f "${WP_PATH}/wp-content/themes/mtb/style.css" ]; then
@@ -109,7 +118,11 @@ if ! $WP user get "${WP_EDITOR_USER}" >/dev/null 2>&1; then
 else
 	log "compte éditrice déjà présent."
 fi
-log "compte administrateur « ${WP_ADMIN_USER} » créé par wp core install."
+if [ "$installation_fraiche" -eq 1 ]; then
+	log "compte administrateur « ${WP_ADMIN_USER} » créé par wp core install."
+else
+	log "compte administrateur « ${WP_ADMIN_USER} » déjà présent (créé par la première installation)."
+fi
 
 log "pages fixes (contact, espace protégé)…"
 if [ -z "$($WP post list --post_type=page --name=contact --field=ID)" ]; then
@@ -134,8 +147,33 @@ if $WP mtb import-fixtures --help >/dev/null 2>&1; then
 		--resultats=/fixtures/resultats.json \
 		|| log "AVERTISSEMENT : l'import des fixtures via mtb-core a échoué (voir sortie ci-dessus)."
 else
-	log "aucune commande « wp mtb import-fixtures » disponible — mtb-core n'a pas encore enregistré ses types de contenu ni sa commande d'import de fixtures. Étape ignorée ; les fichiers docker/fixtures/*.json sont prêts et attendent cette commande. Relancer le provisionnement (make provision) une fois mtb-core livré."
+	# mtb-core enregistre bien ses types de contenu (portée, chien, résultat) depuis le lot 2 —
+	# seule la commande WP-CLI d'import reste à livrer (dette technique #29 du board, décrite au
+	# caractère près dans docs/contracts/issue-1.md §"includes/migration/import-fixtures/").
+	log "aucune commande « wp mtb import-fixtures » disponible — mtb-core n'a pas encore livré cette commande (dette #29). Étape ignorée ; les fichiers docker/fixtures/*.json sont prêts et attendent cette commande. Relancer le provisionnement (make provision) une fois livrée."
 fi
+
+log "photo de test portrait (vérification du cadrage vertical, MASTER.md §6.2)…"
+# En attendant "wp mtb import-fixtures", cette image synthétique est déposée directement dans
+# la médiathèque : elle donne un attachement portrait réel à assigner à la main (fiche
+# d'information, photo d'une fiche chien) tant que l'import automatisé n'existe pas.
+if [ -z "$($WP post list --post_type=attachment --name=portee-demo-portrait-test --field=ID)" ]; then
+	$WP media import /fixtures/photos/portee-demo-portrait-test.png \
+		--title="portee-demo-portrait-test" \
+		--alt="Image de test synthétique, cadrage portrait — jamais une vraie photo d'élevage" >/dev/null \
+		&& log "photo de test portrait importée dans la médiathèque." \
+		|| log "AVERTISSEMENT : import de la photo de test portrait impossible (voir sortie ci-dessus)."
+else
+	log "photo de test portrait déjà présente dans la médiathèque."
+fi
+
+log "nettoyage du contenu par défaut de WordPress (lien codé en dur vers l'ancien port)…"
+# "wp core install" imprime l'URL d'administration en dur dans le contenu de la page par
+# défaut ("Sample Page"). Si le port a changé depuis (ex. 8080 -> 3005, cas vécu sur cette
+# stack), ce lien pointe vers un port mort et devient la seule URL du site qui ne se corrige
+# pas toute seule au redémarrage. Idempotent : aucune correspondance après la première passe,
+# aucune erreur.
+$WP search-replace 'http://localhost:8080/wp-admin/' '/wp-admin/' wp_posts --precise >/dev/null 2>&1 || true
 
 log "terminé."
 

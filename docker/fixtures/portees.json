@@ -6,7 +6,7 @@
     "mere": { "type": "fiche_chien", "reference": "luna-du-mont-brabant" },
     "nb_males": 3,
     "nb_femelles": 2,
-    "disponibilite": "chiots_disponibles",
+    "disponibilite": "disponible",
     "texte_libre": "Fixture de démonstration : portée avec chiots disponibles.",
     "chiots": [
       { "nom": "Ajax", "sexe": "male", "lof": "LOF DEMO 000001", "devenir": "disponible" },
@@ -20,7 +20,7 @@
     "mere": { "type": "fiche_chien", "reference": "luna-du-mont-brabant" },
     "nb_males": 2,
     "nb_femelles": 3,
-    "disponibilite": "tous_reserves",
+    "disponibilite": "reserve",
     "texte_libre": "Fixture de démonstration : portée entièrement réservée, père hors élevage saisi en texte libre.",
     "chiots": [
       { "nom": "Sasha", "sexe": "femelle", "lof": "LOF DEMO 000003", "devenir": "placée" }
@@ -33,7 +33,7 @@
     "mere": { "type": "nom_libre", "nom": "Kessy (fondatrice)", "elevage": "" },
     "nb_males": 4,
     "nb_femelles": 4,
-    "disponibilite": "portee_passee",
+    "disponibilite": "passee",
     "texte_libre": "Fixture de démonstration : ancienne portée, aucun chiot encore actif.",
     "chiots": []
   },
@@ -44,7 +44,7 @@
     "mere": null,
     "nb_males": null,
     "nb_femelles": null,
-    "disponibilite": "tous_reserves",
+    "disponibilite": "reserve",
     "texte_libre": "",
     "chiots": [],
     "note_fixture": "Portée délibérément incomplète — pas de photo, pas de liste de chiots. Sert à vérifier D12 : un contenu mal rempli ne doit jamais casser la page."
