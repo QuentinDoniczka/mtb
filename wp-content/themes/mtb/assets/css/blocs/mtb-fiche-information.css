@@ -1,0 +1,176 @@
+/*
+ * MTB — Fiche d'information
+ * Habille le bloc `mtb/fiche-information` (mtb-core) ; balisage gelé au §3 de
+ * docs/contracts/issue-7.md. Poignée `mtb-bloc-mtb-fiche-information`, dépendance
+ * `mtb-jetons`, mise en file automatique d'après LE NOM DU FICHIER, gelé au
+ * caractère près : un écart d'une lettre, aucune feuille servie, aucune erreur.
+ *
+ * SPÉCIFICITÉ — mise en file pendant `render_block`, donc après wp_head() :
+ * l'ordre de source face à base.css est inconnu, AUCUNE RÈGLE N'EN DÉPEND. Chaque
+ * concurrence est gagnée à la spécificité seule.
+ *   base.css (0,0,1)        →  ici
+ *   `img, picture, video`      `.…__photo > img`              (0,1,1)
+ *   `figcaption`               `.…__legende`                  (0,1,0)
+ *   `figure { margin: 0 }`     `.…__figure`                   (0,1,0)
+ *   `ul, ol { margin: 0 }`     `.…__prose > ul`               (0,1,1)
+ *   `h2`                       `.…__titre`                    (0,1,0)
+ * Dans la toile de l'éditeur le cœur préfixe les deux côtés par
+ * `.editor-styles-wrapper` : l'ordre relatif est préservé.
+ *
+ * TROIS PIÈGES À NE PAS « SIMPLIFIER » :
+ *  1. La fusion des marges est VOULUE sur la racine — y poser `display:
+ *     flow-root`, `grid`, `flex` ou un `padding` doublerait le rythme vertical.
+ *  2. Le cerne passe OBLIGATOIREMENT par un pseudo-élément — `--cerne-photo` est
+ *     une ombre intérieure, que le contenu remplacé de l'<img> recouvrirait
+ *     entièrement si elle était posée sur l'image ou sur l'emplacement.
+ *  3. PAS d'`overflow: hidden` sur l'emplacement — MASTER §7.8 l'interdit sur un
+ *     conteneur de texte, et celui-ci porte le texte de remplacement.
+ *
+ * Argumentation complète : docs/contracts/issue-7.md §6 et amendements.
+ */
+
+/* 1. La racine — MASTER §7.3, §5.1. `margin-block` et RIEN D'AUTRE : voir le
+   piège n° 1, la fusion avec le --e-7 du h2 est le mécanisme, pas un accident. */
+.mtb-fiche-information {
+  margin-block: var(--rythme-section);
+}
+
+/* 2. Le titre — MASTER §9.4, §7.7 : un mot indivisible est coupé plutôt que de
+   provoquer un défilement horizontal à 360 px. Appartient en réalité à base.css,
+   propriété d'une chaîne sœur dans ce lot — dette 4 du contrat §18. */
+.mtb-fiche-information__titre {
+  overflow-wrap: break-word;
+}
+
+/* 3. La prose — base.css met `ul, ol` à `margin: 0` ; sans cette règle une liste
+   serait COLLÉE au paragraphe suivant. --e-4 est l'« espace après un paragraphe »
+   de MASTER §5.1 ; l'appliquer à une liste est une EXTRAPOLATION NOMMÉE, à
+   ratifier (contrat §6, dette 7 du §18). */
+.mtb-fiche-information__prose > ul,
+.mtb-fiche-information__prose > ol {
+  margin-block-end: var(--e-4);
+}
+
+/* 4. La figure — UNE SEULE MARGE, juste dans les deux positions ; poser une marge
+   haute romprait la symétrie (contrat §6, arbitrage 6). L'ordre photo / texte
+   vient de l'ordre du DOM seul : aucun `order`, `flex`, `grid` ni
+   `column-reverse` ici, et `data-position` n'est JAMAIS lu par cette feuille. */
+.mtb-fiche-information__figure {
+  margin-block-end: var(--e-4);
+}
+
+/* 5. L'emplacement photo — MASTER §6.1 (ligne --r-paysage, qui nomme
+   « image d'une fiche d'information » : le ratio est désigné, non choisi), §6.6
+   (le fond tient sous une photo à transparence et sous une photo qui ne charge
+   pas). `position: relative` n'est que le référent du ::after. */
+.mtb-fiche-information__photo {
+  position: relative;
+  aspect-ratio: var(--r-paysage);
+  background-color: var(--calcaire-creux);
+}
+
+/* LE CERNE — piège n° 2 : ce pseudo-élément est le seul endroit d'où
+   --cerne-photo est visible au-dessus de la photo. RECETTE OBLIGATOIRE (V9) :
+   inspecter ce ::after et CONSTATER le cerne. Invisible = règle « simplifiée » =
+   livraison refusée. `pointer-events: none` : le cerne couvrant toute la photo,
+   il intercepterait sinon le clic et le survol destinés à l'image. */
+.mtb-fiche-information__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+/* MASTER §6.2, RECOPIÉ MOT POUR MOT — `> img` est le sélecteur du document, d'où
+   l'indépendance de cette feuille envers la classe `__image`. `50% 38%` est le
+   repli de cadrage de §6.2, seule valeur chiffrée que MASTER donne ici.
+   Les trois dernières déclarations habillent le TEXTE DE REMPLACEMENT rendu dans
+   la boîte quand l'image ne charge pas (§6.6) : 5,79:1 sur --calcaire-creux, AA
+   (§12.3). `1.4` est l'interligne que §4.5 associe à --t-sm ; aucun jeton ne le
+   porte. */
+.mtb-fiche-information__photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--texte-doux);
+}
+
+/* LES CINQ CADRAGES — MASTER §6.2, table du contrat §4. Valeur reçue VERBATIM en
+   snake_case, sans translittération (arbitrage 4). DES MOTS-CLÉS CSS, JAMAIS DES
+   POURCENTAGES : MASTER nomme les cinq libellés — Haut gauche · Haut · Centre ·
+   Haut droite · Bas — et ne donne aucune paire chiffrée ; `left top` …
+   `center bottom` en sont la traduction littérale (extrapolation nommée,
+   dette 7). Valeur absente ou inconnue → aucune de ces cinq règles ne s'applique
+   → le repli `50% 38%` de §6.2 s'exprime. */
+.mtb-fiche-information__photo[data-cadrage="haut_gauche"] {
+  --point-interet: left top;
+}
+
+.mtb-fiche-information__photo[data-cadrage="haut"] {
+  --point-interet: center top;
+}
+
+.mtb-fiche-information__photo[data-cadrage="centre"] {
+  --point-interet: center center;
+}
+
+.mtb-fiche-information__photo[data-cadrage="haut_droite"] {
+  --point-interet: right top;
+}
+
+.mtb-fiche-information__photo[data-cadrage="bas"] {
+  --point-interet: center bottom;
+}
+
+/* 6. La légende — toute sa typographie vient du style d'élément `figcaption` de
+   base.css, la recopier serait une seconde source de vérité. Seul l'écart
+   image ↔ légende manque à MASTER : --e-2 est une EXTRAPOLATION NOMMÉE, à
+   ratifier (contrat §6, dette 7 du §18). */
+.mtb-fiche-information__legende {
+  margin-block-start: var(--e-2);
+}
+
+/* --- L'ÉTAT VIDE N'EST PLUS ICI ---------------------------------------------
+   MASTER §9.1 déclare une apparence d'état vide IDENTIQUE POUR LES DIX
+   COMPOSANTS du catalogue et la loge explicitement dans `editor.css`. Trois
+   crochets scopés sous le nom du bloc la rendaient impossible à écrire une seule
+   fois ; le lot a tranché pour les crochets nus (amendement 7 du contrat #7).
+   Sont donc DUS PAR `themes/mtb/assets/css/editor.css`, propriété de la
+   chaîne #6, et par personne d'autre : l'apparence du cadre `.mtb-etat-vide`
+   (contour tireté 1 px --laiton, --r-0, fond --calcaire-creux, padding --e-6,
+   --t-sm, --texte-doux, aligné à gauche), l'étiquette laiton
+   `.mtb-etat-vide__nom` (recette du §4.5, ligne « h4 / étiquette ») et la
+   neutralisation de la marge héritée du `p` (amendement 6), sans laquelle le
+   `margin-block-end: var(--e-4)` de `p` déséquilibre le remplissage de l'encart.
+   CETTE FEUILLE NE DOIT JAMAIS LES RÉINTRODUIRE, sous les anciens crochets comme
+   sous les nouveaux : deux sources pour une seule apparence, c'est la divergence
+   qu'on vient d'éteindre.
+   ÉTAT DU DÛ, MESURÉ DANS LA TOILE DE L'ÉDITEUR le 2026-08-17 (la feuille de
+   bloc y arrive depuis le correctif de `mtb-jetons` en administration, livré
+   par #6) : soldé par #6 — `editor.css` définit `.mtb-etat-vide` (l. 126),
+   `.mtb-etat-vide__nom` (l. 142) et `.mtb-etat-vide__phrase` (l. 160), cette
+   dernière portant la remise à zéro de marge de l'amendement 6. §9.1 ne donne à
+   la phrase aucune apparence propre : la seule règle qui la cible est mécanique,
+   et cette feuille ne lui écrit rien.
+   DEUX PRÉCISIONS, pour qu'une revue ne les prenne pas pour des manques d'ici :
+   `.mtb-etat-vide__nom` reçoit de #6 l'encre --laiton-texte et la capitalisation,
+   mais PAS la recette d'étiquette du §4.5 (600, --t-xs, .16em) — #6 la laisse
+   explicitement en question ouverte à lead-design-mtb, et la trancher ici
+   rouvrirait la divergence que l'amendement 7 vient d'éteindre. La ligne 1 étant
+   un `<p>` dans ce module (forme gelée par l'amendement 7) là où une sœur emploie
+   un `<span>`, elle conserve le `margin-block-end: var(--e-4)` de `p` : écart
+   entre les deux lignes de l'encart, sujet du LOT et de `editor.css`, jamais de
+   cette feuille.
+   `editeur.js` pose aussi le crochet local `.mtb-fiche-information__vide` sur la
+   même racine — disponible pour un ajustement PROPRE à ce composant, jamais pour
+   porter l'apparence commune. Rien ne l'emploie, et c'est voulu : sa raison
+   d'être est que la centralisation dans `editor.css` n'ait pas à rouvrir ici.
+   PAIRE ARBITRÉE, toujours valable et toujours à porter dans MASTER §12.3 par
+   lead-design-mtb : --laiton-texte sur --calcaire-creux = 4,75:1, AA. Elle est la
+   justification de l'étiquette laiton OÙ QU'ELLE SOIT ÉCRITE ; elle a seulement
+   changé de destinataire (contrat #7, arbitrage 8 et amendement 7). */
