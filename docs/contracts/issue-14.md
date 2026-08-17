@@ -779,6 +779,68 @@ notice, aucun statut inventé**.
 
 ## 13. Journal des amendements — après observation en navigateur
 
+### Passe 3 — le cadrage « Centre » converge, 2026-08-18
+
+**Ce contrat ne change pas. C'est `mtb-fiche-information.css` qui s'aligne sur lui.** Le §« `centre` vaut
+`50% 38%` » est confirmé, appliqué partout, et mesuré en navigateur.
+
+**Le défaut constaté par le test d'intégration du lot.** Sur la **même photo**, le même choix « Centre »
+de l'éleveuse donnait deux cadrages différents, `object-position` **calculé par le navigateur** :
+
+| Composant | Avant | Après |
+|---|---|---|
+| `.mtb-fiche-information__photo > img` | `50% 50%` | **`50% 38%`** |
+| `.mtb-grille-chiens__photo` | `50% 38%` | **`50% 38%`** (inchangé) |
+
+**Pourquoi c'est #7 qui bouge, et pas ce module.** Les deux lectures ne se valaient pas :
+
+1. MASTER §6.2 donne un défaut **chiffré** — `50% 38%`, « sur une photo de chien en pied, la tête est
+   au-dessus du centre géométrique » — et une liste fermée de **cinq** libellés, dont **aucun** n'est
+   chiffré. Aucun des cinq n'encode 38 %, `haut` valant `center top` (0 % en vertical).
+2. `includes/content/chien/choix.php:92` fait de `centre` le **défaut stocké**. Si `centre` valait le
+   centre géométrique, **aucune** des cinq clés ne pourrait être renvoyée par `cadrage_par_defaut()` sans
+   enterrer le défaut de MASTER sur les 17 fiches. Les seules issues seraient d'inventer une sixième
+   valeur — interdit — ou de réviser MASTER — hors chaîne.
+3. `docs/contracts/issue-7.md:858` (dette 6) **classe lui-même sa lecture géométrique comme une dette**
+   et écrit que « la décision visuelle appartient à MASTER, pas à cette chaîne ».
+
+La lecture de ce contrat est donc la seule implémentable sans rien inventer. **Aucune règle
+`--cadrage-centre` n'a été ajoutée ici** : l'absence de règle, qui fait retomber `centre` sur le repli
+`50% 38%`, reste la seule écriture où « Centre » et le défaut **ne peuvent pas** diverger. Seul le
+commentaire annonçant la divergence comme non tranchée a été réécrit.
+
+**Mesuré en navigateur** (WordPress 6.9, port 3005, `/ti3-les-six/`, qui porte les deux composants sur la
+même photo), `getComputedStyle(img).objectPosition` sur les cinq clés **plus** le cas de la valeur absente
+ou inconnue. Les deux composants rendent désormais **exactement la même paire**, et les cinq choix
+restent discernables :
+
+| Clé | `fiche-information` | `grille-chiens` |
+|---|---|---|
+| `haut_gauche` | `0% 0%` | `0% 0%` |
+| `haut` | `50% 0%` | `50% 0%` |
+| **`centre`** | **`50% 38%`** | **`50% 38%`** |
+| `haut_droite` | `100% 0%` | `100% 0%` |
+| `bas` | `50% 100%` | `50% 100%` |
+| *absente ou inconnue* | `50% 38%` | `50% 38%` |
+
+**Limite de la mesure, à ne pas redécouvrir.** Le fixture des pages TI3 est un **paysage 1536×1024**.
+Dans le cadre `3/2` de la fiche il n'y a **aucun débordement vertical**, et dans le carré de la grille le
+débordement est **horizontal**. La composante verticale du point d'intérêt n'est donc **visuellement
+exercée par aucun fixture existant** : la convergence est établie sur les valeurs calculées — la mesure
+même dans laquelle le défaut avait été constaté — et non à l'œil. **Une photo portrait manque au jeu de
+fixtures**, et c'est elle qu'il faudra pour voir le pari de MASTER §6.2 mordre. À rapprocher de la
+question **D5** de MASTER, qui prévoit déjà de revérifier `50% 38%` après l'import des vraies photos.
+
+**Ce qui reste ouvert, et qui n'appartient à aucune chaîne de code.** « Centre » étant le défaut, le
+choisir ne change **rien** à ce que l'éleveuse voit — c'est le propre de l'option par défaut d'une liste
+fermée, les quatre autres agissant normalement. Deux conséquences à porter au lot, **non corrigées ici** :
+
+- L'aide de l'écran de saisie, `includes/fields/chien/ecran.php:571`, dit « **Par défaut, c'est le
+  centre.** » C'est la phrase que ce contrat interdit : elle promet un centre géométrique. Elle doit dire
+  « le cadrage par défaut, qui garde la tête du chien ». **Hors empreinte de ce correctif.**
+- Rendre « Centre » distinct du défaut supposerait un **sixième** cadrage nommé dans MASTER §6.2, ou une
+  révision du repli. **Décision de `lead-design-mtb`, pas de cette chaîne.**
+
 ### Passe 2 — la finition, 2026-08-17
 
 Le composant était livré et commité (`009eaa7`). Cette passe **ne l'a pas redessiné** : elle a payé trois

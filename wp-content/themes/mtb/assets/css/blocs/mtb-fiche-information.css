@@ -101,12 +101,18 @@
 }
 
 /* LES CINQ CADRAGES — MASTER §6.2, table du contrat §4. Valeur reçue VERBATIM en
-   snake_case, sans translittération (arbitrage 4). DES MOTS-CLÉS CSS, JAMAIS DES
-   POURCENTAGES : MASTER nomme les cinq libellés — Haut gauche · Haut · Centre ·
-   Haut droite · Bas — et ne donne aucune paire chiffrée ; `left top` …
-   `center bottom` en sont la traduction littérale (extrapolation nommée,
-   dette 7). Valeur absente ou inconnue → aucune de ces cinq règles ne s'applique
-   → le repli `50% 38%` de §6.2 s'exprime. */
+   snake_case, sans translittération (arbitrage 4). Quatre des cinq s'écrivent
+   en MOTS-CLÉS CSS : MASTER nomme les cinq libellés — Haut gauche · Haut ·
+   Centre · Haut droite · Bas — et ne donne aucune paire chiffrée pour ceux-là ;
+   `left top` … `center bottom` en sont la traduction littérale (extrapolation
+   nommée, dette 7 du contrat #7). `centre` fait exception et vaut `50% 38%`,
+   pas le centre géométrique : arbitrage rendu au contrat #14, parce que
+   `mtb_...cadrage_par_defaut()` renvoie `centre` — le lire géométriquement
+   enterrerait sur les 17 fiches le défaut justifié de MASTER §6.2 (sur une
+   photo de chien en pied, la tête est au-dessus du centre géométrique). `haut`
+   reste distinct (`center top`, 0 % en vertical) : les cinq choix restent
+   discernables. Valeur absente ou inconnue → aucune de ces cinq règles ne
+   s'applique → le repli `50% 38%` de la règle `object-position` s'exprime. */
 .mtb-fiche-information__photo[data-cadrage="haut_gauche"] {
   --point-interet: left top;
 }
@@ -116,7 +122,7 @@
 }
 
 .mtb-fiche-information__photo[data-cadrage="centre"] {
-  --point-interet: center center;
+  --point-interet: 50% 38%;
 }
 
 .mtb-fiche-information__photo[data-cadrage="haut_droite"] {

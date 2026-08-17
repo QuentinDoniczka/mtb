@@ -259,9 +259,12 @@
    `object-position: var(--point-interet, 50% 38%)` est aujourd'hui écrit cinq
    fois, ici et dans mtb-fiche-information.css, mtb-liste-portees.css,
    mtb-derniere-portee.css, mtb-bandeau-ouverture.css. La dette n'est donc plus
-   préventive mais constatée, et la divergence annoncée a commencé : #7 lit
-   « Centre » comme `center center`, ce module comme le défaut de §6.2. Arbitrage
-   à lead-design-mtb ; rien n'est changé ici sans lui.
+   préventive mais constatée. La divergence qu'elle annonçait n'a pas eu lieu :
+   l'arbitrage du contrat #14 tranche que « Centre » vaut `50% 38%`, pas le
+   centre géométrique, et `mtb-fiche-information.css` s'y est aligné le
+   2026-08-18. Les deux composants lisent donc désormais `centre` comme
+   `50% 38%` — celui-ci par ce repli implicite, l'autre par une règle
+   explicite.
 
    `display: block` : sans lui l'image reste de niveau ligne, s'assied sur la
    ligne de base et dépasse le cadre de quelques pixels — et aucun
