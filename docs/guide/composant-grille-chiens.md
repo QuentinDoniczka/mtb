@@ -38,7 +38,7 @@ chien que vous avez déjà remplies.
    > visibles, **Tous les statuts, groupés** sélectionné, et la ligne d'aide sous les choix.
 
 6. Cliquez sur **Mettre à jour**, en haut à droite. C'est en ligne.
-7. Ouvrez la page sur le site pour voir le résultat : c'est là que la grille est à sa vraie allure.
+7. Ouvrez la page sur le site pour voir le résultat.
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -141,9 +141,6 @@ enregistrer.
 
 **C'est normal, vous n'avez rien à faire :**
 
-- **Dans la page en cours de modification, les photos s'affichent l'une sous l'autre, en grand**, sans
-  grille et sans carré. **Sur le site, la grille est correcte.** Fiez-vous à la page publiée, pas à
-  l'aperçu de l'écran de modification. C'est en cours de correction.
 - Le composant affiche deux lignes, **Grille de chiens** puis
   « Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut. » : **aucune fiche de
   chien publiée n'a encore de statut.** Ouvrez **Chiens** → **Tous les chiens**, ouvrez une fiche,
@@ -202,7 +199,6 @@ installation où aucune fiche publiée n'a de statut.
 | `captures/grille-chiens-inserteur.png` | **Pages** → une page → bouton **+** | La liste des composants, la rubrique **Mont Brabant** en tête, **Grille de chiens** et sa phrase de présentation lisibles |
 | `captures/grille-chiens-reglage.png` | Colonne de droite, composant sélectionné | Le panneau **Statut à afficher** ouvert, les cinq choix (**Tous les statuts, groupés** · **Reproducteurs** · **En cours de confirmation** · **Retraités** · **Disparus**), le premier sélectionné, et la ligne d'aide en entier |
 | `captures/grille-chiens-etat-vide.png` | Composant fraîchement inséré, aucune fiche publiée n'ayant de statut | Les deux lignes : **Grille de chiens**, puis « Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut. » |
-| `captures/grille-chiens-apercu-editeur.png` | Page en cours de modification | L'aperçu tel qu'elle le voit vraiment : les photos empilées pleine largeur, pour qu'elle reconnaisse l'écran décrit dans « En cas de doute » |
 | `captures/grille-chiens-sur-le-site.png` | La page **publiée**, vue sur le site | Deux groupes avec leurs titres, les vignettes en colonnes, **et au moins une vignette sans photo** pour montrer l'emplacement vide de même taille |
 | `captures/grille-chiens-menu-composant.png` | Composant sélectionné | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** |
 

@@ -9,14 +9,28 @@
  * blocs sur `wp_loaded` et sert `assets/css/blocs/<espace>-<nom>.css` s'il
  * existe. Dépendance garantie : `mtb-jetons` (tokens.css). Aucune autre.
  *
- * CETTE FEUILLE N'ATTEINT PAS L'IFRAME DE L'ÉDITEUR. `wp_enqueue_block_style()`
- * s'accroche sur `render_block_*`, `wp_enqueue_scripts` ou `wp_footer` : aucun
- * des trois ne s'exécute dans la toile de l'éditeur, qui ne reçoit que
- * `add_editor_style()`. Dans l'éditeur, la structure est donc habillée par
- * base.css seul — vrais titres avec leur filet, mais photos empilées pleine
- * largeur, sans grille et sans carré. Lisible, jamais cassé, long à faire
- * défiler. Dette T-#14-h du contrat §12 ; le correctif vit dans functions.php ou
- * editor.css, hors de cette empreinte.
+ * CETTE FEUILLE ATTEINT LA TOILE DE L'ÉDITEUR, depuis le correctif de #6 dans
+ * functions.php. Mesuré dans l'iframe (WordPress 6.9) : `mtb-bloc-mtb-grille-
+ * chiens-css` ET `mtb-jetons-css` y sont tous deux présents, `__liste` calcule
+ * `grid-template-columns: 272px 272px` avec `gap: 32px`, `__cadre-photo` mesure
+ * 272 × 272 en `aspect-ratio: 1 / 1` sur `--calcaire-creux`, et son `::after`
+ * porte bien le cerne en `pointer-events: none`. Dans l'éditeur, l'éleveuse voit
+ * donc la vraie grille, carrés et colonnes compris.
+ *
+ * LE PIÈGE — à lire AVANT d'ajouter une `deps` à une feuille de bloc. La panne
+ * d'avant (photos empilées pleine largeur, sans grille et sans carré : état
+ * révolu) ne venait pas du crochet de `wp_enqueue_block_style()`, contrairement à
+ * ce que cet en-tête affirmait. Les feuilles de blocs sont mises en file avec
+ * `'deps' => array( 'mtb-jetons' )`, or `mtb-jetons` n'était enregistré que sur
+ * `wp_enqueue_scripts`, qui ne se déclenche JAMAIS en administration ; et
+ * `WP_Dependencies::all_deps()` abandonne l'élément entier EN SILENCE — ni erreur,
+ * ni avertissement — dès qu'une dépendance est introuvable. C'était donc une
+ * dépendance non résolue, et elle emportait les dix composants du catalogue à la
+ * fois. #6 enregistre désormais `mtb-jetons` en administration.
+ *
+ * Dette T-#14-h du contrat §12 : SOLDÉE, par #6 et non par ce module. Le
+ * correctif vit dans functions.php, hors de cette empreinte — ne pas le recopier
+ * ici, ne pas le contourner.
  *
  * VALEURS BRUTES EMPLOYÉES — liste CLOSE, toutes recopiées de MASTER, aucune
  * inventée, aucune ne dispose d'un jeton (en créer un serait l'invention que le
@@ -65,12 +79,19 @@
  *     n'existe pas dans le document, et le contrat #2 l'a déjà consigné. En
  *     écrire serait une invention visuelle ; et une feuille d'impression doit
  *     être GLOBALE, pas dix règles recopiées dans dix feuilles de blocs.
- *   · AUCUNE apparence d'état vide (`--vide`, `mtb-etat-vide*`). Deux raisons
- *     cumulées : cette feuille n'atteint pas l'éditeur, seul contexte où l'état
- *     vide est rendu (contrat §8) — ce serait du CSS mort ; et MASTER §9.1 exige
- *     UNE SEULE apparence pour les dix composants du catalogue, qui vit dans
- *     editor.css, hors empreinte. La figer ici garantirait neuf copies
- *     divergentes. Dette T-#14-c.
+ *   · AUCUNE apparence d'état vide (`--vide`, `mtb-etat-vide*`). Une seule raison
+ *     désormais, et elle suffit : MASTER §9.1 exige UNE SEULE apparence pour les
+ *     dix composants du catalogue, qui vit dans editor.css, hors empreinte — la
+ *     figer ici garantirait neuf copies divergentes. (La seconde raison qu'on
+ *     lisait ici, « cette feuille n'atteint pas l'éditeur, ce serait du CSS
+ *     mort », est morte avec le correctif de #6 ; la conclusion, elle, ne bouge
+ *     pas d'un pouce.) Dette T-#14-c : SOLDÉE, l'apparence est LIVRÉE par #6 —
+ *     `.mtb-etat-vide`, `.mtb-etat-vide__nom`, `.mtb-etat-vide__phrase`
+ *     (editor.css, l. 126, 142 et 160) : fond `--calcaire-creux`, filet tireté
+ *     `--laiton`, rembourrage, et `text-transform: uppercase` sur `__nom`, si bien
+ *     que les capitales de §9.1 viennent du CSS et non du PHP. Vérifié dans la
+ *     toile. Ce module se contente d'ÉMETTRE les crochets, jamais de redéfinir
+ *     l'apparence.
  *   · AUCUN effet de survol sur la photo : ni zoom, ni assombrissement, ni
  *     `filter` (interdit §6.6 et §13 — il falsifierait la robe, qui est une
  *     donnée d'élevage), ni ombre. Le survol est déjà signalé, gratuitement, par
@@ -233,8 +254,14 @@
 /* MASTER §6.2, la règle unique de cadrage, scopée au cadre de ce bloc plutôt
    qu'à une classe utilitaire partagée `.mtb-photo` : le plugin n'émet que
    `mtb-<bloc>` et `mtb-<bloc>__<element>` (contrat §11, arbitrage 5). Dette
-   T-#14-g : le prochain composant à cadre photo recopiera cette règle, à hisser
-   dans un crochet mutualisé du thème AVANT qu'elle existe en cinq exemplaires.
+   T-#14-g : elle disait « à hisser dans un crochet mutualisé du thème AVANT que
+   cette règle existe en cinq exemplaires ». C'EST FAIT, et pas dans le bon sens —
+   `object-position: var(--point-interet, 50% 38%)` est aujourd'hui écrit cinq
+   fois, ici et dans mtb-fiche-information.css, mtb-liste-portees.css,
+   mtb-derniere-portee.css, mtb-bandeau-ouverture.css. La dette n'est donc plus
+   préventive mais constatée, et la divergence annoncée a commencé : #7 lit
+   « Centre » comme `center center`, ce module comme le défaut de §6.2. Arbitrage
+   à lead-design-mtb ; rien n'est changé ici sans lui.
 
    `display: block` : sans lui l'image reste de niveau ligne, s'assied sur la
    ligne de base et dépasse le cadre de quelques pixels — et aucun
