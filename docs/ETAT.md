@@ -10,7 +10,8 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
-**Phase : lot 1 clos le 2026-08-16. Le socle existe. Prochain lot : les trois types de contenu.**
+**Phase : lot 2 clos le 2026-08-17. Le modèle de contenu existe et se saisit. Rien n'est encore
+visible par un visiteur. Prochain lot : les gabarits.**
 
 | Étape | État |
 |-------|------|
@@ -20,16 +21,20 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 | Board GitHub (issues + milestones) | ✅ 10 epics, 25 issues — [projet 10](https://github.com/users/QuentinDoniczka/projects/10) |
 | Design system (`design-system/MASTER.md`) | ✅ 16 sections — vocabulaire en §10 |
 | Stack Docker (`compose.yaml`) | ✅ 4 services, boot vérifié — `cp .env.example .env && make up` |
-| Extension `mtb-core` | ✅ squelette + chargeur à auto-découverte (#1) — aucun type de contenu encore |
+| Extension `mtb-core` | ✅ squelette + chargeur à auto-découverte (#1), **+ 9 modules** : portée, chien, résultat (#3, #4, #5) |
 | Thème `mtb` | ✅ thème **de blocs**, `theme.json` verrouillé, CSS à la main, 2 polices auto-hébergées (#2) |
+| **Saisie** portée / chien / résultat | ✅ trois écrans classiques, en français, éditables par le rôle Éditeur sans capacité ajoutée |
+| **Rendu public** des trois types | ❌ **rien** — le thème n'appelle **aucune** fonction `mtb_get_*` (zéro occurrence). Un visiteur ne voit aucune donnée d'élevage |
 | Reprise du contenu (52 URL) | ❌ rien |
-| Guide de l'éleveuse (`docs/guide/`) | ❌ rien |
+| Guide de l'éleveuse (`docs/guide/`) | ✅ 3 fiches (portée, chien, résultat) — **22 captures à prendre**, aucune n'existe |
 
-**Prochaine action** : `/lead-mtb #3 #4 #5` (epic 2 — les trois types de contenu). Empreintes
-**disjointes**, vérifiées par `github-boards` après le lot 1 : trois chaînes en parallèle, sans réserve.
-Les trois questions qui bloquaient ce lot (Q8, Q9, Q10) sont tranchées.
+**Prochaine action** : `/lead-mtb #16 #17 #18` (epic 7 — gabarits et thème). C'est le chaînon qui rend
+visible tout ce que le lot 2 a construit : sans lui, l'administration est complète et le site est vide.
+Les composants (#6 à #15) viennent après.
 
-Board : **27 issues**, milestone 1 fermé, milestone 12 « Dette technique » ouvert (#26 `scandir`, #27 réécritures).
+Board : **32 issues**, milestones 1 et 2 fermés, milestone 12 « Dette technique » à **7 issues**
+(#26 `scandir`, #27 réécritures, #28 colonnes de listes, #29 fixtures, #30 `wp db query`,
+#31 `WP_DEBUG`, #32 habillage des écrans de saisie).
 
 **Comptes de développement** — `make up` puis http://localhost:8080/wp-admin/ : `admin`/`mtb-dev-admin`,
 éditrice `fabienne`/`mtb-dev-editrice` (rôle **Éditeur** natif, délibérément pas Administrateur).
@@ -41,6 +46,13 @@ Attrape-courriels Mailpit sur http://localhost:8025.
 
 | # | Décision | Date | Pourquoi |
 |---|----------|------|----------|
+| 22 | **Les trois fiches d'aide nomment « En cas de doute » leur section de recours**, terme du BRIEF §13.3 | 2026-08-17 | Elles en avaient trois noms différents. C'est le seul endroit du guide où l'éleveuse arrive **inquiète** : ce n'est pas là qu'il faut la faire hésiter, et la vue d'ensemble de #25 aurait dû composer avec trois intitulés. |
+| 21 | **Les compteurs de mâles et de femelles d'une portée sont stockés en chaîne, pas en entier** | 2026-08-16 | C'est la seule façon de distinguer « **0 mâle** » — un fait d'élevage légitime — de « non renseigné ». En entier, WordPress rend `0` dans les deux cas, et le site affirmerait qu'une portée n'a aucun mâle alors que rien n'a été saisi. D11. |
+| 20 | **Jamais `sanitize_text_field`, `wp_strip_all_tags` ni `wp_kses` sur une valeur recopiée.** Chaque module écrit son assainisseur : UTF-8 invalide et caractères de contrôle seulement | 2026-08-16 | Elles passent par `strip_tags()` : une valeur commençant par `<` — `<60%` en dysplasie, plausible — est **vidée en silence**. C'est D11 enfreinte **par l'outillage**, sans que personne l'ait voulu. Sûr sans retirer les balises parce que l'échappement est systématique en sortie et que seul un compte `edit_post` écrit. Coût assumé : trois copies de l'assainisseur, les empreintes disjointes interdisant un fichier partagé (dette T-#5-e). |
+| 19 | **Le type qui possède la donnée possède la lecture.** Aucun module ne réimplémente une requête sur un type qu'il n'enregistre pas ; il appelle la fonction de la chaîne propriétaire sous `function_exists()` | 2026-08-16 | Le chargeur emploie `scandir()`, qui parcourt par ordre alphabétique : deux fonctions homonymes ne produisent pas d'erreur mais un **ombrage silencieux**, la mauvaise implémentation gagnant sans un mot sur un site qui répond 200. Corollaire : la garantie de forme **et d'ordre** appartient à la chaîne propriétaire, jamais au consommateur. |
+| 18 | **Enveloppe de champ `array( 'libelle', 'valeur', 'affichage' )`** pour toute valeur exposée au thème ; `colonnes` + `lignes` + `cellules` aux mêmes clés pour le tabulaire | 2026-08-16 | La donnée brute d'un côté, ce qui s'imprime de l'autre, et le **libellé fourni par le serveur** : c'est ce qui garantit que le thème n'a jamais à composer un texte, donc jamais à accorder, traduire ou inventer. `affichage` vaut « Non renseigné » quand le champ est vide — sauf l'élevage d'un parent extérieur et le **pays** d'un résultat, où le vide signifie « français », pas « absent ». |
+| 17 | **Écran de saisie classique sur les trois types**, pas l'éditeur de blocs (`use_block_editor_for_post_type` → `false`, ou `show_in_rest => false`) | 2026-08-16 | **Une fiche ne se compose pas, elle se remplit.** Une portée, c'est douze faits et un paragraphe ; en blocs, les douze faits tombent sous un canevas que la fiche n'utilise jamais, et Fabienne fait défiler à chaque saisie pour atteindre ce pourquoi elle est venue. Effet de bord acquis : la dette T7 (couleur hors jetons) devient inatteignable sur une fiche. À dire ainsi dans le guide : **« les pages se composent, les fiches se remplissent »**. |
+| 16 | **Clés de méta `_mtb_` à tiret bas initial** (et non `mtb_`), **fonctions de lecture `mtb_get_*`** | 2026-08-16 | Le tiret bas rend la méta **protégée**, donc jamais listée dans « Champs personnalisés » : c'est la garantie **mécanique** qu'aucune clé technique n'atteint l'écran de l'éleveuse (MASTER §10.4). Le préfixe `mtb_get_` vient du contrat gelé #1. Exception tranchée : `mtb_resultat_disciplines()` et `mtb_resultat_sexes()` restent sans `get` — ce sont des tables de correspondance, pas des lectures de contenu. |
 | 1 | WordPress, **thème `mtb` sur mesure + extension `mtb-core`** | 2026-08-14 | Le contenu doit survivre au thème ; c'est ce qui rend le site IONOS actuel impossible à faire évoluer |
 | 2 | **Champs et blocs faits maison**, aucun plugin payant (pas d'ACF Pro) | 2026-08-14 | Zéro dépendance, zéro licence à renouveler, interface de saisie entièrement maîtrisée |
 | 3 | Trois types de contenu : **Portée, Chien, Résultat de travail** | 2026-08-14 | Ce sont les trois choses que l'éleveuse ajoute réellement |
@@ -53,7 +65,7 @@ Attrape-courriels Mailpit sur http://localhost:8025.
 | 14 | **Polices conservées telles que livrées : 147 548 octets** (Newsreader 124 184 + Public Sans 23 364), au-dessus de la cible de 100 Ko de `MASTER.md` §4.1 | 2026-08-16 | La contrainte du brief §12 est un **nombre de fichiers — deux maximum — et elle est tenue** ; le budget chiffré de 200 Ko du brief porte sur HTML + CSS + JS, à 29 Ko. Les 100 Ko sont une **cible** interne au design system, et `MASTER.md` l'écrit ainsi. Quatre pistes de sous-ensemble ont été mesurées : la seule qui repasse dessous (97 344 o) exige de brider l'axe optique à 36 px, alors que les `h1` montent à 80 px — on paierait la cible avec la propriété même qui justifiait le choix de Newsreader. Écart assumé et documenté dans `docs/contracts/issue-2.md`. Ce qui protège le public du brief (personnes âgées sur mobile), c'est le préchargement, la même origine et `font-display`, pas 20 Ko de moins. |
 | 13 | Le **statut d'un chien s'accorde au sexe** sur les écrans : *Reproductrice / Retraitée / Disparue* pour une femelle, *Reproducteur / Retraité / Disparu* pour un mâle | 2026-08-15 | Se lit naturellement en français sur une fiche de femelle. Coût assumé : le libellé affiché dépend d'un autre champ, à porter dans le contrat de l'issue #4. |
 | 12 | **Cotation LOF et dysplasie (HD/ED) = champs en texte recopié**, pas de liste fermée | 2026-08-15 | Les grilles officielles ne sont nulle part dans le brief. Inventer une liste ferait courir deux risques : une grille qui n'existe pas, et une valeur réelle impossible à saisir — donc une éleveuse bloquée. Elle recopie le document officiel. Contrepartie assumée : pas de vérification de saisie, tri moins fiable. Rouvrable si les grilles sont fournies un jour. |
-| 11 | **Huit disciplines de travail** : RING, IGP/RCI, Mondioring, obéissance, pistage, recherche utilitaire, sauvetage, truffe | 2026-08-15 | Le brief §5.3 annonce « ~7 » puis en énumère huit ; l'énumération fait foi, le « ~7 » était une approximation d'écriture. |
+| 11 | **NEUF disciplines de travail** — révisée le 2026-08-16. Graphies de `MASTER.md` §10.2 : RING · IGP / RCI · Mondioring · Obéissance · Pistage · Recherche utilitaire · Sauvetage · Truffe · **Autres disciplines** | 2026-08-15, **révisée le 2026-08-16** | Huit d'abord : le brief §5.3 annonce « ~7 » puis en énumère huit, l'énumération faisant foi. **Puis la chaîne #5 est allée lire `mtbrabant.com/travail/`** : la page porte une section « Autres disciplines : » contenant quatre lignes réelles, dont **Agility** et **Brevet Maitre Chien Drogue**, qu'aucune des huit ne peut exprimer. Avec une liste strictement close, ces deux lignes étaient **inexprimables, donc perdues à la reprise** — contrainte 4 et D4. Le neuvième libellé est **recopié du titre de section du site source**, pas inventé. « Truffe » reste, bien qu'absente du site : le brief et §10.2 la portent tous deux, comme le champ *Conducteur*, vide sur toutes les lignes reprises. **La ligne « Cavage » du source se range sous « Autres disciplines », comme le site la range lui-même** — aucune déduction n'est nécessaire. Réserve honnête portée par #5 : une valeur fourre-tout perd la discipline réelle de ces quatre lignes ; ajouter chacune coûterait **une ligne**, et aucune donnée n'est encore saisie. Voir Q12. |
 | 10 | **Tout composant tableau rendu côté serveur émet `data-libelle="…"` sur chaque `<td>`**, avec exactement le libellé de colonne de `MASTER.md` §10 | 2026-08-15 | C'est ce qui permet aux tableaux (résultats de travail, chiots d'une portée) de se déplier en lignes libellées sous 48 rem, **sans conteneur à défilement horizontal**. Sans l'attribut, les tableaux sont illisibles sur téléphone — donc échec de la contrainte 360 px. À porter dans le contrat gelé des issues #5, #15 et #3. |
 | 9 | **Aucun index central à éditer à la main** dans `mtb-core` : chargeur à auto-découverte des sous-dossiers de `includes/{content,fields,blocks,query,migration,admin}/` | 2026-08-15 | C'est la condition technique du parallélisme. Un index de blocs édité à la main serait touché par presque toute issue visuelle et ferait entrer en collision des chaînes pourtant censées être disjointes. Conséquence : un bloc = un dossier auto-enregistré ; `functions.php` n'est touché que par #2 puis #18, jamais dans le même lot. |
 
@@ -63,6 +75,9 @@ Reprises du §15 du brief. Aucune ne bloque le bootstrap ; chacune bloque une is
 
 | # | Question | Bloque | État |
 |---|----------|--------|------|
+| Q12 | **« Truffe » et « cavage » sont-ils la même chose pour Fabienne ?** Le mot *truffe* n'apparaît **nulle part** sur le site source ; la page Travail porte une ligne *Cavage* — et le cavage **est** la recherche de truffes. La chaîne #5 a refusé de graver la déduction, à raison. Le code n'attend pas la réponse : le site range lui-même Cavage sous « Autres disciplines », donc la reprise recopie son classement. | rien aujourd'hui — la reprise (#19-#21) et la qualité du tableau de la page Travail | ⏳ **pour l'éleveuse** |
+| Q13 | **Fabienne consigne-t-elle la date de saillie ?** `MASTER.md` §10.2 fige le libellé « Saillie » (champ de date), mais BRIEF §5.1 ne l'inscrit pas dans les champs d'une portée. §10 dit **comment nommer**, pas **quoi livrer** : le champ n'a donc pas été livré. Le livrer aurait présumé qu'elle tient cette date. | rien — rouvrable sur #3 si la réponse est oui | ⏳ **pour l'éleveuse** |
+| Q14 | **Les quatre lignes « Autres disciplines » du site source sont-elles des disciplines à part entière, ou la rubrique « Autres » du site actuel ?** (Agility · Brevet Maitre Chien Drogue · Cavage · Qualification chien de sauvetage) | rien — la reprise les exprimera de toute façon | ⏳ **pour l'éleveuse** |
 | Q1 | Usage exact de la page protégée par mot de passe (familles de chiots / avant-première / documents d'élevage) | l'issue `prive` | ⏳ en attente |
 | Q2 | ~~Point de départ du design~~ | — | ✅ tranchée 2026-08-15 : voir décision 8 |
 | Q3 | Conservation des messages du formulaire en base, ou envoi par courriel uniquement | l'issue `contact` | ⏳ en attente |
@@ -81,6 +96,8 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 
 | # | Dette | Créée par | Payée par |
 |---|-------|-----------|-----------|
+| **T9** | **`assainir_texte_recopie()` existe en trois copies** — une par module, les empreintes disjointes interdisant un fichier partagé. Prix assumé du parallélisme. **Et les trois divergent déjà, au premier jour** : `content/chien/assainissement.php:51` remplace les caractères de contrôle par une **espace** et n'appelle pas `wp_check_invalid_utf8()` ; `content/portee/champs.php:236` et `content/resultat/assainissement.php:48-50` les **suppriment** et contrôlent l'encodage. Trois définitions de « valeur propre », trois résultats sur la même saisie. | #3, #4, #5 | à hisser dans un module commun, avant que la reprise n'écrive du contenu réel |
+| **T10** | **Aucun rendu public.** Le thème n'appelle **aucune** fonction `mtb_get_*` — vérifié, zéro occurrence. D1 « les valeurs apparaissent sur l'URL publique » et D2 « une saisie, quatre endroits » sont donc vérifiées **au niveau des fonctions de lecture, jamais au HTML**. Idem pour la décision 10 (`data-libelle`), les badges de §3.3, le repli à 360 px et le zoom 200 %. | lot 2 | **epic 7 (#16-#18)**, puis #12-#15 |
 | **T1** | **Fabienne ne pourra pas modifier son menu.** Dans un thème de blocs, le menu est un bloc Navigation de `parts/header.html`, éditable uniquement par l'éditeur de site — qui exige `edit_theme_options`, capacité qu'un rôle Éditeur n'a pas (vérifié dans la stack). Or le BRIEF §13 fait de « modifier le menu » une ligne du guide. **C'est la règle d'or qui est touchée** : à traiter comme telle, pas comme un détail de permission. | #2 | **#18** |
 | **T2** | **Le lien d'évitement dépend du JavaScript** : le cœur l'injecte par script depuis WP 6.4, et sa cible `<main>` n'est pas focalisable. La ligne « lien d'évitement » de **D7 n'est pas cochée**. Se solde par un lien écrit à la main dans `parts/header.html` avec `tabindex="-1"` sur la cible. Le CSS est déjà écrit et bat celui du cœur. | #2 | epic Gabarits |
 | **T3** | **L'accueil et la page de recherche n'ont aucun `<h1>`** : `templates/index.html` emploie `wp:query-title {"type":"archive"}`, qui ne rend rien sur l'index du blog ni sur la recherche. Les pages seules en ont bien un. L'accueil de production sera une Page, donc couvert — mais la page de recherche, non. | #2 | epic Gabarits |

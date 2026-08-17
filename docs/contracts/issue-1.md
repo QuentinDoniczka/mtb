@@ -369,7 +369,18 @@ C'est la carte du plugin, puisque le code n'en contient aucune.
 
 | Groupe | Module | Issue | Rôle |
 |---|---|---|---|
-| — | — | — | *Aucun module livré à l'issue #1. Le squelette est vide par construction.* |
+| `content/` | `portee` | #3 | Type `mtb_portee`, ses 16 clés de méta `_mtb_`, listes fermées et assainisseurs |
+| `fields/` | `portee` | #3 | Écran de saisie classique (5 boîtes), sauvegarde, avis par transient, `ecran.js` |
+| `query/` | `portee` | #3 | 6 fonctions publiques : `mtb_get_portee`, `_derniere_portee`, `_portee_par_identifiant`, `_portees`, `_portees_du_chien`, `_portee_voisine` |
+| `content/` | `chien` | #4 | Type `mtb_chien`, ses clés `_mtb_`, `choix.php` (listes fermées + accord au sexe), `assainissement.php` |
+| `fields/` | `chien` | #4 | Écran de saisie classique (6 sections + adresse), sauvegarde, avis, `statut.js`, `galerie.js` |
+| `query/` | `chien` | #4 | 2 fonctions publiques : `mtb_get_chien`, `mtb_get_chiens_par_statut` |
+| `content/` | `resultat` | #5 | Type `mtb_resultat`, ses 8 clés `_mtb_`, `assainissement.php` |
+| `fields/` | `resultat` | #5 | Écran de saisie en un seul bloc, titre composé au serveur, sauvegarde, messages d'enregistrement |
+| `query/` | `resultat` | #5 | 4 fonctions publiques : `mtb_resultat_disciplines`, `mtb_resultat_sexes`, `mtb_get_resultats_travail_par_discipline`, `mtb_get_resultats_travail_du_chien` |
+
+> Tenu à jour par `/lead-mtb` à la clôture de chaque lot, ce fichier étant hors de l'empreinte de
+> toute chaîne. Dernière mise à jour : clôture du lot 2 (issues #3, #4, #5).
 
 ## 12. Conventions de code — gelées pour les 20 issues
 
