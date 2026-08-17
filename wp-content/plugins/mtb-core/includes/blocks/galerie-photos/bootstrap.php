@@ -1,6 +1,6 @@
 <?php
 /**
- * Composant « Galerie photos » : enregistrement du bloc, de ses poignées et garde de catégorie.
+ * Composant « Galerie photos » : enregistrement du bloc et de ses poignées.
  *
  * @package MTB\Core
  */
@@ -20,16 +20,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 require_once __DIR__ . '/rendu.php';
 
+/*
+ * La catégorie d'insérteur « Mont Brabant » appartient au module « includes/blocks/categorie-mtb/ »,
+ * qui la déclare une seule fois pour tout le catalogue. Ce composant s'y raccroche par le seul
+ * « "category": "mtb" » de son block.json : aucun filtre « block_categories_all » ici, sans quoi le
+ * même onglet serait déclaré par autant de modules qu'il y a de composants.
+ */
 add_action( 'init', __NAMESPACE__ . '\\enregistrer', 20 );
-add_filter( 'block_categories_all', __NAMESPACE__ . '\\garantir_la_categorie', 10, 1 );
 
 /**
  * Déclare les poignées puis le bloc. Appelée sur « init », priorité 20.
  *
- * Les trois poignées sont enregistrées ici plutôt que déclarées en « file: » dans block.json :
- * WordPress chercherait alors un « editeur.asset.php » voisin, produit par une étape de
- * construction que le projet n'a pas, et émettrait un avertissement. Les enregistrer nous-mêmes
- * garde aussi les noms conformes à la convention « mtb-<module>-<usage> ».
+ * Les trois poignées sont enregistrées ici plutôt que déclarées en « file: » dans block.json. Pour
+ * le script, c'est une obligation : WordPress chercherait un « editeur.asset.php » voisin, produit
+ * par une étape de construction que le projet n'a pas, et émettrait un avertissement. Pour les deux
+ * feuilles, un « file: » serait sans danger — « register_block_style_handle() » résout l'URI lui-même
+ * et ne cherche jamais d'« asset.php » — mais les déclarer ici garde leurs noms conformes à la
+ * convention « mtb-<module>-<usage> » et lisibles dans la file d'attente.
  */
 function enregistrer(): void {
 	wp_register_script(
@@ -60,41 +67,4 @@ function enregistrer(): void {
 	);
 
 	register_block_type( __DIR__ );
-}
-
-/**
- * Garantit la présence de la catégorie de blocs « Mont Brabant », sans jamais la dupliquer.
- *
- * Le dossier « includes/blocks/categorie-mtb/ » qui doit un jour la porter seul n'existe pas
- * encore, et plusieurs composants sont livrés en parallèle : chacun porte donc cette garde. Elle
- * est idempotente — le premier module exécuté ajoute la catégorie, les suivants constatent sa
- * présence et rendent la main — et devient inerte le jour où le module dédié arrive.
- *
- * L'ajout se fait en fin de liste, jamais en tête : aucun onglet du cœur n'est déplacé.
- *
- * Le paramètre n'est pas typé : un autre module mal élevé pourrait renvoyer autre chose qu'un
- * tableau, et une erreur de type sur un filtre du cœur emporterait l'éditeur entier.
- *
- * @param mixed $categories Catégories de blocs proposées.
- *
- * @return mixed Catégories, la nôtre garantie présente une seule fois.
- */
-function garantir_la_categorie( $categories ) {
-	if ( ! is_array( $categories ) ) {
-		return $categories;
-	}
-
-	foreach ( $categories as $categorie ) {
-		if ( is_array( $categorie ) && isset( $categorie['slug'] ) && 'mtb' === $categorie['slug'] ) {
-			return $categories;
-		}
-	}
-
-	$categories[] = array(
-		'slug'  => 'mtb',
-		'title' => 'Mont Brabant',
-		'icon'  => null,
-	);
-
-	return $categories;
 }

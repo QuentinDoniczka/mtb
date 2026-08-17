@@ -5,7 +5,7 @@
  * `"style"` dans block.json (contrat #8 §2). C'est la raison d'être du chemin :
  * `wp_enqueue_block_style()` est côté visiteur uniquement, donc une feuille
  * posée dans le thème laisserait la toile entièrement nue et obligerait à
- * recopier la grille dans `editor.css` — deux vérités sur le rendu même dont
+ * recopier la grille dans `editeur.css` — deux vérités sur le rendu même dont
  * dépend D7 (contrat #8 §3.1, arbitrage 1).
  *
  * --- DÉROGATION NOMMÉE — dette T15 ------------------------------------------
@@ -109,9 +109,10 @@
  * ratio, donc aucune image ne dicte la hauteur d'une ligne et le décalage
  * cumulé pendant le chargement est nul (§6.9).
  *
- * Pas de `overflow: hidden` : `object-fit: cover` rogne déjà, et §7.8 comme §13
- * l'interdisent sur un conteneur susceptible de contenir du texte — celui-ci
- * contient le texte `alt` quand le fichier ne charge pas (§6.6).
+ * Pas de `overflow: hidden` : `object-fit: cover` rogne déjà, et §7.8 l'interdit
+ * sur un conteneur susceptible de contenir du texte — celui-ci contient le texte
+ * `alt` quand le fichier ne charge pas (§6.6). (§7.8 et lui seul : la liste des
+ * interdits du §13 ne mentionne pas `overflow`.)
  * ================================================================== */
 .mtb-galerie-photos .mtb-galerie-photos__lien {
   /* Support du cerne posé en ::after (section 4). */
@@ -195,7 +196,7 @@
  * 6. Le nom accessible de la vignette — PORTEUR D'ACCESSIBILITÉ
  *
  * À NE JAMAIS « NETTOYER ». Une vignette est un lien dont l'unique contenu est
- * une image ; quand la médiathèque n'a pas de description, `alt=""` et le lien
+ * une image ; quand la bibliothèque n'a pas de description, `alt=""` et le lien
  * se retrouve sans nom accessible (WCAG 2.4.4 et 4.1.2). Le <span> « Photo N
  * sur T » le lui donne sans écraser la description quand elle existe.
  * Sans cette règle, « Photo 3 sur 12 » s'imprime sous chaque vignette : le mode
@@ -204,7 +205,7 @@
  * Technique de masquage recopiée de MASTER §7.6 (« retiré à l'œil, gardé au
  * lecteur d'écran »), donc SANS `display: none` ni `visibility: hidden`, qui
  * retireraient l'élément de l'arbre d'accessibilité, et SANS `overflow: hidden`
- * sur un conteneur de texte, que §13 interdit.
+ * sur un conteneur de texte, que §7.8 interdit.
  * ================================================================== */
 .mtb-galerie-photos .mtb-galerie-photos__rang {
   /* Hors flux : sinon le texte pousserait sous la photo, le cadre portant un

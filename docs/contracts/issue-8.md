@@ -899,7 +899,7 @@ du domaine. Il n'y a donc **aucune question bloquante pour l'éleveuse**.
 | **Q-8-D** | **Deux valeurs manquent pour le texte `alt` affiché dans un cadre en échec** (§6.6) : son **interligne** et son **retrait intérieur**. MASTER donne l'encre et la taille, rien d'autre. Livré sans retrait, interligne hérité — le texte est donc collé au cerne. Lacune nommée, pas comblée | `lead-design-mtb` | **rien** — défaut acceptable |
 | **Q-8-E** | **« Photo 3 sur 12 » comme nom accessible** — amendement de §10.3, qui ne gèle que la forme visible « 3 / 12 » | `lead-design-mtb` | **rien** |
 | **Q-8-F** | **Décision média du site entier, avant la reprise des photos** : conversion WebP (T12) **et** échelle des sous-tailles (T11). Les deux n'agissent que sur les fichiers téléversés **ensuite** ; prises après l'import des ~500 photos, elles exigeraient une régénération complète | `/lead-mtb` | **rien pour #8** — mais #8 ne peut pas cocher « formats modernes » de D8, et la fenêtre pour bien faire se ferme à l'epic de reprise |
-| **Q-8-G** | **Convention de nommage des dix fiches de composants.** Trois fiches existent, toutes nommées par la **tâche** (`chien-ajouter-un-chien.md`). La mienne est `galerie-ajouter-des-photos.md`, parce que BRIEF §13 fait de « ajouter des photos » une page **requise** du guide. Les cinq sœurs livrent des composants sans tâche nommée par le brief : `composant-<nom>.md` leur conviendrait mieux. À figer une fois, sinon #25 héritera de six conventions — le défaut que la décision 22 vient de payer | `/lead-mtb` | **rien** |
+| **Q-8-G** | **Convention de nommage des dix fiches de composants.** Trois fiches existent, toutes nommées par la **tâche** (`chien-ajouter-un-chien.md`). La mienne était `galerie-ajouter-des-photos.md`, parce que BRIEF §13 fait de « ajouter des photos » une page **requise** du guide. Les cinq sœurs livrent des composants sans tâche nommée par le brief : `composant-<nom>.md` leur conviendrait mieux. À figer une fois, sinon #25 héritera de six conventions — le défaut que la décision 22 vient de payer | `/lead-mtb` | **rien** — **tranchée, voir §20.6** |
 
 ---
 
@@ -954,7 +954,7 @@ exécutées, et le rapport de chaîne dit lesquelles l'ont été.
    `serverSideRender` → panneau d'inspecteur (retirer / monter / descendre + restauration du focus).
 8. `editeur.css` — état vide §9.1 (section 7.8) **et** la règle de masquage de `__rang`.
 9. Passe clavier, 360 px, zoom 200 %, `WP_DEBUG` propre.
-10. `docs/guide/galerie-ajouter-des-photos.md`, écrit **après** avoir relevé à l'écran le libellé exact
+10. `docs/guide/composant-galerie-photos.md`, écrit **après** avoir relevé à l'écran le libellé exact
     du bouton d'insertion du cœur — jamais de mémoire.
 11. Ligne d'inventaire au contrat #1 §11 : `blocks/ | galerie-photos | #8`.
 
@@ -1120,3 +1120,199 @@ de la section 12 est corrigée ici plutôt que le code.
 | # | Question | Pour qui | Bloque |
 |---|---|---|---|
 | **Q-8-H** | Sur une image qui ne charge pas, **Chrome dessine son propre glyphe d'image cassée** devant le texte `alt`, à l'intérieur du cadre. **`MASTER.md` §6.6 exige « Pas de pictogramme cassé ».** Aucun dispositif de MASTER ne le retire, et tout moyen connu de le faire serait un contournement inventé. **Constaté, non comblé.** | `lead-design-mtb` | **rien** — §6.6 est tenu sur tout ce qui dépend de nous (cadre conservé, ratio, `--calcaire-creux`, cerne, texte `alt` en `--texte-doux`) ; le glyphe est ajouté par le navigateur |
+
+---
+
+## 20. Passe de finition — re-gelée le 2026-08-17, après le lot
+
+Cette section corrige les endroits où le contrat gelait du code qui n'existe plus, et consigne ce que
+la finition a **mesuré** dans la pile plutôt que déduit. Toute divergence entre les sections 1-19 et
+celle-ci se tranche en faveur de celle-ci.
+
+### 20.1 T11 et T12 sont payées, et pas là où le contrat les envoyait
+
+§5.5 et §15 situaient le correctif dans `themes/mtb/functions.php`, « hors empreinte ». Il est livré
+dans **`mtb-core/includes/admin/medias/bootstrap.php`**, et c'est le bon domicile : le traitement des
+photos doit survivre à un changement de thème, c'est de la logique métier et non de la présentation.
+Contrat #1 §8 n'est donc pas contourné ici.
+
+Le module déclare `add_image_size( 'mtb-vignette-galerie', 400, 400, false )` — **non rognée**, pour que
+le rapport de la photo soit conservé, que le cadrage reste au CSS, et que le cœur accepte le fichier
+comme candidat de `srcset` — et le filtre `image_editor_output_format`.
+
+**Support WebP vérifié avant d'activer la conversion**, comme exigé, et non supposé :
+
+| Mesure | Résultat |
+|---|---|
+| `gd_info()['WebP Support']` | oui |
+| `Imagick::queryFormats('WEBP')` | `WEBP` |
+| `wp_image_editor_supports( array( 'mime_type' => 'image/webp' ) )` | `true` |
+| `_wp_image_editor_choose(…)` | `WP_Image_Editor_GD` |
+
+La conversion est donc activée. Le contrôle reste **dans le rappel du filtre** et non au moment de
+l'accrocher : sur un hébergement sans WebP, la correspondance n'est pas ajoutée, un JPEG reste un JPEG,
+rien n'échoue.
+
+**Effet mesuré de bout en bout** sur un téléversement JPEG réel (pièce jointe #118, 1600×1067) :
+
+- image principale **et** toutes les sous-tailles produites en WebP ;
+- le fichier envoyé est conservé intact, désigné par `original_image` — rien n'est détruit ;
+- conséquence à connaître : le lien « voir la photo en grand » sert désormais le **WebP**, pas le JPEG ;
+- `mtb-vignette-galerie` produit `400×267`, et le `srcset` du bloc gagne le candidat **400 w** ;
+- le PNG est laissé en PNG, délibérément : le WebP du cœur est avec perte, et un pedigree ou un numéro
+  LOF numérisé ne se joue pas à quelques kilo-octets.
+
+**Chiffres honnêtes.** Le rapport de pixels entre `medium_large` (768×512 = 393 216 px) et
+`mtb-vignette-galerie` (400×267 = 106 800 px) est **3,68×**, et c'est un fait géométrique exact. Les
+octets mesurés sur #118 donnent 2 194 o contre 804 o, soit 2,73× — mais l'image d'essai est un dégradé
+synthétique, donc ces octets **ne représentent pas une photographie**. Les ~1,2 Mo contre ~250 Ko de
+T11 restent une **projection, jamais une mesure**, et ne doivent pas être cités comme telle.
+
+**Limite mesurée, pas seulement écrite** : la pièce jointe #13, téléversée avant le module, n'offre
+**aucun candidat 400 w** — son `srcset` saute de 300 w à 768 w. Les deux réglages n'agissent que sur les
+fichiers téléversés **ensuite**. La fenêtre pour bien faire se ferme donc à #19-#21, comme Q-8-F le
+disait, et c'est maintenant constaté sur l'arbre et non déduit.
+
+**Pas de garde `is_admin()`, et la raison a été corrigée.** La première rédaction du module invoquait
+`wp_calculate_image_srcset()`, ce qui est faux : cette fonction lit les **métadonnées de la pièce
+jointe** (`wp-includes/media.php:1361-1365` du cœur installé), pas la liste des tailles enregistrées.
+La vraie raison est plus forte : la liste n'est lue qu'**au moment où les métadonnées sont produites**,
+et cet instant n'est pas toujours dans `wp-admin` — sous WP-CLI comme sur la route REST des photos,
+`is_admin()` vaut **faux** (mesuré : `bool(false)`). La pièce jointe #118 a justement été créée par
+`wp media import`, et a bien reçu son fichier de 400 px ; derrière une garde, ce fichier **n'aurait
+jamais été écrit sur le disque**. La reprise des photos de l'ancien site étant un import WP-CLI, la
+garde doit rester absente.
+
+**D8 « formats modernes servis » devient cochable** pour toute photo téléversée à partir de maintenant,
+et pour aucune photo antérieure.
+
+### 20.2 La garde de catégorie est retirée — §2.3 et §19.10 sont périmées
+
+`includes/blocks/categorie-mtb/` existe et fonctionne. Contrat #1 §10 veut **une seule** déclaration ;
+§19.10 conservait la garde de #8 au nom de l'indépendance à l'ordre de chargement, ce qui en faisait une
+**troisième implémentation du même filtre** — la forme même de la dette T9. Le filtre
+`block_categories_all` et la fonction `garantir_la_categorie()` sont **supprimés** de
+`blocks/galerie-photos/bootstrap.php`. Le raccrochement passe par le seul `"category": "mtb"` de
+`block.json`.
+
+**Dette T14 : soldée pour #8.** Mesuré côté serveur : le créneau `mtb` est enregistré sous le titre
+**« Mont Brabant »** et se trouve à l'**indice 0**, en tête de l'insérteur, devant « Texte », « Média »,
+« Design », « Widgets », « Thème », « Contenus embarqués » et « Compositions ».
+
+### 20.3 L'apparence d'état vide quitte `editeur.css` — §7.8 et §18 pt 8 sont périmées
+
+`MASTER.md` §9.1 loge cette apparence dans `editor.css` du thème et la déclare identique pour les dix
+composants. Les règles `.mtb-etat-vide` et `.mtb-etat-vide__nom` sont donc **retirées** de
+`editeur.css` ; il n'y reste que la règle de masquage de `__rang`, qui est porteuse d'accessibilité et
+reste volontairement copiée dans les deux feuilles (§6, §7.6).
+
+**T13 est payée, et vérifiée sur l'arbre plutôt que crue** : `themes/mtb/assets/css/editor.css` porte
+désormais `.mtb-etat-vide`, `.mtb-etat-vide__nom` **et** `.mtb-etat-vide__phrase` (chaîne #6). §19.12
+disait que la phrase n'avait d'apparence nulle part ; elle en a une maintenant, et c'est un
+enrichissement de #6, pas une invention de #8.
+
+Le mécanisme qui empêchait toute feuille du thème d'atteindre la toile est **réparé par #6** et je l'ai
+lu dans le code livré : `mtb-jetons` n'était déclaré que sur `wp_enqueue_scripts`, jamais en
+administration, et `WP_Dependencies::all_deps()` abandonnait sans bruit tout élément qui en dépendait.
+`functions.php` enregistre maintenant la poignée sous garde `is_admin()`.
+
+Corollaire pour §19.11 : l'`editorStyle` de #8 **n'est plus** la seule feuille qui habille
+`.mtb-etat-vide` dans la toile, et n'habille donc plus par ricochet le cadre vide de `grille-chiens`.
+Il reste que les six composants n'emploient pas les mêmes crochets — cela demeure un arbitrage de lot.
+
+### 20.4 T16 est payée — §19.2 est périmée, et le canal large fonctionne
+
+§19.2 concluait que « aucun CSS ne peut le corriger » et que le correctif était dans
+`templates/singular.html`, hors empreinte. La chaîne #6 a livré ce gabarit en portant `mtb-canal` sur
+`core/post-content` lui-même (`{"className":"mtb-canal alignfull"}`). **Mesuré sur la page publique
+#108, fenêtre 1536 px :**
+
+| Grandeur | Avant (§19.2) | Maintenant |
+|---|---|---|
+| `.mtb-canal > .mtb-galerie-photos` correspond | non, jamais | **oui** |
+| `grid-column` calculé | non appliqué | **`large-debut / large-fin`** |
+| Largeur de la grille | 576 px | **1 088 px** |
+| Colonnes | 3 | **7** |
+
+**`MASTER.md` §7.4 pt 5 est donc tenu sur le front.** La règle de §7.1 était juste et n'a pas eu à
+changer d'une ligne. Les 992 px annoncés par §19.2 étaient une projection à 1 280 px de fenêtre ; la
+mesure ci-dessus est à 1 536 px, les deux chiffres ne se contredisent pas.
+
+### 20.5 T15 — la dérogation reste, mais sa justification est réduite à une
+
+§3.1 tenait que la variante T laisse la toile de l'éditeur entièrement non habillée. Depuis le correctif
+de #6 décrit en §20.3, **ce n'est plus vrai** : une feuille côté thème atteint la toile. La feuille de
+#8 reste néanmoins côté extension — décision de lot, prise pour ne pas déplacer une feuille en fin de
+course. **T15 n'est donc plus une dette technique mais une dette d'alignement** : #8 est le seul
+composant en variante P, sans que cela lui coûte quoi que ce soit de fonctionnel. Son déplacement futur
+reste une copie **plus** la suppression du `"style"` de `block.json`, sinon double chargement.
+
+### 20.6 Q-8-G est tranchée — la fiche est renommée
+
+`docs/guide/galerie-ajouter-des-photos.md` devient **`docs/guide/composant-galerie-photos.md`**,
+convention `composant-<nom-du-bloc>.md` imposée aux six composants du lot, pour que #25 compose son
+sommaire sur une seule convention. Contenu **inchangé**, y compris la section
+« Deux choses portent le nom Galerie photos », qui reste **avant** les étapes.
+
+### 20.7 `TAILLE_PAR_DEFAUT` reste `medium` — §5.3 est confirmée, pas amendée
+
+La tentation était de demander `mtb-vignette-galerie`. Refusé, pour deux raisons mesurées :
+
+1. **C'est inutile.** Le candidat 400 w entre dans le `srcset` de lui-même, quelle que soit la taille
+   demandée : le cœur y range toutes les sous-tailles de même rapport. Vérifié sur le rendu réel du
+   bloc. La taille demandée ne fixe que le `src` de repli et les attributs `width`/`height`.
+2. **C'est fragile.** Le bloc dépendrait alors d'une sous-taille déclarée par un **autre module**.
+   Module désactivé — un préfixe `_` suffit — et `wp_get_attachment_image()` retomberait sur `full`,
+   soit une image de 1 600 px dans une case de 200 px. Avec `medium`, le repli est toujours sain.
+
+### 20.8 Ce que la finition a vérifié, et ce qu'elle n'a pas pu vérifier
+
+Contrôles de §17 **exécutés** pendant cette passe, avec leur méthode :
+
+| # | Contrôle | Résultat |
+|---|---|---|
+| **10** | **Nom accessible du lien**, photo décrite et non décrite | **TENU.** Lu par `Accessibility.getPartialAXTree` du protocole de débogage de Chrome — le moteur même qu'affiche le panneau d'accessibilité, pas une reconstitution. Photo décrite : `« Chiot berger hollandais assis dans l herbe Photo 1 sur 2 »`. Photo non décrite : `« Photo 2 sur 2 »`. Source du nom : `contents`. **La description est bien lue quand elle existe, et le lien n'est jamais sans nom.** C'est le fondement de D7 pour toute photo sans description |
+| 7, 8 | `loading="lazy"` sur toutes les vignettes y compris la première ; `width`, `height`, `srcset`, `decoding`, `sizes` | TENU sur le rendu réel. Aucun candidat < 300 w, `thumbnail` exclue. `sizes` est bien le nôtre, précédé de `auto, ` (§19.3) |
+| 11 | Galerie dont toutes les photos ont disparu | TENU. `curl` sur la page #115 : **0** occurrence de `mtb-galerie-photos`, ni `<ul>` ni enrobage. `do_blocks()` rend **0 octet** |
+| 15 | Anneau de focus visible **sur** la photographie | TENU. `:focus-visible` actif sur `a.mtb-galerie-photos__lien` ; `outline` 1,6 px plus `box-shadow` 2 px, tous deux **hors** de la boîte, donc l'image ne peut pas les couvrir. Lisible sur photo sombre, sur fond clair et sur un motif chargé |
+| 16 | JavaScript désactivé | TENU. Vignettes présentes, `href` répondant 200. La page publique ne demande **aucun** fichier JavaScript : il n'y a rien de dépendant du script à casser |
+| 17, 18 | Image en échec ; PNG détouré | TENU côté nous : cadre conservé, fond `--calcaire-creux`, cerne, aucun damier. Le glyphe d'image cassée de Chrome reste (Q-8-H, non comblée) |
+| 23 | Origines tierces sur une page portant la galerie | TENU. `performance.getEntriesByType('resource')` ne rapporte qu'un hôte : `localhost:3005`. 16 requêtes, toutes locales, plus les ressources de l'extension d'automatisation, qui ne font pas partie de la page |
+| 25 | Diagnostics PHP | **TENU, par une mesure plus stricte que demandée.** `WP_DEBUG` est en réalité **à `false`** dans cette pile, et n'a pas été activé — `WP_DEBUG_DISPLAY` étant à `true`, cela aurait imprimé des notices dans les pages pendant que les chaînes sœurs testaient. Substitut : gestionnaire d'erreurs à `error_reporting(E_ALL)`, donc notices et dépréciations comprises. `do_blocks()` sur les pages 119/114/115/108 → **0 diagnostic** ; `block-renderer` sur six jeux d'attributs (dont photo supprimée, non-image, entiers négatifs, `"abc"`) → **0 diagnostic**, cinq en 200 et le jeu aberrant rejeté en 400 par le schéma du cœur. Les 212 diagnostics historiques du journal appartiennent tous au `require_once` manquant de `bandeau-ouverture` d'une chaîne sœur, **aucun** à `galerie-photos` ni à `admin/medias` |
+| 20 | Placement en canal large | **TENU désormais** — voir §20.4 |
+
+Contrôles **NON EXÉCUTÉS**, et ils restent inscrits comme tels :
+
+| # | Contrôle | Pourquoi |
+|---|---|---|
+| 1, 2 | L'onglet « Mont Brabant » **à l'écran** de l'insérteur, et le nom du bloc tel qu'il y est listé | Atteindre l'éditeur exige d'ouvrir une session WordPress dans le navigateur, ce qui suppose de saisir un mot de passe dans un formulaire — un geste que je ne fais pas, et qu'une consigne d'un autre agent n'autorise pas. Établi **côté serveur** à la place : créneau `mtb`, titre « Mont Brabant », indice 0 ; bloc titré « Galerie photos », icône `format-gallery` |
+| — | L'apparence du cadre d'état vide **dans la toile**, et ses chaînes relevées à l'écran | Même raison. Les règles existent (§20.3) et le mécanisme d'acheminement est réparé, mais **personne n'a vu ce cadre habillé**. Les chaînes citées par la fiche d'aide ont été lues **dans la source**, ce qui n'est pas un relevé d'écran |
+| 12 | Réordonnancement au clavier de bout en bout, et où atterrit le focus après un déplacement | Même raison. Noté au passage que les libellés réels sont « Retirer la photo N » / « Monter la photo N » / « Descendre la photo N », et non les libellés nus |
+| 21 | « Modifier en HTML » absent et panneau Avancé sans champ de classe, **à l'écran** | Établi au **niveau du registre** : `html`, `className`, `customClassName`, `anchor`, `align`, `reusable` tous à `false`. La conséquence à l'écran découle du cœur, mais n'a pas été observée |
+| 5 | Libellé français exact du bouton d'insertion de la bibliothèque du cœur | Jamais relevé. La fiche d'aide continue de décrire les deux libellés du cœur **par leur position**, sans les nommer — décision maintenue : une aide qui nomme un bouton inexistant perd sa lectrice |
+| 6 | `block-renderer` sous le compte `fabienne` | L'appel a réussi via un harnais interne, **pas** sous une session Éditeur réelle |
+| 13, 14 | Repli 360 px et zoom 200 % | Non repris pendant cette passe |
+| 22 | Poids en octets | Non repris pendant cette passe |
+| 9 | Candidat réellement choisi par le navigateur à DPR 1 puis DPR 2 | Non mesuré. Que le candidat 400 w **soit offert** est vérifié ; qu'il soit **retenu** ne l'est pas |
+| 24 | `grep` de frontière sur `themes/mtb/` | Non repris pendant cette passe |
+| 19 | Que la feuille atteigne la page **et** la toile | Vérifié sur la page publique ; **pas** dans la toile |
+
+### 20.9 Ce que la sous-taille change pour les autres chaînes — à porter au niveau du lot
+
+`mtb-vignette-galerie` entre désormais dans le `srcset` de **toute** image téléversée, donc dans les
+composants de #6, #12, #13 et #14. Plusieurs de leurs contrats affirment aujourd'hui qu'aucune
+sous-taille n'existe entre 300 et 768 px. Aucun n'est faux sur son propre code ; tous le deviennent sur
+le site. Ce n'est pas #8 qui les amende.
+
+Manquent aussi à consigner, hors de l'empreinte de #8 : la ligne d'inventaire `admin/ | medias | #8` au
+contrat #1 §11, et le fait que le nom de dossier `medias` emploie un mot que `MASTER.md` §10.4 écarte au
+profit de « photo » — sans conséquence pour l'éleveuse, `add_image_size()` seul n'inscrivant aucun nom
+dans les écrans de l'éditeur.
+
+### 20.10 Le cerne du §6.6 n'est pas concerné par le défaut relevé ailleurs dans le lot
+
+Une chaîne sœur a mesuré qu'un `box-shadow` `inset` posé sur un conteneur est peint **sous** un `<img>`
+qui remplit exactement la boîte, ce qui effacerait le cerne. **Vérifié dans notre feuille : le cas ne s'y
+présente pas.** `galerie.css` pose le cerne sur `.mtb-galerie-photos__lien::after`, au-dessus de
+l'image et présent dans les quatre états, précisément pour cette raison — elle est écrite dans le
+commentaire de la section 4 depuis la livraison initiale. Rien à corriger.
