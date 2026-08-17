@@ -1,0 +1,341 @@
+/*
+ * MTB — Habillage du bloc « Liste de portées » (mtb/liste-portees).
+ * Habille le balisage gelé de docs/contracts/issue-13.md §7 ; l'argumentation vit
+ * dans ce contrat, pas ici. Les § cités renvoient à design-system/MASTER.md.
+ *
+ * mtb_feuilles_de_blocs() (functions.php:194-224) fournit `path` : le cœur écrit
+ * donc cette feuille EN LIGNE, recopiée dans chaque page portant le bloc. Chaque
+ * octet d'ici, commentaires compris, est payé à chaque vue.
+ *
+ * CINQ CROCHETS SONT CONDITIONNELS — <figure>, <a>/<span class="__nom">,
+ * __etiquette, __effectif, le badge. Aucune règle d'ici ne suppose leur présence.
+ *
+ * base.css est imprimée APRÈS cette feuille : toute surcharge passe par la
+ * spécificité, jamais par l'ordre de source. Focus, encre de lien, marges de <p> et
+ * de <figure> en sont hérités et non redéfinis. Aucun @import, url(), police ni
+ * image — zéro requête tierce ; aucun !important, aucun @media, aucune transition,
+ * aucune règle sur `--vide` (rien que `__vide` ne porte déjà).
+ *
+ * PRIMITIVES PARTAGÉES, ÉCRITES NUES — contrat §18.1, qui ANNULE l'arbitrage 5 et
+ * les dettes T-#13-a/b. `.mtb-dispo`, ses variantes, son `::before`, `.mtb-photo`,
+ * son cerne et sa règle d'image portent les noms de MASTER (§3.3, §6.2), sans
+ * préfixe de bloc. Le scopage tombe parce qu'il ne protégeait pas : un descendant
+ * de `.mtb-liste-portees` EST un `.mtb-dispo`, donc les règles nues de la feuille
+ * sœur mtb-derniere-portee.css atteignaient nos badges de toute façon — MESURÉ,
+ * `white-space: nowrap` y a fui (§17.2). Il ne protège que si tout le monde scope,
+ * et MASTER ne nomme qu'UNE implémentation du badge et de la photo ; scoper rendait
+ * la fusion asymétrique et illisible. Nues, ces règles sont hissables dans base.css
+ * SANS RENOMMAGE — un déplacement, non une réconciliation de deux dialectes. Le
+ * hissage appartient au lead du lot : cette feuille n'ouvre pas base.css. Les
+ * déclarations reprennent celles de la sœur pour que la fusion soit sans effet ;
+ * les deux écarts qui subsistent sont nommés sur place (sections 2 et 5).
+ *
+ * L'APPARENCE §9.1 DE L'ÉTAT VIDE ÉDITEUR N'EST PAS ICI — contrat §18.2 : §9.1 la
+ * place dans editor.css, livrée par #6, sur les crochets gelés au niveau du lot
+ * `mtb-etat-vide` / `__nom` / `__phrase`, que cette chaîne ÉMET sans les redéfinir.
+ * Les classes locales `__vide-editeur*` restent dans le balisage sans règle : le
+ * JavaScript n'est pas rouvert le jour où l'apparence bouge.
+ *
+ * T-#13-c  CETTE FEUILLE N'ATTEINT PAS L'ÉDITEUR — CONSTATÉ : la poignée
+ *     `mtb-bloc-mtb-liste-portees` apparaît 0 fois dans les 683 Ko de post.php, et
+ *     bien côté public. Cause : `deps => array( 'mtb-jetons' )`
+ *     (functions.php:218), poignée enregistrée seulement sur `wp_enqueue_scripts`,
+ *     que l'administration ne joue pas ; all_deps() écarte SILENCIEUSEMENT une
+ *     poignée dont une dépendance manque. D'où la règle tenue partout ici : AUCUNE
+ *     information ne dépend de ce CSS. Solde : #6.
+ *
+ * VALEURS BRUTES, LISTE CLOSE — aucune n'a de jeton, en créer un serait l'invention
+ * que le contrat interdit. Ne comptent pas : 0, 100 %, mots-clés.
+ *   1. `9rem` (vignette) — SEULE EXTRAPOLATION, transposée du minimum de vignette
+ *      de galerie du §6.7, à ratifier (manque M6). Commentaire croisé, section 2.
+ *   2. `50% 38%` — point d'intérêt par défaut, code du §6.2.
+ *   3. `.6em`, `2px`, `50%`, `to right … 50%` — pastille, code du §3.3.
+ *   4. `1px` (bordure du badge « Tous réservés ») — épaisseur écrite par le §3.3.
+ *   5. `44px` — minimum tactile écrit par le §12.10 (comme le 48px de base.css).
+ *   6. `1.2`, `1.4` (interlignes), `.16em`, `.12em` (interlettres), `600`, `700`
+ *      (graisses) — tableau du §4.5, lignes « h4 », « Tableau, cellule » et
+ *      « Bouton, badge ».
+ *
+ * SIGNALÉ, incorrigible d'ici — constats OBSERVÉS sur une Page réelle, pas prédits,
+ * hors des fichiers de cette chaîne :
+ *   1. `alignwide` est INERTE (dette T-#13-h devenue actuelle). Le sélecteur de
+ *      base.css est `.mtb-canal > .alignwide`, or le bloc vit dans
+ *      `.entry-content` (`wp-block-post-content`, `is-layout-flow`), petit-fils
+ *      du canal : la règle ne s'applique jamais. Mesuré à 1280 px :
+ *      `grid-column: auto`, `max-inline-size: none`, bloc à 576 px = canal de
+ *      TEXTE, jamais les 68 rem du canal large voulu par §7.1. Ni canal large,
+ *      ni réduction au contenu — simplement aucun effet.
+ *   2. `white-space` du badge : question de lot, AA-bloquante — section 5.
+ */
+
+/* 1. La liste ---------------------------------------------------------------- */
+
+/* base.css:127 remet `ul { margin: 0 }` sans toucher padding-inline-start ni
+   list-style. C'est ce `list-style: none` qui fait perdre à Safari/VoiceOver la
+   sémantique de liste : d'où role="list" dans le balisage — ne pas le retirer. */
+.mtb-liste-portees__liste {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+/* Flex, jamais grille : une grille réserverait la colonne de la vignette et
+   laisserait sur les entrées sans photo le TROU que §9.2 interdit. Une seule règle
+   sert donc l'entrée avec vignette et celle sans. --e-3 = gouttière de galerie
+   (§5.1). Aucun fond au survol : l'entrée n'est pas une cible (contrat §7.4, un
+   seul lien par entrée, jamais de lien englobant). */
+.mtb-liste-portees__entree {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-3);
+  padding-block: var(--e-4);
+}
+
+/* --bord-fin = « séparation décorative entre lignes d'une liste » (§5.3, 1,41:1, ne
+   porte jamais d'information). Le frère adjacent ne pose le filet qu'ENTRE deux
+   lignes : ni trait en tête, ni trait orphelin. */
+.mtb-liste-portees__entree + .mtb-liste-portees__entree {
+  border-block-start: var(--bord-fin);
+}
+
+/* Contre le `min-inline-size: auto` par défaut d'un élément de flex : sans cette
+   remise à zéro, un identifiant long provoque un défilement à 360 px. */
+.mtb-liste-portees__corps {
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+
+/* 2. La vignette — la BOÎTE scopée, le TRAITEMENT nu (§18.1) ----------------- */
+
+/* ⚠ COMMENTAIRE CROISÉ OBLIGATOIRE (§7.6, arbitrage 12). Le `9rem` ci-dessous et
+   le `sizes="144px"` de plugins/mtb-core/includes/blocks/liste-portees/rendu.php
+   sont UNE SEULE VALEUR ÉCRITE DANS DEUX FICHIERS : 144 px = 9 rem × 16 px.
+   Changer l'un sans l'autre livre un srcset qui MENT au navigateur — sans symptôme
+   visible. `9rem` est l'unique extrapolation de cette feuille : transposée du
+   minimum de vignette de galerie du §6.7, à ratifier (manque M6). Le ratio, lui,
+   est attesté (§6.1, --r-carre = vignette d'index) et déclaré sur le CADRE, donc la
+   hauteur de ligne est connue avant l'image (§6.9). MESURÉ : 144 px à 360, 640 et
+   1280 px ; si le cadre cède, il est plus PETIT que l'indice, donc on télécharge un
+   peu trop, jamais trop peu.
+   ⚠ LIMITE MESURÉE, QUESTION BLOQUANTE POUR lead-design-mtb : sous zoom du TEXTE
+   SEUL à 200 % (1.4.4) à 360 px, `9rem` vaut 288 px et 288 + 24 (--e-3) dépassent
+   les 309 px du canal avant toute lettre (scrollWidth 647 pour 345). Arithmétique,
+   non défaut de repli : ni `min(100%, 9rem)` ni la coupure des mots n'y changent
+   rien, et MASTER n'atteste aucune règle pour ce cas. Les deux exigences écrites
+   sont mesurées sans débordement : 360 px à texte normal, zoom de PAGE à 200 %.
+   CE QUI RESTE SCOPÉ, et ce n'est pas une entorse (§18.1) : cette règle porte la
+   BOÎTE — dimension, ratio, rayon —, décisions d'EMPLACEMENT propres à une ligne
+   d'index, que MASTER n'attribue pas à la primitive partagée. La primitive nue
+   ci-dessous porte le TRAITEMENT : fond, encre, cerne, cadrage de l'image. */
+.mtb-liste-portees__vignette {
+  flex: 0 1 auto;
+  inline-size: 9rem;
+  max-inline-size: 100%;
+  aspect-ratio: var(--r-carre);
+  border-radius: var(--r-0);
+}
+
+/* §6.6 : --calcaire-creux sert le PNG détouré et l'image qui ne charge pas ;
+   --texte-doux / --t-sm est l'apparence imposée au texte alternatif affiché à sa
+   place (5,79:1, §12.3). Aucun overflow: hidden — §7.8 l'interdit sur un conteneur
+   qui peut porter du texte.
+   position: relative n'existe que pour donner un bloc conteneur au cerne
+   ci-dessous ; rien n'est repositionné, l'ordre du DOM est intact.
+   Déclarations identiques à celles de la feuille sœur : la fusion est sans effet. */
+.mtb-photo {
+  position: relative;
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+/* §6.6 exige le cerne sur TOUTE photo. Porté par le CADRE en `box-shadow`, il est
+   INVISIBLE dès que la photo charge : --cerne-photo est `inset` (tokens.css:118),
+   or une ombre intérieure se peint au-dessus du fond de l'élément mais SOUS ses
+   descendants, et l'<img> remplit exactement la boîte (100 % × 100 %, ni
+   rembourrage ni bordure) — MESURÉ sur les pixels par la chaîne #12. D'où cette
+   surcouche, forme de la feuille sœur, seule qui rende le jeton visible tel qu'il
+   est écrit : aucune décision visuelle nouvelle. `border-radius: inherit` en plus
+   de la sœur — un cerne à angles droits déborderait de notre cadre arrondi (--r-0
+   porté par __vignette), et sur un cadre droit la déclaration est sans effet, donc
+   hissable telle quelle. pointer-events: none : jamais un clic pris au cadre. */
+.mtb-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+/* Cadrage du §6.2, rognage voulu (§6.3). --point-interet n'est alimentée par
+   personne : l'extension n'émet aucun style en ligne et une portée n'a pas de champ
+   de cadrage (manque M9), c'est le défaut du §6.2 qui sert. Aucun filter : §6.6 les
+   interdit tous, un filtre falsifierait la robe, donnée d'élevage.
+   La classe est RÉPÉTÉE — précédent base.css:553, même forme que la feuille sœur —
+   pour peser (0,2,1) : `.mtb-photo > img` ne pèserait que (0,1,1) et perdrait contre
+   le `img { block-size: auto }` de base.css:131 une fois les sélecteurs de base.css
+   préfixés dans la toile de l'éditeur. Le doublement garde la règle déplaçable.
+   display: block supprime la boîte de ligne : restée en ligne, l'image dépasserait
+   le bas du cadre de la profondeur de ses jambages.
+   LIMITE NOMMÉE : §6.6 veut qu'une source trop petite ne soit pas agrandie au-delà
+   de 1,5 × sa largeur naturelle. Non tenu, le cadre étant fixe. */
+.mtb-photo.mtb-photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+}
+
+/* 3. Le nom — <a class="__lien"> OU <span class="__nom"> --------------------- */
+
+/* Une seule règle pour les deux : « même place, même apparence » quand la portée
+   n'est pas consultable. Ce qu'ils ne partagent PAS vient de base.css:248 et ne
+   vise que le <a> : encre --sauge-fonce et soulignement permanent, LE signal qui
+   distingue un lien (§12.9) — le donner au <span> serait un signal mensonger.
+   Aucune typographie : MASTER n'en atteste aucune pour un titre d'entrée d'index.
+   overflow-wrap, et jamais de troncature à « … » sur un nom (§9.4). */
+.mtb-liste-portees__lien,
+.mtb-liste-portees__nom {
+  display: block;
+  min-block-size: 44px;
+  padding-block: var(--e-2);
+  overflow-wrap: break-word;
+}
+
+/* 4. La ligne méta — date, effectif, badge ----------------------------------- */
+
+/* Trois <span> en ligne (arbitrage 1) : la rangée se replie d'elle-même, sans
+   requête média et sans rien masquer. Composition « Tableau, cellule » du §4.5,
+   chiffres tabulaires compris, qui alignent dates et compteurs d'une entrée à
+   l'autre. --texte-doux est le « texte secondaire » du §3.1 ET l'encre que §9.3
+   impose au « Non renseigné » que le serveur place ici : une déclaration sert les
+   deux cas, le thème n'a aucune absence à composer. Marge de base.css:240 remise à
+   zéro, ce <p> n'étant pas de la prose. overflow-wrap est prescrite par §4.5 ; elle
+   ne réduit PAS la largeur min-content (seul `anywhere` le ferait) et n'est donc
+   pas ce qui décide du repli. */
+.mtb-liste-portees__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-2) var(--e-3);
+  margin-block-end: 0;
+  overflow-wrap: break-word;
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  color: var(--texte-doux);
+}
+
+/* Étiquette laiton du §4.5 (ligne h4) : 5,30:1 sur --calcaire. L'interligne du §4.5
+   n'est pas reprise : sur un élément en ligne elle déformerait la boîte de ligne. */
+.mtb-liste-portees__etiquette {
+  font-weight: 600;
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+}
+
+/* 5. Le badge — .mtb-dispo NUE (§18.1) --------------------------------------- */
+
+/* §3.3 : trois états, TROIS signaux — le mot, la forme de la pastille, la couleur.
+   Le mot seul suffit, donc aucun print-color-adjust n'est requis (MASTER renvoie à
+   un §9.6 inexistant, T-#13-e). Composition « Bouton, badge » du §4.5 ; --r-1 est
+   le rayon des commandes (§5.2).
+   ÉCART ASSUMÉ avec la feuille sœur : §5.1 ne chiffre pas le rembourrage d'un badge,
+   donc sur `padding` et `gap` les deux feuilles PROPOSENT au lieu de lire MASTER —
+   la sœur écrit `padding: --e-2 --e-3` et `gap: --e-2`. Au hissage une seule survit ;
+   l'écart est cosmétique, non bloquant. Aucun `font-family` ici, contrairement à la
+   sœur : §4.5 impose Public Sans au badge et `body` la donne déjà (base.css:109), la
+   déclarer serait une réaffirmation — valeur calculée identique des deux côtés. */
+.mtb-dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  padding-inline: var(--e-2);
+  padding-block: var(--e-1);
+  border-radius: var(--r-1);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  /* SEUL ÉCART BLOQUANT avec la sœur, et QUESTION DE LOT. Elle écrit `nowrap`, qui
+     a été MESURÉ à 360 px sur une Page portant les deux blocs : scrollWidth 400
+     pour clientWidth 360, défilement horizontal, échec AA. `normal` est la valeur
+     INITIALE du CSS, aucune décision visuelle. Les deux règles étant nues et de
+     spécificité égale (0,1,0), le gagnant dépend de l'ordre du registre de blocs :
+     INDÉTERMINÉ. LE HISSAGE DOIT RETENIR `normal`. */
+  white-space: normal;
+}
+
+/* Pastille en CSS pur, code du §3.3 : aucune police d'icônes, aucun fichier image,
+   aucun SVG. Elle hérite de currentColor, donc son contraste EST celui du libellé —
+   d'où .mtb-dispo posée sur l'élément qui porte le texte (contrat §7.4). `50%` est l'unique
+   cercle autorisé par le §5.2, interdit sur toute image (§2.2). */
+.mtb-dispo::before {
+  content: "";
+  flex: none;
+  inline-size: .6em;
+  block-size: .6em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+/* Disque PLEIN ● — --sauge / --calcaire : 5,25:1 AA (§12.4). Sans bordure (§3.3). */
+.mtb-dispo--disponible {
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+.mtb-dispo--disponible::before {
+  background-color: currentColor;
+}
+
+/* Disque À MOITIÉ PLEIN ◐ — --calcaire-creux / --texte : 10,78:1 AAA (§12.3) ;
+   bordure --laiton : 3,15:1, non textuelle, admise à ce titre. Le dégradé est
+   l'unique écart apparent au §13 : c'est §3.3 lui-même qui dessine la demi-pastille
+   ainsi, et on suit §3.3 (contradiction interne, manque M8). */
+.mtb-dispo--reserve {
+  border: 1px solid var(--laiton);
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+}
+
+.mtb-dispo--reserve::before {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+}
+
+/* Anneau VIDE ○ — --calcaire / --texte-doux : 6,47:1 AA (§12.1). --bord-actif est
+   nommément le jeton du « bord d'un badge Portée passée » (§5.3). */
+.mtb-dispo--passee {
+  border: var(--bord-actif);
+  background-color: var(--calcaire);
+  color: var(--texte-doux);
+}
+
+/* 6. Le lien de sortie et l'état vide public --------------------------------- */
+
+/* Un seul <p class="__sortie"> pour les deux contextes — liste tronquée et année
+   sans résultat (arbitrage 8) — donc une seule règle. */
+.mtb-liste-portees__sortie {
+  margin-block-start: var(--e-4);
+}
+
+.mtb-liste-portees__lien-index {
+  display: inline-block;
+  min-block-size: 44px;
+  padding-block: var(--e-2);
+}
+
+/* État vide PUBLIC. §3.1 et le titre du §12.3 rangent nommément « l'état vide »
+   parmi les surfaces --calcaire-creux ; --texte-doux y donne 5,79:1. Le creux fait
+   lire une absence VOULUE plutôt qu'un bloc cassé ; l'apparence tiretée du §9.1
+   reste réservée à l'éditeur. */
+.mtb-liste-portees__vide {
+  border-radius: var(--r-0);
+  padding: var(--e-6);
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+}

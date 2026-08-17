@@ -1,0 +1,33 @@
+{
+	"apiVersion": 3,
+	"name": "mtb/liste-portees",
+	"title": "Liste de portées",
+	"category": "mtb",
+	"icon": "list-view",
+	"description": "Affiche les portées publiées, de la plus récente à la plus ancienne.",
+	"keywords": [ "portée", "portées", "chiots" ],
+	"attributes": {
+		"nombre": {
+			"type": "string",
+			"default": ""
+		},
+		"annee": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"align": false,
+		"anchor": false,
+		"spacing": false,
+		"typography": false,
+		"color": false,
+		"border": false,
+		"shadow": false,
+		"dimensions": false
+	},
+	"editorScript": "mtb-liste-portees-editeur",
+	"render": "file:./render.php"
+}
