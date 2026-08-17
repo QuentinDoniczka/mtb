@@ -342,7 +342,23 @@ contenu.
 |---|---|---|
 | `aucune_portee` | **non émis par cette issue** — il appartient à l'encart d'accueil de #3 | — |
 | `donnee_absente` | `affichage === 'Non renseigné'` sur le champ concerné | Imprime le libellé fourni. **N'invente jamais un tiret**, ni « Aucun », ni « Néant », ni un blanc |
-| `parent_hors_elevage` | `pere['type'] === 'hors_elevage'` : aucune fiche choisie, mais un nom libre saisi. Le retour porte `nom` et `elevage`, et **aucun lien** | Pas de lien ; **l'affichage ne change pas de forme**, la carte garde la même taille que celle d'un parent qui a une fiche (MASTER §9.4) |
+| `parent_hors_elevage` | `pere['type'] === 'hors_elevage'` : **aucune fiche choisie** — ou une fiche qui a disparu — mais un nom libre saisi. Le retour porte `nom` et `elevage`, et **aucun lien** | Pas de lien ; **l'affichage ne change pas de forme**, la carte garde la même taille que celle d'un parent qui a une fiche (MASTER §9.4) |
+| *parent dont la fiche existe mais n'est pas publiée* | `type === 'fiche'`, **son nom est conservé**, `lien` vide | Le nom, sans lien. Le lien apparaîtra quand la fiche sera publiée |
+
+> **Le défaut le plus grave de cette issue, corrigé après la revue — à ne jamais réintroduire.**
+> `parent_de()` basculait sur le nom libre dès que la fiche liée n'était pas publiée. Or la
+> sauvegarde écrit **toujours les deux branches** (voulu : cela la protège si elle décoche la fiche
+> plus tard) et l'aide d'écran lui dit que Nom/Élevage « ne servent que si aucune fiche n'est
+> sélectionnée » — **elle n'a donc aucune raison de les vider**. Un nom libre périmé dormait dans
+> chaque fiche à filiation, prêt à remonter dès que le parent repassait en brouillon.
+>
+> Résultat : une fiche de chiot annonçant « Rex » comme père parce que la fiche d'Ulysse est en
+> brouillon. **Publié, sans un mot, et faux — une violation de D11 par le code lui-même.**
+>
+> **La règle, désormais** : une fiche choisie fait autorité **quel que soit son état de
+> publication** ; seul le *lien* dépend de la publication. Le repli sur le nom libre n'a lieu que si
+> la fiche a **réellement disparu**. Deux décisions bonnes séparément peuvent se contredire
+> ensemble : c'est un défaut de réconciliation, et il m'appartenait.
 | `page_protegee` | `etat === 'page_protegee'`, **aucun champ du domaine renseigné** | Encart de MASTER §9.5, aucun indice sur le contenu |
 | *section non renseignée* | `sante_renseignee === false`, `titres_renseignes === false`, `galerie === array()` | **La section n'est pas rendue du tout.** La décision appartient au serveur |
 | *groupe vide* | `mtb_get_chiens_par_statut()` **ne renvoie pas** le groupe | Rien à faire côté thème |
@@ -414,15 +430,29 @@ promis en bloc :
 
 - **Tenu** pour l'incohérence de dates (décès antérieur à la naissance) : **les deux valeurs sont
   conservées**, et l'avis demande la correction.
-- **Non tenu** pour une date, une clé de liste fermée ou une URL **refusées** : le champ est
-  enregistré **vide**, et l'avis le dit franchement (« Le champ a été laissé vide : ressaisissez-la »).
+- **Tenu** pour une **date refusée** : la valeur précédente est **conservée**, et l'avis cite la
+  saisie qu'elle a tapée.
+- **Non tenu** pour une clé de liste fermée ou une URL **refusées** : le champ est enregistré
+  **vide**, et l'avis le dit franchement. Ces deux cas sont presque inatteignables depuis l'écran —
+  les contrôles sont un `<input type="url">` et des radios, qui n'émettent pas de valeur hors liste
+  sans manipulation délibérée — et conserver une valeur refusée y supposerait de **stocker une donnée
+  invalide**, déplaçant le problème dans la base au lieu de le régler à l'écran.
 
-> *Arbitrage, relevé par `refacto-mtb` : conserver une valeur refusée supposerait de **stocker une
-> donnée invalide**, ce qui déplacerait le problème dans la base au lieu de le régler à l'écran. Le
-> chemin est de toute façon presque inatteignable depuis l'écran — les contrôles sont un
-> `<input type="date">`, un `<input type="url">` et des radios, qui n'émettent pas de valeur hors
-> liste sans manipulation délibérée. **La clause générale était trop large ; elle est resserrée ici
-> plutôt que laissée à moitié fausse.***
+### Formats de date acceptés
+
+**Deux, et il faut accepter les deux** : `AAAA-MM-JJ` (ce que rend `<input type="date">`) **et
+`JJ/MM/AAAA`** (ce qu'une éleveuse tape naturellement). Reconnaissance par **regex explicite puis
+`checkdate()`** — jamais `strtotime()`, qui accepte à peu près n'importe quoi et lit `03/04` à
+l'américaine, donc inventerait une date.
+
+> **Défaut corrigé après la revue du lot, et il vaut d'être retenu.** L'assainisseur n'acceptait que
+> l'ISO pendant que le message d'erreur disait « ressaisissez-la au format **jour, mois, année** ».
+> Elle tapait `04/03/2024`, **le champ était vidé**, et on lui demandait de retaper au format qu'elle
+> venait d'employer : **une boucle sans issue**. Deux moitiés correctes séparément, contradictoires
+> ensemble — et c'est un défaut de réconciliation, pas de développement.
+>
+> La fiche d'aide donne désormais le format attendu, **copié du message d'erreur au mot près**, pour
+> que l'écran et l'aide ne puissent pas diverger.
 
 **Avis non bloquant quand le statut est vide** : après enregistrement, un avis d'administration en
 français prévient que le chien n'apparaîtra pas sur la page « La meute ». Elle publie quand même,

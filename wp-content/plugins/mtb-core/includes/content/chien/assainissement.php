@@ -151,12 +151,18 @@ function assainir_cadrage( $valeur ): string {
 }
 
 /**
- * Retient une date seulement si elle est complète et réelle.
+ * Retient une date seulement si elle est complète et réelle, et la ramène au format AAAA-MM-JJ.
  *
- * Aucune date n'est jamais devinée ni complétée : une saisie incompréhensible donne une valeur
- * vide, et la lecture émettra « Non renseigné ».
+ * Deux notations acceptées, par expression rationnelle explicite puis checkdate() : AAAA-MM-JJ,
+ * que poste le champ de date natif, et JJ/MM/AAAA, que poste un navigateur sans champ de date
+ * natif — et qui est la façon dont une date s'écrit en français. Sur quatre chiffres d'année, une
+ * date française n'est pas ambiguë : elle ne change pas de sens en changeant de notation. Jamais
+ * strtotime(), qui accepte n'importe quoi et lit 03/04 à l'américaine.
  *
- * @param mixed $valeur Valeur brute, attendue au format AAAA-MM-JJ.
+ * Aucune date n'est jamais devinée ni complétée. Une saisie incomprise donne une valeur vide ; la
+ * sauvegarde, elle, conserve alors la date précédente et le dit en citant la saisie.
+ *
+ * @param mixed $valeur Valeur brute.
  *
  * @return string Date au format AAAA-MM-JJ, ou chaîne vide.
  */
@@ -167,15 +173,27 @@ function assainir_date( $valeur ): string {
 
 	$date = trim( (string) $valeur );
 
-	if ( 1 !== preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $date, $morceaux ) ) {
+	if ( '' === $date ) {
 		return '';
 	}
 
-	if ( ! checkdate( (int) $morceaux[2], (int) $morceaux[3], (int) $morceaux[1] ) ) {
+	if ( 1 === preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $date, $morceaux ) ) {
+		$annee = $morceaux[1];
+		$mois  = $morceaux[2];
+		$jour  = $morceaux[3];
+	} elseif ( 1 === preg_match( '#^(\d{2})/(\d{2})/(\d{4})$#', $date, $morceaux ) ) {
+		$annee = $morceaux[3];
+		$mois  = $morceaux[2];
+		$jour  = $morceaux[1];
+	} else {
 		return '';
 	}
 
-	return $date;
+	if ( ! checkdate( (int) $mois, (int) $jour, (int) $annee ) ) {
+		return '';
+	}
+
+	return $annee . '-' . $mois . '-' . $jour;
 }
 
 /**

@@ -38,6 +38,9 @@ add_filter( 'redirect_post_location', __NAMESPACE__ . '\\ajouter_avis_a_la_redir
 add_action( 'admin_notices', __NAMESPACE__ . '\\afficher_avis' );
 add_filter( 'wp_editor_settings', __NAMESPACE__ . '\\reglages_de_l_editeur' );
 add_filter( 'mce_buttons_2', __NAMESPACE__ . '\\boutons_de_la_seconde_barre' );
+add_filter( 'post_updated_messages', __NAMESPACE__ . '\\messages_enregistrement' );
+add_filter( 'bulk_post_updated_messages', __NAMESPACE__ . '\\messages_par_lot', 10, 2 );
+add_filter( 'get_sample_permalink_html', __NAMESPACE__ . '\\masquer_adresse_du_coeur', 10, 2 );
 
 /**
  * Déclare les scripts d'écran. Appelée sur « init », priorité 20.
@@ -58,6 +61,97 @@ function enregistrer_scripts(): void {
 		MTB_CORE_VERSION,
 		true
 	);
+}
+
+/**
+ * Messages affichés après l'enregistrement d'une fiche.
+ *
+ * Les libellés déclarés au type de contenu — « Fiche publiée. », « Fiche mise à jour. » — ne
+ * servent que l'éditeur de blocs, dont l'écran de la fiche se passe. Sans ce filtre, le cœur
+ * retombe sur les messages de l'article et annonce « Article publié. » après chaque
+ * enregistrement : un mot que l'éleveuse ne doit jamais lire.
+ *
+ * @param array<string, array<int, string>> $messages Messages par type de contenu.
+ *
+ * @return array<string, array<int, string>>
+ */
+function messages_enregistrement( array $messages ): array {
+	$messages['mtb_chien'] = array(
+		0  => '',
+		1  => 'Fiche mise à jour.',
+		2  => 'Champ mis à jour.',
+		3  => 'Champ supprimé.',
+		4  => 'Fiche mise à jour.',
+		5  => 'Fiche restaurée à sa version précédente.',
+		6  => 'Fiche publiée.',
+		7  => 'Fiche enregistrée.',
+		8  => 'Fiche soumise à relecture.',
+		9  => 'Fiche planifiée.',
+		10 => 'Brouillon de la fiche mis à jour.',
+	);
+
+	return $messages;
+}
+
+/**
+ * Messages affichés après une action sur plusieurs fiches à la fois.
+ *
+ * @param array<string, array<string, string>> $messages Messages par type de contenu.
+ * @param array<string, int>                   $comptes  Nombre de fiches par action.
+ *
+ * @return array<string, array<string, string>>
+ */
+function messages_par_lot( array $messages, array $comptes ): array {
+	$messages['mtb_chien'] = array(
+		'updated'   => phrase( $comptes, 'updated', 'Fiche mise à jour.', 'fiches mises à jour.' ),
+		'locked'    => phrase( $comptes, 'locked', "Une fiche n'a pas été modifiée : quelqu'un d'autre est en train de la modifier.", "fiches n'ont pas été modifiées : quelqu'un d'autre est en train de les modifier." ),
+		'deleted'   => phrase( $comptes, 'deleted', 'Fiche supprimée définitivement.', 'fiches supprimées définitivement.' ),
+		'trashed'   => phrase( $comptes, 'trashed', 'Fiche mise à la corbeille.', 'fiches mises à la corbeille.' ),
+		'untrashed' => phrase( $comptes, 'untrashed', 'Fiche sortie de la corbeille.', 'fiches sorties de la corbeille.' ),
+	);
+
+	return $messages;
+}
+
+/**
+ * Accorde une phrase de lot au nombre de fiches concernées.
+ *
+ * @param array<string, int> $comptes    Nombre de fiches par action.
+ * @param string             $cle        Action concernée.
+ * @param string             $singulier  Phrase pour une seule fiche.
+ * @param string             $pluriel    Fin de phrase pour plusieurs fiches.
+ */
+function phrase( array $comptes, string $cle, string $singulier, string $pluriel ): string {
+	$nombre = isset( $comptes[ $cle ] ) ? (int) $comptes[ $cle ] : 0;
+
+	if ( 1 === $nombre ) {
+		return $singulier;
+	}
+
+	return (string) $nombre . ' ' . $pluriel;
+}
+
+/**
+ * Retire le bloc d'adresse que le cœur rend sous le titre.
+ *
+ * Deux raisons. Son intitulé emploie un mot interdit à l'écran. Et son bouton de modification est
+ * un cul-de-sac depuis que la boîte d'origine est remplacée par la nôtre : le script du cœur
+ * reporte l'adresse modifiée dans un champ qui n'existe plus, l'éleveuse croirait avoir changé
+ * l'adresse et notre champ renverrait l'ancienne. Un seul endroit pour changer l'adresse, le
+ * nôtre.
+ *
+ * Le filtre est global : la borne sur le type de contenu est ce qui l'empêche de vider ce bloc
+ * sur les Pages et les articles.
+ *
+ * @param mixed $html    Balisage proposé par le cœur.
+ * @param mixed $post_id Identifiant du contenu concerné.
+ */
+function masquer_adresse_du_coeur( $html, $post_id ): string {
+	if ( 'mtb_chien' === get_post_type( (int) $post_id ) ) {
+		return '';
+	}
+
+	return (string) $html;
 }
 
 /**

@@ -191,13 +191,8 @@ function enregistrer_listes( int $post_id ): void {
  * @param int $post_id Identifiant de la fiche.
  */
 function enregistrer_dates( int $post_id ): void {
-	$naissance_brute = valeur_postee( '_mtb_date_naissance' );
-	$naissance       = assainir_date( $naissance_brute );
-	signaler_refus( $naissance_brute, $naissance, 'naissance_refusee' );
-
-	$deces_brut = valeur_postee( '_mtb_date_deces' );
-	$deces      = assainir_date( $deces_brut );
-	signaler_refus( $deces_brut, $deces, 'deces_refuse' );
+	$naissance = date_retenue( $post_id, '_mtb_date_naissance', 'naissance_refusee', 'mtb_chien_naissance' );
+	$deces     = date_retenue( $post_id, '_mtb_date_deces', 'deces_refuse', 'mtb_chien_deces' );
 
 	if ( '' !== $naissance && '' !== $deces && strcmp( $deces, $naissance ) < 0 ) {
 		Avis::ajouter( 'deces_avant_naissance' );
@@ -205,6 +200,32 @@ function enregistrer_dates( int $post_id ): void {
 
 	ecrire_meta( $post_id, '_mtb_date_naissance', $naissance );
 	ecrire_meta( $post_id, '_mtb_date_deces', $deces );
+}
+
+/**
+ * Date à enregistrer : la saisie si elle est comprise, sinon celle déjà enregistrée.
+ *
+ * Effacer une date juste parce que la nouvelle saisie est incomprise ferait perdre une donnée que
+ * personne n'a demandé à supprimer. Un champ vidé volontairement, lui, est bien enregistré vide :
+ * c'est une intention, pas un accident.
+ *
+ * @param int    $post_id   Identifiant de la fiche.
+ * @param string $cle       Clé du champ.
+ * @param string $code      Code d'avis à émettre en cas de refus.
+ * @param string $parametre Paramètre d'adresse qui transporte la saisie refusée.
+ */
+function date_retenue( int $post_id, string $cle, string $code, string $parametre ): string {
+	$saisie = valeur_postee( $cle );
+	$date   = assainir_date( $saisie );
+
+	if ( '' === $saisie || '' !== $date ) {
+		return $date;
+	}
+
+	Avis::ajouter( $code );
+	Avis::preciser( $parametre, $saisie );
+
+	return valeur_enregistree( $post_id, $cle );
 }
 
 /**
@@ -276,7 +297,36 @@ function ajouter_avis_a_la_redirection( string $emplacement, int $post_id ): str
 		return $emplacement;
 	}
 
-	return add_query_arg( 'mtb_chien_avis', implode( ',', $codes ), $emplacement );
+	$emplacement = add_query_arg( 'mtb_chien_avis', implode( ',', $codes ), $emplacement );
+
+	foreach ( Avis::precisions() as $parametre => $saisie ) {
+		// La saisie refusée voyage telle quelle ; elle est assainie à la relecture et échappée au rendu.
+		$emplacement = add_query_arg( $parametre, $saisie, $emplacement );
+	}
+
+	return $emplacement;
+}
+
+/**
+ * Saisie refusée telle qu'elle revient de l'adresse, prête à être citée.
+ *
+ * @param string $parametre Nom du paramètre d'adresse.
+ */
+function saisie_citee( string $parametre ): string {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- valeur d'affichage seulement, aucune écriture, échappée au rendu.
+	if ( ! isset( $_GET[ $parametre ] ) || ! is_scalar( $_GET[ $parametre ] ) ) {
+		return '';
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- idem.
+	$saisie = sanitize_text_field( wp_unslash( $_GET[ $parametre ] ) );
+
+	// Une saisie interminable ne doit pas déformer l'encart : on cite le début, cela suffit à la reconnaître.
+	if ( mb_strlen( $saisie ) > 40 ) {
+		$saisie = mb_substr( $saisie, 0, 40 ) . '…';
+	}
+
+	return $saisie;
 }
 
 /**
@@ -303,10 +353,20 @@ function afficher_avis(): void {
 			continue;
 		}
 
+		$texte = $messages[ $code ]['texte'];
+
+		if ( isset( $messages[ $code ]['modele'], $messages[ $code ]['parametre'] ) ) {
+			$saisie = saisie_citee( $messages[ $code ]['parametre'] );
+
+			if ( '' !== $saisie ) {
+				$texte = sprintf( $messages[ $code ]['modele'], $saisie );
+			}
+		}
+
 		printf(
 			'<div class="notice notice-%1$s"><p>%2$s</p></div>',
 			esc_attr( $messages[ $code ]['type'] ),
-			esc_html( $messages[ $code ]['texte'] )
+			esc_html( $texte )
 		);
 	}
 }

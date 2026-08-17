@@ -487,8 +487,8 @@ function parent_vide( string $role ): array {
 }
 
 /**
- * Filiation à profondeur 1 : la fiche choisie si elle est publiée et lisible, sinon le nom libre,
- * sinon rien. Aucune remontée d'ascendance, donc aucune récursion possible.
+ * Filiation à profondeur 1 : la fiche choisie si elle existe encore, sinon le nom libre, sinon
+ * rien. Aucune remontée d'ascendance, donc aucune récursion possible.
  *
  * @param int    $post_id Identifiant de la fiche courante.
  * @param string $role    « pere » ou « mere ».
@@ -500,22 +500,14 @@ function parent_de( int $post_id, string $role ): array {
 	$fiche_id = (int) valeur( $post_id, '_mtb_' . $role . '_fiche' );
 	$post_lie = $fiche_id > 0 ? get_post( $fiche_id ) : null;
 
-	if ( $post_lie instanceof \WP_Post
-		&& 'mtb_chien' === $post_lie->post_type
-		&& 'publish' === $post_lie->post_status
-		&& ! post_password_required( $post_lie )
-	) {
-		$nom = nom_usage( $post_lie );
-
-		$parent['type']        = 'fiche';
-		$parent['id']          = (int) $post_lie->ID;
-		$parent['nom']         = $nom;
-		$parent['nom_complet'] = valeur( (int) $post_lie->ID, '_mtb_nom_complet' );
-		$parent['lien']        = (string) get_permalink( $post_lie );
-		$parent['affichage']   = '' === $nom ? non_renseigne() : $nom;
-		$parent['photo']       = photo( (int) get_post_thumbnail_id( $post_lie ), $nom );
-
-		return $parent;
+	/*
+	 * Une fiche est choisie et elle existe : elle fait autorité, quel que soit son état de
+	 * publication. Basculer sur le nom libre parce qu'elle est en brouillon afficherait le nom d'un
+	 * autre chien comme parent — une généalogie inventée par le code. Le nom libre ne reprend la
+	 * main que si la fiche a réellement disparu, cas traité plus bas.
+	 */
+	if ( $post_lie instanceof \WP_Post && 'mtb_chien' === $post_lie->post_type ) {
+		return parent_depuis_fiche( $parent, $post_lie );
 	}
 
 	$nom     = valeur( $post_id, '_mtb_' . $role . '_nom' );
@@ -529,6 +521,39 @@ function parent_de( int $post_id, string $role ): array {
 	$parent['nom']       = $nom;
 	$parent['elevage']   = $elevage;
 	$parent['affichage'] = '' === $nom ? non_renseigne() : $nom;
+
+	return $parent;
+}
+
+/**
+ * Parent renseigné par une fiche existante.
+ *
+ * Le lien n'existe que si la fiche est publiée et lisible. Une fiche en brouillon, en attente,
+ * privée, protégée ou à la corbeille garde son nom — c'est un fait de généalogie, il reste vrai —
+ * et perd tout le reste : ni lien, ni nom complet, ni photo. Rien du contenu réservé ne sort par
+ * cette fonction, et aucun état nouveau n'est créé : « lien » vide est le seul signal, exactement
+ * comme pour le chien d'un résultat de travail.
+ *
+ * @param array<string, mixed> $parent Parent vide, déjà porteur de son libellé.
+ * @param \WP_Post             $fiche  Fiche du parent.
+ *
+ * @return array<string, mixed>
+ */
+function parent_depuis_fiche( array $parent, \WP_Post $fiche ): array {
+	$nom = nom_usage( $fiche );
+
+	$parent['type']      = 'fiche';
+	$parent['id']        = (int) $fiche->ID;
+	$parent['nom']       = $nom;
+	$parent['affichage'] = '' === $nom ? non_renseigne() : $nom;
+
+	if ( 'publish' !== $fiche->post_status || post_password_required( $fiche ) ) {
+		return $parent;
+	}
+
+	$parent['nom_complet'] = valeur( (int) $fiche->ID, '_mtb_nom_complet' );
+	$parent['lien']        = (string) get_permalink( $fiche );
+	$parent['photo']       = photo( (int) get_post_thumbnail_id( $fiche ), $nom );
 
 	return $parent;
 }

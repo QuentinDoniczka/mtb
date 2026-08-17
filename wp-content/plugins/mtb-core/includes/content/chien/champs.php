@@ -79,7 +79,16 @@ function enregistrer_champs(): void {
 				'type'              => $type,
 				'single'            => true,
 				'default'           => 'integer' === $type ? 0 : '',
-				'show_in_rest'      => true,
+				/*
+				 * À laisser à false, et voici pourquoi. Aujourd'hui, exposer ces champs à l'API
+				 * serait sans effet : le type de contenu ne déclare pas le support des champs
+				 * personnalisés, sans lequel WordPress ne les publie pas. Mais le contrat prévoit
+				 * de rouvrir ce support le jour où un composant ou un import en ligne de commande
+				 * en aura besoin — et ce jour-là, les champs d'une fiche protégée par mot de passe
+				 * deviendraient lisibles par n'importe qui, l'API ne vérifiant pas le mot de passe.
+				 * La sécurité de ce module ne doit pas tenir à cette coïncidence.
+				 */
+				'show_in_rest'      => false,
 				'sanitize_callback' => __NAMESPACE__ . '\\' . $champ['assainissement'],
 				'auth_callback'     => __NAMESPACE__ . '\\peut_modifier_la_fiche',
 			)

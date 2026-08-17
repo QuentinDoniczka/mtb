@@ -31,6 +31,13 @@ final class Avis {
 	private static array $codes = array();
 
 	/**
+	 * Saisies refusées à citer dans un avis, par nom de paramètre d'adresse.
+	 *
+	 * @var array<string, string>
+	 */
+	private static array $precisions = array();
+
+	/**
 	 * Classe purement statique : aucune instance n'a de sens.
 	 */
 	private function __construct() {}
@@ -53,6 +60,27 @@ final class Avis {
 	 */
 	public static function codes(): array {
 		return self::$codes;
+	}
+
+	/**
+	 * Retient une saisie refusée, pour la citer telle quelle dans l'avis.
+	 *
+	 * Lui montrer ce qu'elle a tapé lui évite de chercher laquelle des deux dates a été refusée.
+	 *
+	 * @param string $parametre Nom du paramètre d'adresse qui la transporte.
+	 * @param string $saisie    Valeur refusée, telle qu'elle a été tapée.
+	 */
+	public static function preciser( string $parametre, string $saisie ): void {
+		self::$precisions[ $parametre ] = $saisie;
+	}
+
+	/**
+	 * Saisies refusées pendant cette requête.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function precisions(): array {
+		return self::$precisions;
 	}
 
 	/**
@@ -86,13 +114,22 @@ final class Avis {
 				'type'  => 'error',
 				'texte' => 'Erreur : le cadrage reçu ne fait pas partie des choix proposés. Le cadrage centré a été conservé.',
 			),
+			/*
+			 * Une saisie refusée n'efface jamais la date déjà enregistrée, et l'avis cite ce qui a
+			 * été tapé : l'ancien message annonçait le contraire et indiquait un format que
+			 * l'assainissement refusait, ce qui enfermait l'éleveuse dans une boucle.
+			 */
 			'naissance_refusee'     => array(
-				'type'  => 'error',
-				'texte' => 'Erreur : la date de naissance n\'a pas été comprise. Le champ a été laissé vide : ressaisissez-la au format jour, mois, année.',
+				'type'      => 'error',
+				'texte'     => "Erreur : la date de naissance n'a pas été comprise. La date déjà enregistrée a été conservée. Écrivez la date en entier, sous la forme jj/mm/aaaa.",
+				'modele'    => "Erreur : la date de naissance « %s » n'a pas été comprise. La date déjà enregistrée a été conservée. Écrivez la date en entier, sous la forme jj/mm/aaaa.",
+				'parametre' => 'mtb_chien_naissance',
 			),
 			'deces_refuse'          => array(
-				'type'  => 'error',
-				'texte' => 'Erreur : la date de décès n\'a pas été comprise. Le champ a été laissé vide : ressaisissez-la au format jour, mois, année.',
+				'type'      => 'error',
+				'texte'     => "Erreur : la date de décès n'a pas été comprise. La date déjà enregistrée a été conservée. Écrivez la date en entier, sous la forme jj/mm/aaaa.",
+				'modele'    => "Erreur : la date de décès « %s » n'a pas été comprise. La date déjà enregistrée a été conservée. Écrivez la date en entier, sous la forme jj/mm/aaaa.",
+				'parametre' => 'mtb_chien_deces',
 			),
 			'deces_avant_naissance' => array(
 				'type'  => 'error',

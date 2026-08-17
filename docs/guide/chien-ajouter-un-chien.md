@@ -14,7 +14,8 @@ jamais un blanc, et jamais une valeur inventée à votre place.
 
 1. Dans le menu de gauche, cliquez sur **Chiens**, puis sur **Ajouter**.
 
-   ![capture: menu de gauche de l'administration, entrée « Chiens » ouverte, sous-menu « Ajouter » mis en évidence](captures/chien-menu-ajouter.png)
+   > **Capture à prendre :** le menu de gauche de l'administration, l'entrée **Chiens** ouverte,
+   > avec le sous-menu **Ajouter** mis en évidence.
 
 2. Tout en haut de la page, dans le grand champ, tapez le **Nom d'usage** du chien : son nom court,
    celui qui deviendra le titre de sa fiche.
@@ -22,7 +23,8 @@ jamais un blanc, et jamais une valeur inventée à votre place.
 3. Descendez dans la section **Identité** et remplissez ce que vous connaissez. Choisissez le
    **Statut** : c'est lui qui fait apparaître le chien sur la page **La meute**.
 
-   ![capture: section « Identité » entière, avec le champ « Nom d'usage » visible au-dessus et le groupe de choix « Statut » en bas](captures/chien-identite.png)
+   > **Capture à prendre :** le champ **Nom d'usage** en haut, puis la section **Identité** en
+   > entier, avec les choix de **Statut** et la ligne d'aide qui les suit.
 
 4. Continuez dans les sections suivantes — **Parents**, **Taille et robe**, **Santé**,
    **Titres et brevets**, **Photos et pedigree** — en remplissant seulement ce que vous avez sous la
@@ -60,8 +62,10 @@ jamais un blanc, et jamais une valeur inventée à votre place.
   « du Mont Brabant »). Le nom court, lui, reste tout en haut de la page.
 - **Sexe** — **Mâle** ou **Femelle**. Il sert aussi à accorder les libellés du site.
 - **Variété** — **Poil long** ou **Poil court**.
-- **Date de naissance** — **si vous ne connaissez que l'année, laissez le champ vide.** Le site
-  écrira **Non renseigné**, ce qui vaut mieux qu'une date approximative que quelqu'un recopiera.
+- **Date de naissance** — écrivez la date en entier, sous la forme jj/mm/aaaa. **Si vous ne
+  connaissez que l'année, laissez le champ vide.** Le site écrira **Non renseigné**, ce qui vaut
+  mieux qu'une date approximative que quelqu'un recopiera. Si la date n'est pas comprise, un message
+  vous le dit et **celle qui était déjà enregistrée est conservée** : vous ne perdez rien.
 - **Date de décès** — à remplir seulement si le chien est décédé. Laissée vide, rien n'apparaît sur
   le site.
 - **Statut** — quatre choix : **Reproducteur** · **En cours de confirmation** · **Retraité** ·
@@ -85,7 +89,9 @@ le site accorde.
 Pour le père comme pour la mère, deux façons de faire, au choix :
 
 - **Le parent a déjà sa fiche sur le site** : choisissez-la dans la liste **Père** ou **Mère**. Le
-  lien entre les deux fiches se fait tout seul.
+  lien entre les deux fiches se fait tout seul. Une fiche encore en préparation est proposée elle
+  aussi, suivie de son état — par exemple **— brouillon**. Vous pouvez la choisir : le nom du parent
+  s'affichera, et le lien apparaîtra le jour où vous publierez sa fiche.
 - **Le parent n'a pas de fiche** : laissez la liste sur **Non renseigné** et remplissez **Nom** et
   **Élevage** dans l'encadré **Père — étalon extérieur** ou **Mère — hors élevage**. Le parent
   s'affichera à la même place et de la même façon, simplement sans lien à cliquer.
@@ -125,7 +131,8 @@ par le premier.
 **Autres tests de santé** — une ligne par test : son nom, puis son résultat. C'est là que va tout test
 qui n'a pas son champ nommé ci-dessus.
 
-![capture: section « Santé » entière, avec les trois choix d'« ADN identifié » et la zone « Autres tests de santé » visibles](captures/chien-sante.png)
+> **Capture à prendre :** la section **Santé** en entier — les huit champs nommés, les trois choix
+> d'**ADN identifié**, et la zone **Autres tests de santé**.
 
 ---
 
@@ -166,7 +173,9 @@ quand celle-ci ne se charge pas. Une photo sans description est une photo qui n'
 *(Cette zone porte aujourd'hui à l'écran le titre « Texte alternatif », qui n'est pas le nom prévu
 pour le site. Voir « En cas de doute ».)*
 
-![capture: section « Photos et pedigree », liste de la galerie avec deux photos et leurs boutons, bouton « Ajouter des photos » visible](captures/chien-photos.png)
+> **Capture à prendre :** la section **Photos et pedigree** — la liste **Galerie photos** avec deux
+> photos et leurs boutons, le bouton **Ajouter des photos**, et le champ
+> **Lien pedigree (LOF Select)**.
 
 ---
 
@@ -218,7 +227,8 @@ italique si vous voulez, et laissez faire le reste.
 - Le **Cadrage de la photo** si votre photo est déjà bien centrée : **Centre** convient.
 - La couleur et la taille du texte de votre commentaire : le site s'en occupe.
 - La boîte **Adresse de la page**, tout en bas de l'écran : elle se remplit toute seule à partir du
-  nom d'usage. Ne la modifiez que si l'adresse est fausse.
+  nom d'usage. C'est le seul endroit où l'adresse d'une fiche se change, et vous n'avez à y toucher
+  que si elle est fausse.
 
 **Ce qu'il vaut mieux ne pas faire :**
 
@@ -230,11 +240,8 @@ italique si vous voulez, et laissez faire le reste.
 - **Ne créez pas une deuxième fiche pour le même chien.** Si vous ne retrouvez pas une fiche, cherchez
   son nom dans **Tous les chiens** avant d'en ajouter une.
 
-**Deux choses à savoir, en attendant qu'elles soient corrigées :**
+**Une chose à savoir, en attendant qu'elle soit corrigée :**
 
-- Dans la liste **Père** ou **Mère**, un chien encore en brouillon peut apparaître, mais tant que sa
-  fiche n'est pas publiée, le lien ne se fait pas sur le site : c'est le **Nom** et l'**Élevage** que
-  vous avez saisis qui s'affichent. Publiez la fiche du parent, et le lien apparaît.
 - Dans la fenêtre des photos, la zone de description porte encore le titre « Texte alternatif ». C'est
   bien la bonne zone.
 
@@ -246,7 +253,8 @@ appelez-nous. Une fiche mal remplie n'a jamais cassé un site.
 ## Captures d'écran à prendre
 
 À faire en une passe, sur une installation contenant au moins deux fiches Chien publiées et une fiche
-en cours de saisie avec deux photos de galerie.
+en cours de saisie avec deux photos de galerie. Les quatre premières correspondent, dans l'ordre, aux
+quatre mentions **Capture à prendre** du corps de la fiche.
 
 | Fichier | Écran | Ce qui doit être visible |
 |---|---|---|
