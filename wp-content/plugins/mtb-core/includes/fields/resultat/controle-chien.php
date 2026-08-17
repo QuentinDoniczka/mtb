@@ -33,7 +33,7 @@ function rendre_controle_chien( int $chien_id, string $chien_nom ): void {
 		<th scope="row"><label for="mtb-resultat-chien-id">Chien concerné</label></th>
 		<td>
 			<fieldset>
-				<legend class="screen-reader-text">Le chien de ce résultat</legend>
+				<legend class="screen-reader-text">Chien concerné</legend>
 				<select
 					id="mtb-resultat-chien-id"
 					name="mtb_resultat_chien_id"

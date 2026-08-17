@@ -117,6 +117,24 @@ tout.
 Pour supprimer un résultat, ouvrez-le et cliquez sur **Mettre à la corbeille**. Il disparaît aussitôt
 du tableau de la page Travail et du palmarès du chien. Il reste récupérable depuis la corbeille.
 
+**Rien n'est perdu, et vous pouvez le remettre.** Cela demande deux gestes, pas un seul :
+
+1. Dans la colonne de gauche, cliquez sur **Résultats de travail**, puis sur
+   **Tous les résultats de travail**.
+2. En haut de la liste, cliquez sur **Corbeille**.
+3. Sur la ligne voulue, cliquez sur **Rétablir**. Le lien apparaît quand la souris passe sur la ligne.
+   Le bandeau **Résultat de travail sorti de la corbeille.** s'affiche.
+4. **Le résultat revient en Brouillon, c'est-à-dire pas encore publié.** Il est de retour dans la
+   liste, mais il ne s'affiche toujours nulle part sur le site.
+5. Ouvrez-le et cliquez sur **Publier**. Il réapparaît alors dans le tableau de la page Travail et
+   dans le palmarès du chien.
+
+**Ne vous arrêtez pas à l'étape 3.** Un résultat rétabli et non republié reste invisible pour les
+visiteurs, sans que rien ne vous le signale.
+
+> **Capture à prendre :** la liste **Tous les résultats de travail** sur l'onglet **Corbeille**, avec
+> le lien **Rétablir** visible sur une ligne.
+
 ---
 
 ## Ce que vous n'avez plus à faire
@@ -142,6 +160,8 @@ de la page Travail, sans palmarès puisqu'il n'y a pas de fiche.
 - La colonne **Pays** n'apparaît pas du tout : aucun résultat n'a de pays. C'est voulu.
 - La liste **Chien concerné** ne propose aucune fiche : il n'y a pas encore de fiche de chien sur le
   site. Utilisez **Nom du chien (si le chien n'a pas de fiche)**.
+- Un résultat sorti de la corbeille n'apparaît nulle part sur le site : il est revenu en
+  **Brouillon**, donc pas encore publié. Ouvrez-le et cliquez sur **Publier**.
 
 **Ce n'est pas normal, signalez-le :**
 

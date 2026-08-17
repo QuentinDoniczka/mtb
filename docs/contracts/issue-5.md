@@ -229,24 +229,32 @@ groupe = array(
 )
 
 ligne = array(
-    'donnees'  => array(                            // valeurs brutes, pour trier ou tester
-        'id'         => 42,
-        'annee'      => 2021,                       // int ; 0 si non renseignée
-        'discipline' => 'ring',
-        'chien_id'   => 17,                         // 0 si aucune fiche liée
-    ),
-    'cellules' => array(                            // ce qui s'imprime, déjà fini
-        'annee'      => array( 'texte' => '2021', 'etat' => '',                   'vide' => false ),
-        'chien'      => array( 'texte' => 'Upper’Side du Mont Brabant',
-                               'url'   => 'https://…/la-meute/upper-side/',
-                               'sexe'  => 'male', 'sexe_libelle' => 'Mâle',
-                               'etat'  => '',                                     'vide' => false ),
-        'niveau'     => array( 'texte' => 'Brevet',        'etat' => '',          'vide' => false ),
-        'conducteur' => array( 'texte' => 'Non renseigné', 'etat' => 'donnee_absente', 'vide' => true ),
-        'pays'       => array( 'texte' => '',              'etat' => '',          'vide' => true ),
+    'id'       => 42,                               // identifiant du contenu, CLÉ DE PREMIER NIVEAU
+    'cellules' => array(
+        // Chaque cellule porte TOUJOURS les quatre mêmes clés.
+        // 'valeur'    = la donnée brute, pour trier ou tester — jamais formatée
+        // 'affichage' = ce qui s'imprime, déjà fini
+        'annee'      => array( 'valeur' => 2021,     'affichage' => '2021',          'url' => '', 'etat' => '' ),
+        'chien'      => array( 'valeur' => 17,       'affichage' => 'Upper’Side du Mont Brabant',
+                               'url'    => 'https://…/la-meute/upper-side/',         'etat' => '',
+                               'sexe'   => 'male',   'sexe_libelle' => 'Mâle' ),
+        'niveau'     => array( 'valeur' => 'Brevet', 'affichage' => 'Brevet',        'url' => '', 'etat' => '' ),
+        'discipline' => array( 'valeur' => 'ring',   'affichage' => 'RING',          'url' => '', 'etat' => '' ),
+        'conducteur' => array( 'valeur' => '',       'affichage' => 'Non renseigné', 'url' => '', 'etat' => 'donnee_absente' ),
+        'pays'       => array( 'valeur' => '',       'affichage' => '',              'url' => '', 'etat' => '' ),
     ),
 )
 ```
+
+**Ce que porte `valeur`**, la donnée brute que la logique utilise, jamais formatée :
+`annee` un `int`, **`0` si absente** · `chien` un `int`, l'identifiant **saisi** de la fiche, `0` si
+aucune · `discipline` la clé canonique, ou la valeur orpheline brute · `niveau`, `conducteur`, `pays`
+la chaîne recopiée telle quelle.
+
+*Cas limite documenté : quand une fiche a été **définitivement supprimée**, `chien.valeur` conserve
+l'identifiant saisi, qui ne pointe plus sur rien ; `affichage` retombe sur le nom recopié puis sur
+« Non renseigné », et `url` reste `''`. C'est l'identifiant saisi et non l'identifiant résolu, parce
+que c'est lui que `mtb_get_resultats_travail_du_chien()` filtre.*
 
 **Toutes les clés sont toujours présentes.** Jamais une clé absente que le consommateur devrait tester
 à l'aveugle, jamais un avertissement PHP (contrat #1 §9).
@@ -260,8 +268,15 @@ Deux règles de décision, à ne jamais réinterpréter :
 
 - **Le lien existe si et seulement si `url` est une chaîne non vide.** Une seule condition dans tout
   le thème ; on ne lit jamais `etat` pour décider d'un lien.
-- **`vide === true`** signale une cellule sans valeur. C'est le crochet du repli mobile : sous 48 rem,
-  une cellule vide ne doit pas imprimer son étiquette `data-libelle` suivie de rien.
+- **Une cellule est vide si et seulement si `'' === $cellule['affichage']`.** C'est le crochet du
+  repli mobile : sous 48 rem, une cellule vide ne doit pas imprimer son étiquette `data-libelle`
+  suivie de rien. **Le consommateur ne teste jamais `valeur`** — ce serait dépendant du type, et
+  `0` est une année absente légitime. Avec `affichage`, la règle est unique et sans piège : une année
+  ou un conducteur absents valent « Non renseigné », donc **non vides**, et leur étiquette s'imprime ;
+  **seul le Pays peut être vide**, et c'est exactement le piège du §7.
+  *Le calcul des colonnes, lui, reste interne et se fait sur `valeur` — voir §5.2 : appliquer cette
+  règle publique à `au_moins_une_valeur()` ferait apparaître la colonne Conducteur sur tous les
+  tableaux, y compris ceux où personne n'est nommé.*
 
 **`sexe_libelle` vaut `''` quand le sexe est inconnu**, et non « Non renseigné » : le sexe n'est pas
 une colonne du tableau, y placer un texte de remplissage à côté de chaque nom serait du bruit. Règle
@@ -323,7 +338,7 @@ Vocabulaire **réutilisé** du contrat #1 §9, jamais réinventé.
 | 2 | **Résultat sans chien, ou sans année** — nommé explicitement par D12 | La ligne **est renvoyée**. Sans chien : `texte` = « Non renseigné », `etat` = `donnee_absente`. Sans année : `donnees.annee` = `0`, cellule « Non renseigné », **triée en dernier** dans les deux sens. Aucun champ n'est obligatoire à la saisie |
 | 3 bis | **Discipline entièrement vide** — le champ n'a jamais été rempli | Traitée **comme une orpheline** : groupe créé, placé **en tout dernier**, `orpheline => true`, mais `discipline_libelle` vaut **« Non renseigné »** (`MASTER.md` §10.3) et non la valeur brute `''` — qui ferait imprimer à #15 un `h2` vide. *Ajouté au contrat le 2026-08-16 : le cas n'était pas couvert.* |
 | 3 | **Discipline orpheline** — valeur stockée qui n'est plus dans la liste | **Rien ne disparaît, ni de la page, ni en silence.** Un groupe est créé, ajouté **en fin** de retour, `orpheline => true`, `discipline_libelle` = **la valeur brute recopiée**. À la saisie, la valeur stockée est **ajoutée comme option supplémentaire présélectionnée** : un ré-enregistrement ne l'efface pas. C'est pourquoi le `sanitize_callback` est `sanitize_key` et **non une liste blanche** — une liste blanche détruirait la donnée (contrainte 4) |
-| 4 | **Fiche chien liée passée en brouillon, à la corbeille, protégée par mot de passe, ou disparue** | Le **nom reste affiché**, `url` vaut `''` → pas de lien. **C'est la fonction de lecture qui décide, jamais le composant.** Contenu disparu → repli sur `_mtb_chien_nom`, puis `donnee_absente`. À la saisie, l'option reste présélectionnée : le lien n'est pas perdu à l'enregistrement suivant. **Le sous-cas « corbeille » n'a pas pu être exercé** : `mtb_chien`, tel que livré par la chaîne #4, **refuse la mise à la corbeille** (`Posts of type 'mtb_chien' do not support being sent to trash`). Le statut `trash` est bien exclu de la requête ; le code est prêt si #4 revient sur ce choix |
+| 4 | **Fiche chien liée passée en brouillon, à la corbeille, protégée par mot de passe, ou disparue** | Le **nom reste affiché**, `url` vaut `''` → pas de lien. **C'est la fonction de lecture qui décide, jamais le composant.** Contenu disparu → repli sur `_mtb_chien_nom`, puis `donnee_absente`. À la saisie, l'option reste présélectionnée : le lien n'est pas perdu à l'enregistrement suivant. **Le sous-cas « corbeille » est exercé et il passe.** *Correction du 2026-08-17 : ma rédaction précédente affirmait que `mtb_chien` refuse la corbeille. **C'était un faux positif.** Le message venait d'une limitation **codée en dur dans le binaire WP-CLI** du conteneur, qui refuse la corbeille pour tout type qui n'est ni `post` ni `page` — il aurait dit la même chose de `mtb_portee` et de `mtb_resultat`. `EMPTY_TRASH_DAYS` vaut 30 et la liste d'administration propose bien l'action « Corbeille ».* Exercé **depuis l'administration** : fiche à la corbeille → la ligne du résultat est toujours rendue, le nom reste affiché, `url` vaut `''`, aucune erreur ni notice ; restauration → le nom reste, `url` toujours vide ; republication → **le lien revient**. **À savoir, et c'est dit à l'éleveuse dans sa fiche d'aide : WordPress restaure en brouillon, pas en publié.** Un contenu sorti de la corbeille reste donc hors ligne jusqu'à sa republication — comportement du cœur, pas de nos modules |
 | 5 | **Résultat en brouillon, planifié ou privé** | **Absent** des deux fonctions de lecture (`post_status => 'publish'`, `has_password => false`). Aucune fuite, aucune casse. Le titre est composé pour tous les statuts, donc la liste d'administration reste lisible |
 
 ## 7. Chaînes fournies par le serveur
@@ -459,6 +474,10 @@ que de les lisser.
 | 2026-08-16 | §3 | `sanitize_text_field` → **`assainir_texte_recopie()`** sur les quatre champs recopiés, appelée par les **deux** filets | Relevé par `/lead-mtb` sur l'arbre, après mon premier commit. `strip_tags()` **vide en silence** toute valeur commençant par `<` — or `<60` est un niveau plausible. D11 enfreinte par l'outillage. Vérifié à l'exécution : `<60` saisi par le vrai formulaire ressort exactement `<60`. |
 | 2026-08-16 | §5 | `mtb_resultats_travail_*` → **`mtb_get_resultats_travail_*`** | Le contrat gelé #1 §6 impose le préfixe de lecture `mtb_get_*`. Le segment `_travail_` est conservé, c'est lui qui protège de la collision avec `query/chien/`. **Ce n'était pas cosmétique** : #4 est commitée et appelle `mtb_get_resultats_travail_du_chien()` derrière un `function_exists()` — avec l'ancien nom, le test rendait **toujours faux**, donc un palmarès vide en permanence sur un site qui répond 200, sans une ligne au journal. |
 | 2026-08-16 | §5.1, §9 | Clé de la 9ᵉ discipline `autres` → **`autres_disciplines`** | Graphie arbitrée par `/lead-mtb`, qui a révisé la **décision 11 à neuf valeurs**. Aucune donnée n'était saisie. |
+
+| 2026-08-17 | §5.3 | **Forme des cellules convertie au vocabulaire du lot** : `texte` → `affichage`, `donnees.<champ>` → `cellules.<champ>['valeur']`, `vide` supprimé, `donnees` supprimé, son `id` remonté en clé de premier niveau de la ligne | #3 et #4 livraient `valeur`/`affichage` ; deux vocabulaires pour la même chose, et le thème lira les trois en epic Gabarits. `colonnes` + `lignes` est conservé — meilleur pour du tabulaire, et `colonnes[].libelle` est ce que #15 recopie dans `data-libelle`. |
+| 2026-08-17 | §5.3 | **Le signal de vacuité passe de `valeur` à `affichage`** | En convertissant, le test `'' === $valeur` devenait faux pour une année devenue `int` (`'' === 0` ne vaut pas `true`) : une année manquante aurait cessé d'être signalée comme vide, **sans que la page change à l'œil** — seule l'étiquette repliée sous 48 rem aurait disparu. `'' === $affichage` est indépendant du type et supprime le piège au lieu de le contourner. Le calcul des colonnes, lui, reste **interne** et sur `valeur` : y appliquer la règle publique ferait apparaître la colonne Conducteur sur tous les tableaux, contre l'arbitrage 7. |
+| 2026-08-17 | §6 cas 4 | **`mtb_chien` ne refuse pas la corbeille** — l'affirmation inverse était un faux positif de WP-CLI | Le binaire WP-CLI du conteneur refuse la corbeille pour tout type qui n'est ni `post` ni `page`. Depuis l'administration, la corbeille fonctionne. Le sous-cas est désormais **exercé**, et c'était le seul de la recette D12 qui n'avait jamais tourné. |
 
 **Correction technique reportée ici pour la chaîne suivante** : le `TypeError` d'une clé de discipline
 purement numérique ne tombait **pas** là où l'analyse statique le plaçait. Le rappel typé passé à

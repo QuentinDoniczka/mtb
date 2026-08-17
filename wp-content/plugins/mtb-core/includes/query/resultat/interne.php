@@ -124,13 +124,13 @@ function fiches_chiens( array $identifiants ): array {
 }
 
 /**
- * Compose une ligne complète : valeurs brutes pour trier, cellules finies pour imprimer.
+ * Compose une ligne complète : un identifiant, puis six cellules à valeur brute et affichage fini.
  *
  * Les six cellules sont toujours présentes, y compris celles qu'aucune colonne n'affichera : le
  * consommateur parcourt « colonnes » et n'a jamais à tester l'existence d'une clé.
  *
- * @param \WP_Post              $resultat Contenu du résultat.
- * @param array<int, \WP_Post>  $fiches   Fiches chiens déjà chargées, indexées par identifiant.
+ * @param \WP_Post             $resultat Contenu du résultat.
+ * @param array<int, \WP_Post> $fiches   Fiches chiens déjà chargées, indexées par identifiant.
  *
  * @return array<string, mixed> Ligne au format gelé par le contrat.
  */
@@ -142,17 +142,12 @@ function construire_ligne( \WP_Post $resultat, array $fiches ): array {
 	$fiche = isset( $fiches[ $chien_id ] ) ? $fiches[ $chien_id ] : null;
 
 	return array(
-		'donnees'  => array(
-			'id'         => (int) $resultat->ID,
-			'annee'      => $annee,
-			'discipline' => $discipline,
-			'chien_id'   => $chien_id,
-		),
+		'id'       => (int) $resultat->ID,
 		'cellules' => array(
 			'annee'      => cellule_annee( $annee ),
-			'chien'      => cellule_chien( $resultat, $fiche ),
+			'chien'      => cellule_chien( $resultat, $chien_id, $fiche ),
 			'niveau'     => cellule_texte( (string) get_post_meta( $resultat->ID, '_mtb_niveau', true ) ),
-			'discipline' => cellule_texte( libelle_discipline( $discipline ) ),
+			'discipline' => cellule_discipline( $discipline ),
 			'conducteur' => cellule_texte( (string) get_post_meta( $resultat->ID, '_mtb_conducteur', true ) ),
 			'pays'       => cellule_pays( (string) get_post_meta( $resultat->ID, '_mtb_pays', true ) ),
 		),
@@ -162,6 +157,10 @@ function construire_ligne( \WP_Post $resultat, array $fiches ): array {
 /**
  * Cellule d'une valeur textuelle ordinaire.
  *
+ * « valeur » porte la donnée recopiée telle quelle, « affichage » la chaîne à imprimer : le
+ * consommateur n'a qu'à regarder « affichage », et une cellule sans étiquette à imprimer est
+ * exactement celle dont « affichage » est vide.
+ *
  * @param string $valeur Valeur stockée, recopiée telle quelle.
  *
  * @return array<string, mixed> Cellule au format gelé.
@@ -169,23 +168,25 @@ function construire_ligne( \WP_Post $resultat, array $fiches ): array {
 function cellule_texte( string $valeur ): array {
 	if ( '' === $valeur ) {
 		return array(
-			'texte' => ABSENCE,
-			'etat'  => ETAT_ABSENT,
-			'vide'  => true,
+			'valeur'    => '',
+			'affichage' => ABSENCE,
+			'url'       => '',
+			'etat'      => ETAT_ABSENT,
 		);
 	}
 
 	return array(
-		'texte' => $valeur,
-		'etat'  => '',
-		'vide'  => false,
+		'valeur'    => $valeur,
+		'affichage' => $valeur,
+		'url'       => '',
+		'etat'      => '',
 	);
 }
 
 /**
- * Cellule de l'année, déjà rendue en chaîne décimale.
+ * Cellule de l'année : entier pour trier, chaîne décimale pour imprimer.
  *
- * Aucun formatage de nombre n'est appliqué : « 2 021 » serait produit.
+ * Aucun formatage de nombre n'est appliqué à l'affichage : « 2 021 » serait produit.
  *
  * @param int $annee Année stockée, zéro si absente.
  *
@@ -194,16 +195,46 @@ function cellule_texte( string $valeur ): array {
 function cellule_annee( int $annee ): array {
 	if ( 0 === $annee ) {
 		return array(
-			'texte' => ABSENCE,
-			'etat'  => ETAT_ABSENT,
-			'vide'  => true,
+			'valeur'    => 0,
+			'affichage' => ABSENCE,
+			'url'       => '',
+			'etat'      => ETAT_ABSENT,
 		);
 	}
 
 	return array(
-		'texte' => (string) $annee,
-		'etat'  => '',
-		'vide'  => false,
+		'valeur'    => $annee,
+		'affichage' => (string) $annee,
+		'url'       => '',
+		'etat'      => '',
+	);
+}
+
+/**
+ * Cellule de la discipline : clé canonique en valeur, libellé fini en affichage.
+ *
+ * Une valeur orpheline garde sa clé brute des deux côtés : rien ne disparaît, ni de la page, ni en
+ * silence.
+ *
+ * @param string $cle Clé stockée, chaîne vide si la discipline n'a jamais été renseignée.
+ *
+ * @return array<string, mixed> Cellule au format gelé.
+ */
+function cellule_discipline( string $cle ): array {
+	if ( '' === $cle ) {
+		return array(
+			'valeur'    => '',
+			'affichage' => ABSENCE,
+			'url'       => '',
+			'etat'      => ETAT_ABSENT,
+		);
+	}
+
+	return array(
+		'valeur'    => $cle,
+		'affichage' => libelle_discipline( $cle ),
+		'url'       => '',
+		'etat'      => '',
 	);
 }
 
@@ -211,7 +242,8 @@ function cellule_annee( int $annee ): array {
  * Cellule du pays — seule exception à « Non renseigné ».
  *
  * Un pays vide ne signifie pas « inconnu » mais « le résultat n'a pas été obtenu à l'étranger ».
- * Écrire « Non renseigné » y serait faux, et la colonne disparaît quand aucune ligne ne la remplit.
+ * Écrire « Non renseigné » y serait faux : l'affichage reste vide, ce qui supprime l'étiquette du
+ * repli mobile, et la colonne disparaît quand aucune ligne ne la remplit.
  *
  * @param string $valeur Valeur stockée, recopiée telle quelle.
  *
@@ -219,9 +251,10 @@ function cellule_annee( int $annee ): array {
  */
 function cellule_pays( string $valeur ): array {
 	return array(
-		'texte' => $valeur,
-		'etat'  => '',
-		'vide'  => '' === $valeur,
+		'valeur'    => $valeur,
+		'affichage' => $valeur,
+		'url'       => '',
+		'etat'      => '',
 	);
 }
 
@@ -233,11 +266,12 @@ function cellule_pays( string $valeur ): array {
  * signalerait au visiteur l'existence d'un contenu réservé.
  *
  * @param \WP_Post      $resultat Contenu du résultat.
+ * @param int           $chien_id Identifiant de fiche saisi, zéro si aucune fiche n'est choisie.
  * @param \WP_Post|null $fiche    Fiche chien liée, ou null.
  *
  * @return array<string, mixed> Cellule au format gelé.
  */
-function cellule_chien( \WP_Post $resultat, ?\WP_Post $fiche ): array {
+function cellule_chien( \WP_Post $resultat, int $chien_id, ?\WP_Post $fiche ): array {
 	$sexe = (string) get_post_meta( $resultat->ID, '_mtb_sexe', true );
 	$nom  = '';
 	$url  = '';
@@ -267,22 +301,22 @@ function cellule_chien( \WP_Post $resultat, ?\WP_Post $fiche ): array {
 
 	if ( '' === $nom ) {
 		return array(
-			'texte'        => ABSENCE,
+			'valeur'       => $chien_id,
+			'affichage'    => ABSENCE,
 			'url'          => '',
+			'etat'         => ETAT_ABSENT,
 			'sexe'         => $sexe,
 			'sexe_libelle' => libelle_sexe( $sexe ),
-			'etat'         => ETAT_ABSENT,
-			'vide'         => true,
 		);
 	}
 
 	return array(
-		'texte'        => $nom,
+		'valeur'       => $chien_id,
+		'affichage'    => $nom,
 		'url'          => $url,
+		'etat'         => $etat,
 		'sexe'         => $sexe,
 		'sexe_libelle' => libelle_sexe( $sexe ),
-		'etat'         => $etat,
-		'vide'         => false,
 	);
 }
 
@@ -311,15 +345,11 @@ function url_fiche( \WP_Post $fiche ): string {
 /**
  * Libellé d'une discipline : celui de la liste close, ou la valeur brute si elle est orpheline.
  *
- * @param string $cle Clé stockée.
+ * @param string $cle Clé stockée, jamais vide : l'absence de discipline est traitée en amont.
  *
- * @return string Libellé à imprimer, chaîne vide si aucune discipline n'est renseignée.
+ * @return string Libellé à imprimer.
  */
 function libelle_discipline( string $cle ): string {
-	if ( '' === $cle ) {
-		return '';
-	}
-
 	$disciplines = disciplines();
 
 	return isset( $disciplines[ $cle ] ) ? $disciplines[ $cle ] : $cle;
@@ -389,8 +419,8 @@ function libelles_colonnes(): array {
  * inconditionnels afficherait des colonnes entièrement vides, et sur un téléphone une étiquette
  * suivie de rien à chaque ligne.
  *
- * @param array<int, array<string, mixed>> $lignes      Lignes du groupe.
- * @param string[]                         $cles_fixes  Colonnes toujours présentes pour ce consommateur.
+ * @param array<int, array<string, mixed>> $lignes     Lignes du groupe.
+ * @param string[]                         $cles_fixes Colonnes toujours présentes pour ce consommateur.
  *
  * @return array<int, array<string, string>> Liste ordonnée de colonnes.
  */
@@ -418,6 +448,11 @@ function colonnes( array $lignes, array $cles_fixes ): array {
 /**
  * Indique si au moins une ligne remplit une cellule donnée.
  *
+ * Le test porte sur la valeur brute et non sur l'affichage : un conducteur non renseigné affiche
+ * « Non renseigné », et compter cet affichage comme une valeur ferait apparaître la colonne
+ * Conducteur sur tous les tableaux. Les deux seules colonnes calculées — Conducteur et Pays — sont
+ * des chaînes recopiées, le test juste pour leur type est donc celui de la chaîne vide.
+ *
  * @param array<int, array<string, mixed>> $lignes Lignes à examiner.
  * @param string                           $cle    Clé de cellule.
  *
@@ -425,7 +460,7 @@ function colonnes( array $lignes, array $cles_fixes ): array {
  */
 function au_moins_une_valeur( array $lignes, string $cle ): bool {
 	foreach ( $lignes as $ligne ) {
-		if ( isset( $ligne['cellules'][ $cle ]['vide'] ) && false === $ligne['cellules'][ $cle ]['vide'] ) {
+		if ( isset( $ligne['cellules'][ $cle ]['valeur'] ) && '' !== $ligne['cellules'][ $cle ]['valeur'] ) {
 			return true;
 		}
 	}
@@ -452,8 +487,8 @@ function trier( array $lignes, string $ordre ): array {
 	usort(
 		$lignes,
 		static function ( array $gauche, array $droite ) use ( $decroissant ): int {
-			$annee_gauche = $gauche['donnees']['annee'];
-			$annee_droite = $droite['donnees']['annee'];
+			$annee_gauche = $gauche['cellules']['annee']['valeur'];
+			$annee_droite = $droite['cellules']['annee']['valeur'];
 
 			if ( $annee_gauche !== $annee_droite ) {
 				if ( 0 === $annee_gauche ) {
@@ -467,7 +502,7 @@ function trier( array $lignes, string $ordre ): array {
 				return true === $decroissant ? $annee_droite <=> $annee_gauche : $annee_gauche <=> $annee_droite;
 			}
 
-			return $gauche['donnees']['id'] <=> $droite['donnees']['id'];
+			return $gauche['id'] <=> $droite['id'];
 		}
 	);
 
@@ -521,7 +556,7 @@ function par_discipline( array $args ): array {
 	$orphelins = array();
 
 	foreach ( toutes_les_lignes() as $ligne ) {
-		$cle = $ligne['donnees']['discipline'];
+		$cle = $ligne['cellules']['discipline']['valeur'];
 
 		if ( array() !== $args['disciplines'] && ! in_array( $cle, $args['disciplines'], true ) ) {
 			continue;
@@ -627,11 +662,11 @@ function du_chien( int $chien_id, array $args ): array {
 
 	if ( 0 < $chien_id ) {
 		foreach ( toutes_les_lignes() as $ligne ) {
-			if ( $chien_id !== $ligne['donnees']['chien_id'] ) {
+			if ( $chien_id !== $ligne['cellules']['chien']['valeur'] ) {
 				continue;
 			}
 
-			if ( array() !== $args['disciplines'] && ! in_array( $ligne['donnees']['discipline'], $args['disciplines'], true ) ) {
+			if ( array() !== $args['disciplines'] && ! in_array( $ligne['cellules']['discipline']['valeur'], $args['disciplines'], true ) ) {
 				continue;
 			}
 
