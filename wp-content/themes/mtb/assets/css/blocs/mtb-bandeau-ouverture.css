@@ -57,6 +57,13 @@
  * en jeu la contrainte AA bloquante des 360 px), aucune largeur fixe, aucune
  * requête média nouvelle, aucun `max-inline-size`.
  *
+ * LA LARGEUR SE JOUE À DEUX ENDROITS, et l'oublier a coûté un défaut : la
+ * section 0 donne au BANDEAU sa piste pleine, la section 2 donne à la PHOTO sa
+ * largeur dans cette piste. Le bandeau obtenait bien sa pleine largeur alors que
+ * son cadre interne la perdait — 245 px de fond `--pin` à découvert à 1440 px.
+ * Une largeur de bloc juste ne prouve donc RIEN sur le cadre qu'elle contient.
+ * Détail complet et arithmétique à la section 2.
+ *
  * VALEURS BRUTES EMPLOYÉES — liste CLOSE, toutes RECOPIÉES de MASTER, aucune
  * inventée, aucune ne dispose d'un jeton (en créer un serait l'invention que le
  * contrat interdit) :
@@ -284,8 +291,35 @@
      annulerait `aspect-ratio` : `start` rend le résultat déterministe sur tous
      les moteurs plutôt que de parier sur la sémantique de l'étirement. */
   align-self: start;
+
+  /* LARGEUR DÉFINIE, ET C'EST LA PIÈCE QUI MANQUAIT. Sans elle, la largeur
+     venait de l'étirement de la piste, donc n'était PAS définie ; le ratio
+     pilotait alors les DEUX axes ensemble, et le plafond ci-dessous ne
+     rabattait pas seulement la hauteur — il RÉTRÉCISSAIT LA LARGEUR pour tenir
+     le ratio. Le bandeau s'arrêtait à `32rem × 21/9` = 1194,67 px et laissait
+     le fond `--pin` de la bande à découvert sur sa droite : 245 px de vide à
+     1440 px de fenêtre, 17 % de la largeur, MESURÉ au navigateur — ni le
+     dégradé de la photo, ni un débordement, un cadre qui n'atteignait pas le
+     bord. Le défaut était donc STRICTEMENT PROPORTIONNEL à la largeur de
+     l'écran, et INVISIBLE en dessous de 1194,67 px : les fenêtres étroites, la
+     recette à 360 px et l'aperçu de l'éditeur ne pouvaient pas le montrer.
+
+     `100%` rend la largeur définie : le ratio ne calcule plus que la hauteur,
+     et `max-block-size` ne borne plus que la hauteur. C'est l'ordre de lecture
+     du §6.5 — « pleine largeur de la fenêtre », PUIS le ratio, PUIS le plafond
+     — et non l'inverse. Au-delà du point de bascule, c'est donc la PHOTO qui
+     est recadrée par l'`object-fit: cover` du §6.2, jamais le bandeau qui
+     rétrécit : les deux seuls états que §6.5 prévoit sont la bande photo et la
+     bande de texte, jamais une bande photo à 83 % avec un vide sombre.
+     `100%` et non `stretch` : `stretch` ramènerait l'indéfini qu'on retire. */
+  inline-size: 100%;
+
   aspect-ratio: var(--r-bandeau);
-  /* §6.5 : plafond porté par la photo, jamais par la bande. */
+  /* §6.5 : plafond porté par la photo, jamais par la bande. Il ne mord qu'au
+     delà de `32rem × --r-bandeau` — 1194,67 px en `21/9`. En deçà, et donc à
+     360 px où `--r-bandeau` vaut `4/3`, il reste sans effet et la règle
+     ci-dessus est inerte : le correctif ne peut rien changer aux largeurs qui
+     étaient déjà justes. */
   max-block-size: 32rem;
 
   /* §6.6 : fond de l'emplacement pour un PNG détouré (jamais de damier, jamais

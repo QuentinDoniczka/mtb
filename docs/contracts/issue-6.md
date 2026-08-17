@@ -997,3 +997,68 @@ aucune exception**. Le bord haut de la photo rencontre l'en-tête et son bord ba
 `--pin` : il y a bien des bords à tenir. Surtout, **une exception doit être écrite** par
 `lead-design-mtb` — jamais obtenue par une règle inerte, qui donne le pire des deux : ni le cerne, ni
 la trace de la décision de s'en passer.
+
+---
+
+## Amendement 8 — Le cadre qui n'atteignait pas le bord
+
+**Ajouté le 2026-08-18**, même passe que l'amendement 7. Défaut distinct, trouvé en répondant à une
+question sur une capture (`docs/apercus/lot-3/les-six-composants-1440px.png`) : sur `/ti3-les-six/` le
+bandeau semblait s'arrêter avant le bord droit. **C'en était bien un**, et ce n'était ni le dégradé de
+la photo d'essai ni un débordement de l'image.
+
+### Mesure
+
+À 1440 px de fenêtre, `getBoundingClientRect()` :
+
+| | largeur |
+|---|---|
+| `.mtb-bandeau-ouverture` | **1440 px** — pleine largeur, la piste `pleine` fait son travail |
+| `.mtb-bandeau-ouverture__photo` | **1194,66 px** |
+| `.mtb-bandeau-ouverture__image` | 1194,66 px — coïncide exactement avec son cadre |
+
+**245,34 px de vide, 17 % de la largeur.** La bande sombre était le fond `--pin` de la bande, à
+découvert là où la photo n'allait pas.
+
+### Cause, arithmétiquement certaine
+
+Le cadre portait `aspect-ratio: var(--r-bandeau)` + `max-block-size: 32rem` + `align-self: start`,
+**sans largeur définie**. Sa largeur venait donc de l'étirement de la piste, et `aspect-ratio` pilotait
+**les deux axes ensemble** : le plafond de 512 px ne rabattait pas seulement la hauteur, il
+**re-dérivait la largeur** du ratio. `512 × 21/9 = 1194,666…` — la largeur mesurée, au centième.
+
+### Correctif — une déclaration
+
+`inline-size: 100%` sur `__photo`. La largeur devient **définie** : le ratio ne calcule plus que la
+hauteur, et `max-block-size` ne borne plus que la hauteur. C'est l'ordre de lecture du §6.5 — pleine
+largeur, **puis** le ratio, **puis** le plafond. Au-delà du point de bascule, c'est la **photo** qui est
+recadrée par l'`object-fit: cover` du §6.2, jamais le bandeau qui rétrécit : les deux seuls états que
+§6.5 prévoit sont la bande photo et la bande de texte, **jamais une bande photo à 83 % avec un vide
+sombre**.
+
+### Vérifié, quatre paliers, avant et après
+
+| Fenêtre | ratio actif | avant | vide | après | vide |
+|---|---|---|---|---|---|
+| 360 px | `4 / 3` | 360 × 270 | 0 | 360 × 270 | 0 |
+| 1024 px | `21 / 9` | 1024 × 438,85 | 0 | 1024 × 438,85 | 0 |
+| 1440 px | `21 / 9` | **1194,66 × 511,99** | **245,34** | **1440 × 512** | **0** |
+| 2560 px | `21 / 9` | **1194,66 × 511,99** | **1365,34** | **2560 × 512** | **0** |
+
+Aucun défilement horizontal à aucun palier. Le plafond de 512 px est tenu partout. **Les deux paliers
+où rien ne devait changer n'ont rien changé** : en deçà de `32rem × --r-bandeau` le plafond ne mord pas
+et la déclaration est inerte.
+
+### Pourquoi il a survécu à tout — et la règle qui en sort
+
+Le défaut était **strictement proportionnel à la largeur de l'écran** et **nul en dessous de
+1194,67 px**. La recette AA à 360 px, les fenêtres étroites et l'aperçu de l'éditeur ne pouvaient
+structurellement pas le montrer ; il fallait une fenêtre large, et personne n'en avait mesuré une.
+
+> **Une largeur de bloc juste ne prouve rien sur le cadre qu'elle contient.** Le bandeau **obtenait**
+> sa pleine largeur de bloc ; c'est son cadre interne qui la perdait. Tout composant dont un cadre
+> porte `aspect-ratio` **et** un plafond de hauteur doit être mesuré **large**, et la vérification
+> porte sur le cadre, pas sur le bloc.
+
+Distinct du travail de canal d'une chaîne sœur (`mtb-grille-chiens.css`, `mtb-liste-portees.css`) : la
+piste `pleine` était correcte, le défaut vivait entièrement dans `mtb-bandeau-ouverture.css`.
