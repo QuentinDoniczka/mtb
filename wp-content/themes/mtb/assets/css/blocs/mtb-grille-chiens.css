@@ -36,20 +36,22 @@
  * inventée, aucune ne dispose d'un jeton (en créer un serait l'invention que le
  * contrat interdit) :
  *
- *   1. `14rem`, piste minimale de la grille. JUSTIFICATION AMENDÉE — contrat §6
- *      et §13 point 1 : la première était fausse. Elle disait que 14rem était
- *      « la seule valeur qui produit les 4 colonnes de MASTER §9.4 dans le canal
- *      large » ; or le canal large est INATTEIGNABLE (mesuré, voir le §1
- *      ci-dessous) et la grille rend 2 colonnes, jamais 4. Ce qui fait tenir la
- *      valeur, et qui est mesuré : dans le canal réellement obtenu — le canal
- *      texte, 36 rem — 14rem donne 2 colonnes de 272 px là où 9rem en donnerait
- *      3 de 186 px ; et à 360 px, 1 photo pleine largeur de 324 px au lieu de 2
- *      vignettes de 146 px, la coupure d'un nom en moins. BRIEF §10 fait des
- *      photographies la matière première du site : la décision survit à
- *      l'effondrement de son argument d'origine, mais POUR UNE AUTRE RAISON, et
- *      c'est celle-ci qu'il faut lire. Le `9rem` du §6.7 chiffre une GALERIE :
- *      autre objet, autre gouttière (`--e-3`). Valeur absente de tokens.css,
- *      signalée à la chaîne design, réversible en une ligne.
+ *   1. `14rem`, piste minimale de la grille. JUSTIFICATION D'ORIGINE RÉTABLIE,
+ *      après un aller-retour qu'il faut lire pour ne pas le refaire. Elle
+ *      disait que 14rem était « la seule valeur qui produit les 4 colonnes de
+ *      MASTER §9.4 dans le canal large ». Un amendement l'a déclarée fausse au
+ *      motif que le canal large était inatteignable — vrai à ce moment-là,
+ *      FAUX depuis ebdbf3a et depuis le §1 ci-dessous, qui rend enfin le canal
+ *      large à ce composant. MESURÉ dans le canal large obtenu (1088 px,
+ *      gouttière `--e-6` = 32 px) : 4 colonnes de 248 px, exactement les 4
+ *      colonnes du §9.4. La justification d'origine tient donc à nouveau, et
+ *      elle est la bonne. Ce que l'amendement a établi de vrai reste vrai et
+ *      s'y ajoute : à 360 px, 14rem donne 1 photo pleine largeur de 324 px au
+ *      lieu de 2 vignettes de 146 px, la coupure d'un nom en moins, ce que
+ *      BRIEF §10 réclame en faisant des photographies la matière première du
+ *      site. Le `9rem` du §6.7 chiffre une GALERIE : autre objet, autre
+ *      gouttière (`--e-3`). Valeur absente de tokens.css, signalée à la chaîne
+ *      design, réversible en une ligne.
  *   2. `50% 38%`, point d'intérêt par défaut. Recopié de MASTER §6.2, qui en
  *      donne la justification chiffrée : sur une photo de chien en pied, la tête
  *      est au-dessus du centre géométrique. C'est aussi, par le contrat §6, la
@@ -108,30 +110,60 @@
  */
 
 /* =====================================================================
- * 1. La largeur de la grille — et le canal large, qu'elle N'OBTIENT PAS
+ * 1. Le canal large — MASTER §7.1, qui y range nommément « grilles de chiens »
  *
- * MASTER §7.1 range les grilles de chiens dans le canal large. Le plugin n'émet
- * pas `alignwide` : c'est une classe de MISE EN PAGE, donc interdite à
- * l'extension (contrat #1 §8) ; et la règle de canal du thème vit dans base.css,
- * hors de cette empreinte. La feuille pose donc le plafond elle-même
- * (contrat §6, arbitrage 6).
+ * DETTE T-#14-i : SOLDÉE ICI. L'ancien diagnostic de cette section — « le canal
+ * large est inatteignable depuis cette feuille » — était juste quand il a été
+ * écrit et il est FAUX depuis le commit ebdbf3a. Il décrivait la chaîne
+ * `.mtb-canal > .entry-content > .mtb-grille-chiens`, où le petit-fils ne peut
+ * rien réclamer à une grille qui n'affecte que ses enfants directs. Or
+ * `templates/singular.html:4` pose désormais `mtb-canal alignfull` sur
+ * `post-content` LUI-MÊME : les blocs du catalogue sont des ENFANTS DIRECTS
+ * d'un `.mtb-canal`, et l'affectation de canal redevient à portée de cette
+ * feuille. Le correctif n'a plus besoin de templates/, base.css ni theme.json.
  *
- * MESURÉ EN NAVIGATEUR, ET CE PLAFOND EST INERTE — contrat §13 point 1. La
- * chaîne d'ancêtres réelle est
- * `.mtb-canal > .entry-content > .mtb-grille-chiens`, et base.css confine
- * l'enfant DIRECT de `.mtb-canal` — donc `.entry-content`, donc tout le contenu
- * de la page — au canal texte (36 rem = 576 px). Les 1088 px de `--l-large` sont
- * un plafond au-dessus du conteneur : la grille rend 2 colonnes de 272 px.
- * MASTER §7.1 n'est donc PAS tenu, et le correctif — un `grid-column` sur un
- * enfant direct de `.mtb-canal` — vit dans templates/, base.css ou theme.json,
- * hors de cette empreinte. Dette T-#14-i, arbitrage de l'epic Gabarits.
+ * MÉCANISME UNIQUE DU CANAL, choisi pour tout le catalogue : le THÈME affecte
+ * le canal, sur la classe racine du composant, depuis la feuille du bloc. Ni
+ * classe `alignwide` émise par l'extension (contrat #1 §8 le lui interdit, et
+ * la liste de portées vient de s'en défaire), ni règle de canal écrite dans une
+ * feuille de l'extension. Forme reprise telle quelle de `galerie.css:73`.
  *
- * Les deux déclarations restent : `max-inline-size` est un PLAFOND, pas une
- * revendication. Il borne la grille le jour où un conteneur plus large que le
- * canal texte l'accueille, et ne casse rien dans un conteneur plus étroit —
- * c'est alors le conteneur qui gagne, la grille se dégrade en colonnes.
+ * SPÉCIFICITÉ — base.css est imprimée APRÈS cette feuille, l'ordre de source ne
+ * peut donc rien : `.mtb-canal > *` (base.css:515) affecte le canal texte à
+ * (0,1,0). Les deux classes du sélecteur ci-dessous pèsent (0,2,0) et gagnent
+ * sans `!important`, dans la toile de l'éditeur comme sur le site.
+ *
+ * LES QUATRE DÉCLARATIONS VONT ENSEMBLE — ce sont exactement celles que
+ * base.css applique à `.alignwide` (l. 522-532 et 777), transposées sur la
+ * racine du composant :
+ *   · `grid-column` place la grille dans la piste large ;
+ *   · `max-inline-size` la plafonne à 68 rem, que MASTER §7.1 exige (« pas à la
+ *     largeur de l'écran ») et que le gabarit de colonnes ne porte pas ;
+ *   · `margin-inline: auto` la centre dans le mou restant ;
+ *   · `inline-size: 100%` est OBLIGATOIRE et c'est le piège que base.css
+ *     documente à sa ligne 730 : sur un ÉLÉMENT DE GRILLE, une marge
+ *     automatique annule l'étirement, la piste cesse d'imposer sa largeur et
+ *     l'élément se dimensionne sur son contenu. Sans cette ligne, une grille
+ *     d'un seul chien mesurerait la largeur d'une vignette, centrée dans le
+ *     vide. `100 %` est une mécanique — « toute la piste que la grille m'a
+ *     donnée » —, pas une valeur de design : aucun jeton à inventer.
+ *
+ * MESURÉ, fenêtre de 1425 px, page /ti3-les-six/ : racine à 168 → 1256 px,
+ * 1088 px de large, au pixel près la galerie de la même page et la liste de
+ * portées. Avant : 424 → 1000 px, canal texte, §7.1 non tenu.
+ *
+ * LIMITE CONNUE, sans effet aujourd'hui : dans un `.mtb-canal` porteur de
+ * `is-layout-constrained`, base.css:507 neutralise `max-inline-size` et impose
+ * `margin-inline: 0 !important` à (0,3,0) sur tout enfant direct qui n'est pas
+ * `.alignwide`. La grille resterait alors dans la piste large mais sans plafond
+ * ni centrage. Aucun placement de ce genre n'existe : les blocs vivent dans
+ * `post-content`, qui est `is-layout-flow`. La contourner demanderait un
+ * `!important` ou un sélecteur doublé — refusés tant que le défaut n'est pas
+ * constaté.
  * ================================================================== */
-.mtb-grille-chiens {
+.mtb-canal > .mtb-grille-chiens {
+  grid-column: large-debut / large-fin;
+  inline-size: 100%;
   max-inline-size: var(--l-large);
   margin-inline: auto;
 }

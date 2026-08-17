@@ -167,11 +167,17 @@ final class Rendu {
 	/**
 	 * Enveloppe le contenu du bloc.
 	 *
-	 * « alignwide » est écrit en dur, et c'est la seule classe de mise en page que l'extension émette :
-	 * le système de design range les listes de portées dans le canal large, et le thème ne peut pas
-	 * obtenir ce placement depuis sa feuille de bloc. L'extension transmet une affectation du système
-	 * de design, elle n'invente pas une règle visuelle — l'éleveuse ne peut pas la défaire, le bloc
-	 * n'offrant aucun réglage d'alignement.
+	 * AUCUNE CLASSE DE MISE EN PAGE N'EST ÉMISE ICI, et surtout pas « alignwide », qui y a figuré.
+	 * Le motif invoqué à l'époque — « le thème ne peut pas obtenir ce placement depuis sa feuille de
+	 * bloc » — était exact tant que les blocs étaient les PETITS-FILS du canal ; il est faux depuis
+	 * que « templates/singular.html » pose « mtb-canal » sur « post-content » lui-même. Le thème
+	 * affecte donc le canal large à cette liste depuis « assets/css/blocs/mtb-liste-portees.css »,
+	 * comme il le fait pour la grille de chiens et la galerie. Rendu identique au pixel près.
+	 *
+	 * Ce que le retrait rétablit : le contrat #1 §8 — l'extension ne produit aucune règle visuelle ni
+	 * mise en page. Une classe qui déplace un bloc d'un canal à l'autre en est une, même quand elle ne
+	 * fait que transmettre une affectation du système de design. NE PAS LA RÉINTRODUIRE : ce qui
+	 * serait perdu, c'est la garantie que le contenu survit à un changement de thème.
 	 *
 	 * @param string $interieur Balisage intérieur.
 	 * @param bool   $vide      Vrai pour l'état « année sans résultat ».
@@ -180,8 +186,8 @@ final class Rendu {
 	 */
 	private static function enveloppe( string $interieur, bool $vide ): string {
 		$classes = $vide
-			? 'mtb-liste-portees mtb-liste-portees--vide alignwide'
-			: 'mtb-liste-portees alignwide';
+			? 'mtb-liste-portees mtb-liste-portees--vide'
+			: 'mtb-liste-portees';
 
 		return '<div ' . get_block_wrapper_attributes( array( 'class' => $classes ) ) . '>' . "\n"
 			. $interieur

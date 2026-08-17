@@ -58,15 +58,49 @@
  *
  * SIGNALÉ, incorrigible d'ici — constats OBSERVÉS sur une Page réelle, pas prédits,
  * hors des fichiers de cette chaîne :
- *   1. `alignwide` est INERTE (dette T-#13-h devenue actuelle). Le sélecteur de
- *      base.css est `.mtb-canal > .alignwide`, or le bloc vit dans
- *      `.entry-content` (`wp-block-post-content`, `is-layout-flow`), petit-fils
- *      du canal : la règle ne s'applique jamais. Mesuré à 1280 px :
- *      `grid-column: auto`, `max-inline-size: none`, bloc à 576 px = canal de
- *      TEXTE, jamais les 68 rem du canal large voulu par §7.1. Ni canal large,
- *      ni réduction au contenu — simplement aucun effet.
- *   2. `white-space` du badge : question de lot, AA-bloquante — section 5.
+ *   1. `white-space` du badge : question de lot, AA-bloquante — section 5.
+ *
+ * DETTE T-#13-h (« `alignwide` est inerte ») : SOLDÉE. Son constat a été périmé
+ * par `ebdbf3a`, puis la classe elle-même a été retirée du rendu serveur ; le
+ * canal large est désormais affecté par la section 0 ci-dessous, côté thème.
  */
+
+/* 0. Le canal large — MASTER §7.1, qui y range nommément « listes de portées »
+   ---------------------------------------------------------------------------
+
+   DETTE T-#13-h : SOLDÉE ICI, et le constat qu'elle portait est PÉRIMÉ deux
+   fois plutôt qu'une. Il disait « `alignwide` est inerte, le bloc vit dans
+   `.entry-content`, petit-fils du canal ». C'était vrai à l'écriture. Depuis
+   `ebdbf3a`, `templates/singular.html:4` pose `mtb-canal alignfull` sur
+   `post-content` lui-même : le bloc est un ENFANT DIRECT du canal, et
+   `alignwide` était devenu ACTIF — mesuré à 1425 px, le bloc obtenait bien
+   168 → 1256 px. Le défaut n'était donc plus l'absence de canal large, mais
+   l'origine de la classe qui le donnait.
+
+   POURQUOI ON LA RETIRE QUAND MÊME. `alignwide` est une classe de MISE EN
+   PAGE ; le contrat #1 §8 interdit à l'extension d'émettre la moindre règle
+   visuelle, et une classe qui déplace un bloc d'un canal à l'autre en est une.
+   Le rendu serveur (`liste-portees/rendu.php`) ne l'écrit plus. Le résultat
+   visuel est identique au pixel près — c'est le point : ce déplacement ne
+   change pas la page, il change QUI décide.
+
+   MÉCANISME UNIQUE DU CANAL, pour tout le catalogue : le THÈME affecte le
+   canal, sur la classe racine du composant, depuis la feuille du bloc. Forme
+   reprise de `galerie.css:73`, et désormais partagée avec
+   `mtb-grille-chiens.css §1`, dont l'en-tête porte l'argumentation complète —
+   spécificité (0,2,0) contre le (0,1,0) de `base.css:515`, nécessité de
+   `inline-size: 100%` sur un élément de grille à marges automatiques (piège
+   documenté par `base.css:730`), et la limite connue en canal
+   `is-layout-constrained`. Ne pas dupliquer ici ce qui y est écrit une fois.
+
+   MESURÉ, /ti3-les-six/ à 1425 px : 168 → 1256 px, 1088 px de large — mêmes
+   bords que la galerie et que la grille de chiens de la même page. */
+.mtb-canal > .mtb-liste-portees {
+  grid-column: large-debut / large-fin;
+  inline-size: 100%;
+  max-inline-size: var(--l-large);
+  margin-inline: auto;
+}
 
 /* 1. La liste ---------------------------------------------------------------- */
 

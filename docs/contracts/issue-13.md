@@ -1209,3 +1209,52 @@ la règle `.mtb-canal > .alignwide` ne s'applique jamais » (dette T-#13-h, éga
 `mtb-canal` au contenu lui-même, et `base.css` corrige le `margin-inline` qui annulait l'étirement de
 l'élément de grille. `alignwide` est actif sur ce module. Le commentaire de la feuille est resté en
 arrière et **appartient à une chaîne de correction, pas à ce document**.
+
+---
+
+## Amendement du 2026-08-18 — le canal large passe côté thème, `alignwide` est retiré
+
+**Sections amendées : §7.5, §12 (ligne `alignwide`), §13 (l'« unique exception »), l'arbitrage 11, la
+dette T-#13-h et le §17.1.** Ce qu'elles décrivent est l'état d'avant ; ce qui suit est l'état livré.
+
+**Ce qui a changé sous le contrat.** Le §7.5 et l'arbitrage 11 reposaient tous deux sur une prémisse
+d'infrastructure : « le thème ne peut pas gagner », parce que le bloc était le *petit-fils* du canal et
+que `base.css` appartenait à une chaîne sœur. Le commit `ebdbf3a` a posé `mtb-canal alignfull` sur
+`post-content` lui-même (`templates/singular.html:4`) : le bloc est désormais **enfant direct** d'un
+`.mtb-canal`, et la feuille du thème peut lui affecter son canal sans toucher à `base.css`. Le §17.1
+avait déjà constaté la moitié du basculement — `alignwide` était devenu **actif** — sans en tirer la
+conséquence : la classe n'était plus nécessaire.
+
+**Ce qui est livré.**
+
+- `includes/blocks/liste-portees/rendu.php` n'émet plus **aucune** classe de mise en page. Les classes
+  du `<div>` racine sont `mtb-liste-portees` et, à l'état vide, `mtb-liste-portees--vide`.
+- `themes/mtb/assets/css/blocs/mtb-liste-portees.css` ouvre sur une **section 0** qui affecte le canal :
+  `.mtb-canal > .mtb-liste-portees { grid-column: large-debut / large-fin; inline-size: 100%;
+  max-inline-size: var(--l-large); margin-inline: auto }`. Spécificité (0,2,0) contre le (0,1,0) de
+  `base.css:515` : gagne sans `!important` et sans dépendre de l'ordre des feuilles.
+- **Le §13 redevient sans exception** : l'extension n'émet aucune règle visuelle ni mise en page. La
+  ligne `alignwide` du tableau §12 est supprimée du balisage gelé ; le reste du balisage est inchangé.
+- **Dette T-#13-h : soldée.** Elle appelait « `.mtb-canal > .mtb-liste-portees` dans `base.css` » ; la
+  règle est écrite dans la feuille du bloc, qui appartient au thème tout autant et n'oblige personne à
+  rouvrir le fichier partagé par six chaînes.
+
+**Mesuré, page `/ti3-les-six/`, avant → après** (bords calculés, viewport 1425 px) :
+
+| Composant | Avant | Après | Canal voulu par MASTER §7.1 |
+|---|---|---|---|
+| Liste de portées | 168 → 1256 (par `alignwide`) | **168 → 1256** (par le thème) | large — « listes de portées » |
+| Grille de chiens | 424 → 1000 | **168 → 1256** | large — « grilles de chiens » |
+| Galerie (témoin, hors empreinte) | 168 → 1256 | 168 → 1256 | large — « galeries » |
+
+Rendu **identique au pixel près** pour ce module : le déplacement ne change pas la page, il change qui
+décide. À 360 px (iframe de même origine) : `scrollWidth == clientWidth == 345`, aucun défilement
+horizontal. À 200 % de zoom sur 1280 px : `scrollWidth == clientWidth == 1265`, tous les composants à
+96 → 1169.
+
+**Limite connue, sans effet aujourd'hui.** Dans un `.mtb-canal` porteur de `is-layout-constrained`,
+`base.css:507-510` neutralise `max-inline-size` et impose `margin-inline: 0 !important` à (0,3,0) sur
+tout enfant direct qui n'est pas `.alignwide` : la liste resterait dans la piste large, mais sans
+plafond ni centrage. Aucun placement de ce genre n'existe — les blocs vivent dans `post-content`, qui
+est `is-layout-flow`. La contourner demanderait un `!important` ou un sélecteur doublé, refusés tant que
+le défaut n'est pas constaté.

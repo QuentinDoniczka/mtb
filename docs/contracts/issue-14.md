@@ -1033,3 +1033,69 @@ horizontal**.
 **Et T-#14-h est confirmée à la lettre** : dans la toile de l'éditeur, la feuille n'entrant pas dans
 l'iframe, les photos s'empilent pleine largeur, sans grille et sans carré. Lisible, jamais cassé, et
 long à faire défiler.
+
+---
+
+## Amendement du 2026-08-18 — le canal large est atteint, T-#14-i soldée
+
+**Sections amendées : l'avertissement de tête, l'arbitrage 6, la ligne `14rem` du §8 et le §13
+point 1.** Toutes disent « le canal large est inatteignable » ; c'était vrai à l'écriture, c'est faux
+depuis le commit `ebdbf3a`.
+
+**Ce qui a changé sous le contrat.** Le diagnostic décrivait la chaîne
+`.mtb-canal > .entry-content > .mtb-grille-chiens` : un petit-fils ne peut rien réclamer à une grille
+qui n'affecte que ses enfants directs. `templates/singular.html:4` pose désormais `mtb-canal alignfull`
+sur `post-content` lui-même — les blocs du catalogue sont **enfants directs** d'un `.mtb-canal`.
+L'arbitrage 6 (le canal appartient à la feuille du thème, pas à une classe émise par l'extension) était
+la bonne décision ; il lui manquait seulement un gabarit qui la rende effective.
+
+**Ce qui est livré.** La section 1 de `mtb-grille-chiens.css` remplace le plafond inerte par
+l'affectation complète :
+
+```css
+.mtb-canal > .mtb-grille-chiens {
+  grid-column: large-debut / large-fin;
+  inline-size: 100%;
+  max-inline-size: var(--l-large);
+  margin-inline: auto;
+}
+```
+
+`inline-size: 100%` n'est pas décoratif : sur un **élément de grille**, une marge automatique annule
+l'étirement, la piste cesse d'imposer sa largeur et l'élément se dimensionne sur son contenu — piège
+mesuré et documenté par `base.css:730`. Sans cette ligne, une grille d'un seul chien mesurerait la
+largeur d'une vignette. Les quatre déclarations sont celles que `base.css` applique à `.alignwide`
+(l. 522-532 et 777), transposées sur la classe racine du composant.
+
+**Mécanisme unique pour tout le catalogue** : le thème affecte le canal, sur la classe racine, depuis la
+feuille du bloc — forme de `galerie.css:73`, désormais partagée par la grille de chiens et la liste de
+portées. Les deux autres mécanismes en circulation sont retirés (`alignwide` émis par l'extension,
+contrat #13 §7.5) ou signalés (règle de canal écrite dans une feuille de l'extension, `galerie.css`,
+hors empreinte).
+
+**Dette T-#14-i : soldée**, et sans toucher à `templates/`, `base.css` ni `theme.json`.
+
+**Mesuré, page `/ti3-les-six/`, avant → après** (bords calculés, viewport 1425 px) :
+
+| | Avant | Après |
+|---|---|---|
+| Bords de `.mtb-grille-chiens` | 424 → 1000 (canal texte) | **168 → 1256** (canal large) |
+| Largeur | 576 px | **1088 px**, plafond `--l-large` |
+| Colonnes rendues | 2 × 272 px | **4 × 248 px** |
+
+**Conséquence sur la ligne `14rem` du §8 et le §13 point 1 : la justification d'origine est rétablie.**
+Elle disait que `14rem` était « la seule valeur qui produit les 4 colonnes de MASTER §9.4 dans le canal
+large » ; l'amendement du 2026-08-17 l'a déclarée fausse au motif que le canal large était
+inatteignable. Il l'est désormais, et les **4 colonnes du §9.4 sont mesurées** : 248 px chacune, pour un
+canal de 1088 px et une gouttière `--e-6` de 32 px. Ce que l'amendement du 17 a établi de vrai reste
+vrai et s'y ajoute : à 360 px, `14rem` donne 1 photo pleine largeur de 324 px au lieu de 2 vignettes de
+146 px. `14rem` reste absente de `tokens.css` — signalée à la chaîne design, réversible en un littéral.
+
+À 360 px : 1 colonne de 308,8 px, `scrollWidth == clientWidth == 345`, aucun défilement horizontal.
+À 200 % de zoom sur 1280 px : 2 colonnes de 252,2 px, `scrollWidth == clientWidth == 1265`.
+
+**Limite connue, sans effet aujourd'hui** : dans un `.mtb-canal` porteur de `is-layout-constrained`,
+`base.css:507-510` neutralise `max-inline-size` et impose `margin-inline: 0 !important` à (0,3,0) sur
+tout enfant direct qui n'est pas `.alignwide`. La grille resterait dans la piste large, sans plafond ni
+centrage. Aucun placement de ce genre n'existe : les blocs vivent dans `post-content`, qui est
+`is-layout-flow`.
