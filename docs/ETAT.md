@@ -10,9 +10,22 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
-**Phase : lot 3 (6 composants) livré et testé le 2026-08-17. Le site rend enfin quelque chose au
-visiteur — mais seulement sur des Pages où l'on a posé un composant. Une portée saisie n'apparaît
-toujours pas sur sa propre page. Prochain lot : les gabarits (#16-#18).**
+**Phase : lot 4 (3 composants génériques II) livré, testé et revu le 2026-08-18. Le catalogue est
+complet à neuf composants sur dix ; il ne manque que le tableau de résultats (#15). Le site rend
+toujours quelque chose **uniquement** sur les Pages où l'on a posé un composant : une portée saisie
+n'apparaît toujours pas sur sa propre page. Prochain lot : les gabarits (#16-#18).**
+
+Ce que la passe d'intégration a **mesuré** sur le lot 4 (et non déduit) : **31 vérifications passées,
+zéro échouée**. Le **zoom de page à 200 %**, qu'aucune chaîne du lot 3 n'avait vérifié, est enfin
+mesuré — **24 combinaisons sur 24 sans débordement** (1440 → 720 px CSS, 1280 → 640, 360 → 180, plus
+le zoom du texte seul). Zéro requête vers un domaine tiers (**47 requêtes, origine unique**), zéro
+cookie anonyme, zéro octet de JavaScript public, zéro diagnostic PHP sur **11 URL** dont des pages
+délibérément mal remplies, axe-core **0 violation**, **70 625 o** pour la page portant les trois
+composants (budget 200 000). Insérteur réellement cliqué en session `fabienne` (rôle **Éditeur**) :
+« Mont Brabant » en première position, les trois composants insérés et réglés, page publiée en 200.
+**Les onze contrastes annoncés par les trois chaînes ont été confirmés sur les pixels rendus, écart
+zéro** — c'est la première fois du projet qu'un contraste est lu et non seulement calculé.
+
 
 Ce que la passe d'intégration a **mesuré** sur le lot 3 (et non déduit) : zéro requête vers un domaine
 tiers côté visiteur, zéro cookie anonyme, **zéro octet de JavaScript public**, zéro erreur PHP sur
@@ -20,7 +33,7 @@ tiers côté visiteur, zéro cookie anonyme, **zéro octet de JavaScript public*
 200 %, un anneau de focus sur les **37 arrêts clavier**, contraste minimal **5,25:1**, texte du bandeau
 sur photographie à **6,31:1** au pire pixel, **167 627 o** pour la page portant les six composants
 (budget 200 000), **2** fichiers de police. Insérteur réellement cliqué : « Mont Brabant » **en première
-position**, les six composants présents. Les six états vides **rigoureusement identiques** au pixel.
+position**, les six composants présents. Une affirmation de ce paragraphe s'est révélée **fausse** au lot 4 : les six états vides n'étaient **pas** identiques (voir dette T13).
 
 | Étape | État |
 |-------|------|
@@ -30,22 +43,36 @@ position**, les six composants présents. Les six états vides **rigoureusement 
 | Board GitHub (issues + milestones) | ✅ 10 epics, 25 issues — [projet 10](https://github.com/users/QuentinDoniczka/projects/10) |
 | Design system (`design-system/MASTER.md`) | ✅ 16 sections — vocabulaire en §10 |
 | Stack Docker (`compose.yaml`) | ✅ 4 services, **démarrage à froid revérifié le 2026-08-18** : `down -v` puis `make up` → accueil en 200 en **41 s**, provisionnement en 12,8 s, **zéro diagnostic PHP**, aucun `debug.log`. Port **3005** (et non 8080). D9 tenue |
-| Extension `mtb-core` | ✅ squelette + chargeur à auto-découverte (#1), **+ 9 modules** : portée, chien, résultat (#3, #4, #5) |
+| Extension `mtb-core` | ✅ squelette + chargeur à auto-découverte (#1), portée, chien, résultat (#3, #4, #5) |
+| **Catalogue de composants** | ✅ **9 sur 10** : bandeau d'ouverture, fiche d'information, galerie photos, liste des portées, encart dernière portée, grille de chiens (#6-#8, #12-#14), **bandeau d'alerte, encart d'appel, coordonnées et plan d'accès (#9, #10, #11)**. Manque le tableau de résultats (#15) |
 | Thème `mtb` | ✅ thème **de blocs**, `theme.json` verrouillé, CSS à la main, 2 polices auto-hébergées (#2) |
 | **Saisie** portée / chien / résultat | ✅ trois écrans classiques, en français, éditables par le rôle Éditeur sans capacité ajoutée |
 | **Rendu public** des trois types | ❌ **rien** — le thème n'appelle **aucune** fonction `mtb_get_*` (zéro occurrence). Un visiteur ne voit aucune donnée d'élevage |
 | Reprise du contenu (52 URL) | ❌ rien |
-| Guide de l'éleveuse (`docs/guide/`) | ✅ 3 fiches (portée, chien, résultat) — **22 captures à prendre**, aucune n'existe |
+| Guide de l'éleveuse (`docs/guide/`) | ✅ **12 fiches** : 3 de saisie + 9 de composants — mais **56 captures promises et zéro prise** ; le dossier `docs/guide/captures/` **n'existe pas**. D3 est tenue (chaque composant a sa fiche) ; **BRIEF §13.1 ne l'est pas** — « guide en français, **avec captures** ». Compte recompté au lot 4 : la valeur « 22 » portée ici jusqu'au 2026-08-18 était fausse |
 
-**Prochaine action** : `/lead-mtb #16 #17 #18` (epic 7 — gabarits et thème). C'est le chaînon qui rend
-visible tout ce que le lot 2 a construit : sans lui, l'administration est complète et le site est vide.
-Les composants (#6 à #15) viennent après.
+**Prochaine action** : `/lead-mtb #15 #16 #17` — empreintes **strictement disjointes**, verdict obtenu
+de `github-boards` le 2026-08-18 (ni `theme.json`, ni `functions.php`, ni `base.css`, ni `tokens.css`,
+ni `parts/header.html` touchés par les trois). C'est le chaînon qui rend visible tout ce que le lot 2 a
+construit : sans lui, l'administration est complète et le site est vide.
 
-Board : **32 issues**, milestones 1 et 2 fermés, milestone 12 « Dette technique » à **7 issues**
-(#26 `scandir`, #27 réécritures, #28 colonnes de listes, #29 fixtures, #30 `wp db query`,
-#31 `WP_DEBUG`, #32 habillage des écrans de saisie).
+**#15 est dans ce lot et non après** : les deux gabarits le consomment directement — #16 pour le
+palmarès de la fiche chien, #17 pour la page Travail. Le livrer plus tard obligerait à rouvrir les deux.
 
-**Comptes de développement** — `make up` puis http://localhost:8080/wp-admin/ : `admin`/`mtb-dev-admin`,
+**#18 est délibérément exclu** : il porte **deux** questions bloquantes du §15, à trancher avec
+l'éleveuse avant de le lancer — la rubrique « actualités » séparée, et l'affichage des tarifs des
+chiots. Le corps de l'issue les fusionne à tort sous une seule étiquette.
+
+**Piège de ce fichier, corrigé le 2026-08-18** : il annonçait `#16 #17 #18` alors que l'epic 4
+(#9 #10 #11) n'était pas fait. Le board fait foi — vérifie-le avant de lancer un lot annoncé ici.
+
+Board : **33 issues**. Milestones **1, 2, 3 et 5 fermés** ; le **4 (composants génériques II) se ferme
+avec ce lot**. Milestone « Dette technique » à **12 issues** (#26 `scandir`, #27 réécritures,
+#28 colonnes de listes, #29 fixtures, #30 `wp db query`, #31 `WP_DEBUG`, #32 habillage des écrans de
+saisie, #33 à #36, et **#38 « Coordonnées de l'élevage — écran de réglages unique »**, ouverte par la
+revue du lot 4 et **à payer avant #18**).
+
+**Comptes de développement** — `make up` puis http://localhost:3005/wp-admin/ (port **3005**, jamais 8080) : `admin`/`mtb-dev-admin`,
 éditrice `fabienne`/`mtb-dev-editrice` (rôle **Éditeur** natif, délibérément pas Administrateur).
 Attrape-courriels Mailpit sur http://localhost:8025.
 
@@ -55,6 +82,10 @@ Attrape-courriels Mailpit sur http://localhost:8025.
 
 | # | Décision | Date | Pourquoi |
 |---|----------|------|----------|
+| 39 | **Le tableau de vocabulaire de `MASTER.md` §10 tranche, même quand la chaîne a raison sur le fond** | 2026-08-18 | #11 libellait son champ « Description de l'**image** » au motif exact qu'un plan d'accès n'est pas une photographie — argument recevable. Mais §10.2 fige « Description de la **photo** », et `fiche-information` l'emploie déjà verbatim depuis le lot 3. Deux libellés pour le même champ dans le même catalogue, c'est une éleveuse perdue, et une chaîne n'amende pas le système de design sur lequel elle bute. **Aligné sur §10.2** (`b90bcf1`) ; la distinction photographie / document part en question ouverte pour la prochaine révision `lead-design-mtb`. |
+| 38 | **Un composant peut fixer la mise en forme d'une donnée recopiée ; il ne peut jamais en changer la valeur** | 2026-08-18 | BRIEF §7 impose de reprendre `0680505619` « tel quel ». #10 le **groupe par paires** à l'affichage quand il fait exactement dix chiffres (`encart-appel/rendu.php:87-93`) et garde les chiffres bruts dans le `tel:` ; #11 ne groupe pas. Ni chiffre ni ordre n'est touché : la contrainte porte sur la **valeur**, pas sur sa typographie, et le public de BRIEF §2 doit pouvoir lire et dicter ce numéro. Conséquence assumée : **les deux composants affichent le même numéro de deux façons**, ce qui reste invisible tant qu'aucune page ne porte les deux. À fermer avant #19-#21. |
+| 37 | **Trois écrans de réglage peuvent employer trois conventions différentes, si ce sont trois gestes différents** | 2026-08-18 | #9 n'a **aucun** libellé (le champ *est* le bloc, tapé en place) ; #10 pose « Téléphone affiché », où vider signifie *« affiche le numéro de l'élevage »* ; #11 pose « Téléphone », où vider signifie *« retire cette ligne »*. Aligner les libellés rendrait **impossible** de retirer la ligne Téléphone d'un bloc de coordonnées, acte légitime sur une page Contact. Ce qui doit être identique, c'est le **mot** désignant une même chose (décision 39), pas la mécanique d'un champ qui fait autre chose. |
+| 36 | **Un contraste n'est tenu que lu sur des pixels rendus ; un calcul concordant n'en est que la promesse** | 2026-08-18 | Le lot 3 s'était clos sur des contrastes calculés (décision 35 le dit en toutes lettres). Le lot 4 a **relevé les couleurs réellement rendues** — couleur modale du fond, encre la plus éloignée en luminance, anti-crénelage écarté — et recalculé : **les onze valeurs annoncées par les trois chaînes se confirment, écart zéro**. La méthode marche et devient la règle. Corollaire utile : le **4,70:1** de #10 n'est pas le texte du bouton (**5,25:1**) mais sa **limite non textuelle** (WCAG 1.4.11) ; les deux chiffres coexistent et sont tous deux justes. |
 | 35 | **Le contraste du texte du bandeau est borné par construction : plancher absolu 5,70:1**, quelle que soit la photo | 2026-08-18 | Le bloc de texte porte le voile en `background-size: 100% 300%` ancré en bas, donc il n'expose que le **premier tiers** du dégradé : l'opacité sous le texte reste entre **0,7227** (bord haut) et **0,86** (bord bas), indépendamment de la hauteur du bloc, de la longueur de l'accroche, du zoom **et du recadrage de la photo**. `--calcaire` sur le composé donne **5,70:1 sur une photo blanche pure** — le pire cas concevable — et 14,4:1 sur une photo sombre. **AA tenu partout**, AAA manqué seulement sous le bord haut d'une photo blanche. Vaut mieux qu'une mesure ponctuelle : le résultat ne dépend d'aucune photo, donc aucun recadrage ne peut le dégrader. Réserve : calcul sur le modèle du dégradé et l'interpolation sRGB, **pas une lecture de pixels rendus** — le contenu d'essai avait disparu au démarrage à froid. Le 6,31:1 mesuré par l'intégration tombe bien entre les lignes « ciel délavé » (6,08) et « herbe claire » (7,23). |
 | 34 | **On appelle WP-CLI par `make wp`, jamais par un `docker compose run wpcli` nu** | 2026-08-18 | Un `run` crée un conteneur jetable qui **rejoue tout `provision.sh`** puis reste bloqué sur le `tail -f /dev/null` du service. **17 conteneurs `mtb-wpcli-run-*` zombies** ont été trouvés au démontage, certains vieux de 15 heures, et ils **empêchaient `docker compose down -v`** (« Network / Volume resource is still in use »). `make wp` fait un `exec` sur le conteneur du service et ne laisse rien derrière. Attention aussi : ce poste fait tourner six autres projets Docker — tout nettoyage doit être filtré sur le préfixe `mtb-`. |
 | 33 | **On regarde la page rendue avant de clore un lot.** Les aperçus vont dans `docs/apercus/lot-<n>/`, sans retouche | 2026-08-18 | Deux défauts visibles ont survécu à six chaînes, à une passe d'intégration de 43 URL et à une revue complète — **le bandeau amputé de 17 % de sa largeur et trois bords gauches désalignés** — parce que tout le monde mesurait des choses justes sans jamais ouvrir l'image. La capture les a rendus évidents en une seconde. Corollaire : les aperçus se prennent **avant** un démontage de la stack, sinon le contenu d'essai disparaît et il ne reste du lot qu'un rapport. |
@@ -97,6 +128,10 @@ Reprises du §15 du brief. Aucune ne bloque le bootstrap ; chacune bloque une is
 
 | # | Question | Bloque | État |
 |---|----------|--------|------|
+| Q20 | **Une image de plan d'accès : qui la fournit, sous quelle licence, avec quelle mention exacte en légende ?** Le composant #11 est livré et fonctionne sans elle (l'emplacement n'existe pas tant qu'aucune image n'est posée, §9.2). Format attendu : paysage, ~1200 × 800 px, **téléversé par la médiathèque** — jamais déposé dans le thème — et **après** le module d'images de #8, sinon pas de format moderne (dette T12). | rien — le composant est complet sans plan | ⏳ **pour l'éleveuse** |
+| Q19 | **Accepte-t-elle qu'un plan pointant son domicile soit publié ?** L'adresse en texte est déjà publique sur l'ancien site ; un point sur une carte n'est pas la même exposition. | l'image de Q20 | ⏳ **pour l'éleveuse** |
+| Q18 | **Lequel des deux points GPS est l'élevage ?** L'ancien site porte **deux iframes Google Maps encodant deux points distants d'environ 2 km** — `43.514689, 6.242809` (zoom 10, colonne principale) et `43.533404, 6.248086` (zoom 16, colonne latérale). Rien ne dit lequel est le bon, et c'est un fait géographique : il ne se devine pas. C'est la raison pour laquelle #11 n'a livré **aucune** carte plutôt qu'une carte plausible. | toute production d'image de plan | ⏳ **pour l'éleveuse** |
+| Q17-bis | **« Description de la photo » convient-il à un document qui n'est pas une photographie** (plan d'accès, pedigree scanné) ? Arbitré au lot 4 en faveur de `MASTER.md` §10.2 (décision 39), mais l'objection de #11 reste entière sur le fond. | rien — le code est aligné | ⏳ **révision `lead-design-mtb`** |
 | Q17 | **Contenu de démonstration : réel recopié, fictif assumé, ou rien ?** `docs/migration/source/` est **vide** — « réel » signifierait donc aller chercher sur mtbrabant.com, soit un bout de la reprise #19-#21 fait hors de sa chaîne, avec le risque d'une recopie approximative sur des faits d'élevage. Recommandation : **fictif assumé**. En attendant, la base de développement contient du contenu d'essai (voir plus bas). | la démonstration visible, rien d'autre | ⏳ **posée à l'utilisateur, sans réponse** |
 | Q16 | **L'encart « dernière portée » doit-il rester affiché quand la dernière portée est *Portée passée* ?** En l'état oui, donc entre deux portées l'accueil affichera « Portée A3 2025 — Portée passée ». L'autre lecture ne coûte qu'une garde. | rien — rouvrable sur #12 | ⏳ **pour l'éleveuse** |
 | Q15 | **« Centre » doit-il signifier le centre géométrique, ou le cadrage par défaut de §6.2 (tête du chien) ?** Voir dette T16-bis. C'est le sens d'un libellé offert à l'éleveuse. | l'harmonisation de #7 et #14 | ⏳ **révision `lead-design-mtb`** |
@@ -121,11 +156,15 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 
 | # | Dette | Créée par | Payée par |
 |---|-------|-----------|-----------|
+| **T24** | **Aucun jeu de règles `phpcs` n'est versionné.** L'intégration du lot 4 a relevé **9 erreurs WPCS, toutes chez #11**, dont **4 ne sont qu'une seule décision d'architecture** (`coordonnees.php` déclare dans un espace de noms **et** dans l'espace global, ce que seule la syntaxe à accolades permet) — et la revue a établi que **ce motif existe déjà deux fois sur `main` depuis le lot 3** (`bandeau-ouverture/titre-principal.php`, `grille-chiens/bootstrap.php`). Sans `phpcs.xml` commité, le relevé n'est **reproductible par personne** et n'est donc opposable à personne, alors que `CLAUDE.md` impose WPCS. | lot 4 | une issue de dette : versionner le ruleset, puis rejuger |
+| **T23** | **Les marges verticales entre composants se cumulent au lieu de fusionner** : `.mtb-canal` est une **grille** (`base.css:477`), et les marges d'éléments de grille ne fusionnent jamais. Mesuré : **134 px** entre le bandeau d'alerte et l'encart d'appel, **173 px** entre l'encart d'appel et les coordonnées. Visible sur `docs/apercus/lot-4/integration-trois-composants-1440.png`. **Vrai de tout le catalogue**, antérieur au lot 4, imputable à aucune de ses trois issues — `base.css` est hors de leurs empreintes. Un `row-gap` unique referme les dix composants d'un coup. | antérieure au lot 4, chiffrée par lui | epic Gabarits (#16-#18) |
+| **T22** | **Le `<hr>` du site rend 0 px de large** : le filet double que `MASTER.md` §2.1 prescrit « à la place de chaque `<hr>` » **n'apparaît jamais**. `base.css:302-311` lui donne sa hauteur et son dégradé sans jamais poser d'`inline-size`, et la marge automatique de la feuille du navigateur désactive l'étirement sur un élément de grille. Reproduit au navigateur ; **la revue n'a pas su le reproduire statiquement**, donc la cause exacte reste à établir. Visible dans l'aperçu 1440 du lot. | #2 | epic Gabarits (#16-#18) |
+| **T21** | **Les deux encarts frères ne sont pas interchangeables.** `mtb-bandeau-alerte.css:29` porte `margin-block: var(--e-7)` là où `mtb-encart-appel.css:22` porte `max(var(--rythme-section), var(--e-7))` (48 px contre 86,4), et `color: var(--texte)` est déclarée chez le premier, **absente chez le second** — qui pose donc le fond `--calcaire-creux` sans son encre, paire §3.2 non tenue. Sans conséquence visible aujourd'hui (`base.css:108` fait hériter la bonne encre), mais la paire tomberait **en silence** si un ancêtre changeait. Le contrat #9 §15 exigeait deux feuilles **littéralement identiques**, pour qu'un hissage futur en primitive `.mtb-encart` soit une **suppression** et jamais un arbitrage. | lot 4 | `lead-design-mtb` — hissage en primitive |
 | **T18** | *(numérotée T18 et non T17 : le contrat #6 §16 emploie déjà T17 pour le réglage de cadrage — collision relevée par la chaîne #6, mon erreur de numérotation)* **`object-position: var(--point-interet, 50% 38%)` est écrit CINQ fois** — `bandeau-ouverture`, `fiche-information`, `liste-portees`, `derniere-portee`, `grille-chiens`. La dette annonçait « à hisser **avant** que la règle existe en cinq exemplaires » : c'est raté, et **la divergence a commencé** (voir T16-bis). Le crochet mutualisé sort de toutes les empreintes du lot. | lot 3 | révision `lead-design-mtb` puis une issue de dette |
 | **T16-bis** | **Le réglage « Cadrage de la photo » n'a pas le même sens selon le composant.** `mtb-fiche-information.css:119` (#7) écrit `--point-interet: center center` pour « Centre » ; `mtb-grille-chiens.css` n'a **aucune** règle `--cadrage-centre` et retombe sur `50% 38%`, le défaut justifié de `MASTER.md` §6.2 (« sur une photo de chien en pied, la tête est au-dessus du centre géométrique »). **Fabienne choisit « Centre » une fois et obtient deux cadrages.** Les deux lectures ne peuvent pas être justes ; c'est le sens d'un libellé offert à l'éleveuse, donc `MASTER.md`. Lu dans le code, **jamais observé sur une vraie photo**. | #7 et #14 | **révision `lead-design-mtb`** |
 | **T15** | **#8 sert sa feuille de bloc depuis l'extension**, contrairement aux cinq autres et au contrat #1 §8. Le motif technique a disparu (le correctif de #6 fait arriver les feuilles du thème dans la toile) : **ce n'est plus une dette technique mais une dette d'alignement**, assumée pour n'avoir pas fait basculer une chaîne en fin de course. | #8 | une passe d'alignement, hors lot parallèle |
 | **T14** | **La sous-taille `mtb-vignette-galerie` entre dans le `srcset` de toute image téléversée**, donc dans les composants de #6, #12, #13 et #14, dont plusieurs contrats affirment qu'aucune sous-taille n'existe entre 300 et 768 px. **Aucun n'est faux sur son code ; tous le deviennent sur le site.** | #8 | amendement des quatre contrats |
-| **T13** | **La forme d'état vide imposée n'a pas pris : quatre conventions coexistent entre les six composants**, alors que `MASTER.md` §9.1 la déclare identique pour les dix. Mes consignes sont arrivées après l'écriture du code (voir décision 31). | lot 3 | à aligner avant #25, et avant les quatre composants restants |
+| **T13** | **La forme d'état vide imposée n'a pas pris : quatre conventions coexistent entre les six composants**, alors que `MASTER.md` §9.1 la déclare identique pour les dix. Mes consignes sont arrivées après l'écriture du code (voir décision 31). | lot 3 | **partiellement payée au lot 4** : les trois composants de #9, #10 et #11 émettent la forme de référence (`<span class="mtb-etat-vide__nom">`, aucune classe modificatrice) et les deux états vides atteignables sont **identiques au pixel** (576 × 119). Le lot 3, lui, compte **quatre conventions** — hauteurs mesurées 119 / 135 / 135 / 161 / 161 / 183 — et `galerie-photos` va jusqu'à mettre **un bouton** dans son état vide, que §9.1 ne prévoit pas. Reste dû avant #25 et avant #15 |
 | **T12** | **Les formats modernes ne valent que pour les photos téléversées à partir de maintenant.** WordPress découpe et convertit **une seule fois, au téléversement** : la pièce jointe #13, antérieure au module, n'offre aucun candidat 400 w — son `srcset` saute de 300 w à 768 w. | #8 | **impérativement avant #19-#21**, sinon tout le stock photo est à régénérer |
 | **T11** | **Le journal d'erreurs du développement contient 212 diagnostics** attribués au `require_once` manquant de `bandeau-ouverture` pendant la panne du matin. Reliquat probable, **non confirmé éteint**. | #6 | à vérifier au prochain démarrage propre de la stack |
 | **T9** | **`assainir_texte_recopie()` existe en trois copies** — une par module, les empreintes disjointes interdisant un fichier partagé. Prix assumé du parallélisme. **Et les trois divergent déjà, au premier jour** : `content/chien/assainissement.php:51` remplace les caractères de contrôle par une **espace** et n'appelle pas `wp_check_invalid_utf8()` ; `content/portee/champs.php:236` et `content/resultat/assainissement.php:48-50` les **suppriment** et contrôlent l'encodage. Trois définitions de « valeur propre », trois résultats sur la même saisie. | #3, #4, #5 | à hisser dans un module commun, avant que la reprise n'écrive du contenu réel |
@@ -153,6 +192,7 @@ Vérifiés sur le site source le 2026-08-14. Toute autre donnée d'élevage se l
 
 | Lot | Epic | Issues | Résultat | Commit |
 |-----|------|--------|----------|--------|
+| 4 | 4. Composants génériques II | #9, #10, #11 | Bandeau d'alerte, encart d'appel, coordonnées et plan d'accès — **trois chaînes en parallèle, empreintes strictement disjointes**, aucune collision. Catalogue à **9 composants sur 10**. Intégration : **31 vérifications, 0 échec** ; le **zoom 200 %** est mesuré pour la première fois (24 combinaisons), et les **onze contrastes sont lus sur pixels rendus** et non plus seulement calculés (décision 36). Revue **OK avec réserves**, **un seul HIGH** — un libellé divergent, aligné sur `MASTER.md` §10.2 avant le push (décision 39). **T13 payée** pour les trois composants ; **T21 à T24 créées**. #11 n'a livré **aucune carte** : deux points GPS distants de 2 km sur le site source, personne ne peut certifier lequel est l'élevage (Q18). | `166153b`, `c67f7cc`, `0e6d1d4`, `9367705`, `b90bcf1`, `d2f7ca0` |
 | 0 | Bootstrap | — | Dépôt + board (10 epics, 25 issues) + `MASTER.md` + stack Docker vérifiée | `38d0935` puis amorçage |
 | 3 | 3-6. Composants | #6, #7, #8, #12, #13, #14 | **Lot de 6 sur arbitrage de l'utilisateur** (décision 31). Six composants livrés avec leurs six fiches d'aide. Quatre dettes de lot payées : **T7** (bouton du cœur hors jetons), **T16** (canal large inatteignable — 1 088 px sur 7 colonnes contre 576 sur 3), le **CSS absent de la toile de l'éditeur** (`mtb-jetons` non enregistrée en admin, `all_deps()` abandonnait la feuille en silence), et l'**apparence d'état vide** sans propriétaire. **T10 partiellement payée** : premier HTML public du projet. 11 commits. | `ebdbf3a`, `a9250e4`, `96fda88` + 8 |
 | 2 | 2. Types de contenu | #3, #4, #5 | Portée, chien, résultat : trois écrans de saisie classiques, en français, éditables par le rôle Éditeur. Guide à 3 fiches. | voir journal du lot 2 |
