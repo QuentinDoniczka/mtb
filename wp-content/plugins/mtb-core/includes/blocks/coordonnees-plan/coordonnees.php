@@ -1,27 +1,24 @@
 <?php
 /**
- * Coordonnées de l'élevage : le repli local du module, et les deux dérivations d'URI.
+ * Coordonnées de l'élevage : la lecture de la source centrale, et les deux dérivations d'URI.
  *
- * REPLI LOCAL, PAS SOURCE DE VÉRITÉ. L'adresse, le numéro et le courriel écrits plus bas sont les
- * valeurs du brief §7 RECOPIÉES dans ce module, exactement comme « encart-appel/rendu.php » recopie
- * le numéro dans sa propre constante. Le doublon est assumé et tracé : l'issue « Coordonnées de
- * l'élevage — écran de réglages unique » livrera la source unique et fera basculer les deux
- * composants d'un coup.
+ * PLUS DE REPLI LOCAL, ET PLUS DE DOUBLON. L'adresse, le numéro et le courriel ne sont plus recopiés
+ * dans ce module : ils viennent de l'écran « Coordonnées de l'élevage », par
+ * « mtb_get_coordonnees_elevage() » et « mtb_get_telephone_elevage() ». Il ne subsiste dans tout le
+ * dépôt qu'un seul littéral de chaque valeur, celui des valeurs de départ de l'option.
  *
- * Conséquence, et c'est la raison de l'espace de noms : AUCUN AUTRE MODULE NE LIT CES VALEURS.
- * La table est interne à « MTB\Core\Blocks\CoordonneesPlan\ » et n'est plus appelable de l'extérieur.
- * Deux fonctions homonymes déclarées en espace de noms global par deux modules que l'auto-découverte
- * charge dans l'ordre alphabétique des dossiers s'ombrent SANS LEVER D'ERREUR, sur un site qui
- * répond 200 : la panne serait silencieuse, et imputée au mauvais module. Le pied de page (#18) et
- * l'encart d'appel (#10) ne consomment donc rien d'ici ; ils tiennent leur numéro de leur propre
- * repli, jusqu'à l'écran de réglages.
+ * L'espace de noms reste, et pour la raison qui l'a fait naître : les fonctions ci-dessous sont
+ * INTERNES AU MODULE. Deux fonctions homonymes déclarées en espace de noms global par deux modules
+ * que l'auto-découverte charge dans l'ordre alphabétique des dossiers s'ombrent SANS LEVER
+ * D'ERREUR, sur un site qui répond 200 : la panne serait silencieuse, et imputée au mauvais module.
  *
  * Les deux dérivations, elles, restent globales sous « function_exists() » : elles ne possèdent
  * aucune donnée d'élevage, elles transforment en URI une valeur qu'on leur passe.
  *
  * Ce fichier ne dépend de rien du reste du module — ni de « rendu.php », ni de « interface.php » —,
- * ne pose aucun hook, ne fait aucune requête et ne lit aucune option : tout y est appelable à tout
- * moment, y compris avant « init » (dette T19 du contrat #11).
+ * ne pose aucun hook et ne fait aucune requête. Il LIT DÉSORMAIS UNE OPTION, par les fonctions de
+ * lecture publiques : l'accès à la base est disponible dès « wp-settings.php », donc l'appel reste
+ * sûr avant « init », mais la phrase « ne lit aucune option » qui figurait ici est devenue fausse.
  *
  * @package MTB\Core
  */
@@ -35,59 +32,89 @@ namespace MTB\Core\Blocks\CoordonneesPlan {
 	}
 
 	/**
-	 * Numéro de l'élevage, recopié à la lettre du brief §7 — repli du module, rien de plus.
+	 * Rend les coordonnées centrales de l'élevage, pour les valeurs par défaut du composant.
 	 *
-	 * Constante d'espace de noms et non « define() », comme dans le module sœur « encart-appel » :
-	 * elle n'a pas à exister hors de ce module.
+	 * INTERNE AU MODULE. Nom sans « get », comme mtb_resultat_disciplines() (décision 16) : la
+	 * lecture de contenu appartient à « mtb_get_coordonnees_elevage() », et cette fonction-ci n'en
+	 * est que l'adaptation à la forme plate qu'attendent les attributs du bloc.
 	 *
-	 * Le numéro est écrit d'un seul tenant, sans regroupement en paires, sans « +33 » et sans zéro
-	 * ajouté ni retiré : c'est la graphie du brief et celle du site source.
-	 */
-	const TELEPHONE_ELEVAGE = '0680505619';
-
-	/**
-	 * Rend les coordonnées de référence du composant, pour ses valeurs par défaut et ses gabarits.
-	 *
-	 * INTERNE AU MODULE. Nom sans « get », comme mtb_resultat_disciplines() : c'est un repli de
-	 * constantes, pas une lecture de contenu (décision 16). Le cas « donnée absente » n'existe donc
-	 * pas — les trois clés sont toujours présentes et toujours des chaînes non vides.
+	 * Les trois clés sont TOUJOURS présentes et TOUJOURS des chaînes. Elles peuvent désormais être
+	 * VIDES : l'éleveuse a le droit de vider un champ de l'écran de réglages, et vider un champ
+	 * retire la ligne correspondante. Une chaîne vide n'est donc pas une panne.
 	 *
 	 * Corollaire : cette fonction NE REFLÈTE PAS ce qui a été saisi dans un bloc donné. Ce qui est
-	 * tapé sur une page vit dans les attributs du bloc de cette page ; ici vivent les valeurs de
-	 * repli du module.
+	 * tapé sur une page vit dans les attributs du bloc de cette page ; ici vivent les valeurs
+	 * centrales, celles que reprend toute instance qui ne les a pas surchargées.
 	 *
 	 * @return array{adresse: string, telephone: string, courriel: string} Les trois coordonnées.
 	 */
 	function coordonnees_elevage(): array {
+		$centrales = array();
+
+		if ( function_exists( 'mtb_get_coordonnees_elevage' ) ) {
+			$lu = mtb_get_coordonnees_elevage();
+
+			if ( is_array( $lu ) ) {
+				$centrales = $lu;
+			}
+		}
+
 		return array(
-			'adresse'   => '3060 Route de Salernes, 83570 Entrecasteaux',
+			'adresse'   => valeur_centrale( $centrales, 'adresse' ),
 			'telephone' => telephone_elevage(),
-			'courriel'  => 'mtbrabant@gmail.com',
+			'courriel'  => valeur_centrale( $centrales, 'courriel' ),
 		);
 	}
 
 	/**
-	 * Retient le numéro à afficher, dans l'ordre : source centrale, repli du module.
+	 * Extrait une valeur de l'enveloppe centrale, sans jamais rendre autre chose qu'une chaîne.
+	 *
+	 * Traitement défensif volontairement identique à celui de « telephone_elevage() » : l'enveloppe
+	 * de champ, ou la chaîne nue, et toute autre forme vaut « rien ». Ces défauts sont recalculés à
+	 * « init » 20 sur CHAQUE requête, administration comprise : une forme inattendue y lèverait un
+	 * TypeError qui emporterait wp-admin avec le site public.
+	 *
+	 * @param array<string,mixed> $centrales Enveloppe centrale, tableau vide si elle n'existe pas.
+	 * @param string              $cle       Clé cherchée.
+	 *
+	 * @return string Valeur telle qu'elle est stockée, chaîne vide s'il n'y en a pas.
+	 */
+	function valeur_centrale( array $centrales, string $cle ): string {
+		$lu = $centrales[ $cle ] ?? '';
+
+		// Les deux formes admises par le contrat : l'enveloppe de champ, ou la chaîne nue.
+		if ( is_array( $lu ) ) {
+			$lu = $lu['valeur'] ?? '';
+		}
+
+		if ( ! is_string( $lu ) ) {
+			return '';
+		}
+
+		return $lu;
+	}
+
+	/**
+	 * Retient le numéro à afficher : la source centrale, et elle seule.
 	 *
 	 * Forme reprise telle quelle de « encart-appel/rendu.php » (fonction telephone_retenu()), garde
 	 * et traitement défensif compris : les deux composants doivent se comporter à l'identique face à
 	 * cette fonction, pas parler deux dialectes.
 	 *
-	 * « mtb_get_telephone_elevage() » n'est déclarée par personne aujourd'hui : la garde est donc
-	 * fausse et l'on retombe sur la constante. C'est le comportement voulu, pas une panne — le rendu
-	 * public est, à l'octet près, celui d'avant cette consommation.
+	 * Il n'y a plus de repli local. « mtb_get_telephone_elevage() » est la source d'autorité
+	 * Y COMPRIS QUAND ELLE REND VIDE — sans quoi un numéro que l'éleveuse a délibérément effacé
+	 * reviendrait sur le site. La garde « function_exists() » ne couvre plus qu'un seul cas, celui
+	 * du module de lecture absent ou désactivé, et rend alors vide elle aussi.
 	 *
-	 * La FORME DE SON RETOUR N'EST PAS TRANCHÉE : chaîne nue, ou enveloppe de champ
-	 * array( 'libelle', 'valeur', 'affichage' ) de la décision 18. C'est l'issue qui déclarera la
-	 * fonction qui décidera ; les deux formes sont acceptées ici, et toute autre vaut « rien », pour
-	 * qu'aucune page portant le composant ne puisse tomber le jour où elle apparaîtra.
+	 * Les deux formes de retour admises par le contrat sont acceptées — chaîne nue, ou enveloppe de
+	 * champ array( 'libelle', 'valeur', 'affichage' ) de la décision 18 —, et toute autre vaut
+	 * « rien », pour qu'aucune page portant le composant ne puisse tomber.
 	 *
-	 * L'adresse et le courriel ne sont, eux, tirés d'aucune fonction centrale : aucune n'existe ni
-	 * n'est gelée pour eux. Et « mtb_get_page_contact() » n'est délibérément PAS consommée par ce
-	 * composant — il n'a ni bouton ni lien vers la page Contact, l'appeler serait un couplage gratuit.
-	 * Ce n'est pas un oubli.
+	 * « mtb_get_page_contact() » n'est délibérément PAS consommée par ce composant — il n'a ni
+	 * bouton ni lien vers la page Contact, l'appeler serait un couplage gratuit. Ce n'est pas un
+	 * oubli.
 	 *
-	 * @return string Numéro tel qu'il est stocké, jamais mis en forme.
+	 * @return string Numéro tel qu'il est stocké, jamais mis en forme, vide s'il n'y en a pas.
 	 */
 	function telephone_elevage(): string {
 		if ( function_exists( 'mtb_get_telephone_elevage' ) ) {
@@ -107,7 +134,7 @@ namespace MTB\Core\Blocks\CoordonneesPlan {
 			}
 		}
 
-		return TELEPHONE_ELEVAGE;
+		return '';
 	}
 }
 

@@ -18,28 +18,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Numéro de l’élevage, recopié à la lettre depuis le brief.
- *
- * Constante d’espace de noms et non « define() » : elle n’a pas à exister hors de ce module.
- *
- * Elle n’est délibérément PAS le « default » de l’attribut « telephone » de block.json. Un attribut
- * laissé à sa valeur par défaut n’est pas sérialisé dans le commentaire de bloc : un défaut figé
- * dans la déclaration serait mort dès l’insertion et gelé sur chaque page déjà enregistrée. Résolu
- * au rendu, il reste vivant, et la bascule vers une source centrale de coordonnées deviendra
- * gratuite et rétroactive, sur toutes les pages à la fois, sans en rouvrir aucune.
- */
-const TELEPHONE_ELEVAGE = '0680505619';
-
-/**
- * Retient le numéro à afficher, dans l’ordre : saisie de la page, source centrale, numéro de l’élevage.
+ * Retient le numéro à afficher, dans l’ordre : saisie de la page, puis source centrale.
  *
  * La valeur rendue est celle qui est STOCKÉE, jamais une mise en forme : la mise en forme est le
  * travail de « telephone_affiche() », et le « href » celui de « telephone_href() ».
  *
- * « mtb_get_telephone_elevage() » n’est déclarée par personne aujourd’hui : la garde est donc fausse
- * et l’on retombe sur la constante. C’est le comportement voulu, pas une panne. Son retour est traité
- * défensivement — toute forme inattendue vaut « rien » — pour qu’aucune page portant un encart ne
- * puisse tomber le jour où elle apparaîtra.
+ * Il n’y a que deux crans, et plus de constante de repli : l’écran « Coordonnées de l’élevage »
+ * l’a remplacée. « mtb_get_telephone_elevage() » est la source d’autorité Y COMPRIS QUAND ELLE REND
+ * VIDE — sans quoi un numéro que l’éleveuse a délibérément effacé reviendrait sur le site, et
+ * l’encart ne saurait jamais se rendre sans téléphone. La garde « function_exists() » reste, elle,
+ * indispensable : elle couvre le module de lecture absent ou désactivé.
+ *
+ * Son retour est traité défensivement — toute forme inattendue vaut « rien » — pour qu’aucune page
+ * portant un encart ne puisse tomber sur un TypeError.
  *
  * @param string $saisi Valeur enregistrée du réglage « Téléphone affiché ».
  *
@@ -69,7 +60,7 @@ function telephone_retenu( string $saisi ): string {
 		}
 	}
 
-	return TELEPHONE_ELEVAGE;
+	return '';
 }
 
 /**
