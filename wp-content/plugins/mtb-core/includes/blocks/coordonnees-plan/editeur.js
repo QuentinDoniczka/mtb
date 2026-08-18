@@ -202,7 +202,16 @@
 					 */
 					__nextHasNoMarginBottom: true,
 					__next40pxDefaultSize: true,
-					label: 'Description de l\'image (pour les personnes aveugles)',
+					/*
+					 * Libellé figé par MASTER.md:918 (§10.2), verbatim, et déjà employé à
+					 * l'identique par fiche-information/editeur.js:234. Le mot « photo » vaut
+					 * ici pour un plan : l'objet n'est pas une photographie, mais le §10 est
+					 * l'arbitre du vocabulaire et le catalogue parle d'une seule voix. La
+					 * question d'un libellé propre aux images qui ne sont pas des photos est
+					 * ouverte pour la prochaine révision de lead-design-mtb ; ne pas la
+					 * rouvrir ici. Voir contrat #11 §3.1.
+					 */
+					label: 'Description de la photo (pour les personnes aveugles)',
 					help: 'Laissez vide si le plan ne dit rien de plus que l\'adresse écrite au-dessus. S\'il porte une indication qu\'on ne lit nulle part ailleurs — « entrée par le chemin après le pont » —, écrivez-la ici.',
 					value: planDescription,
 					onChange: function ( valeur ) {

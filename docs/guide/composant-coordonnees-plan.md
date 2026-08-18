@@ -73,10 +73,10 @@ Ce panneau est fermé au départ. Ouvrez-le pour y trouver :
 
 - **Choisir un plan** — ouvre la bibliothèque de photos. Une fois un plan choisi, le bouton devient
   **Remplacer le plan**, et **Retirer le plan** apparaît en dessous.
-- **Description de l'image (pour les personnes aveugles)** — voir juste en dessous.
+- **Description de la photo (pour les personnes aveugles)** — voir juste en dessous.
 
   > **Capture à prendre :** la colonne de droite, panneau **Plan d'accès** ouvert : le bouton
-  > **Choisir un plan**, la zone **Description de l'image (pour les personnes aveugles)** avec sa
+  > **Choisir un plan**, la zone **Description de la photo (pour les personnes aveugles)** avec sa
   > ligne d'aide lisible en entier, et le paragraphe sur la **Légende** en dessous.
 
 **La description de l'image**, en une règle :
@@ -253,7 +253,7 @@ laissé tel quel.
 | `captures/coordonnees-inserteur.png` | **Pages** → une page → bouton **+** | La rubrique **Mont Brabant**, **Coordonnées et plan d'accès** et sa phrase de présentation lisibles |
 | `captures/coordonnees-arrive-rempli.png` | Le composant fraîchement posé, rien de réglé | Les trois lignes **Adresse**, **Téléphone**, **Courriel** déjà remplies dans la page — pour montrer qu'il n'y a rien à taper — et **aucun emplacement de plan en dessous** |
 | `captures/coordonnees-panneau-coordonnees.png` | Colonne de droite, composant sélectionné | Le panneau **Coordonnées** ouvert, les trois champs pré-remplis, **avec leurs trois lignes d'aide lisibles en entier** |
-| `captures/coordonnees-panneau-plan.png` | Colonne de droite, panneau **Plan d'accès** ouvert | Le bouton **Choisir un plan**, la zone **Description de l'image (pour les personnes aveugles)** avec son aide, et le paragraphe sur la **Légende** en dessous, lisible en entier |
+| `captures/coordonnees-panneau-plan.png` | Colonne de droite, panneau **Plan d'accès** ouvert | Le bouton **Choisir un plan**, la zone **Description de la photo (pour les personnes aveugles)** avec son aide, et le paragraphe sur la **Légende** en dessous, lisible en entier |
 | `captures/coordonnees-legende-image.png` | Fenêtre de choix d'image, une image sélectionnée | La colonne de droite de la fenêtre, le champ **Légende** mis en évidence |
 | `captures/coordonnees-plan-introuvable.png` | Composant dont l'image de plan a été supprimée | L'avertissement « Le plan choisi n'est plus dans la médiathèque : il ne s'affiche pas sur le site. Choisissez-en un autre, ou retirez-le. » lisible en entier, au-dessus des coordonnées intactes |
 | `captures/coordonnees-sur-le-site.png` | La page **publiée**, vue sur le site | Le composant à sa vraie allure : les trois lignes, le téléphone et le courriel soulignés, et **rien après le courriel** |

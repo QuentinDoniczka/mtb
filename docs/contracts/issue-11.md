@@ -177,9 +177,24 @@ aucune feuille servie, **aucune erreur, aucun avertissement**.
 | `telephone` | **Téléphone** | `string` | `0680505619` | idem |
 | `courriel` | **Courriel** | `string` | `mtbrabant@gmail.com` | idem |
 | `plan_id` | (bouton « Choisir un plan ») | `integer` | `0` | aucun emplacement — §9.2 |
-| `plan_description` | **Description de l'image (pour les personnes aveugles)** | `string` | `""` | `alt=""` — image décorative |
+| `plan_description` | **Description de la photo (pour les personnes aveugles)** | `string` | `""` | `alt=""` — image décorative |
 
 **Aucun champ obligatoire. Aucune liste fermée. Aucun réglage de cadrage** (voir §4.4).
+
+> **Arbitrage de revue du 2026-08-18 — le libellé de `plan_description`.**
+> Le contrat avait d'abord gelé **« Description de l'image (pour les personnes aveugles) »**, au
+> motif qu'un plan d'accès n'est pas une photographie — et il avait gelé cette divergence **sans la
+> nommer**, alors qu'il en nomme trois autres (§13). C'était le défaut : une divergence tue est une
+> divergence qui se propage.
+> La revue du lot l'a relevée en **HIGH** : `MASTER.md:918` (§10.2) fige
+> **« Description de la photo (pour les personnes aveugles) »**, et `fiche-information/editeur.js:234`
+> l'emploie déjà mot pour mot. Deux libellés pour le même champ dans le même catalogue.
+> **Décision : alignement sur `MASTER.md` §10.2, au caractère près.** La règle du projet est que le
+> tableau de vocabulaire du §10 tranche, **pas l'argument de la chaîne qui bute dessus** : le système
+> de design ne s'amende pas depuis une issue de composant. L'argument de fond reste recevable et
+> **reste ouvert** pour la prochaine révision de `lead-design-mtb` — `MASTER.md` §10.2 n'a aucune ligne
+> pour une image qui n'est **pas** une photographie, alors que le catalogue en produira d'autres.
+> **En attendant, le catalogue parle d'une seule voix. Ne pas rouvrir ce libellé sans cette révision.**
 
 ### 3.2 Les valeurs par défaut n'existent qu'une fois dans le code
 
