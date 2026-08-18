@@ -1,0 +1,72 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/bandeau-alerte",
+	"title": "Bandeau d'alerte",
+	"description": "Message temporaire (« portée à venir », « pas de chiots actuellement »).",
+	"category": "mtb",
+	"icon": "megaphone",
+	"keywords": [ "alerte", "message", "annonce", "temporaire", "bandeau" ],
+	"attributes": {
+		"message": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"align": false,
+		"alignWide": false,
+		"anchor": false,
+		"ariaLabel": false,
+		"className": false,
+		"customClassName": false,
+		"html": false,
+		"lock": false,
+		"renaming": false,
+		"reusable": false,
+		"splitting": false,
+		"inserter": true,
+		"multiple": false,
+		"layout": false,
+		"position": false,
+		"border": false,
+		"shadow": false,
+		"color": {
+			"background": false,
+			"text": false,
+			"link": false,
+			"gradients": false,
+			"button": false,
+			"enableContrastChecker": false
+		},
+		"typography": {
+			"fontSize": false,
+			"lineHeight": false,
+			"textAlign": false
+		},
+		"spacing": {
+			"margin": false,
+			"padding": false,
+			"blockGap": false
+		},
+		"dimensions": {
+			"aspectRatio": false,
+			"minHeight": false
+		},
+		"background": {
+			"backgroundImage": false,
+			"backgroundSize": false
+		},
+		"filter": {
+			"duotone": false
+		}
+	},
+	"example": {
+		"attributes": {
+			"message": "Le texte du message s'affiche ici."
+		},
+		"viewportWidth": 600
+	},
+	"render": "file:./render.php",
+	"editorScript": "mtb-bandeau-alerte-editeur"
+}

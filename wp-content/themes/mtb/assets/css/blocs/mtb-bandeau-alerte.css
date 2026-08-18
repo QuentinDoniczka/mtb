@@ -1,0 +1,57 @@
+/*
+ * MTB — Bandeau d'alerte : habille `mtb/bandeau-alerte` (mtb-core). Balisage
+ * gelé au §4 de docs/contracts/issue-9.md ; poignée
+ * `mtb-bloc-mtb-bandeau-alerte`, mise en file d'après LE NOM DU FICHIER
+ * (functions.php:194-250) : un caractère d'écart, aucune feuille servie.
+ *
+ * MASTER.md — §9.5 le patron (« encart --calcaire-creux, filet double vertical
+ * --sauge ») ; §2.1 le filet ; §3.2 fonds et encres ; §5.1 l'espacement ;
+ * §12.3 la paire --texte sur --calcaire-creux, 10,78:1 AAA (lien 6,92:1 AAA).
+ *
+ * DEUX RÈGLES, et ce qu'elle n'écrit pas est du contrat (§7.3, §7.7, §7.8) :
+ * ni canal ni largeur (base.css:507-520), ni typographie (base.css:105-116),
+ * ni habillage de lien (base.css:248-259), ni état vide (editor.css:126-168,
+ * hors empreinte), ni requête média, ni règle bornée à l'éditeur.
+ *
+ * Littéraux — liste close : `left`, `top`, `no-repeat`, `100%`, `0`. Tout le
+ * reste passe par un jeton (§13).
+ */
+
+/* 1. L'encart — MASTER §9.5, §2.1, §3.2, §5.1. Seul filet du bloc : racine
+   <div>, enfant <p> ; aucun porteur de filet de base.css (h1, h2, hr,
+   blockquote) n'y entre. */
+.mtb-bandeau-alerte {
+  /* §2.1 : jamais deux filets doubles « sans au moins --e-7 d'écart » — au-dessus
+     COMME au-dessous, d'où les deux côtés. Rien d'autre ne comble le bas :
+     base.css:241 ne donne à p qu'un margin-block-end, et .mtb-canal est une
+     grille sans row-gap — aucune marge ne s'y collapse (contrat §7.3,
+     amendement 1). */
+  margin-block: var(--e-7);
+
+  background-color: var(--calcaire-creux);
+  /* Un fond déclaré sans son encre est une paire du §3.2 non tenue. */
+  color: var(--texte);
+
+  background-image: var(--filet-double-v);
+  background-repeat: no-repeat;
+  /* Recopié de base.css:274, même filet vertical sur blockquote. */
+  background-position: left top;
+  background-size: var(--filet-double-h) 100%;
+
+  padding-block: var(--e-6);
+  padding-inline-end: var(--e-6);
+  /* §2.1 : la largeur du filet est « à réserver en padding ». */
+  padding-inline-start: calc(var(--e-6) + var(--filet-double-h));
+}
+
+/* 2. Le message — DEUX classes, spécificité (0,2,0) obligatoire : la toile de
+   l'éditeur préfixe base.css par `.editor-styles-wrapper` (editor.css:11-28),
+   où `p` pèse (0,1,1). À une seule classe, la règle gagnerait sur le site et
+   perdrait dans l'éditeur. */
+.mtb-bandeau-alerte .mtb-bandeau-alerte__message {
+  /* base.css:241 pose --e-4 sur tout p : sans cette remise à zéro, 48 px de
+     rembourrage bas contre 32 en haut. */
+  margin-block-end: 0;
+  /* §7.7 : le libellé d'un lien collé peut être une URL. */
+  overflow-wrap: break-word;
+}
