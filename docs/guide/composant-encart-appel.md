@@ -8,9 +8,9 @@ Le composant s'appelle **Encart d’appel**. Sa phrase de présentation dit à q
 « Un encadré « Nous contacter » avec le téléphone de l’élevage et un bouton vers la page de votre choix.
 Le numéro s’affiche tout seul : il n’y a rien à recopier. »
 
-**Vous le posez, et il est déjà rempli.** Le titre **Nous contacter** et le numéro de l'élevage,
-**06 80 50 56 19**, s'affichent tout seuls : vous n'avez rien à taper pour qu'il fonctionne. Les trois
-réglages sont facultatifs.
+**Vous le posez, et il est déjà rempli.** Le titre **Nous contacter** et le numéro de l'élevage —
+celui enregistré dans **Coordonnées** — s'affichent tout seuls : vous n'avez rien à taper pour qu'il
+fonctionne. Les trois réglages sont facultatifs.
 
 ---
 
@@ -27,8 +27,8 @@ réglages sont facultatifs.
    > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant**, avec
    > **Encart d’appel** et sa phrase de présentation lisibles.
 
-4. **L'encart apparaît déjà rempli**, avec **Nous contacter** et **06 80 50 56 19**.
-   **Vous pouvez vous arrêter là** : il est publiable tel quel.
+4. **L'encart apparaît déjà rempli**, avec **Nous contacter** et le numéro enregistré dans
+   **Coordonnées**. **Vous pouvez vous arrêter là** : il est publiable tel quel.
 
 5. *Facultatif* — dans la colonne de droite, le panneau **Réglages de l’encart** est déjà ouvert : c'est
    là que vous ajoutez une phrase, un autre numéro, ou une page pour le bouton.
@@ -61,8 +61,9 @@ tiret, ni trou** : l'encart se referme proprement sur le titre.
 > « Laissez ce champ vide pour afficher le numéro de l’élevage. Ce que vous tapez ici s’affiche
 > exactement tel quel, sur cette page seulement. »
 
-- **Laissé vide** — et c'est le cas normal : le numéro de l'élevage s'affiche, **06 80 50 56 19**. Le
-  champ paraît vide alors que l'encart montre le numéro : c'est voulu, regardez l'encart, pas le champ.
+- **Laissé vide** — et c'est le cas normal : le numéro de l'élevage s'affiche, celui de votre écran
+  **Coordonnées**. Le champ paraît vide alors que l'encart montre le numéro : c'est voulu, regardez
+  l'encart, pas le champ.
 - **Rempli** : votre saisie s'affiche telle quelle, **et seulement sur cette page**. Les autres pages
   continuent d'afficher le numéro de l'élevage.
 
@@ -122,7 +123,8 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 **Il n'y a rien à craindre :**
 
 - **Rien d'autre n'est touché** : ni le texte de la page, ni les autres encarts, ni le numéro de
-  l'élevage, qui n'est pas rangé ici.
+  l'élevage, qui n'est pas rangé ici. Il est rangé dans l'écran **Coordonnées** — voir
+  *Modifier vos coordonnées, une fois pour tout le site*.
 - Vous pouvez reposer un **Encart d’appel** plus tard, au même endroit, en trois clics — et il se
   remplira tout seul, comme la première fois.
 - Rien n'est définitif avant **Mettre à jour** : si vous vous êtes trompée, quittez la page sans
@@ -139,7 +141,9 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
   emplacement vide ni bouton grisé à sa place.
 - **Le champ Téléphone affiché est vide alors que le numéro s'affiche.** C'est exactement ainsi que cela
   fonctionne : vide veut dire « le numéro de l'élevage ». N'y recopiez pas le numéro pour « le
-  confirmer » — le jour où il changera, la recopie resterait fausse.
+  confirmer » — le jour où il changera, la recopie resterait fausse. Ce jour-là, vous le corrigerez
+  **une seule fois**, dans l'écran **Coordonnées** : voir
+  *Modifier vos coordonnées, une fois pour tout le site*.
 - **Le réglage de la page indique Chargement…** et ne se laisse pas ouvrir : la liste des pages arrive.
   Patientez une seconde.
 - **Le réglage de la page affiche Aucune (pas de bouton)** alors que vous aviez choisi une page, avec la
@@ -187,7 +191,7 @@ quel, l'autre avec une phrase d'accroche et une page choisie.
 | Nom de fichier attendu | Écran | Ce qui doit être visible |
 |---|---|---|
 | `captures/encart-appel-inserteur.png` | **Pages** → une page → bouton **+** | La rubrique **Mont Brabant**, **Encart d’appel** et sa phrase de présentation lisibles |
-| `captures/encart-appel-arrive-rempli.png` | L'encart fraîchement posé, rien de réglé | **Nous contacter** et **06 80 50 56 19** déjà affichés, sans bouton — pour montrer qu'il n'y a rien à taper |
+| `captures/encart-appel-arrive-rempli.png` | L'encart fraîchement posé, rien de réglé | **Nous contacter** et le numéro enregistré dans **Coordonnées** déjà affichés, sans bouton — pour montrer qu'il n'y a rien à taper |
 | `captures/encart-appel-reglages.png` | Colonne de droite, encart sélectionné | Le panneau **Réglages de l’encart** ouvert, les trois réglages — **Phrase d’accroche**, **Téléphone affiché**, **Page vers laquelle mène le bouton** — **avec leurs trois lignes d'aide lisibles en entier**, et l'option **Aucune (pas de bouton)** en tête de la liste |
 | `captures/encart-appel-page-perdue.png` | Colonne de droite, après suppression de la page choisie | Le réglage revenu sur **Aucune (pas de bouton)** et la phrase « **La page choisie n’est plus disponible. Choisissez-en une autre.** » lisible en entier |
 | `captures/encart-appel-sur-le-site.png` | La page **publiée**, vue sur le site | L'encart à sa vraie allure : titre, phrase d'accroche, numéro et bouton, avec le trait sur son côté |

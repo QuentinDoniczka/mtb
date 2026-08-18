@@ -25,11 +25,9 @@ tout seuls : **il n'y a rien à taper.** Vous ne les corrigerez que le jour où 
    > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant**, avec
    > **Coordonnées et plan d'accès** et sa phrase de présentation lisibles.
 
-4. **C'est fini.** Les trois lignes sont déjà là, dans la page comme dans la colonne de droite :
-
-   - **Adresse** — 3060 Route de Salernes, 83570 Entrecasteaux
-   - **Téléphone** — 0680505619
-   - **Courriel** — mtbrabant@gmail.com
+4. **C'est fini.** Les trois lignes — **Adresse**, **Téléphone**, **Courriel** — sont déjà remplies,
+   dans la page comme dans la colonne de droite, avec les coordonnées de l'élevage enregistrées dans
+   l'écran **Coordonnées**.
 
    > **Capture à prendre :** le composant fraîchement posé, sans rien avoir réglé, les trois lignes
    > déjà remplies dans la page.
@@ -58,9 +56,15 @@ affichée, ouvrez-la avec le bouton en forme de roue dentée, en haut à droite 
 | **Téléphone** | Son aide dit : « Le numéro s'affiche tel que vous l'écrivez. Le lien d'appel retire les espaces tout seul. » |
 | **Courriel** | Son aide dit : « Si l'adresse n'est pas reconnue, elle s'affiche telle quelle, sans lien cliquable. » |
 
-**Le numéro s'affiche aujourd'hui d'un seul tenant : 0680505619.** Si vous le préférez en paires, tapez
-simplement **06 80 50 56 19** dans le champ **Téléphone** : il s'affichera ainsi, et il restera
-appelable d'un doigt — les espaces sont retirées toutes seules du lien d'appel.
+**Le numéro s'affiche exactement tel qu'il est enregistré dans l'écran Coordonnées.** C'est là — et non
+dans ce panneau — que se décide son écriture **pour tout le site** : si vous le préférez en paires,
+tapez-le ainsi dans **Coordonnées**, et toutes vos pages suivront. Il restera appelable d'un doigt sur
+un téléphone : les espaces sont retirées toutes seules du lien d'appel.
+Voir *Modifier vos coordonnées, une fois pour tout le site*.
+
+**Le champ Téléphone de ce panneau ne change que cette page.** Ne l'employez que si cette page-là, et
+elle seule, doit donner un autre numéro. Videz-le, et la page revient au numéro de l'élevage. Il en va
+de même pour **Adresse** et **Courriel**.
 
 **Vider un champ le fait disparaître de la page.** Videz **Téléphone**, et la ligne « Téléphone »
 s'en va entièrement : ni ligne blanche, ni tiret, ni « Non renseigné ». Les deux autres lignes se
@@ -178,7 +182,8 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 **Il n'y a rien à craindre :**
 
 - **Rien d'autre n'est touché** : ni le texte de la page, ni les coordonnées de l'élevage, qui ne sont
-  pas rangées ici.
+  pas rangées ici. Elles sont rangées dans l'écran **Coordonnées** — voir
+  *Modifier vos coordonnées, une fois pour tout le site*.
 - Si un plan avait été choisi, **l'image n'est pas supprimée** : elle reste dans la bibliothèque de
   photos, avec sa description et sa légende.
 - Vous pouvez reposer un composant **Coordonnées et plan d'accès** plus tard, en trois clics — et il se
@@ -196,8 +201,9 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
   aujourd'hui. Le composant se termine sur le courriel, sans laisser de trou.
 - **Une ligne a disparu de la page.** Le champ correspondant est vide dans le panneau **Coordonnées**.
   Retapez la valeur, la ligne revient.
-- **Le numéro s'affiche sans espaces : 0680505619.** C'est la graphie enregistrée. Si vous la préférez
-  en paires, tapez-la ainsi dans le champ **Téléphone**.
+- **Le numéro s'affiche sans espaces.** C'est ainsi qu'il est enregistré dans l'écran **Coordonnées**.
+  Si vous le préférez en paires, tapez-le ainsi **dans Coordonnées** : toutes vos pages suivront. Le
+  champ **Téléphone** de ce panneau, lui, ne changerait que cette page.
 - **Le courriel s'affiche mais ne se clique pas.** L'adresse saisie n'est pas reconnue comme une adresse
   de courriel. Elle reste affichée telle quelle — le site ne corrige jamais ce que vous avez écrit.
   Vérifiez l'arobase et le point.
@@ -218,7 +224,8 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 **Ce n'est pas normal, signalez-le :**
 
 - Le bouton **+** ne propose aucune rubrique **Mont Brabant**.
-- Le composant fraîchement posé arrive **vide** au lieu d'afficher les trois coordonnées.
+- Le composant fraîchement posé arrive **vide** alors que vos coordonnées sont bien remplies dans
+  l'écran **Coordonnées**.
 - Une coordonnée s'affiche autrement que vous ne l'avez tapée.
 - Le composant s'affiche dans la page en cours de modification, mais pas sur le site.
 
