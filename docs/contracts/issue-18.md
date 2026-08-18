@@ -697,6 +697,9 @@ Relevés par la chaîne elle-même sur la stack (port 3005), en plus de ceux des
 | Navigation de l'en-tête | **1 `<ul>`, 5 `<li>`, 5 `<a>`** après correction du §4.7 |
 | Plan du site | **1 `<ul>`, 3 `<li>`** |
 | `aria-current="page"` sur `/contact/` | **1 occurrence**, sur la bonne entrée |
+| **Nom accessible des deux `<nav>`** (2026-08-19, après §4.5 bis) | `aria-label="Menu principal"` sur `.mtb-nav`, `aria-label="Plan du site"` sur `.mtb-plan-du-site`, **une seule valeur chacun, non permutés**, sur les **quatre** pages |
+| Emplacement du pied de page vidé | le `<nav>` du pied **disparaît entièrement**, aucun `aria-label=""` posé sur du vide, zéro diagnostic |
+| Entrée mise en retrait (§4.4) | **s'affiche**, à sa place dans le flux, juste après son parent |
 | `h1` de la recherche | « Résultats de recherche pour « zzzznresultat » » |
 | `h1` du 404 | « Page introuvable » · état vide : « Aucun résultat pour « … ». » |
 | `tabindex="-1"` + `id="contenu"` sur l'accueil (servie par `index.html`) | **présents** |
