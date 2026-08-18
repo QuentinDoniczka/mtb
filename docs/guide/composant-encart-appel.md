@@ -174,7 +174,7 @@ site.
 
 ---
 
-Pour donner l'adresse et le plan d'accès, employez plutôt *Coordonnées + plan*.
+Pour donner l'adresse et le plan d'accès, employez plutôt *Coordonnées et plan d'accès*.
 
 ---
 

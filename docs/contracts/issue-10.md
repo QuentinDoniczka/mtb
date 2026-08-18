@@ -550,7 +550,7 @@ Les deux plans ont été écrits en aveugle. Onze points divergeaient ou restaie
 | Défaut du téléphone | **jamais dans `block.json`** — résolu au rendu (§1.2) |
 | Forme du `tel:` | **nationale, `tel:0680505619`, aucun `+33`** — ajouter un indicatif serait dériver un fait absent du brief. RFC 3966 recommande la forme nationale pour un numéro non international, et les composeurs mobiles français la traitent sans difficulté. **Consigné pour que personne ne le « corrige » plus tard** |
 | Titre de l'encart | **figé « Nous contacter »** (§10.3) ; l'« accroche » de l'issue est une phrase **facultative en plus**, vide par défaut |
-| `#10` vs `#11` | **deux composants justifiés**, pas une duplication : #11 « Coordonnées + plan » est une *information* (où c'est, comment joindre), #10 est un *appel* posé en fin de page de contenu. §2.1 leur donne même des traitements distincts — l'encart d'appel est le seul des deux à porter le filet double **vertical**. **Ce qui est dupliqué, c'est le numéro**, et c'est ce que §1.1 répare sans toucher à l'empreinte de #11 |
+| `#10` vs `#11` | **deux composants justifiés**, pas une duplication : #11 « Coordonnées et plan d'accès » est une *information* (où c'est, comment joindre), #10 est un *appel* posé en fin de page de contenu. §2.1 leur donne même des traitements distincts — l'encart d'appel est le seul des deux à porter le filet double **vertical**. **Ce qui est dupliqué, c'est le numéro**, et c'est ce que §1.1 répare sans toucher à l'empreinte de #11 |
 
 ---
 
@@ -618,7 +618,10 @@ Aucun de ces points n'est corrigeable dans l'empreinte de #10.
    ordre alphabétique, **sans une erreur**, sur un site qui répond 200. Tant qu'aucune ne la déclare,
    `function_exists()` est faux et chacune retombe sur son repli.
 3. **Renvoi croisé entre les deux fiches d'aide.** Côté #10 : « Pour donner l'adresse et le plan
-   d'accès, employez plutôt *Coordonnées + plan*. » La réciproque appartient à #11.
+   d'accès, employez plutôt *Coordonnées et plan d'accès*. » La réciproque appartient à #11.
+   **Corrigé le 2026-08-18** — cette consigne nommait le composant « Coordonnées + plan », nom qui
+   n'existe nulle part à l'écran : `coordonnees-plan/block.json:5` porte **« Coordonnées et plan
+   d'accès »**, et c'est ce que l'éleveuse lit dans l'insérteur. Relevé MEDIUM-6 de la revue de lot.
 4. **Amendements à `MASTER.md` §12, pour `lead-design-mtb`** : `--pin` sur `--calcaire-creux` =
    **12,74:1** (absent de §12.3, pourtant l'encre de titre de l'encart) et `--sauge` contre
    `--calcaire-creux` = **4,70:1** (limite non textuelle, absente de tout le §12). Même famille que
