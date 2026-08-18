@@ -286,10 +286,30 @@ menu replié derrière un bouton, que `MASTER.md` §7.3 interdit en toutes lettr
 > d'`overlayMenu: "never"` : la seconde ferme une porte que personne n'ouvrira, la première ferme une
 > porte qu'un usage parfaitement légitime aurait ouverte.
 
-**Limite assumée et signalée** : avec ces attributs, un menu à **deux niveaux** n'a plus de mécanisme
-d'ouverture. Cette issue livre donc un menu **à un seul niveau**, la fiche d'aide le dit, et le
-sous-menu part en manque routé (§13). Il n'est **pas** remplacé par un survol : un sous-menu au
-survol seul est inutilisable au doigt.
+**Limite assumée — et elle n'est pas celle qu'on croit. Corrigé le 2026-08-19, mesuré.**
+
+Ces attributs privent le sous-menu de son mécanisme d'**ouverture**. Une première rédaction en
+concluait que l'issue livrait « un menu à un seul niveau » et rangeait le second niveau parmi les
+manques. **C'était faux**, et `entete-pied.css:265-278` l'a rendu faux dans le même lot : la feuille
+remet la liste imbriquée **dans le flux** (`position: static; visibility: visible`), au lieu de la
+laisser cachée en attente d'une interaction qui n'existe pas.
+
+Constaté sur la page rendue, une entrée « Enfant de Contact » mise en retrait sous « Contact » :
+
+```
+['Nous contacter', 'Contact', 'Enfant de Contact', 'Sample Page', 'Accueil', 'Espace privé (démonstration)']
+```
+
+> **Une entrée en retrait s'affiche.** Ce qui n'existe pas, c'est la **hiérarchie visible** : la
+> sous-entrée se présente comme n'importe quelle autre, à sa place dans le flux, et rien ne montre
+> qu'elle dépend de celle du dessus.
+
+Et c'est cohérent avec le §7.3, qui interdit de cacher un menu en attendant une interaction : un
+sous-menu qui ne s'ouvre qu'au survol serait inutilisable au doigt, donc la feuille ne le cache pas —
+elle le déplie une fois pour toutes.
+
+**#16 et #17 liront ce contrat comme une spécification** : la version précédente les aurait envoyés
+coder autour d'une limite qui n'existe pas.
 
 ### 4.5 La capacité — ce qu'elle ouvre, ce qu'on referme
 
@@ -341,6 +361,56 @@ négociable** : observé en session `fabienne` / `mtb-dev-editrice`, jamais en `
 d'une table de capacités. Si Fabienne ne peut pas modifier son menu, l'issue n'est pas faite.
 
 ---
+
+### 4.5 bis Le nom accessible des deux `<nav>` — `ariaLabel` est inutilisable sur WP 6.9
+
+Relevé par la passe d'intégration du lot (axe-core, `landmark-unique`, **sur les dix pages**) : les
+deux points de repère de navigation n'avaient **aucun nom accessible**. Un lecteur d'écran annonçait
+« navigation » deux fois, sans rien pour les distinguer. Le cœur ne pouvait pas suppléer — il tire ce
+nom du titre du contenu `wp_navigation`, et le §4.3 fait qu'il n'en existe aucun.
+
+**La correction évidente — poser `"ariaLabel"` sur les deux blocs — produit un nom doublé.**
+Constaté : `aria-label="Menu principal Menu principal"`.
+
+Cause, lue ligne à ligne. Deux mécanismes du cœur émettent `aria-label` pour le **même** attribut :
+
+1. `wp-includes/blocks/navigation.php:565-576` → `$extra_attributes['aria-label'] =
+   get_unique_navigation_name( $attributes )`, qui lit `$attributes['ariaLabel']` (`:345`) ;
+2. **`wp-includes/block-supports/aria-label.php`**, ajouté en **6.8** — `wp_apply_aria_label_support()`
+   rend `array( 'aria-label' => $block_attributes['ariaLabel'] )`.
+
+Les deux arrivent dans `get_block_wrapper_attributes()`, et `class-wp-block-supports.php:184` range
+`aria-label` dans la **liste de concaténation** prévue pour `class` et `style` :
+
+```php
+$attributes_to_merge = array( 'style', 'class', 'id', 'aria-label' );
+...
+$attributes[ $attribute_name ] = $extra_attributes[ $attribute_name ] . ' ' . $new_attributes[ $attribute_name ];
+```
+
+Joindre par une espace est juste pour des classes ; sur un nom accessible, cela bégaie.
+
+**Reproduit hors du thème**, ce qui écarte toute responsabilité de notre code :
+`do_blocks( '<!-- wp:navigation {"ariaLabel":"Essai unique","overlayMenu":"never"} /-->' )` rend
+`aria-label="Essai unique Essai unique"` — **y compris après `remove_all_filters()` sur
+`render_block`, `render_block_data` et `render_block_core/navigation`**.
+
+> **Le piège de vérification, et il vaut au-delà de cette issue** : `landmark-unique` ne compare que
+> la **différence** entre les deux noms. La version doublée **passe l'audit** pendant qu'un
+> utilisateur aveugle entend « Menu principal Menu principal » sur chaque page. Un correctif qui
+> satisfait l'outil et dégrade l'expérience est pire que le défaut.
+
+**Solution gelée** : **aucun `ariaLabel` dans `parts/header.html` ni `parts/footer.html`** — sans lui,
+ni l'un ni l'autre mécanisme ne se déclenche. Le nom est posé **une seule fois** depuis
+`functions.php`, sur le `<nav>` rendu, avec `WP_HTML_Tag_Processor`, et **seulement s'il est absent**
+— de sorte qu'un cœur futur corrigeant la concaténation reprenne la main sans collision.
+
+La chaîne le lit dans `get_registered_nav_menus()` : **le libellé de l'emplacement, le nom accessible
+et ce que Fabienne lit dans son écran sont une seule valeur**, pas trois copies. Renommer un
+emplacement renomme le point de repère.
+
+**#16 et #17 poseront de la navigation eux aussi. Qu'ils ne « simplifient » pas en remettant
+`ariaLabel` dans le balisage : ils rendraient le doublon.**
 
 ### 4.6 Deux emplacements, et l'aiguillage qui les distingue
 
@@ -668,7 +738,7 @@ C'est le §4.2 désarmé, mesuré de bout en bout.
 |---|---|---|
 | 1 | **`theme.json` ne déclare aucun `templateParts`.** L'aire et le **titre en français** des deux parts en dépendent ; sans elle, Fabienne peut lire un intitulé anglais dans l'éditeur de site. Le repli du cœur range tout de même les slugs `header` et `footer` dans leurs aires — à confirmer au navigateur. | `theme.json` est hors empreinte. |
 | 2 | **Les deux liens de recours manquants de §9.5 — « Les portées » et « La meute ».** Seul « Accueil » est livré sur `404.html` et `search.html` : les deux index n'existent pas, et un lien mort ou un `href="#"` serait pire que son absence (D12). | Les deux destinations sont livrées par **#16**. **À payer par #16**, qui devra rouvrir ces deux gabarits pour ajouter les liens. |
-| 3 | **Menu à deux niveaux.** Les attributs gelés du §4.4 suppriment tout mécanisme d'ouverture de sous-menu, JavaScript compris. Le remplacer par un survol serait inutilisable au doigt. | Demanderait soit du JavaScript (refusé), soit un composant dédié. |
+| 3 | **La hiérarchie visible d'un menu à deux niveaux** — et **non** le second niveau lui-même : une entrée en retrait **s'affiche** (§4.4, mesuré), elle se présente simplement comme les autres. Ce qui manque est le signal qu'elle dépend de son parent. | Le montrer demanderait soit un dépliage (donc du JavaScript, refusé), soit un parti visuel qu'aucun § de `MASTER.md` ne décrit. **Pour `lead-design-mtb`**, comme la feuille le dit elle-même (`entete-pied.css:255-259`). |
 | 4 | **Dettes T22 et T23** — le `<hr>` rend 0 px de large ; les marges verticales entre composants se cumulent au lieu de fusionner (`.mtb-canal` est une grille, `base.css:477`). `docs/ETAT.md` les range sous « epic Gabarits (#16-#18) ». | Les deux vivent dans **`base.css`**, qui reste hors empreinte. **À replacer par l'orchestrateur** vers #16, #17 ou une issue de dette. La chaîne n'y touche pas. |
 | 5 | **Composant de pied de page dans `mtb-core`**, si le pied de page doit porter un balisage de coordonnées différent de la liste de définitions du catalogue, et un habillage sombre. | Voir §3.2 : composant neuf, hors de #18 **et** hors de #38 (#38 §10.1). |
 | 6 | **Vocabulaire manquant dans `MASTER.md` §10.** Ni « plan du site », ni « mentions légales », ni « politique de confidentialité » n'y sont figés, alors que le pied de page doit les afficher. #38 §16 signale déjà le même trou pour « adresse », « téléphone » et « courriel ». | La décision 39 interdit à une chaîne d'amender le système de design. **Pour `lead-design-mtb`.** |

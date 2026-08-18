@@ -45,8 +45,7 @@ ensuite, rien à vider, rien à attendre.
 5. L'entrée se pose **en bas** de la liste centrale, intitulée **Structure du menu**.
 
 6. Attrapez l'entrée avec la souris et **faites-la glisser** à la place que vous voulez, plus haut ou
-   plus bas dans la liste. Gardez-la **contre le bord gauche** de la liste (voir « Un seul niveau »,
-   plus bas).
+   plus bas dans la liste.
 
    > **Capture à prendre :** la liste **Structure du menu** avec ses entrées, l'une d'elles en cours
    > de déplacement.
@@ -138,7 +137,8 @@ pour autant : il reste composé, prêt à resservir.
 
 **Vous n'avez rien à taper en bas du site.** L'adresse, le téléphone et le courriel de l'élevage s'y
 affichent tout seuls. Le jour où l'un d'eux change, vous le corrigez **une seule fois**, dans
-**Coordonnées** : le bas de toutes les pages suit.
+**Coordonnées** : le bas de toutes les pages suit. Le geste tient en une minute, et la fiche
+**Modifier vos coordonnées, une fois pour tout le site** vous le montre pas à pas.
 
 Le **Plan du site**, lui, ne sert qu'aux **liens** : les pages que le visiteur doit pouvoir retrouver
 depuis le bas du site. C'est là que vous ajouterez, le jour où cette page existera, un lien vers vos
@@ -146,18 +146,22 @@ mentions légales — exactement comme aux étapes 3 à 7.
 
 ---
 
-## Un seul niveau
-
-**Le menu du site n'a qu'un seul niveau.** Toutes les entrées sont visibles côte à côte, il n'y a pas
-de liste qui se déroule sous une entrée.
+## Le retrait ne se voit pas sur le site
 
 Dans la liste **Structure du menu**, une entrée que vous faites glisser **vers la droite** se place en
-retrait sous celle du dessus. **Ne le faites pas** : sur le site, cette entrée ne s'ouvrira pas et le
-visiteur ne la verra pas. Gardez toutes vos entrées **contre le bord gauche** de la liste, les unes
-sous les autres.
+retrait sous celle du dessus. **Rien de fâcheux n'arrive** : sur le site, cette entrée s'affiche bien,
+juste après celle du dessus.
 
-C'est une limite voulue du site : un menu qui se déroule s'ouvre mal au doigt sur un téléphone, et il
-disparaît entièrement quand un visiteur navigue au clavier.
+Mais elle s'affiche **comme toutes les autres**, à la même hauteur : le retrait ne se voit pas. Le
+visiteur ne devine pas qu'elle dépendait de l'entrée du dessus.
+
+**Le retrait ne sert donc à rien pour l'instant.** Ce n'est ni une faute ni un risque, c'est un
+déplacement sans effet. Si vous préférez que la liste de cet écran ressemble à ce que voit le
+visiteur, gardez vos entrées **contre le bord gauche**, les unes sous les autres.
+
+**Aucune liste ne se déroule** sous une entrée, ni au survol ni au clic : toutes les entrées du menu
+sont visibles d'un seul coup d'œil, sur un ordinateur comme sur un téléphone. C'est voulu — un menu
+qui se déroule s'ouvre mal au doigt, et il disparaît pour qui navigue au clavier.
 
 ---
 
@@ -188,8 +192,8 @@ pas — et il suffit de revenir la corriger.
 - **Une entrée n'apparaît pas sur le site alors qu'elle est dans la liste.** Deux causes possibles :
   la page visée n'est pas publiée, ou le champ **Titre de la navigation** de l'entrée a été effacé.
   Republiez la page, ou retapez le nom dans ce champ.
-- **Une entrée placée en retrait ne s'affiche pas.** Le menu n'a qu'un seul niveau. Faites-la glisser
-  contre le bord gauche de la liste, puis enregistrez.
+- **Une entrée mise en retrait s'affiche comme les autres.** Sur le site, le retrait ne se voit pas :
+  l'entrée prend simplement sa place à la suite de celle du dessus. Vous n'avez rien à corriger.
 - **Le haut et le bas du site affichent la même liste.** Les deux cases ont été cochées sur le même
   menu. Composez un second menu, ou décochez l'une des deux.
 
@@ -203,7 +207,6 @@ pas — et il suffit de revenir la corriger.
 
 **Ce qu'il vaut mieux ne pas faire :**
 
-- **Ne mettez pas en retrait une entrée sous une autre** : elle ne s'affichera pas.
 - **Ne recopiez pas l'adresse ou le téléphone de l'élevage dans le Plan du site.** Ils s'affichent
   déjà tout seuls en bas de chaque page, et se corrigent une seule fois dans **Coordonnées**.
 - **Ne supprimez pas une page pour la retirer du menu.** Retirez seulement son entrée : la page reste
@@ -225,7 +228,7 @@ session d'administration, la barre latérale n'y est pas la même.
 | `captures/menu-entree-laterale.png` | N'importe quel écran d'administration | Le menu de gauche entier, l'entrée **Menus** mise en évidence, juste sous **Coordonnées** |
 | `captures/menu-selection.png` | **Menus**, haut de l'écran | La ligne **Sélectionnez le menu à modifier :**, sa liste ouverte sur **Menu principal** et **Plan du site**, le bouton **Sélectionner** |
 | `captures/menu-ajouter-une-page.png` | **Menus** | La colonne de gauche, la liste des pages, la case de **Contact** cochée, et le bouton **Ajouter au menu** juste en dessous |
-| `captures/menu-structure.png` | **Menus** | La liste **Structure du menu** avec au moins trois entrées, toutes contre le bord gauche, l'une en cours de déplacement |
+| `captures/menu-structure.png` | **Menus** | La liste **Structure du menu** avec au moins trois entrées, l'une en cours de déplacement |
 | `captures/menu-entree-ouverte.png` | **Menus** | Une entrée ouverte : le champ **Titre de la navigation** mis en évidence, et le lien **Retirer** visible en bas de l'encadré |
 | `captures/menu-emplacements.png` | **Menus**, bas de l'écran | L'encadré **Réglages du menu**, les deux cases **Menu principal** et **Plan du site** lisibles, l'une cochée |
 | `captures/menu-sur-le-site.png` | Le site public | Le haut d'une page avec le menu à sa vraie allure, l'entrée de la page en cours signalée |

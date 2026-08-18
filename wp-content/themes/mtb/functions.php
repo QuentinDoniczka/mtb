@@ -885,3 +885,68 @@ function mtb_feuille_entete_pied_dans_l_editeur(): void {
 	}
 }
 add_action( 'after_setup_theme', 'mtb_feuille_entete_pied_dans_l_editeur', 11 );
+
+/**
+ * Donne son nom au point de repère de navigation, sur le balisage rendu.
+ *
+ * Deux `<nav>` sans nom accessible sont annoncés « navigation » deux fois : rien ne les distingue.
+ * Le cœur tire ce nom du titre du contenu `wp_navigation`, et la conception de cette issue fait
+ * qu'il n'en existe aucun — c'est même tout son objet.
+ *
+ * **Pourquoi pas l'attribut `ariaLabel` du bloc, qui serait la voie évidente.** Sur WordPress 6.9,
+ * il est rendu **deux fois de suite dans la même valeur**. Deux mécanismes du cœur émettent
+ * `aria-label` pour ce bloc : `get_nav_wrapper_attributes()` (`wp-includes/blocks/navigation.php`,
+ * qui lit `ariaLabel` via `get_unique_navigation_name()`) et le support de bloc
+ * `wp-includes/block-supports/aria-label.php`, ajouté en 6.8. Or
+ * `class-wp-block-supports.php:184` range `aria-label` dans la liste des attributs **concaténés**,
+ * aux côtés de `class` et `style` : la valeur est donc collée à elle-même. Le défaut est dans le
+ * cœur et ne dépend d'aucun filtre du thème.
+ *
+ * **Ne pas remettre `ariaLabel` dans `parts/header.html` ni `parts/footer.html` en croyant
+ * simplifier** : sans cet attribut, aucun des deux mécanismes ne se déclenche, et le nom est posé
+ * ici, une seule fois. L'attribut n'est écrit que s'il est absent, de sorte qu'un cœur qui
+ * corrigerait la concaténation reprendrait la main sans que rien ne soit à défaire.
+ *
+ * Le nom vient du **libellé de l'emplacement enregistré**, celui que l'éleveuse lit dans son écran
+ * des menus : une seule source de vérité, qui suit si les libellés changent. Un libellé introuvable
+ * ou vide ne pose rien — un `aria-label=""` vaut moins que pas d'attribut.
+ *
+ * Priorité 20 : `mtb_retirer_la_navigation_sans_entree()` passe avant et rend une chaîne vide quand
+ * le menu n'a aucune entrée. Nommer un balisage vide le ressusciterait.
+ *
+ * @param string $contenu Balisage rendu du bloc.
+ * @return string
+ */
+function mtb_nommer_la_navigation( $contenu ) {
+	if ( ! is_string( $contenu ) || '' === trim( $contenu ) ) {
+		return $contenu;
+	}
+
+	$emplacements = get_registered_nav_menus();
+	$emplacement  = mtb_emplacement_de_navigation();
+
+	if ( ! is_array( $emplacements ) || ! isset( $emplacements[ $emplacement ] ) ) {
+		return $contenu;
+	}
+
+	$nom = trim( (string) $emplacements[ $emplacement ] );
+
+	if ( '' === $nom || ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+		return $contenu;
+	}
+
+	$processeur = new WP_HTML_Tag_Processor( $contenu );
+
+	if ( ! $processeur->next_tag( array( 'tag_name' => 'NAV' ) ) ) {
+		return $contenu;
+	}
+
+	if ( null !== $processeur->get_attribute( 'aria-label' ) ) {
+		return $contenu;
+	}
+
+	$processeur->set_attribute( 'aria-label', $nom );
+
+	return $processeur->get_updated_html();
+}
+add_filter( 'render_block_core/navigation', 'mtb_nommer_la_navigation', 20 );
