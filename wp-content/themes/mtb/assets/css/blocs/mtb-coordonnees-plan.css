@@ -1,0 +1,150 @@
+/*
+ * MTB — Coordonnées et plan d'accès (bloc mtb/coordonnees-plan)
+ *
+ * Nom de fichier DÉRIVÉ du nom du bloc (functions.php:220-249) : un caractère
+ * d'écart, file_exists() échoue en silence, sans feuille ni erreur.
+ * « § » = MASTER.md ; le raisonnement vit dans docs/contracts/issue-11.md, qui
+ * numérote ces onze règles (§8) et énumère les interdits — dont l'état vide
+ * (§9.1, editor.css:126-168, T13).
+ *
+ * SPÉCIFICITÉ : la toile préfixe base.css (editor.css:11-28), pas cette
+ * feuille ; une règle d'élément y pèse (0,1,1). D'où les classes doublées
+ * des règles 5, 7 et 10.
+ *
+ * VALEURS BRUTES, liste close : `44px` (§12.10, base.css:369) ; `600`, `1.4` et
+ * `.16em`, ligne « h4 / étiquette » du §4.5, recopiés de base.css:229-237 —
+ * aucun jeton ne porte de graisse ni d'interlettre.
+ */
+
+/* 1. §5.1 — `margin-block` et RIEN D'AUTRE : ni display, ni padding. NI GRILLE,
+   NI FLEX, NI GOUTTIÈRE : le cas NOMINAL est « sans plan » et §9.2 exige alors
+   ni trou ni réserve. La marge de séparation est portée par la figure (r. 7),
+   absente avec elle.
+   MESURÉ, contre le contrat : `.mtb-canal` étant une GRILLE (base.css:477),
+   aucune marge n'y fusionne — deux blocs voisins laissent 2 × --rythme-section.
+   Vrai de tout le catalogue, signalé au lot. */
+.mtb-coordonnees-plan {
+  margin-block: var(--rythme-section);
+}
+
+/* 2. <address> s'italise par défaut, base.css ne le corrige pas et §4.3 bannit
+   l'italique — sans fichier italique, elle serait SYNTHÉTIQUE. Dû à base.css :
+   dette §14. */
+.mtb-coordonnees-plan__coordonnees {
+  font-style: normal;
+}
+
+/* 3. Étiquette (<dt>) — recette « h4 / étiquette » du §4.5, attestée pour un
+   <dl> par §7.5 ; --laiton-texte sur --calcaire, 5,30:1 AA (§12.1). La marge
+   haute est le SEUL écart entre coordonnées : un champ vidé emporte la paire
+   <dt>+<dd> ET son écart ; aucune règle d'ici ne dépend d'un champ. */
+.mtb-coordonnees-plan__etiquette {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+  margin-block-start: var(--e-5);
+}
+
+/* 4. Quel que soit le champ retiré, la première paire ne prend pas d'avance. */
+.mtb-coordonnees-plan__etiquette:first-child {
+  margin-block-start: 0;
+}
+
+/* 5. Valeur (<dd>) — classe doublée : `dd { margin: 0 }` (base.css:127) pèse
+   (0,1,1) dans la toile ; MESURÉ : à une seule classe l'écart est juste sur le
+   site, NUL dans l'éditeur. */
+.mtb-coordonnees-plan__valeur.mtb-coordonnees-plan__valeur {
+  margin-block-start: var(--e-3);
+}
+
+/* 6. Cibles tactiles — 44px dans les deux dimensions (§12.10). `inline-flex` et
+   non `block` : la cible épouse le texte ; étalée sur le canal, un clic à 400 px
+   du numéro appellerait. L'anneau de focus (base.css:465) épouse cette boîte.
+   `anywhere` et NON `break-word` (contrat r. 6, écart signalé) : MESURÉ à 360 px
+   sous zoom du texte seul à 200 %, `break-word` ne réduit pas la min-content
+   d'une boîte `inline-flex`, dimensionnée sur son contenu — le courriel sortait
+   à 387 px pour 360. `anywhere` : 360. */
+.mtb-coordonnees-plan__lien {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  overflow-wrap: anywhere;
+}
+
+/* 7. La figure — classe doublée (`figure { margin: 0 }`, base.css:127, qui pèse
+   (0,1,1) dans la toile) ; MESURÉ, comme la r. 5 : sans le doublage l'éditeur
+   ment sur la marge. ÉCART AU CONTRAT §8, qui ne double que la r. 10 ; sans
+   effet sur le site.
+   UNE SEULE MARGE, et haute : sans plan, pas de figure, donc pas de marge
+   orpheline. */
+.mtb-coordonnees-plan__figure.mtb-coordonnees-plan__figure {
+  margin-block-start: var(--e-4);
+}
+
+/* 8. Le cadre — espace réservé : hauteur connue avant le chargement, jamais
+   dictée par l'image (§6.9). --r-paysage : EXTRAPOLATION NOMMÉE, §6.1 n'attribue
+   rien à un plan ; contrat §4.4b, à ratifier. Fond --calcaire-creux du §6.6 :
+   il tient sous une image transparente comme sous une image
+   qui ne charge pas, dont le texte de remplacement s'y affiche en --texte-doux /
+   --t-sm, 5,79:1 AA (§12.3).
+
+   INTERDIT ICI, ET DÉFINITIVEMENT : `max-block-size` sur ce cadre.
+   Décision 32 (docs/ETAT.md:61) — `aspect-ratio` + plafond de hauteur + largeur
+   indéfinie font RE-DÉRIVER la largeur depuis la hauteur plafonnée : manque
+   proportionnel à la largeur de fenêtre, NUL SOUS LE SEUIL, donc invisible à
+   360 px comme dans la toile. Mesuré sur #6 : 245 px à 1440, 1365 px (53 %) à
+   2560. Sans plafond le mécanisme est inaccessible ;
+   `inline-size: 100%` est écrit AVANT `aspect-ratio`, en seconde ceinture.
+   RÉOUVERTURE, seul scénario admis : borner un plan très haut passe par
+   `max-inline-size` sur la figure, JAMAIS en hauteur sur la boîte au ratio ;
+   toute reprise refait la recette du §8 : le width DU CADRE, à 1440 puis
+   2560 px, égal à celui de `.mtb-coordonnees-plan`. La racine ne prouve rien. */
+.mtb-coordonnees-plan__cadre {
+  inline-size: 100%;
+  aspect-ratio: var(--r-paysage);
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+  position: relative;
+}
+
+/* 9. Le cerne du §6.6, exigé sur toute photo. Pseudo-élément obligatoire :
+   --cerne-photo est une ombre INTÉRIEURE (tokens.css:118) peinte sous les
+   descendants — sur le cadre, l'<img> la couvrirait. Forme des sœurs. */
+.mtb-coordonnees-plan__cadre::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+/* 10. `contain`, ÉCART DÉLIBÉRÉ À §6.3 (« le cadre gagne toujours »), contrat
+   §4.4b : §6 s'intitule « Photographies » et parle de chiens ; un plan
+   est un DOCUMENT, et le rogner peut COUPER LE POINT D'ARRIVÉE. NE PAS
+   « CORRIGER » EN `cover`.
+   AUCUN `object-position` : la déclaration existe déjà cinq fois (T18) et
+   diverge (T16-bis) ; `50% 38%` tient à la tête d'un chien. Ne rien
+   écrire donne l'initiale `50% 50%`, le centre géométrique, seul ancrage sensé
+   sur un plan.
+   Classe DOUBLÉE (0,2,1) : `img { block-size: auto }` (base.css:131) pèse
+   (0,1,1) dans la toile ; à sélecteur simple, ÉGALITÉ tranchée par un ordre
+   inconnu. */
+.mtb-coordonnees-plan__cadre.mtb-coordonnees-plan__cadre > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+/* 11. La légende — typographie du `figcaption` de base.css:324
+   (--t-xs, --texte-doux, 6,47:1 AA). --e-2, IDENTIQUE à
+   mtb-fiche-information.css : pas de divergence T16-bis. */
+.mtb-coordonnees-plan__legende {
+  margin-block-start: var(--e-2);
+}

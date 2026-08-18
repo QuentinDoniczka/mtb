@@ -1,0 +1,57 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/coordonnees-plan",
+	"title": "Coordonnées et plan d'accès",
+	"description": "L'adresse, le téléphone et le courriel de l'élevage, et un plan d'accès si vous en avez un.",
+	"category": "mtb",
+	"icon": "location-alt",
+	"keywords": [ "coordonnées", "contact", "adresse", "téléphone", "courriel", "plan", "accès" ],
+	"attributes": {
+		"adresse": {
+			"type": "string",
+			"default": ""
+		},
+		"telephone": {
+			"type": "string",
+			"default": ""
+		},
+		"courriel": {
+			"type": "string",
+			"default": ""
+		},
+		"plan_id": {
+			"type": "integer",
+			"default": 0
+		},
+		"plan_description": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"align": false,
+		"alignWide": false,
+		"anchor": false,
+		"customClassName": false,
+		"html": false,
+		"lock": false,
+		"renaming": false,
+		"reusable": false,
+		"multiple": true,
+		"color": false,
+		"typography": false,
+		"spacing": false,
+		"dimensions": false,
+		"background": false,
+		"filter": false
+	},
+	"example": {
+		"attributes": {
+			"plan_id": 0
+		},
+		"viewportWidth": 800
+	},
+	"editorScript": "mtb-coordonnees-plan-editeur",
+	"render": "file:./render.php"
+}
