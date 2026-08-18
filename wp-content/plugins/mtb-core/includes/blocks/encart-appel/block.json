@@ -1,0 +1,74 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/encart-appel",
+	"title": "Encart d’appel",
+	"category": "mtb",
+	"icon": "phone",
+	"description": "Un encadré « Nous contacter » avec le téléphone de l’élevage et un bouton vers la page de votre choix. Le numéro s’affiche tout seul : il n’y a rien à recopier.",
+	"keywords": [ "contact", "contacter", "téléphone", "telephone", "appel", "bouton" ],
+	"attributes": {
+		"accroche": {
+			"type": "string",
+			"default": ""
+		},
+		"telephone": {
+			"type": "string",
+			"default": ""
+		},
+		"page_id": {
+			"type": "number",
+			"default": 0
+		}
+	},
+	"supports": {
+		"align": false,
+		"alignWide": false,
+		"anchor": false,
+		"ariaLabel": false,
+		"className": false,
+		"customClassName": false,
+		"html": false,
+		"lock": false,
+		"renaming": false,
+		"reusable": false,
+		"splitting": false,
+		"layout": false,
+		"position": false,
+		"border": false,
+		"shadow": false,
+		"inserter": true,
+		"multiple": true,
+		"color": {
+			"background": false,
+			"text": false,
+			"link": false,
+			"gradients": false,
+			"button": false,
+			"enableContrastChecker": false
+		},
+		"typography": {
+			"fontSize": false,
+			"lineHeight": false,
+			"textAlign": false
+		},
+		"spacing": {
+			"margin": false,
+			"padding": false,
+			"blockGap": false
+		},
+		"dimensions": {
+			"aspectRatio": false,
+			"minHeight": false
+		},
+		"background": {
+			"backgroundImage": false,
+			"backgroundSize": false
+		},
+		"filter": {
+			"duotone": false
+		}
+	},
+	"editorScript": "mtb-encart-appel-editeur",
+	"render": "file:./render.php"
+}

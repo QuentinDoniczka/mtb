@@ -1,0 +1,73 @@
+/*
+ * MTB — Encart d'appel (bloc mtb/encart-appel)
+ *
+ * Nom DÉRIVÉ du nom du bloc par functions.php:194-249 : un caractère d'écart et
+ * file_exists() échoue en silence — encart sans style, sans erreur. Hérite de
+ * tokens.css (mtb-jetons) et de base.css. « § » = MASTER.md, « contrat » =
+ * docs/contracts/issue-10.md, OÙ VIT LE RAISONNEMENT ; règles numérotées §4.1.
+ * SPÉCIFICITÉ (contrat §4.2) : deux classes dès qu'une règle touche un élément
+ * habillé par base.css — la toile le préfixe, il y pèse (0,1,1), pas nous.
+ * ABSENTS À DESSEIN : aucune règle de bouton (primitive §8.4, base.css:625-691)
+ * ni .mtb-etat-vide* (apparence unique du §9.1, editor.css:126-168) ; aucune
+ * requête média — le flex-wrap de la règle 4 porte seul le repli à 360 px ;
+ * aucune transition, aucun :hover, aucune url().
+ */
+
+/* 1. Surface d'encart (§3.2) et 6e emplacement du filet double : verticale,
+   pleine hauteur (§2.1, liste close), forme reprise de base.css:266-277. Ni
+   bordure (le vide de 2 px EST la signature), ni rayon (--r-0 par défaut), ni
+   overflow: hidden (§7.8 : il rognerait le focus), ni display. max() :
+   --rythme-section tombe à 40 px sous 360 px, sous les --e-7 du §2.1. */
+.mtb-encart-appel {
+  margin-block: max(var(--rythme-section), var(--e-7));
+  background-color: var(--calcaire-creux);
+  background-image: var(--filet-double-v);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: var(--filet-double-h) 100%;
+  padding: var(--e-6);
+  padding-inline-start: calc(var(--e-6) + var(--filet-double-h));
+}
+
+/* 2. base.css:201-216 donne un filet double à TOUT h2 ; §2.1 en interdit deux
+   par bloc visuel. L'espace au-dessus vient du rembourrage, celui du dessous
+   suit le titre — donc identique avec ou sans accroche. */
+.mtb-encart-appel .mtb-encart-appel__titre {
+  background-image: none;
+  padding-block-end: 0;
+  margin-block: 0 var(--e-4);
+}
+
+/* 3. __accroche — AUCUNE RÈGLE : corps de texte, écart bas porté par le p de
+   base.css:240 ; en écrire une serait une seconde source de vérité. */
+
+/* 4. La rangée porte la PLACE des actions, jamais leur apparence (contrat §4).
+   flex-wrap est tout le mécanisme du repli : à 360 px il reste 254 px utiles.
+   Aucun order ni row-reverse (DOM = ordre de lecture). gap ne s'exprime qu'ENTRE
+   deux enfants : une action absente ne laisse aucun vide. 16 px > --e-2 (§5.1). */
+.mtb-encart-appel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-4);
+}
+
+/* 5. Le piège de cette issue : un lien tel: en ligne fait ~28 px, D7 tombe.
+   48px est le minimum tactile écrit en pixels par §8.4, aucun jeton ne le porte
+   et il est interdit d'en créer un (base.css:366-369) ; inline-flex donne la
+   hauteur sans figer la boîte. Le sélecteur vise le <a> comme le <span> du
+   numéro non composable (§3.3) : ni couleur ni soulignement ici, base.css:248
+   habille le lien et laisse le <span> nu — il n'en est pas un. */
+.mtb-encart-appel .mtb-encart-appel__telephone {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 48px;
+  overflow-wrap: break-word;
+}
+
+/* 6. Garde : aucun dernier élément ne pousse sa marge hors du rembourrage.
+   ÉCRITE EN DERNIER, NE PAS LA DÉPLACER. Classe doublée : à (0,1,0) elle
+   perdrait dans la toile contre le p de base.css:240, qui y pèse (0,1,1). */
+.mtb-encart-appel.mtb-encart-appel > :last-child {
+  margin-block-end: 0;
+}
