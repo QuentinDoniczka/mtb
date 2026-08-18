@@ -1,0 +1,522 @@
+/*
+ * MTB — En-tête de site et pied de page (issue #18, MASTER §7.3)
+ *
+ * POURQUOI CE FICHIER EXISTE. `theme.json` ferme toute mise en forme portée par
+ * le balisage (`color.palette: []`, `spacing.margin/padding: false`,
+ * `typography.*: false`) : aucun bloc de `parts/header.html` ni de
+ * `parts/footer.html` ne peut porter une couleur, une marge ou une graisse.
+ * Et `mtb_feuilles_de_blocs()` (functions.php:189-249) itère LE REGISTRE DES
+ * BLOCS, jamais le disque : une feuille déposée dans `assets/css/blocs/`
+ * n'habille qu'un bloc enregistré, or un en-tête et un pied de page n'en sont
+ * pas. `tokens.css:52-62` le dit d'avance — quatre des huit filets doubles sont
+ * des styles d'éléments et vivent dans `base.css` ; les quatre autres, dont
+ * l'en-tête et le pied de page, « sont des composants et appartiennent aux
+ * epics qui les créent ». Une feuille dédiée est la seule forme possible.
+ *
+ * Dépend de `tokens.css` (poignée `mtb-jetons`) et complète `base.css` sans
+ * jamais le redéclarer. En particulier : l'anneau de focus (§8.1, base.css:465)
+ * et le lien d'évitement (§8.1 / §3.2, base.css section 6) sont DÉJÀ écrits et
+ * ne sont pas repris ici.
+ *
+ * TOUTES les règles ci-dessous ont été écrites CONTRE LE BALISAGE RENDU, relevé
+ * sur la pile (WordPress 6.9, port 3005), jamais contre une structure supposée.
+ * Les spécificités du cœur citées en commentaire sont lues dans les feuilles
+ * réellement imprimées dans le `head` de la page publique.
+ *
+ * ---------------------------------------------------------------------------
+ * VALEURS BRUTES, LISTE CLOSE — aucune autre n'existe dans ce fichier.
+ * Toutes sont RECOPIÉES de MASTER, aucune n'est inventée, et aucune n'a de
+ * jeton (en créer un serait l'invention que le contrat interdit) :
+ *
+ *   1. `44px` — minimum tactile du §12.10, écrit en pixels par MASTER ;
+ *      même valeur et même justification que base.css:369 et que la règle 6 de
+ *      blocs/mtb-coordonnees-plan.css.
+ *   2. `2px` et `3px` — épaisseurs des deux traits bas d'un lien de navigation,
+ *      écrites en toutes lettres par le §8.3 (« trait bas --laiton de 2 px »,
+ *      « trait bas --sauge de 3 px ») et par le §12.6 pour le fond sombre
+ *      (« trait --laiton-clair de 2 px »). Aucun jeton ne les porte :
+ *      `--bord-fin` vaut 1 px `--filet`. Le trait de la page courante SUR FOND
+ *      CLAIR, lui, emploie `--bord-fort`, que tokens.css:117 destine nommément
+ *      au « rail de page courante ».
+ *   3. `500`, `600`, `1.3`, `.06em` — colonnes Poids / Interligne / Autres des
+ *      lignes « Navigation » et « Nom complet d'un chien » du tableau §4.5.
+ *      Aucun jeton ne porte de graisse, d'interligne ni d'interlettre.
+ *   4. `48rem` écrit en littéral dans la seule requête média du fichier : c'est
+ *      la valeur de `--bp-tableau`, que tokens.css:157-167 interdit d'employer
+ *      en `var()` (une requête média ne lit pas une propriété personnalisée).
+ *      MASTER §7.6 procède lui-même ainsi.
+ *   5. `3` dans `repeat(3, …)` — le NOMBRE de colonnes du plan du site, écrit
+ *      par le §7.3 (« plan du site en trois colonnes »). Ce n'est pas une
+ *      longueur.
+ *
+ * Ne comptent pas comme valeurs brutes, comme dans base.css : `0`, `100 %`, le
+ * `1fr` d'une piste de grille, le `2` d'un centrage et les mots-clés CSS — ils
+ * ne portent aucune décision de design.
+ *
+ * AUCUNE TRANSITION, AUCUNE ANIMATION n'est écrite ici : il n'y a donc rien à
+ * neutraliser sous `prefers-reduced-motion`. Aucune `@import`, aucune `url()`,
+ * aucune police : zéro requête vers un domaine tiers. Aucun `!important`.
+ * ---------------------------------------------------------------------------
+ */
+
+/* =====================================================================
+ * 1. Le gabarit latéral commun — MASTER §7.1, §7.3
+ *
+ * En-tête et pied de page sont l'un et l'autre « canal pleine » (§7.3) : leur
+ * fond et leur filet double occupent toute la fenêtre. Leur CONTENU, lui, doit
+ * s'aligner sur celui des pages, faute de quoi le site présente des bords
+ * gauches désalignés — le défaut que la décision 33 a payé une fois.
+ *
+ * La formule ci-dessous n'est pas choisie : c'est EXACTEMENT la géométrie que
+ * `.mtb-canal > .alignwide` produit déjà (base.css:522-534 et 777). Cet
+ * élément est plafonné à `--l-large` et centré dans une piste qui va de
+ * `--marge-page` à `100 % - --marge-page` ; son bord gauche vaut donc
+ * max(--marge-page, (100 % - --l-large) / 2). Le nom de l'élevage, le plan du
+ * site et le bord gauche d'une galerie tombent ainsi sur la même verticale.
+ *
+ * Sans ce plafond, un écran de 2560 px poserait le nom et la navigation à
+ * 48 px de chaque bord : le « tableau de bord » que §7.1 refuse en propres
+ * termes (« sur un moniteur 27 pouces la page reste un document »).
+ * ================================================================== */
+
+.mtb-entete,
+.mtb-pied {
+  padding-inline: max(var(--marge-page), calc((100% - var(--l-large)) / 2));
+}
+
+/* =====================================================================
+ * 2. En-tête du site — MASTER §7.3, §2.1
+ * ================================================================== */
+
+/* Fond `--calcaire` et filet double en bord bas, pleine largeur (§2.1, ligne 1
+   de la liste close). Le dispositif est un `background-image` et jamais une
+   `border`, comme partout ailleurs : c'est le vide de 2 px entre le trait sauge
+   et le trait laiton qui fait lire un filet gravé. `background-size: 100 %`
+   porte sur la boîte de remplissage, donc sur toute la fenêtre — la largeur ne
+   dépend d'aucune marge automatique, dont la dette T22 a montré qu'elle annule
+   l'étirement d'un élément de grille.
+   L'encre est déclarée avec le fond, jamais sans lui (dette T21).
+
+   `--e-4 + --filet-double-h` en bas : le gabarit du §2.1, qui réserve la
+   hauteur du filet en plus de l'espace. Bien au-dessus du seuil `--e-3`
+   au-dessous duquel §2.1 impose `--bord-fin` à la place.
+
+   NON COLLANT — décision assumée du §7.3, et interdit par §13 : « un en-tête
+   collant mange l'écran d'un téléphone et complique le parcours au clavier ».
+   Aucun `position` n'est déclaré ici, et c'est un double emploi : `base.css`
+   positionne le lien d'évitement en absolu (`inset-*: --e-2`) par rapport au
+   bloc conteneur initial. Positionner l'en-tête le rattacherait à celui-ci et
+   déplacerait le lien.
+
+   Le groupe est rendu `is-layout-flow` — vérifié : le cœur n'imprime AUCUNE
+   règle de disposition pour cette classe hors les trois `align*`, et aucune
+   marge de gouttière. `display: flex` s'applique donc sans lutte et sans
+   neutralisation à écrire.
+
+   `flex-wrap` SANS requête média : le §7.2 réserve `--bp-nav` au passage « en
+   panneau », que le contrat #18 §2 refuse (aucun JavaScript). L'enroulement
+   naturel livre le §7.3 mieux qu'un point de rupture — navigation à droite dès
+   qu'elle tient, sous le nom sinon, et JAMAIS cachée. §7.2 interdit par
+   ailleurs « toute requête média décorative ». */
+.mtb-entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: var(--e-6);
+  row-gap: var(--e-3);
+  padding-block-start: var(--e-4);
+  padding-block-end: calc(var(--e-4) + var(--filet-double-h));
+  background-color: var(--calcaire);
+  color: var(--texte);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% var(--filet-double-h);
+}
+
+/* Nom de l'élevage — §7.3 : « Newsreader 500, --t-md, encre --pin ».
+   L'interligne 1.3 est celui de la seule recette du §4.5 qui combine cette
+   famille, cette graisse et cette taille (ligne « Nom complet d'un chien ») ;
+   §7.3 n'en donne pas.
+   `margin: 0` bat le `p { margin-block-end: --e-4 }` de base.css:240 — (0,1,0)
+   contre (0,0,1) — le balisage rendant bien le nom dans un `<p>`.
+
+   RIEN N'EST ÉCRIT POUR LE LIEN QU'IL CONTIENT, et ce n'est pas un oubli : le
+   bloc Titre du site pointe toujours vers l'accueil, et sa feuille impose
+   `.wp-block-site-title :where(a) { color: inherit; text-decoration: inherit;
+   font-*: inherit }` à (0,1,0), ce qui bat le `a` de base.css:248 (0,0,1). Le
+   lien hérite donc déjà de `--pin`, de la serif et de l'absence de
+   soulignement. Une règle de plus ne changerait rien et serait du CSS mort. */
+.mtb-entete__nom {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: var(--t-md);
+  line-height: 1.3;
+  color: var(--pin);
+}
+
+/* =====================================================================
+ * 3. Les deux navigations — MASTER §8.3, §4.5, §12.9
+ *
+ * Le menu de l'en-tête et le plan du site du pied de page sont l'un et l'autre
+ * un bloc Navigation du cœur : leur géométrie et leur typographie sont
+ * communes, seules leurs encres diffèrent, parce que leurs fonds diffèrent.
+ *
+ * CE QUE LE CŒUR IMPOSE, LU DANS LES FEUILLES RÉELLEMENT IMPRIMÉES :
+ *   · `.wp-block-navigation .wp-block-navigation-item__content
+ *      .wp-block-navigation-item__content { color: inherit }` — (0,3,0).
+ *     Aucune déclaration de `color` sur le lien ne peut gagner sans doubler
+ *     deux fois la classe. L'encre du §8.3 est donc posée sur le CONTENEUR et
+ *     descend par cette règle même : le cœur devient l'allié.
+ *   · `.wp-block-navigation :where(a) { text-decoration: none }` — (0,1,0),
+ *     qui bat déjà le `a` de base.css:248. §8.3 veut « pas de soulignement » :
+ *     rien à écrire.
+ *   · `.wp-block-navigation .wp-block-navigation-item__content { display:block }`
+ *     — (0,2,0). D'où le sélecteur (0,2,1) de la règle du lien ci-dessous.
+ *   · `.wp-block-navigation ul, .wp-block-navigation ul li { list-style: none;
+ *     padding: 0 }` — la puce et le retrait sont déjà retirés.
+ *   · `.wp-block-navigation__container { gap: inherit }` — (0,1,0) : une
+ *     gouttière posée sur le `<nav>` descend d'elle-même sur la liste.
+ *   · `body .is-layout-flex { display: flex }` — (0,1,1). Toute reprise de
+ *     `display` sur un `<nav>` doit donc peser au moins (0,2,1).
+ *
+ * `nav.mtb-nav` ET NON `.mtb-nav` : le cœur recopie `className` sur le `<nav>`
+ * ET sur le `<ul>` — vérifié sur le rendu. Une règle de disposition écrite en
+ * classe nue s'appliquerait deux fois, à deux boîtes emboîtées.
+ * ================================================================== */
+
+/* Le lien — §8.3 (état normal) et ligne « Navigation » du §4.5.
+   `min-block-size: 44px` avec `display: flex` : la cible fait 44 px de haut
+   quelle que soit la taille du libellé, y compris dans le `<li>` que le cœur
+   met en `align-items: center`. `--e-3` de remplissage latéral donne au fond de
+   survol de quoi se lire et élargit la cible.
+   La boîte reste dimensionnée sur son contenu dans les deux navigations — dans
+   l'en-tête parce que le `<li>` l'est, dans le pied de page parce que le `<li>`
+   est un conteneur flex : la cible épouse le texte au lieu de s'étaler sur
+   toute une colonne, comme la règle 6 de blocs/mtb-coordonnees-plan.css.
+   `overflow-wrap: anywhere` et non `break-word` : mesuré par cette même règle
+   6, `break-word` ne réduit pas la largeur min-content d'une boîte flex
+   dimensionnée sur son contenu — un libellé long sortirait du canal à 360 px
+   (§7.7).
+   `position: relative` porte le trait bas des états ci-dessous. */
+:is(.mtb-nav, .mtb-plan-du-site) a.wp-block-navigation-item__content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-inline: var(--e-3);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: var(--t-sm);
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  overflow-wrap: anywhere;
+}
+
+/* Le libellé est dans un `<span>` que le cœur remet en `overflow-wrap:
+   break-word` à (0,2,0) — la valeur héritée du lien ne lui parvient donc pas.
+   MESURÉ, et c'est le même fait que la règle 6 de
+   blocs/mtb-coordonnees-plan.css : `break-word` ne réduit pas la largeur
+   min-content d'une boîte dimensionnée sur son contenu. Sans cette reprise, la
+   navigation débordait de 13 px à 180 px de large (un téléphone de 360 px
+   zoomé à 200 %). (0,2,1) est le poids nécessaire : à (0,2,0) l'égalité se
+   tranche par un ordre de chargement qui n'est pas garanti. */
+:is(.mtb-nav, .mtb-plan-du-site) span.wp-block-navigation-item__label {
+  overflow-wrap: anywhere;
+}
+
+/* --- Sous-entrée de menu — MASTER §7.3, §13 ---
+ *
+ * CE QUI ARRIVE SANS CETTE RÈGLE, MESURÉ SUR LA PILE et non redouté : il
+ * suffit que l'éleveuse crée une sous-entrée dans `Apparence > Menus` — l'écran
+ * que cette issue lui ouvre — pour que le cœur rende un
+ * `<ul class="wp-block-navigation__submenu-container">` imbriqué dont le style
+ * calculé vaut `background-color: rgb(255,255,255)`, `color: rgb(0,0,0)` et
+ * `border: 1px solid rgba(0,0,0,.15)`. **Trois couleurs hors des quinze jetons
+ * du §3.1**, et le §13 les interdit sans réserve. Le panneau est en outre
+ * `position: absolute`, `visibility: hidden`, `opacity: 0`, `2px × 2px`, révélé
+ * au survol et au `:focus-within` du parent : c'est mot pour mot le « menu caché
+ * par défaut dans le HTML et révélé par CSS » que le §13 range dans ses
+ * interdits, et le §7.3 le redit — « on ne cache jamais un menu en attendant
+ * une interaction ».
+ *
+ * CE QUE CETTE RÈGLE NE FAIT PAS : elle ne dessine AUCUN second niveau. MASTER
+ * n'en décrit pas, et en inventer un serait la faute que le contrat interdit.
+ * Elle remet simplement la liste imbriquée DANS LE FLUX, où la sous-entrée se
+ * rend comme une entrée ordinaire et hérite de la navigation qui l'accueille.
+ * C'est précisément ce que le contrat #18 §4.4 annonce — « cette issue livre un
+ * menu à un seul niveau » — et c'est la seule forme qui ne peigne rien : pas de
+ * panneau, donc pas de fond, pas de bordure, pas de recouvrement à habiller.
+ * `transparent` et `inherit` ne sont pas des couleurs, ce sont des absences de
+ * peinture : aucune paire nouvelle n'apparaît, sur fond clair comme sur `--pin`.
+ *
+ * PERTE ASSUMÉE ET SIGNALÉE : la hiérarchie ne se voit plus. Le rendu d'un menu
+ * à deux niveaux est la dette 3 du contrat §13, déjà routée, et le dessin d'un
+ * second niveau est une question pour lead-design-mtb — pas une décision de
+ * cette feuille.
+ *
+ * SPÉCIFICITÉS, relevées dans la feuille du cœur : l'état fermé pèse (0,3,0),
+ * mais l'état ouvert `…has-child:hover > …` pèse (0,4,0). D'où la classe répétée
+ * trois fois, qui porte le sélecteur à (0,4,1) : à (0,4,0) il y aurait égalité,
+ * et une égalité se tranche par un ordre de chargement qui n'est pas garanti. */
+:is(.mtb-nav, .mtb-plan-du-site) ul.wp-block-navigation__submenu-container.wp-block-navigation__submenu-container.wp-block-navigation__submenu-container {
+  position: static;
+  visibility: visible;
+  opacity: 1;
+  overflow: visible;
+  inline-size: auto;
+  block-size: auto;
+  min-inline-size: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: inherit;
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+}
+
+/* Le `<li>` parent devient une rangée qui porte l'entrée ET sa sous-entrée :
+   sans gouttière, deux cibles tactiles se toucheraient, ce que le §12.10
+   interdit (« écart ≥ --e-2 »). (0,3,1) contre le (0,2,0) du cœur. */
+:is(.mtb-nav, .mtb-plan-du-site) li.wp-block-navigation-item.has-child {
+  gap: var(--e-2);
+}
+
+/* Page courante — graisse 600, commune aux deux navigations (§8.3).
+
+   C'EST `aria-current` QUI EST ACCROCHÉ, PAS `current-menu-item`, et le rendu
+   de la pile montre pourquoi mieux qu'un argument : sur la page Contact, DEUX
+   `<li>` portent `current-menu-item` — l'entrée de page et une entrée
+   personnalisée qui vise la même adresse — alors qu'un seul `<a>` porte
+   `aria-current="page"`, le cœur ne le posant que sur l'entrée qu'il sait être
+   la page courante (`wp-includes/blocks/navigation-link.php:226,239`).
+   Accrocher la classe peindrait donc deux entrées courantes pendant que le
+   lecteur d'écran n'en annoncerait qu'une. Avec `aria-current`, le signal vu et
+   le signal annoncé sont LE MÊME FAIT, et aucune divergence n'est
+   représentable. */
+:is(.mtb-nav, .mtb-plan-du-site) a.wp-block-navigation-item__content[aria-current="page"] {
+  font-weight: 600;
+}
+
+/* Le trait bas des deux états, forme commune. C'est un pseudo-élément et non un
+   `box-shadow` : `base.css:465` pose l'anneau de focus par `box-shadow`, et une
+   déclaration de survol plus spécifique l'effacerait — exactement le piège que
+   la section 7 de base.css a dû désamorcer sur le bouton. Ici les deux
+   dispositifs vivent sur des boîtes différentes et ne peuvent pas se marcher
+   dessus. Ce n'est pas davantage une ombre portée au sens du §13.
+   Aucune réservation d'espace n'est nécessaire et aucun décalage n'a lieu : le
+   trait est peint À L'INTÉRIEUR de la cible de 44 px. */
+:is(.mtb-nav, .mtb-plan-du-site) a.wp-block-navigation-item__content:hover:not([aria-current="page"])::after,
+:is(.mtb-nav, .mtb-plan-du-site) a.wp-block-navigation-item__content[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+}
+
+/* LE SURVOL NE S'APPLIQUE PAS À LA PAGE COURANTE, et ce n'est pas une
+   commodité. §12 est explicite : « une paire absente de ce tableau est une
+   paire interdite ». Or le rail `--sauge` de la page courante posé sur le fond
+   de survol `--calcaire-creux` donnerait 4,70:1 — le même nombre que la
+   décision 36 a relevé sur #10, mais que MASTER n'autorise nulle part. Exclure
+   la page courante du survol n'introduit aucune paire nouvelle. §8.3 ne dit
+   d'ailleurs pas comment survol et page courante se composent : la question
+   part au rapport plutôt que d'être tranchée ici. La page courante garde ses
+   trois signaux propres, et la même exclusion vaut sur les deux navigations
+   pour qu'elles ne se comportent pas différemment. */
+
+/* --- 3.1 Navigation de l'en-tête, sur fond clair --- */
+
+/* Encre héritée par les liens (§8.3, état normal : `--texte`, 12,03:1 sur
+   `--calcaire`, §12.1). La gouttière est `--e-2`, que §5.1 définit comme
+   « écart minimal entre deux cibles tactiles » — c'est l'exigence du §12.10,
+   pas une valeur choisie. */
+nav.mtb-nav {
+  color: var(--texte);
+  gap: var(--e-2);
+}
+
+/* Survol — §8.3 : fond `--calcaire-creux` (`--texte` y mesure 10,78:1, §12.3)
+   PLUS un trait bas `--laiton` de 2 px (3,15:1 sur `--calcaire-creux`, §12.3,
+   « non textuel » : c'est un indicateur graphique, tenu au seuil de 3:1). */
+.mtb-nav a.wp-block-navigation-item__content:hover:not([aria-current="page"]) {
+  background-color: var(--calcaire-creux);
+}
+
+.mtb-nav a.wp-block-navigation-item__content:hover:not([aria-current="page"])::after {
+  border-block-end: 2px solid var(--laiton);
+}
+
+/* Page courante — §8.3 : trait bas `--sauge` de 3 px. Trois écarts avec le
+   survol (couleur, épaisseur, graisse), comme le §8.3 l'exige, et trois signaux
+   dont aucun n'est la couleur seule (§12.9).
+   `--bord-fort` vaut exactement « 3px solid var(--sauge) » et tokens.css:117 le
+   destine nommément au « rail de page courante » : aucune valeur brute ici.
+   `--sauge` sur `--calcaire` mesure 5,25:1, et §12.1 note explicitement
+   « ≥ 3:1 pour le rail de 3 px ». */
+.mtb-nav a.wp-block-navigation-item__content[aria-current="page"]::after {
+  border-block-end: var(--bord-fort);
+}
+
+/* =====================================================================
+ * 4. Pied de page — MASTER §7.3, §2.1, §12.5, §12.6
+ * ================================================================== */
+
+/* Fond `--pin`, filet double en bord haut sur toute la largeur de la fenêtre
+   (§2.1, ligne 5 de la liste close). Encre secondaire `--calcaire-ombre`,
+   8,43:1 (§12.5) — c'est le seul fond sur lequel MASTER autorise ce jeton, et
+   `--texte-doux` y est formellement INTERDIT (2,20:1, §12.5).
+   `--t-sm` : le §4.4 lui donne nommément l'usage « pied de page ».
+   `display: grid` et `gap` plutôt que des marges : `.mtb-canal` a montré
+   (dette T23) que les marges d'éléments de grille ne fusionnent jamais ; une
+   gouttière est la seule forme dont l'espacement soit prévisible.
+   `--e-7` : échelle du §5.1. MASTER ne chiffre pas le remplissage d'un pied de
+   page — le choix se fait DANS l'échelle, il n'invente aucune longueur. */
+.mtb-pied {
+  display: grid;
+  gap: var(--e-7);
+  padding-block-start: calc(var(--e-7) + var(--filet-double-h));
+  padding-block-end: var(--e-7);
+  background-color: var(--pin);
+  color: var(--calcaire-ombre);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% var(--filet-double-h);
+  font-size: var(--t-sm);
+}
+
+/* La zone des coordonnées reste sur fond CLAIR — contrat #18 §3.2, gelé.
+   `blocs/mtb-coordonnees-plan.css` est calibrée pour `--calcaire`
+   (`--laiton-texte`, 5,30:1, sa règle 3) : ce nombre ne survit pas à un
+   déplacement sur `--pin`, l'encre restant claire sur un fond devenu sombre.
+   Aucune règle d'ici ne rattrape un contraste À L'INTÉRIEUR du composant — ce
+   serait le thème qui réhabille un composant du catalogue, et la divergence
+   tomberait en silence à la première évolution de sa feuille.
+   La paire est déclarée entière, fond ET encre (dette T21) : `--texte` sur
+   `--calcaire`, 12,03:1 (§12.1). `--e-5` est le « padding de carte » du §5.1. */
+.mtb-pied__coordonnees {
+  padding: var(--e-5);
+  background-color: var(--calcaire);
+  color: var(--texte);
+}
+
+/* La SEULE déclaration de ce fichier qui atteigne la racine d'un composant du
+   catalogue, et elle n'atteint pas son intérieur : sa marge extérieure.
+   Décision 30 en donne le critère — « la déclaration décrit-elle ce qu'EST la
+   chose, ou la place dont elle dispose ICI ? » ; une marge est la seconde, donc
+   elle appartient au contexte. Sans elle, la règle 1 de
+   blocs/mtb-coordonnees-plan.css pose `--rythme-section` (40 à 88 px) EN HAUT
+   ET EN BAS À L'INTÉRIEUR du panneau clair, qui gagnerait jusqu'à 176 px de
+   vide. L'écart entre zones du pied de page est déjà porté par la gouttière
+   ci-dessus. */
+.mtb-pied__coordonnees > .mtb-coordonnees-plan {
+  margin-block: 0;
+}
+
+/* --- 4.1 Plan du site — §7.3 : trois colonnes --- */
+
+/* NE PAS RENOMMER `mtb-plan-du-site` SANS METTRE À JOUR
+   `mtb_reperer_l_emplacement_de_navigation()` (functions.php) ET
+   `parts/footer.html` : le bloc Navigation du pied de page résout son
+   emplacement de menu (« pied ») d'après cette classe. Renommée ici seule, le
+   pied de page retomberait en silence sur le menu principal. Couplage dur,
+   relevé le 2026-08-19.
+
+   Le plan du site est un bloc Navigation : le cœur en fait un conteneur flex
+   dont la liste est un enfant. Or un plan du site est une PILE de listes, pas
+   une rangée — le `<nav>` décrit donc un bloc, et chaque liste occupe toute sa
+   largeur avant de se répartir en colonnes. (0,2,1) est le poids nécessaire
+   pour battre `body .is-layout-flex { display: flex }`, qui pèse (0,1,1) : à
+   égalité c'est l'ordre de chargement qui trancherait, et il n'est pas garanti.
+
+   MESURÉ, et la mesure dit ce que cette déclaration vaut aujourd'hui : avec une
+   liste unique, la retirer ne change RIEN à l'écran — le `<ul>` occupe les
+   mêmes 1088 px, mais il les tient alors de
+   `.wp-block-navigation__container:only-child { flex-grow: 1 }`. Or « il n'y a
+   qu'une liste » est un fait du rendu du cœur, pas une propriété d'un plan du
+   site : le 2026-08-19, une entrée visant un contenu en brouillon a fait
+   scinder la liste en deux, et cette largeur serait tombée sans que rien ne le
+   signale. La déclaration reste parce qu'elle décrit ce QU'EST la chose, pas
+   parce qu'elle contourne un défaut — lequel a été corrigé à la cause.
+
+   L'encre du conteneur est `--laiton-clair`, 10,20:1 sur `--pin` (§7.3, §12.5) ;
+   elle descend sur les liens par le `color: inherit` du cœur. C'est elle que
+   prendra le lien « Mentions légales » quand l'éleveuse l'ajoutera à ce menu. */
+nav.mtb-plan-du-site.wp-block-navigation {
+  display: block;
+  color: var(--laiton-clair);
+}
+
+/* Trois colonnes — §7.3. Le sélecteur nomme le `<ul>` parce que `className` est
+   recopié sur le `<nav>` ET sur le `<ul>` ; (0,1,1) bat le
+   `.wp-block-navigation__container { display: flex; gap: inherit }` du cœur,
+   qui pèse (0,1,0).
+   Une seule requête média, et elle n'est pas décorative (§7.2) : trois colonnes
+   à 360 px donneraient 108 px chacune, illisibles, quand §7.7 exige une page
+   entière à cette largeur. Le seuil retenu est celui de `--bp-tableau` (48rem,
+   §7.2), le seul des trois points de rupture qui décrive un passage de
+   plusieurs colonnes à une pile ; §7.3 ne dit pas à quelle largeur le plan du
+   site se replie, et l'écart part au rapport.
+   `@media screen` comme au §7.6 : à l'impression le plan reste une pile, forme
+   la plus sûre sur une feuille étroite.
+   `minmax(0, 1fr)` et non `1fr` : sans le minimum nul, un libellé long
+   imposerait sa largeur min-content à la colonne et ferait déborder la grille.
+   La gouttière de ligne `--e-3` (12 px) tient l'écart minimal de `--e-2` entre
+   deux cibles tactiles exigé par le §12.10. */
+ul.mtb-plan-du-site {
+  display: grid;
+  gap: var(--e-3) var(--e-6);
+}
+
+@media screen and (min-width: 48rem) {  /* valeur de --bp-tableau, §7.2 */
+  ul.mtb-plan-du-site {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Survol sur fond sombre — §12.6, qui l'écrit lui-même : `--pin-creux` ne
+   contraste que 1,29:1 avec `--pin`, « le survol sur fond sombre DOIT donc
+   porter un second signal (trait --laiton-clair de 2 px) ». C'est exactement
+   la transposition du §8.3 sur le fond du pied de page.
+   Le libellé reste `--laiton-clair`, 7,92:1 sur `--pin-creux` (§12.6) : aucune
+   encre ne change, donc aucune lutte avec le `color: inherit` du cœur. */
+.mtb-plan-du-site a.wp-block-navigation-item__content:hover:not([aria-current="page"]) {
+  background-color: var(--pin-creux);
+}
+
+.mtb-plan-du-site a.wp-block-navigation-item__content:hover:not([aria-current="page"])::after {
+  border-block-end: 2px solid var(--laiton-clair);
+}
+
+/* Page courante sur fond sombre — trait de 3 px, graisse 600, `aria-current`.
+   EXTRAPOLATION NOMMÉE, et elle est forcée par une mesure : le `--sauge` que le
+   §8.3 prescrit ne contraste que 2,71:1 avec `--pin`, SOUS le seuil de 3:1 des
+   indicateurs non textuels (WCAG 1.4.11) — il ne peut donc pas servir de rail
+   ici, et §12.5 ne le tabule d'ailleurs pas. `--calcaire` est la première des
+   quatre encres que §3.2 autorise sur `--pin` et mesure 14,23:1 (§12.5). Les
+   trois écarts du §8.3 avec le survol sont préservés : couleur (`--calcaire`
+   contre `--laiton-clair`), épaisseur (3 px contre 2 px), graisse.
+   Le choix de l'encre du rail sur fond sombre est une question pour
+   lead-design-mtb : MASTER ne la nomme nulle part. */
+.mtb-plan-du-site a.wp-block-navigation-item__content[aria-current="page"]::after {
+  border-block-end: 3px solid var(--calcaire);
+}
+
+/* --- 4.2 Mentions --- */
+
+/* `--t-xs`, dont le §4.4 donne nommément l'usage « mentions ». L'encre est
+   celle du pied de page, reprise ici parce que la taille change et qu'un fond
+   ne va jamais sans son encre (dette T21) : `--calcaire-ombre` sur `--pin`,
+   8,43:1 (§12.5).
+   AUCUNE RÈGLE DE LIEN N'EST ÉCRITE POUR CETTE ZONE : le balisage livré n'y
+   place aucun lien. Une règle qui ne vise rien est du CSS mort ; l'absence des
+   mentions légales que le §7.3 demande est un constat qui part au rapport, pas
+   un trou que la feuille comble. */
+.mtb-pied__mentions {
+  color: var(--calcaire-ombre);
+  font-size: var(--t-xs);
+}

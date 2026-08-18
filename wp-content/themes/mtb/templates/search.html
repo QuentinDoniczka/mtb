@@ -1,9 +1,7 @@
-<!-- Formulation provisoire de l'état vide ci-dessous : les libellés définitifs (MASTER.md §9.5, « Page introuvable », « Aucun résultat pour « … ». », les trois liens) appartiennent à l'epic Gabarits, qui réécrit ce fichier. -->
-
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","className":"mtb-canal","layout":{"type":"constrained"},"anchor":"contenu"} -->
-<main class="wp-block-group mtb-canal" id="contenu"><!-- wp:query-title {"type":"archive","level":1} /-->
+<main id="contenu" tabindex="-1" class="mtb-canal">
+<!-- wp:query-title {"type":"search","level":1,"showSearchTerm":true} /-->
 
 <!-- wp:query {"queryId":0,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true}} -->
 <div class="wp-block-query"><!-- wp:post-template -->
@@ -20,10 +18,16 @@
 
 <!-- wp:query-no-results -->
 <!-- wp:paragraph -->
-<p>Aucun contenu à afficher.</p>
+<p>Aucun résultat pour « … ».</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:list {"className":"mtb-liens-de-secours"} -->
+<ul class="wp-block-list mtb-liens-de-secours"><!-- wp:list-item -->
+<li><a href="/">Accueil</a></li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
 <!-- /wp:query-no-results --></div>
-<!-- /wp:query --></main>
-<!-- /wp:group -->
+<!-- /wp:query -->
+</main>
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

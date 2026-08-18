@@ -179,6 +179,7 @@ add_filter( 'block_type_metadata', 'mtb_retirer_les_variations_interdites' );
 function mtb_feuilles_du_site(): void {
 	mtb_mettre_feuille_en_file( 'mtb-jetons', 'assets/css/tokens.css' );
 	mtb_mettre_feuille_en_file( 'mtb-base', 'assets/css/base.css', array( 'mtb-jetons' ) );
+	mtb_mettre_feuille_en_file( 'mtb-entete-pied', 'assets/css/entete-pied.css', array( 'mtb-jetons' ) );
 }
 add_action( 'wp_enqueue_scripts', 'mtb_feuilles_du_site' );
 
@@ -408,3 +409,479 @@ add_filter( 'block_editor_settings_all', 'mtb_couper_openverse' );
 // Découverte oEmbed distante et compositions distantes hébergées chez WordPress.org.
 add_filter( 'embed_oembed_discover', '__return_false' );
 add_filter( 'should_load_remote_block_patterns', '__return_false' );
+
+/**
+ * Écarte le lien d'évitement que le cœur injecte par JavaScript.
+ *
+ * `wp_enqueue_block_template_skip_link()` (`wp-includes/theme-templates.php:109`) fait deux choses
+ * d'un seul geste : elle imprime la feuille en ligne qui masque `.skip-link.screen-reader-text`, et
+ * elle enfile un script qui crée un second lien d'évitement **avant** `.wp-site-blocks`, donc avant
+ * celui de `parts/header.html`. Le retirer entièrement — par
+ * `remove_action( 'wp_footer', 'the_block_template_skip_link' )` — emporterait aussi la feuille, et
+ * le lien écrit à la main resterait visible en permanence : `base.css` section 6 n'habille que son
+ * état de focus et s'appuie sur cette feuille du cœur pour l'état masqué.
+ *
+ * Seul le script est donc retiré. Poignées de script et de style sont deux registres distincts,
+ * `wp_dequeue_script()` ne touche pas à la feuille du même nom.
+ */
+function mtb_retirer_le_lien_d_evitement_du_coeur(): void {
+	wp_dequeue_script( 'wp-block-template-skip-link' );
+}
+add_action( 'wp_enqueue_scripts', 'mtb_retirer_le_lien_d_evitement_du_coeur', 100 );
+
+/**
+ * Les deux emplacements de menu du site.
+ *
+ * `register_nav_menus()` appelle `add_theme_support( 'menus' )`, ce qui suffit à faire apparaître
+ * `Apparence > Menus` (`wp-admin/menu.php:247-249`, sans garde `wp_is_block_theme()`). C'est
+ * l'écran depuis lequel l'éleveuse compose ses menus, sans passer par l'éditeur de site.
+ *
+ * Deux emplacements et non un : le pied de page demande un **plan du site**, pas une copie du menu
+ * d'en-tête. Les libellés sont ceux qu'elle lit à l'écran, dans la colonne des emplacements.
+ */
+function mtb_declarer_les_emplacements_de_menu(): void {
+	register_nav_menus(
+		array(
+			'principal' => 'Menu principal',
+			'pied'      => 'Plan du site',
+		)
+	);
+}
+add_action( 'after_setup_theme', 'mtb_declarer_les_emplacements_de_menu' );
+
+/**
+ * Mémorise l'emplacement que sert le bloc Navigation en cours de rendu.
+ *
+ * Le filtre de repli (`block_core_navigation_render_fallback`) ne reçoit **que** des blocs : rien
+ * ne lui dit quel bloc il sert. Sans cette mémoire, les deux navigations de la page rendraient le
+ * même menu, et le plan du site serait une copie de l'en-tête.
+ *
+ * **Couplage assumé, et c'est pour cela qu'il est écrit ici** : la reconnaissance se fait sur la
+ * classe `mtb-plan-du-site` de `parts/footer.html`. Renommer cette classe sans toucher à cette
+ * fonction ferait retomber le pied de page sur le menu principal — en silence, sans erreur. Le
+ * défaut est volontairement `principal` et jamais « aucun » : un bloc Navigation posé ailleurs
+ * qu'en pied de page rend le menu principal plutôt que rien.
+ *
+ * @param string|null $emplacement Emplacement à mémoriser ; `null` pour lire.
+ * @return string
+ */
+function mtb_emplacement_de_navigation( ?string $emplacement = null ): string {
+	static $courant = 'principal';
+
+	if ( null !== $emplacement ) {
+		$courant = $emplacement;
+	}
+
+	return $courant;
+}
+
+/**
+ * Reconnaît, avant son rendu, l'emplacement que sert un bloc Navigation.
+ *
+ * `render_block_data` se déclenche pour chaque bloc, juste avant que son rendu ne commence : la
+ * valeur est donc posée quand le repli la relit, et chaque bloc Navigation la repose pour lui-même.
+ *
+ * @param array $bloc Bloc analysé.
+ * @return array
+ */
+function mtb_reperer_l_emplacement_de_navigation( $bloc ) {
+	if ( ! is_array( $bloc ) || ! isset( $bloc['blockName'] ) || 'core/navigation' !== $bloc['blockName'] ) {
+		return $bloc;
+	}
+
+	$classes = isset( $bloc['attrs']['className'] ) && is_string( $bloc['attrs']['className'] )
+		? preg_split( '/\s+/', trim( $bloc['attrs']['className'] ) )
+		: array();
+
+	if ( ! is_array( $classes ) ) {
+		$classes = array();
+	}
+
+	mtb_emplacement_de_navigation( in_array( 'mtb-plan-du-site', $classes, true ) ? 'pied' : 'principal' );
+
+	return $bloc;
+}
+add_filter( 'render_block_data', 'mtb_reperer_l_emplacement_de_navigation' );
+
+/*
+ * Empêche le cœur de convertir le menu classique en contenu enregistré.
+ *
+ * Sans ce filtre, `WP_Navigation_Fallback::create_classic_menu_fallback()`
+ * (`wp-includes/class-wp-navigation-fallback.php:139-171`) recopie le menu **une seule fois** dans
+ * un contenu `wp_navigation`, puis ne relit plus jamais le menu classique : l'éleveuse modifierait
+ * son menu, la page publique ne changerait pas, et rien à l'écran ne le lui dirait.
+ */
+add_filter( 'wp_navigation_should_create_fallback', '__return_false' );
+
+/**
+ * Mémorise qu'un bloc Navigation vient d'être rendu sans aucune entrée.
+ *
+ * Deux crochets distincts ont besoin de la même information et le cœur n'en transporte aucune :
+ * le repli calcule les blocs, le rendu décide de ne rien afficher. La valeur par défaut est
+ * `false`, si bien qu'un bloc qui n'est jamais passé par le repli — parce qu'il porte un `ref` ou
+ * des blocs internes — n'est jamais concerné.
+ *
+ * @param bool|null $constat Vrai quand le repli n'a produit aucune entrée ; `null` pour lire.
+ * @return bool
+ */
+function mtb_navigation_sans_entree( ?bool $constat = null ): bool {
+	static $sans_entree = false;
+
+	if ( null !== $constat ) {
+		$sans_entree = $constat;
+	}
+
+	return $sans_entree;
+}
+
+/**
+ * Une entrée de menu que le cœur rendra réellement.
+ *
+ * **Pourquoi ce tri, et pourquoi il n'est pas cosmétique.** `get_inner_blocks_html()`
+ * (`wp-includes/blocks/navigation.php:186-209`) ferme le `<ul>` dès qu'une entrée ne rend pas de
+ * `<li>`, puis en rouvre un pour la suivante. Une seule entrée muette au milieu du menu coupe donc
+ * la liste **en deux `<ul>` frères** — deux listes annoncées au lecteur d'écran là où l'éleveuse
+ * n'en a composé qu'une. Constaté : une entrée pointant vers une page en brouillon.
+ *
+ * Le critère est recopié de **`render_block_core_navigation_link()`**
+ * (`wp-includes/blocks/navigation-link.php:172-203`) et de
+ * **`render_block_core_navigation_submenu()`** (`navigation-submenu.php:67-80`), qui rendent tous
+ * deux une chaîne vide sur ces deux conditions. Écarter ici ce que le cœur écarterait une étape
+ * plus loin ne cache donc **rien qui aurait été visible**.
+ *
+ * **`is_post_publicly_viewable()` a été lue et écartée**, alors qu'elle semblait faite pour ça :
+ * `wp-includes/post.php:2508-2519` la définit comme `is_post_type_viewable() &&
+ * is_post_status_viewable()`, qui n'est **pas** le critère des deux blocs ci-dessus. Sur un type de
+ * contenu non visible publiquement mais dont le contenu est publié, elle rend faux alors que le
+ * cœur, lui, rendrait l'entrée : le thème masquerait une entrée que l'éleveuse verrait autrement.
+ * Le brouillon et le contenu privé sont déjà écartés par le statut, donc rien n'est perdu.
+ *
+ * **Couplage à surveiller** : le cœur expose depuis 6.8 le filtre
+ * `render_block_core_navigation_link_allowed_post_status`, qui peut élargir les statuts rendus. Il
+ * n'est pas appliqué ici — il attend un `WP_Block`, que ce tri n'a pas — donc si quelqu'un s'en
+ * sert un jour, cette liste doit suivre. `navigation-submenu.php` ne l'expose pas et fige `publish`.
+ *
+ * Les autres genres (`custom`, `taxonomy`, `post-type-archive`) sont conservés tels quels : le
+ * thème ne juge pas ce qu'il ne sait pas juger. Une entrée déroulante écartée **emporte ses
+ * enfants**, exactement comme le ferait le cœur, qui ne rend pas son sous-arbre.
+ *
+ * Une entrée écartée n'est jamais remplacée ni signalée au visiteur : le thème n'invente rien.
+ *
+ * @param mixed $entree Bloc analysé.
+ * @return bool
+ */
+function mtb_entree_de_menu_rendue( $entree ): bool {
+	if ( ! is_array( $entree ) || ! isset( $entree['blockName'] ) ) {
+		return false;
+	}
+
+	if ( ! in_array( $entree['blockName'], array( 'core/navigation-link', 'core/navigation-submenu' ), true ) ) {
+		return true;
+	}
+
+	$attributs = isset( $entree['attrs'] ) && is_array( $entree['attrs'] ) ? $entree['attrs'] : array();
+
+	if ( empty( $attributs['label'] ) ) {
+		return false;
+	}
+
+	$vers_un_contenu = ( isset( $attributs['kind'] ) && 'post-type' === $attributs['kind'] )
+		|| ( isset( $attributs['type'] ) && in_array( $attributs['type'], array( 'post', 'page' ), true ) );
+
+	if ( ! $vers_un_contenu || ! isset( $attributs['id'] ) || ! is_numeric( $attributs['id'] ) ) {
+		return true;
+	}
+
+	$contenu = get_post( (int) $attributs['id'] );
+
+	return $contenu instanceof WP_Post && 'publish' === $contenu->post_status;
+}
+
+/**
+ * Reconstruit les entrées du menu à chaque requête, depuis le menu classique de l'emplacement.
+ *
+ * Le repli du cœur (`wp-includes/blocks/navigation.php:1055-1066`) propose un `core/page-list`
+ * quand il ne trouve rien : le thème inventerait alors une liste de pages que personne n'a
+ * composée. Ce filtre remplace ce repli par la seule source d'autorité du projet — le menu que
+ * l'éleveuse tient dans `Apparence > Menus` — relue à chaque rendu, jamais recopiée.
+ *
+ * `WP_Classic_To_Block_Menu_Converter::convert()` est l'API publique et non dépréciée de cette
+ * conversion (`wp-includes/class-wp-classic-to-block-menu-converter.php:26`) ; les fonctions
+ * `block_core_navigation_get_classic_menu_fallback*()` le sont depuis 6.3.
+ *
+ * L'emplacement servi vient de `mtb_emplacement_de_navigation()`, posée juste avant le rendu :
+ * l'en-tête rend `principal`, le pied de page rend `pied`, et les deux coexistent sur la page.
+ *
+ * Aucun emplacement assigné, menu supprimé, menu vide, conversion en échec : dans tous ces cas le
+ * repli est vide et le bloc ne s'affiche pas au visiteur (décision 26). Le thème ne comble rien.
+ *
+ * @param array $blocs_de_repli Repli proposé par le cœur, ignoré.
+ * @return array
+ */
+function mtb_entrees_du_menu_classique( $blocs_de_repli ): array {
+	unset( $blocs_de_repli );
+
+	$aucune      = array();
+	$emplacement = mtb_emplacement_de_navigation();
+
+	if ( ! class_exists( 'WP_Classic_To_Block_Menu_Converter' ) ) {
+		mtb_navigation_sans_entree( true );
+
+		return $aucune;
+	}
+
+	$emplacements = get_nav_menu_locations();
+
+	if ( ! is_array( $emplacements ) || empty( $emplacements[ $emplacement ] ) ) {
+		mtb_navigation_sans_entree( true );
+
+		return $aucune;
+	}
+
+	// Un emplacement peut pointer vers un menu supprimé entre-temps : l'objet est alors faux.
+	$menu = wp_get_nav_menu_object( $emplacements[ $emplacement ] );
+
+	if ( ! $menu ) {
+		mtb_navigation_sans_entree( true );
+
+		return $aucune;
+	}
+
+	$balisage = WP_Classic_To_Block_Menu_Converter::convert( $menu );
+
+	if ( is_wp_error( $balisage ) || ! is_string( $balisage ) || '' === trim( $balisage ) ) {
+		mtb_navigation_sans_entree( true );
+
+		return $aucune;
+	}
+
+	$entrees = parse_blocks( $balisage );
+
+	if ( function_exists( 'block_core_navigation_filter_out_empty_blocks' ) ) {
+		$entrees = block_core_navigation_filter_out_empty_blocks( $entrees );
+	}
+
+	$entrees = array_values( array_filter( $entrees, 'mtb_entree_de_menu_rendue' ) );
+
+	mtb_navigation_sans_entree( array() === $entrees );
+
+	return $entrees;
+}
+add_filter( 'block_core_navigation_render_fallback', 'mtb_entrees_du_menu_classique' );
+
+/**
+ * Un menu sans entrée ne laisse pas un point de repère vide au lecteur d'écran.
+ *
+ * Le cœur rend `<nav></nav>` même quand il n'a aucune entrée à y mettre (`navigation.php:708-712`) :
+ * un point de repère de navigation annoncé et vide. Décision 26 : côté public, un composant sans
+ * contenu ne s'affiche pas.
+ *
+ * @param string $contenu Balisage rendu du bloc.
+ * @return string
+ */
+function mtb_retirer_la_navigation_sans_entree( $contenu ) {
+	if ( ! mtb_navigation_sans_entree() ) {
+		return $contenu;
+	}
+
+	mtb_navigation_sans_entree( false );
+
+	return '';
+}
+add_filter( 'render_block_core/navigation', 'mtb_retirer_la_navigation_sans_entree' );
+
+/**
+ * Reconnaît les requêtes de l'écran des menus, et elles seules.
+ *
+ * Deux formes existent : l'écran lui-même (`nav-menus.php`, qui reçoit aussi ses propres envois de
+ * formulaire) et les quatre actions `admin-ajax` dont son JavaScript a besoin. Les quatre sont
+ * déclarées dans `wp-admin/admin-ajax.php:77,83,85,86` et chacune vérifie `edit_theme_options` de
+ * son côté (`wp-admin/includes/ajax-actions.php:1528,1876,1963,2019`) : sans elles, la colonne de
+ * gauche, la recherche rapide, l'ajout d'entrée et l'enregistrement de l'emplacement échouent en
+ * silence.
+ *
+ * `$_REQUEST['action']` n'est ici qu'un aiguillage : chaque action du cœur revérifie son propre
+ * nonce et sa propre capacité avant d'écrire quoi que ce soit.
+ *
+ * @return bool
+ */
+function mtb_requete_de_l_ecran_des_menus(): bool {
+	if ( ! is_admin() ) {
+		return false;
+	}
+
+	$page = isset( $GLOBALS['pagenow'] ) ? (string) $GLOBALS['pagenow'] : '';
+
+	if ( 'nav-menus.php' === $page ) {
+		return true;
+	}
+
+	if ( 'admin-ajax.php' !== $page ) {
+		return false;
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- aiguillage seul, voir plus haut.
+	$action = isset( $_REQUEST['action'] ) ? sanitize_key( wp_unslash( $_REQUEST['action'] ) ) : '';
+
+	return in_array(
+		$action,
+		array( 'add-menu-item', 'menu-get-metabox', 'menu-locations-save', 'menu-quick-search' ),
+		true
+	);
+}
+
+/**
+ * Ouvre l'écran des menus à qui tient déjà les pages du site — et rien d'autre.
+ *
+ * Le rôle Éditeur n'a ni `switch_themes` ni `edit_theme_options` : `Apparence` lui est entièrement
+ * invisible (`wp-admin/menu.php:207`) et `nav-menus.php:23` le refuse. Un
+ * `add_cap( 'edit_theme_options' )` réglerait le problème et en créerait deux : il s'écrit dans
+ * l'option `wp_user_roles`, donc survit au changement de thème sans que personne ne le relie à sa
+ * cause ; et il ouvrirait `Apparence > Éditeur` — l'éditeur de site entier — en permanence, qu'un
+ * `remove_submenu_page()` masquerait sans jamais refuser une URL ni un appel REST.
+ *
+ * La capacité est donc accordée **à la requête**, jamais en base : elle n'existe que le temps de
+ * l'écran des menus, et disparaît avec le thème. `edit_pages` est la capacité retenue par
+ * `docs/contracts/issue-38.md` §7.1 pour désigner la personne qui tient les pages du site.
+ *
+ * @param array $capacites Capacités effectives de l'utilisateur.
+ * @param array $demandees Capacités primitives exigées par l'appel en cours.
+ * @return array
+ */
+function mtb_ouvrir_l_ecran_des_menus( $capacites, $demandees ) {
+	if ( ! is_array( $capacites ) || ! is_array( $demandees ) ) {
+		return $capacites;
+	}
+
+	if ( ! in_array( 'edit_theme_options', $demandees, true ) ) {
+		return $capacites;
+	}
+
+	if ( empty( $capacites['edit_pages'] ) ) {
+		return $capacites;
+	}
+
+	if ( ! mtb_requete_de_l_ecran_des_menus() ) {
+		return $capacites;
+	}
+
+	$capacites['edit_theme_options'] = true;
+
+	return $capacites;
+}
+add_filter( 'user_has_cap', 'mtb_ouvrir_l_ecran_des_menus', 10, 2 );
+
+/**
+ * Le chemin par lequel l'éleveuse arrive à son menu.
+ *
+ * Corollaire du filtre ci-dessus : sur toute autre requête la capacité n'est pas accordée, donc
+ * `Apparence` reste invisible et l'écran des menus n'a aucun point d'entrée. Cette entrée de
+ * premier niveau en est un, atteignable avec `edit_pages` — les capacités qu'elle a déjà. Elle est
+ * posée juste sous « Pages », d'où l'on vient quand on veut ajouter une page au menu.
+ *
+ * Le libellé est **Menus**, celui de l'écran lui-même : aucun mot de `MASTER.md` §10.4.
+ *
+ * Position **25** : les trois types de contenu de l'extension occupent 21 à 23 (Portée, Chien,
+ * Résultat de travail) et l'écran des coordonnées occupe 24. Les menus se rangent juste après. Deux
+ * entrées à la même position se départagent de façon non déterministe dans `$menu`.
+ */
+function mtb_entree_de_menu_vers_les_menus(): void {
+	add_menu_page( 'Menus', 'Menus', 'edit_pages', 'nav-menus.php', '', 'dashicons-menu-alt', 25 );
+}
+add_action( 'admin_menu', 'mtb_entree_de_menu_vers_les_menus' );
+
+/**
+ * Sur l'écran des menus, ne montre pas des portes que la capacité n'ouvre pas.
+ *
+ * Le temps de cette requête, `edit_theme_options` est accordée : `Apparence` redevient visible et
+ * affiche « Thèmes » et « Éditeur ». Les deux mènent à un refus, puisque la capacité n'est pas
+ * accordée sur leurs requêtes à elles. Les masquer ici ne remplace pas ce refus — il tient tout
+ * seul, y compris sur une URL tapée — il évite seulement de proposer une impasse.
+ *
+ * `switch_themes` distingue le compte d'administration, qui garde son menu `Apparence` entier.
+ */
+function mtb_refermer_l_apparence_sur_l_ecran_des_menus(): void {
+	if ( ! mtb_requete_de_l_ecran_des_menus() ) {
+		return;
+	}
+
+	if ( current_user_can( 'switch_themes' ) ) {
+		return;
+	}
+
+	remove_submenu_page( 'themes.php', 'themes.php' );
+	remove_submenu_page( 'themes.php', 'site-editor.php' );
+}
+add_action( 'admin_menu', 'mtb_refermer_l_apparence_sur_l_ecran_des_menus', 999 );
+
+/**
+ * Rend focalisable la cible du lien d'évitement, sur tous les gabarits.
+ *
+ * Sans `tabindex="-1"`, suivre « Aller au contenu » déplace la vue mais **laisse le focus
+ * derrière** : la navigation au clavier repart du début et le lecteur d'écran n'annonce rien. Le
+ * mesurer sur les deux gabarits d'erreur seuls donnerait un test qui passe et ne prouve rien.
+ *
+ * L'attribut est posé **au rendu**, jamais dans le balisage enregistré, pour trois raisons :
+ *
+ * 1. Un attribut non prévu par le `block.json` d'un `core/group` fait échouer la validation du bloc
+ *    dans l'éditeur de site — le balisage enregistré reste donc valide.
+ * 2. La garantie devient uniforme sur tout le site au lieu d'être vraie sur deux gabarits.
+ * 3. Les gabarits à venir en héritent sans avoir à y penser : `index.html` et `singular.html`
+ *    n'appartiennent à aucune issue, une convention écrite dans un contrat n'aurait été payée par
+ *    personne.
+ *
+ * `WP_HTML_Tag_Processor` est l'outil prévu pour modifier un attribut sur du balisage rendu ;
+ * aucune expression régulière n'est appliquée à du HTML.
+ *
+ * @param string $contenu Balisage rendu du bloc.
+ * @param array  $bloc    Bloc analysé.
+ * @return string
+ */
+function mtb_rendre_la_cible_focalisable( $contenu, $bloc ) {
+	if ( ! is_string( $contenu ) || ! is_array( $bloc ) ) {
+		return $contenu;
+	}
+
+	// Le contrôle est volontairement le plus étroit possible : il se lit sur deux clés de tableau,
+	// et n'ouvre le lecteur de balisage que pour le seul bloc ancré sur la cible.
+	if ( ! isset( $bloc['attrs']['anchor'] ) || 'contenu' !== $bloc['attrs']['anchor'] ) {
+		return $contenu;
+	}
+
+	if ( ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+		return $contenu;
+	}
+
+	$processeur = new WP_HTML_Tag_Processor( $contenu );
+
+	if ( ! $processeur->next_tag() ) {
+		return $contenu;
+	}
+
+	if ( 'contenu' !== $processeur->get_attribute( 'id' ) || null !== $processeur->get_attribute( 'tabindex' ) ) {
+		return $contenu;
+	}
+
+	$processeur->set_attribute( 'tabindex', '-1' );
+
+	return $processeur->get_updated_html();
+}
+add_filter( 'render_block', 'mtb_rendre_la_cible_focalisable', 10, 2 );
+
+/**
+ * Fait entrer la feuille de l'en-tête et du pied de page dans la toile de l'éditeur.
+ *
+ * Sans elle, l'en-tête et le pied de page s'affichent sans fond, sans filet double et sans
+ * traitement de navigation dans l'éditeur de site : ce qu'on y voit ne ressemble pas au site.
+ *
+ * L'appel est séparé de `mtb_demarrer_le_theme()` et non ajouté à sa liste : `add_editor_style()`
+ * accumule les feuilles au lieu de les remplacer, et `functions.php` ne reçoit que des ajouts —
+ * aucune ligne existante n'est rouverte. Le garde `file_exists()` est celui du reste du fichier :
+ * une feuille absente n'annonce rien.
+ */
+function mtb_feuille_entete_pied_dans_l_editeur(): void {
+	if ( file_exists( get_theme_file_path( 'assets/css/entete-pied.css' ) ) ) {
+		add_editor_style( 'assets/css/entete-pied.css' );
+	}
+}
+add_action( 'after_setup_theme', 'mtb_feuille_entete_pied_dans_l_editeur', 11 );
