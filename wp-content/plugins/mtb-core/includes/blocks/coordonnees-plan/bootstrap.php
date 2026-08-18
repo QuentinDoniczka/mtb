@@ -82,8 +82,8 @@ function enregistrer(): void {
  * Injecte les coordonnées de référence de l'élevage dans les valeurs par défaut du bloc.
  *
  * « block.json » est du JSON statique : aucun appel de fonction n'y est évaluable, et y recopier
- * l'adresse, le numéro et le courriel en ferait une deuxième source de vérité, qui dériverait de
- * mtb_coordonnees_elevage() au premier changement. Le filtre du cœur s'exécute DANS
+ * l'adresse, le numéro et le courriel en ferait une deuxième source de vérité, qui dériverait du
+ * repli local du module au premier changement. Le filtre du cœur s'exécute DANS
  * register_block_type_from_metadata(), donc avant l'enregistrement : les valeurs atteignent le rendu
  * comme l'inspecteur de l'éditeur.
  *
@@ -101,7 +101,7 @@ function defauts_du_bloc( array $metadata ): array {
 		return $metadata;
 	}
 
-	$reference = mtb_coordonnees_elevage();
+	$reference = coordonnees_elevage();
 
 	foreach ( array( 'adresse', 'telephone', 'courriel' ) as $champ ) {
 		if ( isset( $metadata['attributes'][ $champ ] ) && is_array( $metadata['attributes'][ $champ ] ) ) {

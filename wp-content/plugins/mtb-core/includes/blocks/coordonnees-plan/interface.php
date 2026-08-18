@@ -51,7 +51,9 @@ if ( ! function_exists( 'mtb_coordonnees_plan_rendu' ) ) {
 	 *                sont vides.
 	 */
 	function mtb_coordonnees_plan_rendu( array $arguments = array() ): string {
-		$reference = mtb_coordonnees_elevage();
+		// Repli local du module — voir l'en-tête de « coordonnees.php » : ces valeurs ne sont pas la
+		// source de vérité de l'élevage, et aucun autre module ne les lit.
+		$reference = \MTB\Core\Blocks\CoordonneesPlan\coordonnees_elevage();
 
 		$defauts = array(
 			'adresse'          => $reference['adresse'],

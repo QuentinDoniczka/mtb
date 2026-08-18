@@ -73,11 +73,19 @@ livraison sans réécrire une ligne.
 
 ## 2. Fonctions de lecture exposées par l'extension
 
-Toutes en **espace de noms global**, déclarées sous `function_exists()`, dans
-`includes/blocks/coordonnees-plan/coordonnees.php`. **À appeler sous `function_exists()`**
-(décision 19).
+> **⚠ Section amendée le 2026-08-18 par l'arbitrage inter-chaînes du §17.**
+> `mtb_coordonnees_elevage()` **n'est plus une fonction globale et n'est plus exposée au thème.** Elle
+> est devenue `MTB\Core\Blocks\CoordonneesPlan\coordonnees_elevage()`, **interne au module**. Sa
+> description ci-dessous reste exacte quant à la **forme du retour** ; seules sa portée et sa
+> consommabilité changent. Les trois fonctions réellement exposées sont désormais
+> `mtb_coordonnees_lien_telephone()`, `mtb_coordonnees_lien_courriel()` et
+> `mtb_coordonnees_plan_rendu()`.
 
-### `mtb_coordonnees_elevage(): array`
+Les fonctions exposées sont en **espace de noms global**, déclarées sous `function_exists()`, dans
+`includes/blocks/coordonnees-plan/coordonnees.php` (dérivations d'URI) et `interface.php` (rendu).
+**À appeler sous `function_exists()`** (décision 19).
+
+### ~~`mtb_coordonnees_elevage(): array`~~ → `coordonnees_elevage(): array`, interne au module
 
 Retour — **exactement trois clés, toujours présentes, toujours des chaînes non vides** :
 
@@ -90,6 +98,10 @@ Retour — **exactement trois clés, toujours présentes, toujours des chaînes 
 **Le cas « donnée absente » n'existe pas** : ce sont des constantes du code, pas une lecture de contenu.
 Aucune requête, aucune option, aucun `null`, aucun `?array`. Appelable à tout moment, y compris avant
 `init`.
+
+**Depuis l'arbitrage du §17**, la clé `telephone` provient de `mtb_get_telephone_elevage()` quand cette
+fonction existe (traitement défensif, repli sur la constante locale sinon) ; `adresse` et `courriel`
+restent des littéraux recopiés de BRIEF §7, aucune fonction centrale n'étant gelée pour eux.
 
 **Corollaire que le thème doit connaître** : cette fonction **ne reflète pas** ce que l'éleveuse a saisi
 dans un bloc donné. Elle rend les valeurs de référence de l'élevage. Ce qu'elle a tapé sur une page vit
@@ -646,7 +658,7 @@ nu. L'index est partagé avec les chaînes sœurs.
 
 | # | Dette | Effet |
 |---|---|---|
-| **T19** *(numéro à confirmer par l'orchestrateur)* | **Une table de constantes de l'élevage est domiciliée dans un dossier de bloc.** `includes/blocks/coordonnees-plan/coordonnees.php` déclare `mtb_coordonnees_elevage()` et ses deux dérivations. Sa place est `includes/query/`, hors du catalogue : le pied de page (epic Gabarits) et l'encart d'appel (#10) la consomment sans rien avoir à voir avec ce bloc, et si le bloc était retiré la fonction disparaîtrait avec lui. **Le fichier est écrit pour être déplacé tel quel** : espace de noms global, aucune dépendance vers le module, aucun hook. Parente de **T9**. | créée |
+| **T19** *(numéro à confirmer — **partiellement caduque depuis l'arbitrage du §17** : la table de constantes est désormais **interne au module** et mourra avec lui, donc elle n'a plus vocation à être hissée ; seules les deux dérivations d'URI restent partageables. La dette est **remplacée** par l'issue « Coordonnées de l'élevage — écran de réglages unique ».)* | **Une table de constantes de l'élevage est domiciliée dans un dossier de bloc.** `includes/blocks/coordonnees-plan/coordonnees.php` déclare `mtb_coordonnees_elevage()` et ses deux dérivations. Sa place est `includes/query/`, hors du catalogue : le pied de page (epic Gabarits) et l'encart d'appel (#10) la consomment sans rien avoir à voir avec ce bloc, et si le bloc était retiré la fonction disparaîtrait avec lui. **Le fichier est écrit pour être déplacé tel quel** : espace de noms global, aucune dépendance vers le module, aucun hook. Parente de **T9**. | créée |
 | **T9** | Une **quatrième copie** de `assainir_texte_recopie()`, avec la divergence multiligne déclarée au §10. | augmentée |
 | **T13** | Forme d'état vide **rigoureusement** conforme à §9.1 (`<span>` pour le nom, aucune classe modificatrice). | soldée pour ce composant |
 | **T12** | Le plan passe par la médiathèque, donc sous-tailles, `srcset` et format moderne. **Réserve** : l'image doit être téléversée **après** le module de #8, sinon elle n'aura pas de candidat moderne. | soldée sur cet objet |
@@ -696,6 +708,80 @@ remplacement. Le cadre, le ratio, le fond et l'encre sont conformes ; le glyphe 
 utilisateur. Le supprimer exigerait `overflow: hidden` ou un `content:`, **tous deux interdits par le
 §8**. La formule « aucun pictogramme cassé » de `MASTER.md` §6.6 n'est donc pas tenable à la lettre sans
 rouvrir un interdit.
+
+---
+
+---
+
+## 17. Arbitrage inter-chaînes — appliqué le 2026-08-18, après le commit `0e6d1d4`
+
+L'orchestrateur du lot a tranché après la livraison : **la donnée « coordonnées de l'élevage »
+n'appartient à aucune des deux chaînes du lot**, et sera livrée par une issue à venir
+« Coordonnées de l'élevage — écran de réglages unique », qui fera basculer #10 et #11 d'un coup.
+
+**Motif** : deux déclarations homonymes chargées par l'auto-découverte s'ombrent dans l'ordre
+alphabétique des dossiers **sans lever d'erreur**, sur un site qui répond 200 — la panne serait
+silencieuse et attribuée au mauvais module (décision 19).
+
+### Ce qui a changé
+
+| Point | Avant | Après |
+|---|---|---|
+| Table des coordonnées | `mtb_coordonnees_elevage()`, **globale**, annoncée au §2 et au §14 comme la fonction que #10 et #18 consommeraient | `MTB\Core\Blocks\CoordonneesPlan\coordonnees_elevage()`, **interne au module**, sans garde `function_exists()`. **Aucun autre module ne doit la lire.** C'est un **repli local**, exactement comme la constante `TELEPHONE_ELEVAGE` de `encart-appel/rendu.php` |
+| Téléphone | littéral | `mtb_get_telephone_elevage()` sous `function_exists()`, **traitement défensif aligné mot pour mot sur celui de #10**, repli sur la constante locale. **La fonction n'est déclarée nulle part aujourd'hui** : le comportement observable est donc inchangé |
+| `mtb_get_page_contact()` | — | **non consommée, délibérément** : ce composant n'a ni bouton ni lien vers une page Contact, l'appeler serait un couplage gratuit. Commenté comme tel pour qu'une revue n'y voie pas un oubli |
+| `mtb_coordonnees_plan_rendu()` | globale | **inchangée** — c'est une fonction de **rendu** contractée pour #18, elle ne prétend posséder aucune donnée |
+| `mtb_coordonnees_lien_telephone()` / `_lien_courriel()` | globales | **inchangées** — ce sont des dérivations d'URI, pas des lectures de la donnée d'élevage |
+
+**Aucune fonction interdite n'a jamais été déclarée par ce module** : `mtb_get_telephone_elevage` et
+`mtb_get_page_contact` n'y apparaissent qu'en **consommation**, jamais en déclaration. Vérifié par
+`grep` sur tout `wp-content/`.
+
+### Ce que cette chaîne ne tranche pas
+
+**La forme du retour de `mtb_get_telephone_elevage()` reste ouverte** — `?string` nu, ou l'enveloppe
+`array( 'libelle', 'valeur', 'affichage' )` de la décision 18. Elle appartient à l'issue qui
+**déclarera** la fonction. Les deux formes sont acceptées défensivement, et le cas a été éprouvé en
+déclarant la fonction à la volée (chaîne nue, enveloppe complète, tableau sans `valeur`, entier, `null`).
+
+### Un point que l'issue de réglages devra trancher
+
+`mtb_coordonnees_plan_rendu()` (pied de page #18) lira le numéro central **à chaque rendu**. Mais les
+**défauts du bloc sont injectés à l'enregistrement** : un numéro central ne touchera que les blocs
+**nouvellement insérés**, jamais les pages déjà enregistrées, dont les attributs sont sérialisés dans
+`post_content`. C'est le fonctionnement contracté de #11 (V1), pas un effet de cet arbitrage — et c'est
+exactement le piège que #10 évite en résolvant au rendu. **L'issue de réglages devra décider si ce
+composant passe lui aussi à une résolution au rendu.**
+
+### Divergence de libellé avec #10, assumée
+
+#10 nomme son champ **« Téléphone affiché »**, avec l'aide « Laissez ce champ vide pour afficher le
+numéro de l'élevage. » Ce composant garde **« Téléphone »**, et **ne s'aligne pas**.
+
+Les sémantiques sont opposées et les deux sont justes dans leur contexte : chez #10, un champ vide
+signifie *« affiche le numéro de l'élevage »* ; ici, un champ vide signifie *« cette ligne disparaît »*
+(§9.3, décision 26). Adopter le libellé de #10 sur cette sémantique-ci mentirait à l'écran — et
+surtout, la règle de repli de #10 rendrait **impossible** le retrait de la ligne « Téléphone » d'un bloc
+de coordonnées, ce qui est un acte légitime sur une page Contact. **Conséquence pour le guide** : une
+fiche qui couvrirait les deux composants ne doit pas les confondre.
+
+---
+
+## 18. Aperçu visuel — décision 33
+
+Pris le 2026-08-18 dans la stack (Chrome sans interface, 1440 px), **regardés** et déposés dans
+`docs/apercus/lot-4/` :
+
+- `coordonnees-plan-sans-plan.png` — **l'état qui est livré aujourd'hui**, sans carte. Le bloc se
+  termine proprement sur le courriel : aucun trou, aucune réserve, aucune marge orpheline. §9.2 tenu à
+  l'œil, pas seulement au calcul.
+- `coordonnees-plan-nominal.png` — avec un plan. Cadre mesuré **576 × 382 px**, soit **1,508** — le 3/2
+  de `--r-paysage`.
+
+**À savoir pour ne pas s'y tromper** : sur l'aperçu nominal, le cadre du plan paraît vide. Ce n'est
+**pas** un défaut — l'image d'essai est un aplat pâle de 3 144 o, servi en **HTTP 200**, visuellement
+indistinguable du fond `--calcaire-creux`. Le balisage est complet et conforme : `srcset` à quatre
+candidats, `sizes`, `width`/`height`, `loading="lazy"`, `decoding="async"` et un `alt` rempli.
 
 ---
 
