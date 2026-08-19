@@ -5,19 +5,56 @@ plus, ou quand une entrée doit changer de nom.
 **Temps** : 2 minutes. **Rattrapable** : oui. Tout se remet comme avant, et **retirer une entrée du
 menu ne supprime jamais la page** : elle reste sur le site, avec son texte et ses photos.
 
-Le site a **deux menus**, et vous les composez au même endroit :
+Le site a **deux endroits où un menu peut s'afficher**, et c'est au même écran que vous composez les
+menus qui les occupent :
 
-- **Menu principal** — celui qui s'affiche **en haut de chaque page**.
-- **Plan du site** — celui qui s'affiche **en bas de chaque page**.
+- **Menu principal** — l'endroit qui s'affiche **en haut de chaque page**.
+- **Plan du site** — l'endroit qui s'affiche **en bas de chaque page**.
 
-Les deux existent déjà et portent ces deux noms. Ils sont indépendants : une entrée ajoutée à l'un
-n'apparaît pas dans l'autre. **Avant toute chose, vérifiez lequel des deux est ouvert à l'écran.**
+Ce sont deux **emplacements**, pas deux menus tout faits : c'est vous qui composez les menus, et qui
+dites lequel sert à quel endroit. Les deux sont indépendants — une entrée ajoutée à l'un n'apparaît
+pas dans l'autre. **Avant toute chose, vérifiez lequel des deux est ouvert à l'écran.**
+
+**Si l'écran ne vous propose aucun menu à modifier**, c'est qu'aucun n'a encore été composé :
+commencez par « Créer un menu », juste en dessous. C'est à faire une fois, puis plus jamais.
 
 **Le chemin est court.** Dans le menu de gauche de l'administration, cliquez sur **Menus** : l'entrée
-se trouve juste sous **Coordonnées**. C'est le seul chemin à connaître.
+se trouve **sous Commentaires**, deux crans sous **Coordonnées**. C'est le seul chemin à connaître.
 
 **Une modification enregistrée est visible tout de suite** sur le site. Il n'y a rien à publier
 ensuite, rien à vider, rien à attendre.
+
+---
+
+## Créer un menu
+
+**À faire une fois par menu**, et seulement s'il n'en existe pas encore : le site n'est livré avec
+aucun menu tout fait, c'est vous qui les composez.
+
+1. Dans le menu de gauche, cliquez sur **Menus**.
+
+2. En haut de l'écran, cliquez sur le lien **créez un nouveau menu**. *S'il n'existe encore aucun
+   menu, l'écran vous propose directement d'en créer un : vous y êtes déjà.*
+
+3. Dans le champ **Nom du menu**, tapez son nom. L'écran vous le dit ainsi : « Donnez à votre menu
+   un nom, puis cliquez sur « Créer le menu ». »
+
+   **Prenez le nom de l'endroit qu'il servira** — **Menu principal** pour le haut du site,
+   **Plan du site** pour le bas. Rien ne vous y oblige, mais c'est ce qui vous évitera plus tard de
+   modifier le mauvais menu.
+
+4. Cliquez sur **Créer le menu**.
+
+   > **Capture à prendre :** l'écran **Menus** en création, le champ **Nom du menu** rempli et le
+   > bouton **Créer le menu** visible.
+
+5. **Le menu est créé, et vide.** Deux choses restent à faire, dans cet ordre : lui ajouter ses
+   entrées — « Les étapes », ci-dessous — puis dire à quel endroit il s'affiche — « Choisir où un
+   menu s'affiche ».
+
+**Tant qu'aucun menu n'est coché pour un endroit, le site n'affiche rien à cet endroit** : ni liste
+de pages inventée, ni trou, ni message. Le haut ou le bas de page s'affiche simplement sans sa liste
+de liens. Rien n'est cassé pour autant.
 
 ---
 
@@ -26,13 +63,14 @@ ensuite, rien à vider, rien à attendre.
 1. Dans le menu de gauche, cliquez sur **Menus**.
 
    > **Capture à prendre :** le menu de gauche de l'administration, l'entrée **Menus** mise en
-   > évidence, juste sous **Coordonnées**.
+   > évidence, sous **Commentaires**.
 
-2. En haut de l'écran, la ligne **Sélectionnez le menu à modifier :** propose vos deux menus.
-   Choisissez **Menu principal** ou **Plan du site**, puis cliquez sur **Sélectionner**.
+2. En haut de l'écran, la ligne **Sélectionnez le menu à modifier :** propose les menus déjà
+   composés. Choisissez celui que vous voulez modifier, puis cliquez sur **Sélectionner**.
+   **S'il n'y en a aucun, ou s'il vous en manque un**, voir « Créer un menu », ci-dessus.
 
    > **Capture à prendre :** le haut de l'écran, la ligne **Sélectionnez le menu à modifier :** avec
-   > sa liste ouverte sur **Menu principal** et **Plan du site**, et le bouton **Sélectionner**.
+   > sa liste ouverte sur les menus composés, et le bouton **Sélectionner**.
 
 3. Dans la colonne de gauche de l'écran, ouvrez la liste de vos pages et **cochez la case** de la page
    à ajouter — **Contact**, par exemple.
@@ -120,9 +158,10 @@ Un menu ne s'affiche sur le site que si vous avez dit **à quel endroit** il ser
    - **Plan du site** — le menu s'affiche **en bas de chaque page**.
 4. Cliquez sur **Enregistrer le menu**, en bas à droite.
 
-**Aujourd'hui, chaque menu est déjà coché pour la case qui porte son nom** : le menu **Menu principal**
-s'affiche en haut, le menu **Plan du site** en bas. Vous n'avez rien à y changer tant que cela vous
-convient.
+**Une case ne se coche jamais toute seule** : un menu fraîchement créé n'en a aucune, et c'est ici,
+une fois, que vous lui donnez sa place. Si vous avez nommé vos menus d'après les endroits qu'ils
+servent, cochez pour chacun la case qui porte son nom : le menu **Menu principal** s'affiche alors en
+haut, le menu **Plan du site** en bas — et vous n'avez plus à y revenir.
 
 **Une case ne peut servir qu'à un seul menu à la fois.** Si vous cochez **Menu principal** sur un
 second menu, c'est lui qui s'affichera en haut, et le premier ne s'affichera plus — sans être perdu
@@ -183,12 +222,14 @@ pas — et il suffit de revenir la corriger.
 
 **C'est normal, vous n'avez rien à faire :**
 
-- **Une page toute neuve n'apparaît pas dans le menu.** Tant qu'elle n'est pas publiée, son entrée
-  reste invisible sur le site. Vous pouvez la poser dans le menu dès maintenant : elle apparaîtra
-  toute seule le jour où vous publierez la page.
-- **Le bas du site n'affiche aucune liste de liens.** Aucun menu n'est coché pour **Plan du site**.
-  Ce n'est pas une erreur, et il n'y a ni trou ni message : le bas de page s'affiche simplement sans
-  cette liste. Pour en avoir une, voir « Choisir où un menu s'affiche ».
+- **Une page toute neuve n'apparaît pas dans la liste des pages à ajouter.** Rien n'est cassé : cet
+  écran ne propose que les pages **publiées**, et l'onglet **Rechercher** n'atteint pas non plus un
+  brouillon. **L'ordre est donc : publier la page d'abord, la poser dans le menu ensuite** — les
+  quelques clics des étapes 3 à 7, le jour où elle est en ligne. Il n'y a rien à préparer avant.
+- **Le bas du site n'affiche aucune liste de liens.** Aucun menu n'est coché pour **Plan du site** —
+  ou aucun menu n'a encore été composé. Ce n'est pas une erreur, et il n'y a ni trou ni message : le
+  bas de page s'affiche simplement sans cette liste. Pour en avoir une, voir « Créer un menu », puis
+  « Choisir où un menu s'affiche ».
 - **Une entrée n'apparaît pas sur le site alors qu'elle est dans la liste.** Deux causes possibles :
   la page visée n'est pas publiée, ou le champ **Titre de la navigation** de l'entrée a été effacé.
   Republiez la page, ou retapez le nom dans ce champ.
@@ -225,8 +266,9 @@ session d'administration, la barre latérale n'y est pas la même.
 
 | Nom de fichier attendu | Écran | Ce qui doit être visible |
 |---|---|---|
-| `captures/menu-entree-laterale.png` | N'importe quel écran d'administration | Le menu de gauche entier, l'entrée **Menus** mise en évidence, juste sous **Coordonnées** |
-| `captures/menu-selection.png` | **Menus**, haut de l'écran | La ligne **Sélectionnez le menu à modifier :**, sa liste ouverte sur **Menu principal** et **Plan du site**, le bouton **Sélectionner** |
+| `captures/menu-entree-laterale.png` | N'importe quel écran d'administration | Le menu de gauche entier, l'entrée **Menus** mise en évidence, **sous Commentaires** |
+| `captures/menu-creation.png` | **Menus**, en création | Le champ **Nom du menu** rempli, sa ligne d'aide lisible, et le bouton **Créer le menu** |
+| `captures/menu-selection.png` | **Menus**, haut de l'écran | La ligne **Sélectionnez le menu à modifier :**, sa liste ouverte sur les menus composés, le bouton **Sélectionner** |
 | `captures/menu-ajouter-une-page.png` | **Menus** | La colonne de gauche, la liste des pages, la case de **Contact** cochée, et le bouton **Ajouter au menu** juste en dessous |
 | `captures/menu-structure.png` | **Menus** | La liste **Structure du menu** avec au moins trois entrées, l'une en cours de déplacement |
 | `captures/menu-entree-ouverte.png` | **Menus** | Une entrée ouverte : le champ **Titre de la navigation** mis en évidence, et le lien **Retirer** visible en bas de l'encadré |

@@ -512,6 +512,13 @@ maintenant pointerait dans le vide jusqu'à ce que #17 livre la page.
 Le volet « tarifs des chiots » de Q6 **ne concerne pas cette issue** : rien dans l'empreinte n'affiche
 un prix. Il n'est ni traité, ni mentionné dans le guide.
 
+**Constaté le 2026-08-19 — aucun menu n'est livré du tout.** `docker/provision/provision.sh` ne
+contient aucune commande `wp menu` (zéro occurrence) et `functions.php:442-450` n'enregistre que des
+**emplacements**. Les deux menus présents sur la pile de développement y ont été composés à la main :
+sur une installation neuve, l'écran **Menus** n'en propose aucun. C'est un fait, pas un manque à
+combler ici — la structure reste ouverte ci-dessous, et `docs/guide/menu-modifier-le-menu.md` enseigne
+désormais la création du premier menu.
+
 **OUVERT (2026-08-18)** — la liste exacte. Contrainte dure : **aucune Page n'existe encore** et les
 index de #16/#17 ne sont pas livrés. Une entrée qui pointe dans le vide est un lien mort livré à
 l'éleveuse. Les libellés, eux, sont figés par `MASTER.md` §10.3 dès que la destination existera :
@@ -642,7 +649,15 @@ le HTML**. Sans CSS ni JS dans l'empreinte, c'est aussi le seul atteignable.
 
 ## 10. Interdits
 
-- Le thème n'interroge **jamais** la base directement et n'appelle **aucune** fonction `mtb_get_*`.
+- Le thème ne lit **aucune donnée d'élevage** — portée, chien, résultat, coordonnée — et n'appelle
+  **aucune** fonction `mtb_get_*`. Il peut en revanche interroger les **API de navigation du cœur**
+  (`get_post()`, `get_nav_menu_locations()`, `wp_get_nav_menu_object()`,
+  `WP_Classic_To_Block_Menu_Converter::convert()`), la navigation étant un domaine de thème par
+  construction WordPress. **Écart ratifié par l'orchestrateur le 2026-08-19**, après constat que
+  `functions.php:595,633,642,650` les appelle : aucune donnée d'élevage n'y transite. La clause
+  d'origine — « n'interroge jamais la base directement » — était tenue sur son second membre
+  (zéro `mtb_get_`, `$wpdb`, `WP_Query` dans le thème) mais fausse sur le premier ; #16 et #17
+  héritent de la formulation ci-dessus, pas de l'ancienne.
 - Le thème ne compose **jamais** une chaîne métier ni ne reformate une coordonnée.
 - **Aucune coordonnée recopiée** dans `parts/footer.html`.
 - **Aucun `patterns/*.php`** exécutant du PHP pour composer du balisage (#38 §10).
@@ -712,7 +727,7 @@ Relevés par la chaîne elle-même sur la stack (port 3005), en plus de ceux des
 | `site-editor.php` | **403** |
 | `themes.php` | **403** |
 | `options-general.php` | **403** (inchangé) |
-| Barre latérale | Tableau de bord · Articles · Médias · Pages · Portées · Chiens · Résultats de travail · Coordonnées · **Menus** · Profil · Outils — **`Apparence` absente** |
+| Barre latérale (relevée le 2026-08-19 en session `fabienne`) | Tableau de bord · Articles · Médias · Pages · Portées · Chiens · Résultats de travail · Coordonnées · Commentaires · **Menus** · Profil · Outils — **`Apparence` absente**. `Commentaires` s'intercale entre `Coordonnées` et `Menus` : la première rédaction de cette ligne l'omettait tout en se présentant comme observée. |
 
 **La promesse centrale de l'issue, démontrée et non affirmée** : une entrée ajoutée au menu apparaît
 **immédiatement** sur la page publique, et `wp post list --post_type=wp_navigation` reste à **0**.

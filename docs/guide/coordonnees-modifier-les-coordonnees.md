@@ -68,11 +68,16 @@ Il n'y a **aucune page à rouvrir, aucun composant à reposer, rien à republier
 Aujourd'hui, l'écran arrive rempli de vos coordonnées, telles que le site les donne déjà :
 **3060 Route de Salernes, 83570 Entrecasteaux**, **0680505619**, **mtbrabant@gmail.com**.
 
-### Le numéro s'affiche exactement comme vous l'écrivez
+### Comment le numéro s'affiche sur le site
 
-Il est aujourd'hui écrit d'un seul tenant : **0680505619**. Si vous le préférez en paires, tapez
-**06 80 50 56 19** dans le champ **Téléphone**, puis **Enregistrer** : il s'affichera ainsi **partout
-sur le site**, et il restera appelable d'un doigt sur un téléphone — les espaces sont retirées toutes
+Il est aujourd'hui écrit d'un seul tenant : **0680505619**. Écrit ainsi, il ne s'affiche pas partout
+de la même façon : **l'encart d'appel espace les chiffres par paires — 06 80 50 56 19 — pour qu'on
+puisse le lire et le dicter, tandis que le composant Coordonnées et plan d'accès et le bas de page
+l'affichent d'un seul tenant, tel que vous l'avez tapé.**
+
+**Pour que tout le site l'écrive de la même façon, tapez-le espacé ici** : **06 80 50 56 19** dans le
+champ **Téléphone**, puis **Enregistrer**. Il s'affiche alors ainsi **partout sur le site**, sans
+exception, et il reste appelable d'un doigt sur un téléphone — les espaces sont retirées toutes
 seules du lien d'appel.
 
 **C'est le seul endroit où décider de cette écriture pour tout le site.**
@@ -122,8 +127,9 @@ le faire revenir : retapez le numéro ici, ou choisissez une **Page de contact**
 La liste **Page de contact** propose **Aucune** en tête, puis toutes vos pages publiées, par ordre
 alphabétique.
 
-- **Aucune** — c'est le cas aujourd'hui, et **c'est normal** : la page **Contact** n'existe pas encore.
-  Les encarts s'affichent avec le numéro, **sans bouton**, et il ne manque rien.
+- **Aucune** — c'est le cas aujourd'hui, et **c'est normal** : personne n'a encore choisi de page.
+  Les encarts s'affichent avec le numéro, **sans bouton**, et il ne manque rien. La page **Contact**
+  figure dans la liste : choisissez-la le jour où vous voudrez que ces boutons y mènent.
 - **Une page choisie** — les boutons du site qui n'ont pas de page à eux mènent à celle-là, et ils
   **portent son nom**. Vous renommez la page, les boutons se renomment tout seuls.
 
@@ -139,8 +145,9 @@ des encarts, lui, ne bouge pas.
 ## Ce qui n'est pas réglable, et c'est normal
 
 - **Un seul numéro, une seule adresse, un seul courriel.** L'écran n'en propose qu'un de chaque.
-- **Le site ne met jamais vos coordonnées en forme à votre place.** Il n'ajoute pas d'indicatif, ne
-  regroupe pas les chiffres, ne corrige pas une majuscule. Ce que vous tapez est ce qui s'affiche.
+- **Le site ne réécrit jamais vos coordonnées.** Il n'ajoute pas d'indicatif, ne corrige pas une
+  majuscule, ne change ni un chiffre ni son rang. **Une seule exception, et c'est un affichage** :
+  l'encart d'appel espace les chiffres par paires, comme dit plus haut.
 - **Le nom d'un bouton ne se tape pas ici** : c'est le nom de la page choisie. Pour le changer,
   renommez la page.
 - **Les couleurs, les lettres et la place de vos coordonnées sur le site** sont fixées par le design du
@@ -156,8 +163,12 @@ suffit de la retaper ici pour qu'elle revienne partout.
 
 **C'est normal, vous n'avez rien à faire :**
 
-- **Page de contact affiche Aucune.** La page **Contact** n'existe pas encore. Les encarts s'affichent
-  sans bouton, et il ne manque rien. Vous reviendrez la choisir ici le jour où cette page existera.
+- **Page de contact affiche Aucune.** Personne n'a encore choisi de page. Les encarts s'affichent
+  sans bouton, et il ne manque rien. La page **Contact** est proposée dans la liste : vous viendrez
+  l'y choisir le jour où vous voudrez ces boutons.
+- **L'encart d'appel écrit le numéro par paires, le bas de page d'un seul tenant.** C'est voulu :
+  l'encart espace les chiffres pour qu'on puisse les lire et les dicter. Pour que les deux
+  s'accordent, tapez le numéro espacé dans le champ **Téléphone** ci-dessus.
 - **Une page publiée il y a longtemps affiche déjà votre nouveau numéro**, sans que vous l'ayez
   rouverte. C'est exactement ce que fait cet écran.
 - **Une page affiche encore l'ancien numéro alors que les autres ont changé.** Un numéro a été tapé
@@ -175,7 +186,8 @@ suffit de la retaper ici pour qu'elle revienne partout.
 
 - L'entrée **Coordonnées** a disparu du menu de gauche.
 - Vous cliquez sur **Enregistrer** et l'avis **Coordonnées enregistrées.** n'apparaît pas.
-- Une coordonnée s'affiche sur le site autrement que vous ne l'avez tapée ici.
+- Une coordonnée s'affiche sur le site avec un chiffre, une lettre ou un mot que vous n'avez pas
+  tapés ici — l'espacement du numéro par paires dans les encarts d'appel mis à part, qui est normal.
 - Vous avez enregistré, et le site affiche encore l'ancienne valeur après avoir rechargé la page.
 - Un bouton mène à une autre page que celle choisie dans **Page de contact**.
 

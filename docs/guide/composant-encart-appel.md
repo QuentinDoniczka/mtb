@@ -64,8 +64,18 @@ tiret, ni trou** : l'encart se referme proprement sur le titre.
 - **Laissé vide** — et c'est le cas normal : le numéro de l'élevage s'affiche, celui de votre écran
   **Coordonnées**. Le champ paraît vide alors que l'encart montre le numéro : c'est voulu, regardez
   l'encart, pas le champ.
-- **Rempli** : votre saisie s'affiche telle quelle, **et seulement sur cette page**. Les autres pages
-  continuent d'afficher le numéro de l'élevage.
+- **Rempli** : votre saisie s'affiche **sur cette page seulement**. Les autres pages continuent
+  d'afficher le numéro de l'élevage.
+
+**Cet encart espace les chiffres par paires pour qu'on puisse lire et dicter le numéro** : un numéro
+écrit d'un seul tenant — `0680505619` — s'affiche ici **06 80 50 56 19**, alors que le composant
+**Coordonnées et plan d'accès** et le bas de page l'affichent d'un seul tenant, tel que vous l'avez
+tapé. **Pour que le site entier l'écrive de la même façon, tapez-le espacé dans l'écran
+Coordonnées** : écrit espacé, il s'affiche partout tel quel, ici compris.
+
+*La ligne d'aide de ce champ dit « exactement tel quel » : c'est vrai des lettres, de la ponctuation,
+des chiffres et de leur rang — pas de cet espacement, qui est le seul écart et ne touche qu'à
+l'affichage.*
 
 **N'écrivez qu'un seul numéro dans ce champ.** Deux numéros dans la même ligne s'afficheront bien, mais
 sur un téléphone on ne pourra plus les appeler d'un doigt : le site refuse de composer un numéro dont il
@@ -77,11 +87,16 @@ n'est pas sûr. Si vous avez deux numéros à donner, mettez le second dans la *
 
 La liste propose **Aucune (pas de bouton)** en tête, puis toutes vos pages publiées.
 
-- **Aucune (pas de bouton)** — c'est le cas aujourd'hui : l'encart s'affiche avec le titre et le numéro,
-  **sans bouton. Ce n'est pas une erreur**, il ne manque rien. La page **Contact** n'existe pas encore ;
-  elle arrivera plus tard, et vous reviendrez alors la choisir ici.
+- **Aucune (pas de bouton)** — c'est le réglage de départ. L'encart suit alors la **Page de contact**
+  de l'écran **Coordonnées** : si une page y est choisie, le bouton apparaît quand même et mène à
+  celle-là ; si elle vaut **Aucune** — c'est le cas aujourd'hui — l'encart s'affiche avec le titre et
+  le numéro, **sans bouton. Ce n'est pas une erreur**, il ne manque rien. La page **Contact** est
+  proposée dans la liste, ici comme dans **Coordonnées**.
 - **Une page choisie** : un bouton apparaît à côté du numéro, et **il porte le nom de la page**. Vous
-  renommez la page, le bouton se renomme tout seul — vous n'avez rien à retoucher ici.
+  renommez la page, le bouton se renomme tout seul — vous n'avez rien à retoucher ici. Ce choix-ci
+  l'emporte sur celui de l'écran **Coordonnées**, et pour cette page seulement.
+- **Une page protégée par un mot de passe** : aucun bouton n'apparaît. C'est voulu — on n'envoie pas
+  le visiteur vers un mur. Le reste de l'encart ne bouge pas.
 
 ---
 
@@ -136,9 +151,12 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 
 **C'est normal, vous n'avez rien à faire :**
 
-- **L'encart n'a pas de bouton.** Aucune page n'est choisie — c'est le cas aujourd'hui, tant que la page
-  **Contact** n'existe pas. Le titre et le numéro s'affichent, l'encart reste juste, et il n'y a ni
-  emplacement vide ni bouton grisé à sa place.
+- **L'encart n'a pas de bouton.** Aucune page n'est choisie — ni ici, ni dans la **Page de contact**
+  de l'écran **Coordonnées**, qui vaut **Aucune** aujourd'hui. Le titre et le numéro s'affichent,
+  l'encart reste juste, et il n'y a ni emplacement vide ni bouton grisé à sa place.
+- **L'encart écrit le numéro par paires, le bas de page d'un seul tenant.** C'est voulu : cet encart
+  espace les chiffres pour qu'on puisse les lire et les dicter. Pour que les deux s'accordent, tapez
+  le numéro espacé dans l'écran **Coordonnées**.
 - **Le champ Téléphone affiché est vide alors que le numéro s'affiche.** C'est exactement ainsi que cela
   fonctionne : vide veut dire « le numéro de l'élevage ». N'y recopiez pas le numéro pour « le
   confirmer » — le jour où il changera, la recopie resterait fausse. Ce jour-là, vous le corrigerez
@@ -161,7 +179,8 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 
 - Le bouton **+** ne propose aucune rubrique **Mont Brabant**.
 - L'encart affiche un numéro que vous n'avez pas saisi et qui n'est pas celui de l'élevage.
-- Vous avez choisi une page publiée, et aucun bouton n'apparaît sur le site après **Mettre à jour**.
+- Vous avez choisi une page publiée **et sans mot de passe**, et aucun bouton n'apparaît sur le site
+  après **Mettre à jour**.
 - Le bouton ne mène pas à la page que vous avez choisie.
 
 **Ce qu'il vaut mieux ne pas faire :**
