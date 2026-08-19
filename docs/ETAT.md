@@ -10,10 +10,31 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
-**Phase : lot 4 (3 composants génériques II) livré, testé et revu le 2026-08-18. Le catalogue est
-complet à neuf composants sur dix ; il ne manque que le tableau de résultats (#15). Le site rend
-toujours quelque chose **uniquement** sur les Pages où l'on a posé un composant : une portée saisie
-n'apparaît toujours pas sur sa propre page. Prochain lot : les gabarits (#16-#18).**
+**Phase : lot 5 (#18 navigation et plan de site, #38 coordonnées de l'élevage) livré, testé et revu le
+2026-08-19. Le site a enfin un en-tête et un pied de page, sur toutes les pages. Fabienne peut
+composer son menu elle-même, et changer son adresse ou son numéro **une seule fois pour tout le
+site**. Le rendu public des trois types de contenu reste absent : une portée saisie n'apparaît
+toujours pas sur sa propre page (T10). Prochain lot : #15 puis #16-#17.**
+
+Ce lot n'était pas celui qui était annoncé, et il faut savoir pourquoi. `/lead-mtb #18` a été demandé ;
+#38 était un prérequis déclaré (son pied de page aurait créé un **troisième** exemplaire en dur de
+l'adresse et du téléphone). Le prérequis s'est révélé plus faible que prévu — le pied de page insère le
+bloc de coordonnées **nu**, donc une seule source de vérité dans tous les cas — mais #38 était déjà
+lancée et a été menée à son terme.
+
+Ce que la passe d'intégration a **mesuré** sur le lot 5 : **~190 vérifications, 7 échecs**, aucun fatal,
+aucun diagnostic PHP sur page rendue. La règle de défaut de l'option de #38 est vérifiée sur **six
+états de base différents**, dont une base **sans aucune ligne d'option** — et revérifiée à froid après
+`down -v` : l'adresse et le `0680505619` s'affichent toujours. Zéro requête tierce (10 pages, toutes
+les requêtes réseau interceptées au navigateur), zéro cookie anonyme, **zéro `<script src>`**,
+117 279 o pour la page la plus lourde (budget 200 000), 2 fichiers de police, axe-core sans violation
+sérieuse ni critique, aucun débordement à 320, 360, 768 et 1440 px.
+
+**La leçon du lot, à ne pas perdre** : un audit d'accessibilité mesure une **propriété**, jamais une
+**expérience**. La correction évidente de l'`aria-label` manquant produisait
+`aria-label="Menu principal Menu principal"` — et `landmark-unique` **passait au vert**, puisque les
+deux noms diffèrent bien, pendant qu'un lecteur d'écran aurait bégayé sur chaque page du site. Seul le
+fait de rendre la page **après** avoir appliqué une consigne approuvée l'a attrapé.
 
 Ce que la passe d'intégration a **mesuré** sur le lot 4 (et non déduit) : **31 vérifications passées,
 zéro échouée**. Le **zoom de page à 200 %**, qu'aucune chaîne du lot 3 n'avait vérifié, est enfin
@@ -42,7 +63,9 @@ position**, les six composants présents. Une affirmation de ce paragraphe s'est
 | Dépôt git | ✅ `main` sur `git@github.com:QuentinDoniczka/mtb.git` — commit d'amorçage `38d0935` |
 | Board GitHub (issues + milestones) | ✅ 10 epics, 25 issues — [projet 10](https://github.com/users/QuentinDoniczka/projects/10) |
 | Design system (`design-system/MASTER.md`) | ✅ 16 sections — vocabulaire en §10 |
-| Stack Docker (`compose.yaml`) | ✅ 4 services, **démarrage à froid revérifié le 2026-08-18** : `down -v` puis `make up` → accueil en 200 en **41 s**, provisionnement en 12,8 s, **zéro diagnostic PHP**, aucun `debug.log`. Port **3005** (et non 8080). D9 tenue |
+| Stack Docker (`compose.yaml`) | ✅ 4 services, **démarrage à froid revérifié le 2026-08-19** : `down -v` puis `make up` → accueil en 200, provisionnement terminé en **26 s**, **zéro diagnostic PHP**, aucun `debug.log`, zéro conteneur zombie au démontage. Port **3005** (et non 8080). D9 tenue. **Piège relevé au lot 5** : le healthcheck de `wpcli` teste `wp core is-installed`, qui devient vrai **avant** la fin de `provision.sh` — un `docker compose ps` seul peut annoncer « prêt » à tort. Attendre la ligne `[provision] terminé.` dans les logs |
+| **En-tête et pied de page** | ✅ livrés par #18 sur **toutes** les pages (`parts/header.html`, `parts/footer.html`, raccordés dans les quatre gabarits). Lien d'évitement écrit à la main, deux emplacements de menu, pied portant le bloc de coordonnées **nu** |
+| **Réglages des coordonnées** | ✅ écran unique (#38), accessible au rôle Éditeur par `edit_pages`. Adresse, téléphone, courriel, page de contact. **Un seul littéral** de chaque valeur dans tout le dépôt (`query/coordonnees/option.php:46-48`) |
 | Extension `mtb-core` | ✅ squelette + chargeur à auto-découverte (#1), portée, chien, résultat (#3, #4, #5) |
 | **Catalogue de composants** | ✅ **9 sur 10** : bandeau d'ouverture, fiche d'information, galerie photos, liste des portées, encart dernière portée, grille de chiens (#6-#8, #12-#14), **bandeau d'alerte, encart d'appel, coordonnées et plan d'accès (#9, #10, #11)**. Manque le tableau de résultats (#15) |
 | Thème `mtb` | ✅ thème **de blocs**, `theme.json` verrouillé, CSS à la main, 2 polices auto-hébergées (#2) |
@@ -54,23 +77,37 @@ position**, les six composants présents. Une affirmation de ce paragraphe s'est
 **Prochaine action** : `/lead-mtb #15 #16 #17` — empreintes **strictement disjointes**, verdict obtenu
 de `github-boards` le 2026-08-18 (ni `theme.json`, ni `functions.php`, ni `base.css`, ni `tokens.css`,
 ni `parts/header.html` touchés par les trois). C'est le chaînon qui rend visible tout ce que le lot 2 a
-construit : sans lui, l'administration est complète et le site est vide.
+construit : sans lui, l'administration est complète et le site est vide. **Redemande le verdict
+d'empreinte à `github-boards` avant de lancer** : le lot 5 a modifié `functions.php`, `index.html` et
+`singular.html`, qui n'étaient dans l'empreinte d'aucune de ces trois issues.
+
+**Ce que le lot 5 laisse à faire à #16 et #17**, et qui n'est écrit dans aucun corps d'issue :
+- **#17 doit donner un `<h1>` à `templates/index.html`** — c'est la moitié non payée de T3, et
+  l'accueil du site échoue à D7 aujourd'hui. #18 n'y a ajouté que ses deux `wp:template-part`.
+- **#16 doit ajouter les deux liens de recours manquants** de `MASTER.md` §9.5 (« Les portées »,
+  « La meute ») dans `templates/404.html` et `templates/search.html` : leurs destinations n'existent
+  pas encore. Au passage, `404.html:16` et `search.html:26` codent `href="/"` en dur — faux sur une
+  installation en sous-répertoire, que `BRIEF.md` §12 impose de supporter.
+- **Les deux `wp:template-part` sont posés dans les quatre gabarits existants.** Tout gabarit neuf doit
+  les porter aussi, sinon il n'aura ni en-tête ni pied de page.
+- **T22 et T23 vivent dans `base.css`**, hors de l'empreinte de #18 : à replacer explicitement.
 
 **#15 est dans ce lot et non après** : les deux gabarits le consomment directement — #16 pour le
 palmarès de la fiche chien, #17 pour la page Travail. Le livrer plus tard obligerait à rouvrir les deux.
 
-**#18 est délibérément exclu** : il porte **deux** questions bloquantes du §15, à trancher avec
-l'éleveuse avant de le lancer — la rubrique « actualités » séparée, et l'affichage des tarifs des
-chiots. Le corps de l'issue les fusionne à tort sous une seule étiquette.
+**#18 et #38 sont faits** (lot 5, 2026-08-19). Le volet « rubrique actualités » de Q6 est **tranché** :
+pas d'entrée « Actualités » dans le menu livré par défaut, les nouvelles restent sur l'accueil. Raison :
+#18 rend justement le menu modifiable depuis l'administration, donc ajouter cette entrée plus tard ne
+coûte aucune ligne de code, alors qu'une entrée livrée maintenant pointerait dans le vide jusqu'à ce
+que #17 livre la page. **Le volet « tarifs des chiots » reste ouvert et bloque #17**, pas #18.
 
 **Piège de ce fichier, corrigé le 2026-08-18** : il annonçait `#16 #17 #18` alors que l'epic 4
 (#9 #10 #11) n'était pas fait. Le board fait foi — vérifie-le avant de lancer un lot annoncé ici.
 
-Board : **33 issues**. Milestones **1, 2, 3 et 5 fermés** ; le **4 (composants génériques II) se ferme
-avec ce lot**. Milestone « Dette technique » à **12 issues** (#26 `scandir`, #27 réécritures,
-#28 colonnes de listes, #29 fixtures, #30 `wp db query`, #31 `WP_DEBUG`, #32 habillage des écrans de
-saisie, #33 à #36, et **#38 « Coordonnées de l'élevage — écran de réglages unique »**, ouverte par la
-revue du lot 4 et **à payer avant #18**).
+Board : **33 issues**. Milestones **1, 2, 3 et 5 fermés**, **4 fermé au lot 4**. Milestone 7 (Gabarits)
+à **2 issues ouvertes** (#16, #17) depuis la clôture de #18. Milestone « Dette technique » : **#38 est
+fermée** ; restent #26 `scandir`, #27 réécritures, #28 colonnes de listes, #29 fixtures, #30
+`wp db query`, #31 `WP_DEBUG`, #32 habillage des écrans de saisie, #33 à #36.
 
 **Comptes de développement** — `make up` puis http://localhost:3005/wp-admin/ (port **3005**, jamais 8080) : `admin`/`mtb-dev-admin`,
 éditrice `fabienne`/`mtb-dev-editrice` (rôle **Éditeur** natif, délibérément pas Administrateur).
@@ -82,6 +119,11 @@ Attrape-courriels Mailpit sur http://localhost:8025.
 
 | # | Décision | Date | Pourquoi |
 |---|----------|------|----------|
+| 44 | **Une capacité s'accorde à la requête, jamais en base.** `edit_theme_options` est donnée à Fabienne par un filtre `user_has_cap`, sur la seule requête de l'écran des menus | 2026-08-19 | La checklist de #18 disait `add_cap`. Un `add_cap` nu **survit au thème** et ouvre `Apparence > Éditeur`, donc l'éditeur de site entier — styles globaux et gabarits — à un compte Éditeur. Le filtre pose trois conditions cumulatives (capacité demandée, `edit_pages` détenue, requête reconnue comme celle des menus ou l'une de quatre actions AJAX), n'écrit rien dans `wp_user_roles` et ne laisse aucun résidu. **Vérifié à l'écran en session `fabienne`** : `nav-menus.php` 200, `themes.php` 403, `site-editor.php` 403, `options-general.php` 403, et le HTML de `nav-menus.php` ne contient **aucune** occurrence de `site-editor`. La revue a cherché une fuite et n'en a trouvé aucune. |
+| 43 | **Une fiche d'aide fausse est un défaut bloquant, au même titre qu'un bug.** Trois ont bloqué le push du lot 5 | 2026-08-19 | Le code du lot était solide — aucun CRITICAL, aucune faille, aucune fuite de capacité — et la revue a **bloqué quand même**. Les trois fiches disaient à l'éleveuse : que le site ne regroupe pas les chiffres d'un numéro (il le fait, dans l'encart d'appel) ; qu'elle peut poser une page non publiée dans son menu (l'écran ne propose que les pages publiées) ; que ses deux menus « existent déjà » (rien dans le dépôt ne les crée — vrai sur la base de dev, faux chez elle). Une fiche qui ment est pire qu'une fiche absente : elle apprend à l'éleveuse que le guide ne se croit pas, et l'une des trois lui demandait de **signaler comme anomalie le comportement normal du site**. Corollaire de méthode : **chaque affirmation d'une fiche se vérifie à l'écran**, sur la pile qui tourne. Les trois avaient franchi une chaîne complète, une passe d'intégration et une revue. |
+| 42 | **Un audit d'accessibilité mesure une propriété, jamais une expérience** | 2026-08-19 | Les deux `<nav>` n'avaient pas de nom accessible (`landmark-unique`). La correction évidente — l'attribut `ariaLabel` du bloc — rend `aria-label="Menu principal Menu principal"` sur WP 6.9 : deux mécanismes du cœur émettent l'attribut pour la même valeur (`navigation.php` via `get_unique_navigation_name()`, et le support `aria-label` ajouté en 6.8), et `class-wp-block-supports.php:184` range `aria-label` dans la liste des attributs **concaténés**, avec `class` et `style`. **La vérification serait passée au vert** — les deux noms diffèrent bien — pendant qu'un lecteur d'écran bégayait sur chaque page. Le nom est donc posé **au rendu**, une seule fois, depuis `get_registered_nav_menus()`, et **seulement s'il est absent** pour qu'un futur correctif du cœur reprenne la main. Interdit gravé au contrat §4.5 bis : ne pas « simplifier » en remettant `ariaLabel` dans le balisage. |
+| 41 | **Le thème peut interroger les API de navigation du cœur ; il ne lit aucune donnée d'élevage** | 2026-08-19 | Le contrat de #18 écrivait « le thème n'interroge **jamais** la base directement ». `functions.php` appelle `get_post()`, `get_nav_menu_locations()`, `wp_get_nav_menu_object()` et `WP_Classic_To_Block_Menu_Converter::convert()`. Aucune donnée d'élevage n'y transite (grep : **0** occurrence de `mtb_get_`, `$wpdb`, `WP_Query`, `get_posts`, `get_option` dans tout le thème) et la navigation est un domaine de thème par construction WordPress. **Écart ratifié et le contrat amendé** — sinon #16 et #17 hériteraient d'une règle que #18 a déjà enfreinte, ce qui est la pire façon de transmettre une convention. |
+| 40 | **Une entrée de menu mise en retrait s'affiche.** Ce qui n'existe pas, c'est la hiérarchie visible | 2026-08-19 | Le contrat **et** la fiche affirmaient tous deux qu'une entrée en retrait ne s'afficherait pas. Mesuré : elle s'affiche, à sa place dans le flux, juste après son parent — c'est le comportement voulu de `entete-pied.css:265-278`, dont le commentaire l'écrit noir sur blanc. Le manque réel est le **signal** qu'elle dépend de son parent ; le montrer exigerait un dépliage (donc du JavaScript, refusé) ou un parti visuel qu'aucun § de `MASTER.md` ne décrit. Pour `lead-design-mtb`. Piège de méthode associé : le premier test de ce point a **confirmé l'erreur** parce qu'il visait un identifiant de menu périmé — la passe d'intégration avait reconstruit les menus, et l'entrée orpheline disparaissait. Une conclusion fausse qui **concorde avec le texte existant** est la plus difficile à attraper. |
 | 39 | **Le tableau de vocabulaire de `MASTER.md` §10 tranche, même quand la chaîne a raison sur le fond** | 2026-08-18 | #11 libellait son champ « Description de l'**image** » au motif exact qu'un plan d'accès n'est pas une photographie — argument recevable. Mais §10.2 fige « Description de la **photo** », et `fiche-information` l'emploie déjà verbatim depuis le lot 3. Deux libellés pour le même champ dans le même catalogue, c'est une éleveuse perdue, et une chaîne n'amende pas le système de design sur lequel elle bute. **Aligné sur §10.2** (`b90bcf1`) ; la distinction photographie / document part en question ouverte pour la prochaine révision `lead-design-mtb`. |
 | 38 | **Un composant peut fixer la mise en forme d'une donnée recopiée ; il ne peut jamais en changer la valeur** | 2026-08-18 | BRIEF §7 impose de reprendre `0680505619` « tel quel ». #10 le **groupe par paires** à l'affichage quand il fait exactement dix chiffres (`encart-appel/rendu.php:87-93`) et garde les chiffres bruts dans le `tel:` ; #11 ne groupe pas. Ni chiffre ni ordre n'est touché : la contrainte porte sur la **valeur**, pas sur sa typographie, et le public de BRIEF §2 doit pouvoir lire et dicter ce numéro. Conséquence assumée : **les deux composants affichent le même numéro de deux façons**, ce qui reste invisible tant qu'aucune page ne porte les deux. À fermer avant #19-#21. |
 | 37 | **Trois écrans de réglage peuvent employer trois conventions différentes, si ce sont trois gestes différents** | 2026-08-18 | #9 n'a **aucun** libellé (le champ *est* le bloc, tapé en place) ; #10 pose « Téléphone affiché », où vider signifie *« affiche le numéro de l'élevage »* ; #11 pose « Téléphone », où vider signifie *« retire cette ligne »*. Aligner les libellés rendrait **impossible** de retirer la ligne Téléphone d'un bloc de coordonnées, acte légitime sur une page Contact. Ce qui doit être identique, c'est le **mot** désignant une même chose (décision 39), pas la mécanique d'un champ qui fait autre chose. |
@@ -143,7 +185,9 @@ Reprises du §15 du brief. Aucune ne bloque le bootstrap ; chacune bloque une is
 | Q3 | Conservation des messages du formulaire en base, ou envoi par courriel uniquement | l'issue `contact` | ⏳ en attente |
 | Q4 | URL accentuées conservées (`/bhpl/portée-a3-2025/`) ou normalisées avec redirections 301 | l'issue `seo` | ⏳ en attente |
 | Q5 | Hébergement de production et propriété du nom de domaine | la mise en ligne | ⏳ en attente |
-| Q6 | Rubrique « actualités » séparée ? Tarifs des chiots affichés ? | l'issue #18 (navigation et plan de site) | ⏳ en attente |
+| Q6 | ~~Rubrique « actualités » séparée ?~~ **Tranchée le 2026-08-19 : non**, pas d'entrée « Actualités » dans le menu livré par défaut, les nouvelles restent sur l'accueil — le menu étant modifiable par l'éleveuse, l'ajouter plus tard ne coûte aucune ligne. **Tarifs des chiots affichés ?** toujours ouverte | ~~#18~~, désormais **#17** (page Placement) | ⏳ **volet tarifs seul** |
+| Q22 | **Que met-on dans le menu livré par défaut, et faut-il en livrer un ?** Aujourd'hui `provision.sh` ne crée **aucun** menu et le thème n'enregistre que deux *emplacements* — donc sur l'installation de l'éleveuse, l'écran dira « Créez votre premier menu ». La fiche a été réécrite pour décrire cet état et lui apprendre à créer le sien. Livrer un menu par défaut demanderait de savoir quelles entrées, et l'inventer serait un acte de contenu. | rien — la fiche couvre le cas | ⏳ **pour l'éleveuse** |
+| Q21 | **`Privacy Policy` est une page en brouillon au titre anglais**, présente dans la base de développement. La publier ou la renommer sont des actes de contenu, pas des décisions techniques. Elle est aussi ce qui a révélé le découpage du menu (décision de lot 5). | rien aujourd'hui | ⏳ **pour l'éleveuse** |
 | Q8 | ~~« ~7 disciplines » ou huit ?~~ | — | ✅ tranchée 2026-08-15 : voir décision 11 |
 | Q9 | ~~Cotation LOF et dysplasie : texte ou liste ?~~ | — | ✅ tranchée 2026-08-15 : voir décision 12 |
 | Q10 | ~~Le statut s'accorde-t-il au sexe ?~~ | — | ✅ tranchée 2026-08-15 : voir décision 13 |
@@ -156,6 +200,9 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 
 | # | Dette | Créée par | Payée par |
 |---|-------|-----------|-----------|
+| **T27** | **Les deux composants affichent le même numéro de deux façons, désormais sur la même page.** L'encart d'appel groupe par paires tout numéro de dix chiffres nus (`encart-appel/rendu.php:78-84`) ; le bloc de coordonnées l'affiche tel quel. La **décision 38** acceptait l'écart au motif qu'il resterait « invisible tant qu'aucune page ne porte les deux » — **#18 a mis le bloc de coordonnées dans le pied de page de toutes les pages**, donc la condition est tombée. Mesuré : `06 80 50 56 19` dans le corps, `0680505619` en pied, même page. Aggravant : la ligne d'aide de l'écran (`encart-appel/editeur.js:162`) promet « s'affiche exactement tel quel », ce que le groupage dément. Les fiches disent maintenant la vérité, mais l'éleveuse lit d'abord l'écran. | lot 5, condition tombée | **`lead-design-mtb` + arbitrage utilisateur, avant #19-#21** |
+| **T26** | **La liste « Page de contact » propose une page protégée par mot de passe**, que le rendu refuse ensuite en silence (`ecran.php:227-233` emploie `get_pages(post_status => 'publish')`, qui les inclut ; `encart-appel/rendu.php:182` les rejette). Mesuré : `Espace privé (démonstration)` est proposé ; s'il est choisi, l'écran affiche « Coordonnées enregistrées. » et **aucun bouton n'apparaît nulle part**, sans un mot. La non-validation dans le réglage est défendable ; l'offrir dans la liste sans le dire ne l'est pas. | #38 | issue à ouvrir |
+| **T25** | **Le code de #38 n'a jamais été relu par un agent de refacto ni linté.** Sa chaîne d'origine est morte avant. La revue de lot l'a examiné ligne à ligne et **n'a trouvé aucune faille** — `declare(strict_types=1)`, garde `ABSPATH`, nonce et capacité sur l'écriture, échappement systématique en sortie, assainisseur propre au module, aucune requête SQL directe, contrôles négatifs à 403 et 400 — mais `phpcs` reste **impossible** faute de `phpcs.xml` (T24), et `php -l` seul ne dit rien du style ni des règles WPCS. | lot 5 | avec T24 |
 | **T24** | **Aucun jeu de règles `phpcs` n'est versionné.** L'intégration du lot 4 a relevé **9 erreurs WPCS, toutes chez #11**, dont **4 ne sont qu'une seule décision d'architecture** (`coordonnees.php` déclare dans un espace de noms **et** dans l'espace global, ce que seule la syntaxe à accolades permet) — et la revue a établi que **ce motif existe déjà deux fois sur `main` depuis le lot 3** (`bandeau-ouverture/titre-principal.php`, `grille-chiens/bootstrap.php`). Sans `phpcs.xml` commité, le relevé n'est **reproductible par personne** et n'est donc opposable à personne, alors que `CLAUDE.md` impose WPCS. | lot 4 | une issue de dette : versionner le ruleset, puis rejuger |
 | **T23** | **Les marges verticales entre composants se cumulent au lieu de fusionner** : `.mtb-canal` est une **grille** (`base.css:477`), et les marges d'éléments de grille ne fusionnent jamais. Mesuré : **134 px** entre le bandeau d'alerte et l'encart d'appel, **173 px** entre l'encart d'appel et les coordonnées. Visible sur `docs/apercus/lot-4/integration-trois-composants-1440.png`. **Vrai de tout le catalogue**, antérieur au lot 4, imputable à aucune de ses trois issues — `base.css` est hors de leurs empreintes. Un `row-gap` unique referme les dix composants d'un coup. | antérieure au lot 4, chiffrée par lui | epic Gabarits (#16-#18) |
 | **T22** | **Le `<hr>` du site rend 0 px de large** : le filet double que `MASTER.md` §2.1 prescrit « à la place de chaque `<hr>` » **n'apparaît jamais**. `base.css:302-311` lui donne sa hauteur et son dégradé sans jamais poser d'`inline-size`, et la marge automatique de la feuille du navigateur désactive l'étirement sur un élément de grille. Reproduit au navigateur ; **la revue n'a pas su le reproduire statiquement**, donc la cause exacte reste à établir. Visible dans l'aperçu 1440 du lot. | #2 | epic Gabarits (#16-#18) |
@@ -169,9 +216,9 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 | **T11** | **Le journal d'erreurs du développement contient 212 diagnostics** attribués au `require_once` manquant de `bandeau-ouverture` pendant la panne du matin. Reliquat probable, **non confirmé éteint**. | #6 | à vérifier au prochain démarrage propre de la stack |
 | **T9** | **`assainir_texte_recopie()` existe en trois copies** — une par module, les empreintes disjointes interdisant un fichier partagé. Prix assumé du parallélisme. **Et les trois divergent déjà, au premier jour** : `content/chien/assainissement.php:51` remplace les caractères de contrôle par une **espace** et n'appelle pas `wp_check_invalid_utf8()` ; `content/portee/champs.php:236` et `content/resultat/assainissement.php:48-50` les **suppriment** et contrôlent l'encodage. Trois définitions de « valeur propre », trois résultats sur la même saisie. | #3, #4, #5 | à hisser dans un module commun, avant que la reprise n'écrive du contenu réel |
 | **T10** | **Aucun rendu public.** Le thème n'appelle **aucune** fonction `mtb_get_*` — vérifié, zéro occurrence. D1 « les valeurs apparaissent sur l'URL publique » et D2 « une saisie, quatre endroits » sont donc vérifiées **au niveau des fonctions de lecture, jamais au HTML**. Idem pour la décision 10 (`data-libelle`), les badges de §3.3, le repli à 360 px et le zoom 200 %. | lot 2 | **epic 7 (#16-#18)**, puis #12-#15 |
-| **T1** | **Fabienne ne pourra pas modifier son menu.** Dans un thème de blocs, le menu est un bloc Navigation de `parts/header.html`, éditable uniquement par l'éditeur de site — qui exige `edit_theme_options`, capacité qu'un rôle Éditeur n'a pas (vérifié dans la stack). Or le BRIEF §13 fait de « modifier le menu » une ligne du guide. **C'est la règle d'or qui est touchée** : à traiter comme telle, pas comme un détail de permission. | #2 | **#18** |
-| **T2** | **Le lien d'évitement dépend du JavaScript** : le cœur l'injecte par script depuis WP 6.4, et sa cible `<main>` n'est pas focalisable. La ligne « lien d'évitement » de **D7 n'est pas cochée**. Se solde par un lien écrit à la main dans `parts/header.html` avec `tabindex="-1"` sur la cible. Le CSS est déjà écrit et bat celui du cœur. | #2 | epic Gabarits |
-| **T3** | **L'accueil et la page de recherche n'ont aucun `<h1>`** : `templates/index.html` emploie `wp:query-title {"type":"archive"}`, qui ne rend rien sur l'index du blog ni sur la recherche. Les pages seules en ont bien un. L'accueil de production sera une Page, donc couvert — mais la page de recherche, non. | #2 | epic Gabarits |
+| ~~**T1**~~ | ~~Fabienne ne pourra pas modifier son menu.~~ **PAYÉE au lot 5 (#18).** `edit_theme_options` accordée par un filtre `user_has_cap` sur la seule requête de l'écran des menus, rien en base (décision 44). Vérifié en session `fabienne` : `nav-menus.php` 200, `themes.php` et `site-editor.php` 403, « Apparence » absente de sa barre latérale. | #2 | ✅ **payée** |
+| ~~**T2**~~ | ~~Le lien d'évitement dépend du JavaScript.~~ **PAYÉE au lot 5 (#18).** Lien écrit à la main en tête de `parts/header.html`, script `wp-block-template-skip-link` du cœur **déqueué seul** (pas l'action, sinon la feuille en ligne qui le masque partait avec) ; `tabindex="-1"` posé **au rendu** par `WP_HTML_Tag_Processor`, donc valable sur tous les gabarits — **#16 et #17 en héritent sans y penser**. | #2 | ✅ **payée** |
+| **T3** | ~~L'accueil et la page de recherche n'ont aucun `<h1>`.~~ **PAYÉE À MOITIÉ au lot 5 (#18)** : `search.html` et `404.html` sont livrés avec leur `h1` (mesuré, 1 chacun). **`templates/index.html` en manque toujours** — il emploie encore `wp:query-title {"type":"archive"}`, qui ne rend rien sur l'index du blog, et #18 ne lui a ajouté que ses deux `wp:template-part`. **L'accueil du site échoue donc à D7 aujourd'hui.** | #2 | **epic Gabarits (#17)** |
 | **T4** | **D6 n'est tenue que pour le visiteur, pas dans l'administration.** L'éditeur du cœur charge 15 images depuis `s.w.org` (10 pour le guide de bienvenue, 5 pour les aperçus de blocs de l'insérteur), aucune n'est supprimée. Le site public est irréprochable : zéro origine externe, zéro cookie anonyme. Voir décision 15. | #2 | facultatif — une issue infra/admin sur `mtb-core` si l'écartement du guide est un jour voulu |
 | **T5** | `class-loader.php` emploie `scandir()` que `functions.php` déclare interdit pour cause de portabilité mutualisée. **Les deux moitiés du lot posent l'hypothèse inverse.** Si celle du chargeur est fausse, `scandir` renvoie `false` et **l'extension ne charge rien, en silence**, sur un site qui répond 200. | #1 et #2 | avant la mise en ligne (lié à Q5) |
 | **T6** | L'empreinte du chargeur ne couvre que les types et taxonomies : **aucune voie conforme** pour une issue qui ajoute une règle de réécriture sans type `mtb_`. La parade manuelle (Réglages → Permaliens) exige `manage_options`, que Fabienne n'a pas. | #1 | à traiter avant `seo` (#24) et `prive` (#23) |
@@ -192,6 +239,7 @@ Vérifiés sur le site source le 2026-08-14. Toute autre donnée d'élevage se l
 
 | Lot | Epic | Issues | Résultat | Commit |
 |-----|------|--------|----------|--------|
+| 5 | 7. Gabarits (partiel) + dette | #18, #38 | **Lot non prévu** : `/lead-mtb #18` demandé, #38 embarquée comme prérequis. En-tête et pied de page sur toutes les pages, deux emplacements de menu que l'éleveuse compose seule, `search.html` et `404.html`, `entete-pied.css` (28 Ko). Écran de réglages unique des coordonnées. **Dettes T1, T2, T3 payées.** Intégration : **~190 vérifications, 7 échecs**. Revue **BLOQUANTE** — aucun défaut de code, **trois affirmations fausses dans les fiches d'aide**, corrigées avant le push (voir décision 43). **Deux trouvailles majeures** : le cœur ne relit jamais le menu classique après conversion (le menu aurait menti en silence), et `ariaLabel` sur un bloc Navigation est **doublé** par le cœur en 6.9. **La chaîne complète n'a été appliquée à aucune des deux issues** — `brainstorm-18`, `leaddev-18`, `leaddev-38` et `dev-38` n'ont jamais rendu ; #38 n'a **jamais eu de passe refacto**. | `0093f0f`, `94a78ee`, `01bccba`, `19d4e97`, `73e7165`, `4385b30`, `e82853c` |
 | 4 | 4. Composants génériques II | #9, #10, #11 | Bandeau d'alerte, encart d'appel, coordonnées et plan d'accès — **trois chaînes en parallèle, empreintes strictement disjointes**, aucune collision. Catalogue à **9 composants sur 10**. Intégration : **31 vérifications, 0 échec** ; le **zoom 200 %** est mesuré pour la première fois (24 combinaisons), et les **onze contrastes sont lus sur pixels rendus** et non plus seulement calculés (décision 36). Revue **OK avec réserves**, **un seul HIGH** — un libellé divergent, aligné sur `MASTER.md` §10.2 avant le push (décision 39). **T13 payée** pour les trois composants ; **T21 à T24 créées**. #11 n'a livré **aucune carte** : deux points GPS distants de 2 km sur le site source, personne ne peut certifier lequel est l'élevage (Q18). | `166153b`, `c67f7cc`, `0e6d1d4`, `9367705`, `b90bcf1`, `d2f7ca0` |
 | 0 | Bootstrap | — | Dépôt + board (10 epics, 25 issues) + `MASTER.md` + stack Docker vérifiée | `38d0935` puis amorçage |
 | 3 | 3-6. Composants | #6, #7, #8, #12, #13, #14 | **Lot de 6 sur arbitrage de l'utilisateur** (décision 31). Six composants livrés avec leurs six fiches d'aide. Quatre dettes de lot payées : **T7** (bouton du cœur hors jetons), **T16** (canal large inatteignable — 1 088 px sur 7 colonnes contre 576 sur 3), le **CSS absent de la toile de l'éditeur** (`mtb-jetons` non enregistrée en admin, `all_deps()` abandonnait la feuille en silence), et l'**apparence d'état vide** sans propriétaire. **T10 partiellement payée** : premier HTML public du projet. 11 commits. | `ebdbf3a`, `a9250e4`, `96fda88` + 8 |
