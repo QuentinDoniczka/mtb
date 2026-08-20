@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/tableau-resultats",
+	"title": "Tableau de résultats",
+	"description": "Les résultats de travail publiés, en tableau, un titre et un tableau par discipline.",
+	"category": "mtb",
+	"icon": "editor-table",
+	"keywords": [ "résultats", "resultats", "travail", "discipline", "concours", "palmarès", "tableau" ],
+	"attributes": {
+		"discipline": {
+			"type": "string",
+			"default": ""
+		},
+		"source": {
+			"type": "string",
+			"default": "discipline",
+			"enum": [ "discipline", "chien-courant" ]
+		}
+	},
+	"usesContext": [ "postId", "postType" ],
+	"supports": {
+		"align": false,
+		"alignWide": false,
+		"anchor": false,
+		"ariaLabel": false,
+		"className": false,
+		"customClassName": false,
+		"html": false,
+		"inserter": true,
+		"interactivity": false,
+		"lock": false,
+		"multiple": true,
+		"renaming": false,
+		"reusable": false,
+		"splitting": false
+	},
+	"editorScript": "mtb-tableau-resultats-editeur",
+	"render": "file:./render.php"
+}
