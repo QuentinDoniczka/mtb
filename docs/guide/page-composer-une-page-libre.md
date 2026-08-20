@@ -55,7 +55,7 @@ enregistrer.
 | **Page BHPL — la race** | le bandeau, une section libre, une section **Santé**, une section **Génétique des couleurs**, une galerie |
 | **Page BHPL en France** | le bandeau, deux sections libres, une galerie |
 | **Page Littérature** | le bandeau, une section libre, une galerie |
-| **Page Travail** | le bandeau, une section libre, puis les résultats de travail |
+| **Page Travail** | le bandeau, une section libre, les résultats de travail, puis une seconde section libre |
 | **Page Placement** | le bandeau, deux sections libres, la liste des portées, l'encart d'appel |
 | **Page Mentions légales** | deux sections libres, puis vos coordonnées et le plan d'accès |
 | **Page Politique de confidentialité** | trois sections libres |
@@ -113,10 +113,11 @@ coup : c'est simplement la charpente qui attend vos mots.
 Certains composants des modèles **ne se remplissent pas à la main** : ils vont chercher ce que vous
 avez déjà saisi ailleurs.
 
-- **La page Travail se remplit toute seule.** Le tableau des résultats affiche **toutes les
+- **Sur la page Travail, le tableau des résultats se remplit tout seul.** Il affiche **toutes les
   disciplines**, chacune sous son titre, à partir de vos **Résultats de travail**. Le jour où vous
-  ajoutez un résultat, **vous n'avez rien à faire ici** : il apparaît sur la page Travail sans que vous
-  la rouvriez.
+  ajoutez un résultat, **vous n'avez rien à faire sur cette page** : il y apparaît sans que vous la
+  rouvriez. Les deux sections de texte, elles, sont à vous : celle qui précède les tableaux, et celle
+  qui les suit.
 - **La dernière portée** de l'accueil et **la liste des portées** de la page Placement se mettent à
   jour à chaque portée publiée.
 - **Les reproducteurs** de l'accueil suivent vos fiches de chien.
@@ -130,6 +131,16 @@ faut plutôt le saisir à sa place.
 > **N'écrivez jamais vous-même les titres de discipline** — **RING**, **IGP / RCI** et les autres — sur
 > la page Travail. Ils s'écrivent tout seuls au-dessus de chaque tableau. Écrits à la main, ils
 > apparaîtraient **en double**. Voir *Afficher les résultats de travail sur une page*.
+
+**Un seul tableau sur la page Travail, et c'est voulu.** Le modèle pose **un** composant de résultats,
+pas un par discipline, et il n'y a aucun réglage à choisir : il affiche à lui seul toutes les
+disciplines qui ont des résultats.
+
+**C'est ce qui garantit que rien de ce que vous saisissez ne disparaît.** Un résultat dont la
+**Discipline** n'a pas été choisie s'affiche quand même, tout en bas, sous le titre **Non renseigné**.
+**Ce qu'il faut faire quand vous le voyez** : ouvrez ce résultat, choisissez sa **Discipline**,
+enregistrez — il rejoint aussitôt le bon tableau, et le titre **Non renseigné** disparaît de lui-même
+quand plus aucun résultat n'est dans ce cas. Voir *Ajouter un résultat de travail*.
 
 ---
 
@@ -239,7 +250,7 @@ chacune vient. À faire en une passe, sur des pages d'essai.
 | `captures/modeles-onglet-compositions.png` | Une page ouverte → bouton **+** → onglet **Compositions** | L'onglet **Compositions**, les trois catégories **Toutes**, **Contenu de départ**, **Texte**, et les huit modèles |
 | `captures/modeles-accueil-a-remplir.png` | Une page neuve créée avec **Page d'accueil**, rien de saisi | Tous les cadres gris à contour en tirets visibles d'un coup, avec les noms de composants en majuscules |
 | `captures/modeles-accueil-remplie.png` | La même page, remplie et **publiée**, vue sur le site | Le bandeau avec son titre, une section de texte, la dernière portée, les reproducteurs, l'encart d'appel |
-| `captures/modeles-travail-sur-le-site.png` | Une page créée avec **Page Travail**, **publiée**, vue sur le site | Le bandeau, la section de texte, puis les tableaux de résultats avec leurs titres de discipline — pour montrer qu'elle n'a rien tapé de ces tableaux |
+| `captures/modeles-travail-sur-le-site.png` | Une page créée avec **Page Travail**, **publiée**, vue sur le site | Le bandeau, la première section de texte, les tableaux de résultats avec leurs titres de discipline, **puis la seconde section de texte** — pour montrer qu'elle n'a rien tapé de ces tableaux, et que son texte peut continuer en dessous |
 | `captures/modeles-mentions-legales.png` | Une page créée avec **Page Mentions légales**, **publiée** | Le titre affiché **en haut de la page**, sans bandeau, puis les coordonnées — pour montrer les deux régimes de titre |
 
 **Deux libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** :
