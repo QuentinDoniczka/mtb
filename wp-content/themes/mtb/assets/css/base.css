@@ -20,14 +20,16 @@
  *      colonne par colonne ;
  *   5. le segment de 6rem du filet double sous un h2 (§2.1) ;
  *   6. le gabarit de colonnes de .mtb-canal, recopié tel quel du §7.1 — ses
- *      longueurs sont toutes des jetons, seule sa structure est littérale.
+ *      longueurs sont toutes des jetons, seule sa structure est littérale ;
+ *   7. les valeurs du repli de tableau du §7.6 et le minimum tactile de 44px du
+ *      §12.10, énumérées une à une aux §10 et §11 en fin de fichier.
  *
  * Ne comptent pas comme valeurs brutes : 0, 100 % et les mots-clés CSS, qui ne
  * portent aucune décision de design.
  *
- * Ce fichier n'écrit AUCUNE requête média : les trois points de rupture du §7.2
- * ne commandent aucune règle du socle. Les seules requêtes média du thème sont
- * dans tokens.css, pour le ratio du bandeau (§6.5).
+ * Ce fichier n'écrivait AUCUNE requête média jusqu'au §10 ci-dessous, où le
+ * repli des tableaux du §7.6 en impose une (--bp-tableau). Aucun autre point de
+ * rupture du §7.2 ne commande une règle du socle.
  */
 
 /* =====================================================================
@@ -304,6 +306,10 @@ hr.wp-block-separator {
   border: 0;
   block-size: var(--filet-double-h);
   margin-block: var(--e-7);
+  /* DETTE T22. `margin-block` n'écrit que les côtés en bloc ; les
+     `margin-inline: auto` du navigateur survivaient et, sur un élément de
+     grille, annulent l'étirement — un `hr` est vide, donc 0 px. Mesures au §9. */
+  margin-inline: 0;
   background-image: var(--filet-double);
   background-repeat: no-repeat;
   background-position: left bottom;
@@ -329,10 +335,9 @@ figcaption {
 }
 
 /* --- Tableaux — MASTER §4.5 ---
-   Le dépliement en lignes libellées sous --bp-tableau (§7.6) dépend de
-   l'attribut data-libelle émis par le rendu serveur et de la classe
-   .mtb-tableau : ni l'un ni l'autre n'existe dans le balisage de cette issue,
-   donc la règle n'est pas écrite ici. */
+   Ce qui suit habille tout <table> du site. Le dépliement en lignes libellées
+   sous --bp-tableau (§7.6) demande en plus l'attribut data-libelle et la classe
+   .mtb-tableau : il vit au §10, en fin de fichier. */
 table {
   border-collapse: collapse;
 }
@@ -775,3 +780,245 @@ textarea[aria-invalid="true"] {
  * ────────────────────────────────────────────────────────────────────
  * ================================================================== */
 .mtb-canal > .alignwide { inline-size: 100%; }
+
+/* =====================================================================
+ * 9. T22 et T23 — MASTER §2.1, §7.3.
+ *    Raisonnement complet : docs/contracts/issue-16.md §9.
+ *
+ * AJOUT EN FIN DE FICHIER, JAMAIS UNE LIGNE AU-DESSUS (cf. sections 7 et 8).
+ * Exception unique : le `margin-inline: 0` de T22 vit dans la règle `hr` de la
+ * l. 302 — l'appender aurait fabriqué la dette T18 que la section 8 déplore.
+ * Coût : les numéros de ligne cités ici et dans mtb-tableau-resultats.css sont
+ * décalés de six lignes.
+ *
+ * T22, CAUSE relevée au navigateur (CSS.getMatchedStylesForNode), non déduite :
+ * la l. 302 pose `margin-block`, qui n'écrit que les côtés en bloc, et la l. 127
+ * ne remet pas `hr` à zéro ; les `margin-inline: auto` du navigateur
+ * survivaient, aucune règle ne les recouvrant. Sur un élément de grille
+ * (`.mtb-canal`, l. 477) une marge en ligne automatique désactive l'étirement :
+ * la boîte se dimensionne sur son contenu, et un `hr` n'en a aucun. Même
+ * mécanisme qu'à la l. 499 ; la l. 507 ne couvrait que `.is-layout-constrained`.
+ * MESURÉ à 1440 px, 0 → 576 sur les trois emplacements reproduits (Page,
+ * commentaire de portée, `<main>` de 404) ; dans une colonne de 25 %, 144 → 144,
+ * le conteneur n'y étant pas une grille ; `h2 + hr` reste `display: none`. Pas
+ * de `!important` : l'origine agent-utilisateur perd. EFFET DE BORD ASSUMÉ : un
+ * `hr` hors `.mtb-canal` passe de 0 à pleine largeur.
+ *
+ * T23 — les marges de deux enfants de grille ne fusionnent jamais, elles
+ * s'additionnent. MESURÉ à 1440 px : alerte → appel 134,39 (48 + 86,4) et appel
+ * → coordonnées 172,78 (86,4 + 86,4), après 86,39 et 86,39 ; prose inchangée à
+ * 16 px. `docs/ETAT.md` PRESCRIT UNE CORRECTION FAUSSE — « un row-gap unique
+ * referme les dix composants » : un `row-gap` S'AJOUTE, il aggraverait.
+ * COMPO ≡ `[class*="mtb-"]:not(.mtb-canal)`. Le `:not(.mtb-canal)` n'est PAS
+ * décoratif : `singular.html:6` pose `mtb-canal alignfull` sur `post-content`,
+ * enfant DIRECT du `<main class="mtb-canal">` ; sans lui, 9.2-1 collerait le
+ * `h1` de `post-title` au contenu SUR TOUTES LES PAGES (vérifié : 24 px tenus).
+ * CLASSE DU CONTENEUR DOUBLÉE : l'ordre d'enfilage des feuilles de blocs VARIE
+ * selon le gabarit (mesuré : après `base.css` sur une fiche, avant lui sur un
+ * gabarit de blocs) ; le doublage rend l'ordre indifférent, sans `!important`.
+ * LA PROSE NE BOUGE PAS par construction du sélecteur, pas par précaution : les
+ * trois règles exigent qu'au moins un côté soit un composant. DÉGRADATION SÛRE :
+ * sans `:has()` (Chrome < 105, Firefox < 121, Safari < 15.4) 9.2-1 est ignorée —
+ * écart trop grand, jamais une page cassée.
+ *
+ * ÉCART AU CONTRAT §9.2, RATIFIÉ ET GRAVÉ AU CONTRAT. Ne pas « simplifier »
+ * 9.2-1 en retirant son premier COMPO, ni supprimer 9.2-3 : appliquées à la
+ * lettre, les deux règles du contrat créaient deux écarts NULS (`/portees/`
+ * 24 → 0, `/essai-accueil/` 48 → 0), QUATRE des dix composants ne déclarant
+ * aucune marge. NON FERMÉ : une frontière prose → composant garde le cumul
+ * (mesuré 33,25 + 48 = 81,3). T21 RESTE DUE.
+ * ================================================================== */
+
+/* 9.2-1  Un COMPOSANT suivi d'un composant perd sa marge basse. (0,6,0)
+   Le premier COMPO est la restriction ci-dessus : sans lui, la règle atteignait
+   aussi un `h1` ou un `<p>`. */
+.mtb-canal.mtb-canal > [class*="mtb-"]:not(.mtb-canal):has(+ [class*="mtb-"]:not(.mtb-canal)) {
+  margin-block-end: 0;
+}
+
+/* 9.2-2  Un élément qui n'est PAS un composant et qui suit un composant perd sa
+   marge haute. (0,5,0). MOT POUR MOT LE CONTRAT. */
+.mtb-canal.mtb-canal > [class*="mtb-"]:not(.mtb-canal) + *:not([class*="mtb-"]) {
+  margin-block-start: 0;
+}
+
+/* 9.2-3  Toute frontière composant/composant vaut `--rythme-section` — §7.3, un
+   composant du catalogue étant une section de page. (0,6,0) : bat les (0,1,0)
+   des dix feuilles de composants quel que soit l'ordre d'enfilage. */
+.mtb-canal.mtb-canal > [class*="mtb-"]:not(.mtb-canal) + [class*="mtb-"]:not(.mtb-canal) {
+  margin-block-start: var(--rythme-section);
+}
+
+/* =====================================================================
+ * 10. La primitive .mtb-tableau — MASTER §7.6, §4.5, §5.3, §12.9
+ *
+ * Primitive NOMMÉE par MASTER, donc classe NUE écrite UNE SEULE FOIS
+ * (décision 30) — dans la feuille servie partout, pas dans celle d'un bloc. Deux
+ * tableaux la portent et rien ci-dessous ne sait lequel : le palmarès (#15) et
+ * les chiots d'une portée (#16). Atténuation de la dette T31.
+ *
+ * POURQUOI ICI, ET CE N'EST PAS THÉORIQUE : le tableau des chiots d'une portée
+ * est écrit par le gabarit du thème (`single-mtb_portee.php`) et n'est le rendu
+ * d'AUCUN bloc — `wp_enqueue_block_style()` ne se déclenche donc jamais pour lui
+ * et aucune feuille de composant ne le couvre. Sans ce §10 il s'afficherait sans
+ * filets et SANS REPLI MOBILE — défilement horizontal à 360 px, échec AA.
+ * HISTORIQUE, À NE PAS RELIRE COMME L'ÉTAT ACTUEL : le palmarès de la fiche chien
+ * a été dans le même cas tant qu'il passait par un appel de fonction. C'est la
+ * mesure relevant `mtb-bloc-mtb-tableau-resultats` ABSENT du `head` qui a fait
+ * basculer cet appel sur `do_blocks()` (contrat #16 §11 bis F,
+ * `single-mtb_chien.php`) ; sa feuille est de nouveau enfilée, et ce §10 ne lui
+ * sert plus que de socle commun.
+ * DOUBLON À SUPPRIMER PAR #15, PAS PAR CETTE CHAÎNE : le §1 de
+ * `blocs/mtb-tableau-resultats.css` répète ce bloc mot pour mot (sa dette
+ * T-#15-a, « à payer avant tout second consommateur » — c'est cette issue). En
+ * attendant, les deux jeux coexistent : identiques en effet, rien de visible.
+ *
+ * Le `border-collapse` de la l. 336 est ce qui peint le filet posé sur `<tr>` :
+ * ne pas le retirer. VALEURS BRUTES — liste close, recopiées de §7.6, aucune
+ * inventée, aucune ne dispose d'un jeton : `47.999rem` (= `--bp-tableau` −
+ * 1/1000 ; littérale car une requête média ne lit pas une propriété
+ * personnalisée) · `8rem`/`1fr` · `50%` de `clip-path` · `1px` deux fois ·
+ * `600`/`1.35`/`.14em`, identiques au `th` de la l. 354.
+ * DÉPENDANCE DURE, POINT DE CONTRAT : le rendu serveur émet `data-libelle` sur
+ * CHAQUE `<td>`, au libellé exact de la colonne.
+ * ================================================================== */
+
+/* 10.1  EXTRAPOLATION SIGNALÉE : MASTER ne chiffre pas la largeur d'un tableau ;
+   `100%` est une mécanique, pas une valeur de design — sans elle, trois colonnes
+   courtes flotteraient à gauche d'un canal de 1088 px. `table-layout` reste
+   `auto` : `fixed` écraserait la seule colonne au contenu long. */
+.mtb-tableau {
+  inline-size: 100%;
+}
+
+/* 10.2  La légende porte le NOM ACCESSIBLE du tableau. La rendre visible
+   exigerait une typographie de légende que MASTER ne définit pas, donc de
+   l'inventer ; la masquer emploie le mécanisme que §7.6 écrit lui-même. JAMAIS
+   `display: none` NI `visibility: hidden` — les deux retireraient ce nom de
+   l'arbre d'accessibilité, le contraire du but. `overflow: hidden` est une
+   exception assumée au §7.8, dont l'interdit protège le texte LU À L'ŒIL ;
+   `nowrap` évite qu'une boîte de 1 px ne brise chaque mot lettre à lettre. */
+.mtb-tableau > caption {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* 10.3  §5.3 : séparation DÉCORATIVE, d'où son 1,41:1 conforme (§12.1). Sortie
+   de la requête média où §7.6 l'écrit — un filet de séparation n'a pas de raison
+   de n'exister que sur téléphone. PORTÉE `tbody >`, ET ELLE COMPTE : la ligne de
+   `<thead>` porte déjà le `--bord-fort` de la l. 363, un `--bord-fin`
+   par-dessous ferait DEUX TRAITS. D'où le `<tbody>` explicite au balisage. */
+.mtb-tableau tbody > tr {
+  border-block-end: var(--bord-fin);
+}
+
+/* 10.4  §12.9 : fond creusé, AUCUN second signal — seule ligne du §12.9 où
+   MASTER autorise un signal unique, « une ligne survolée ne porte aucune
+   information », et le survol ne donne accès à rien (§12.10). Paires produites :
+   `--texte` 10,78:1 et `--sauge-fonce` 6,92:1, tabulées au §12.3. */
+.mtb-tableau tbody > tr:hover {
+  background-color: var(--calcaire-creux);
+}
+
+/* 10.5  Le repli en lignes libellées — §7.6.
+   `@media screen` ET NON `max-width` SEUL : c'est cette mention, et rien
+   d'autre, qui rend vraie l'exigence « en impression, le tableau reste un
+   tableau » ; les deux règles sorties de la requête (10.3, 10.4) sont sûres sur
+   papier. §9.6 est cité par §7.6 mais N'EXISTE PAS — aucune feuille
+   d'impression ici, en inventer une serait une décision qu'aucun § n'autorise.
+   LIMITE MESURÉE, NON CORRIGÉE : à 180 px CSS (360 px zoomés à 200 %) les `8rem`
+   du gabarit de MASTER dépassent le canal de 32 à 108 px — sous le plancher de
+   360 px du §7.7 et les 320 px du critère 1.4.10. */
+@media screen and (max-width: 47.999rem) {
+
+  /* 10.5.1  En-tête retiré à l'œil, CONSERVÉ AU LECTEUR D'ÉCRAN.
+     NE JAMAIS REMPLACER PAR `display: none`, `visibility: hidden` NI PAR UN
+     `aria-hidden` SUR LE `<thead>` : les trois le retirent de l'arbre
+     d'accessibilité, et il ne resterait pour nommer les colonnes que le contenu
+     généré du 10.5.4, ni copiable ni restitué de façon garantie ; un
+     `aria-hidden` sur un `<thead>` dont les `<th>` sont le mécanisme natif
+     d'association ferait même annoncer les cellules SANS EN-TÊTE DU TOUT.
+     RÉSERVE HONNÊTE : `tr{display:block}` et `td{display:grid}` retirent leurs
+     rôles de tableau sur la plupart des moteurs, double énoncé possible ; c'est
+     le patron de §7.6, le corriger demande de l'ARIA serveur. */
+  .mtb-tableau thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* 10.5.2  Verbatim du §7.6 ; son `border-block-end` vit au 10.3. */
+  .mtb-tableau tr {
+    display: block;
+    padding-block: var(--e-4);
+  }
+
+  /* 10.5.3  Verbatim du §7.6. (0,1,1) contre le `td` de la l. 347 à (0,0,1) :
+     gagné par la spécificité sur le site COMME dans la toile de l'éditeur, où le
+     cœur préfixe les DEUX règles et préserve leur écart — aucun sélecteur doublé
+     nécessaire, contrairement à une feuille de bloc. MESURÉ à 360 px : canal
+     324, 324 − 128 − 12 = 184 px pour la valeur ; §7.7 interdit toute largeur
+     fixe > 300 px. */
+  .mtb-tableau td {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--e-3);
+    padding: var(--e-1) 0;
+  }
+
+  /* 10.5.4  Verbatim du §7.6. ÉCART INTERNE DE MASTER, RELEVÉ SANS ÊTRE
+     ARBITRÉ : l'étiquette repliée est en `--laiton-texte` (5,30:1, §12.1) là où
+     le `<th>` du mode tableau est en `--pin`. Les deux sont dans MASTER. */
+  .mtb-tableau td::before {
+    content: attr(data-libelle);
+    font: 600 var(--t-xs)/1.35 var(--sans);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--laiton-texte);
+  }
+
+  /* 10.5.5  CETTE RÈGLE VIT DANS LA REQUÊTE MÉDIA. NE JAMAIS L'EN SORTIR : en
+     mode tableau, `display: none` sur une cellule DÉCALERAIT TOUTE LA LIGNE
+     D'UNE COLONNE — les valeurs glisseraient sous les mauvais en-têtes, et un
+     tableau qui ment est pire qu'un tableau absent.
+     `display: none` plutôt que `content: none` : le second laisse la cellule
+     dans la grille, `--e-1` × 2 de vide mort par ligne. DEUX CROCHETS, UNION
+     VISÉE : `:empty` échoue sur un simple retour à la ligne dans un `sprintf`,
+     invisible à `php -l`, à la revue et au-dessus de 48 rem. */
+  .mtb-tableau td:empty,
+  .mtb-tableau td.mtb-tableau__cellule--vide {
+    display: none;
+  }
+}
+
+/* =====================================================================
+ * 11. Les liens de recours — MASTER §9.5, §12.10
+ *
+ * AUCUNE NEUTRALISATION DE L'HABILLAGE DE NAVIGATION, ET C'EST UNE MESURE : le
+ * `wp:home-link` du cœur porte des classes `wp-block-navigation-item*`, mais
+ * toutes les règles qui les habillent sont scopées sous `.wp-block-navigation`
+ * ou sous `.mtb-nav` / `.mtb-plan-du-site` (`entete-pied.css:204`). RELEVÉ sur
+ * 404 et sur la recherche vide : les trois liens sont identiques propriété par
+ * propriété — neutraliser serait de la CSS morte.
+ * Seul est écrit ce que le navigateur ne donne pas : §12.10 « Cibles ≥ 44 px,
+ * écart ≥ --e-2 », `44px` étant un minimum écrit en pixels par MASTER (même
+ * statut que le 48 px de la l. 366) et `inline-flex` la seule façon de le rendre
+ * effectif sur un `<a>`. Ni `list-style` ni alignement : §9.5 ne décrit pas la
+ * liste, et retirer les puces serait une décision visuelle absente du document.
+ * ================================================================== */
+.mtb-liens-de-secours > li > a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+}
+
+.mtb-liens-de-secours > li + li {
+  margin-block-start: var(--e-2);
+}

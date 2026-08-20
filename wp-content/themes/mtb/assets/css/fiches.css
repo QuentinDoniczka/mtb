@@ -1,0 +1,627 @@
+/*
+ * MTB — Les deux fiches : portée et chien
+ *
+ * Habillage de `single-mtb_portee.php`, `single-mtb_chien.php` et de leur
+ * squelette commun `enveloppe-fiche.php`. « § » = design-system/MASTER.md,
+ * « contrat » = docs/contracts/issue-16.md, où vit le raisonnement produit.
+ *
+ * SERVIE PAR `enveloppe-fiche.php:41` (`mtb_mettre_feuille_en_file`, gardée par
+ * `file_exists()`), donc UNIQUEMENT sur les deux fiches : coût zéro octet pour
+ * le reste du site. C'est la raison pour laquelle tout l'habillage vit ici et
+ * non dans `base.css`. Dépend de `tokens.css` et de `base.css` (éléments,
+ * grille à trois canaux, anneau de focus, primitive `.mtb-tableau`).
+ *
+ * ORDRE DE CASCADE, RELEVÉ SUR LA PILE : le `head` d'une fiche imprime
+ * `mtb-jetons`, `mtb-base`, `mtb-entete-pied`, puis `mtb-fiches`. À spécificité
+ * égale avec `base.css`, CETTE FEUILLE GAGNE PAR L'ORDRE DE SOURCE — d'où des
+ * sélecteurs simples. Là où une classe est répétée, c'est pour battre une règle
+ * de `base.css` PLUS spécifique, et c'est dit à l'endroit même.
+ *
+ * CROCHETS RELEVÉS SUR LE BALISAGE RENDU, PAS SUR UNE LISTE. Chaque sélecteur a
+ * été vérifié sur le HTML réellement produit (six fiches portée, trois fiches
+ * chien, dont une sans photo et une protégée) : aucune règle ne vise une classe
+ * absente du rendu. La liste de crochets transmise à cette chaîne annonçait des
+ * noms que le balisage n'émet PAS — `__naissance`, `__tete`, `__valeur`,
+ * `__autres`, `.mtb-carte-parent--fiche/--hors-elevage`, `.mtb-photo--absente`,
+ * `.mtb-photo__nom`, `.mtb-carte-portee__identifiant` — et ils ne sont pas
+ * stylés. Les noms réellement émis sont ceux employés ci-dessous.
+ *
+ * VALEURS BRUTES — liste CLOSE, toutes RECOPIÉES de MASTER, aucune inventée,
+ * aucune ne dispose d'un jeton : `63.999rem`/`64rem` (= `--bp-fiche` ; littérales
+ * car une requête média ne lit pas une propriété personnalisée) · `16rem`/`22rem`
+ * (§6.8 verbatim) · `14rem` (largeur minimale de carte, que MASTER ne chiffre
+ * pas : alignée sur `blocs/mtb-grille-chiens.css:188`, seule convention de carte
+ * du thème — ÉCART SIGNALÉ) · `44px` (§12.10) · `7px`/`1px`/`45deg` (chevron
+ * §8.6) · `.6em`/`2px`/`50%`/`1px` et le dégradé de la pastille (§3.3 verbatim) ·
+ * `50% 38%` (repli d'`object-position`, §6.2) · les graisses, interlignes et
+ * interlettres du tableau du §4.5.
+ *
+ * ABSENTS À DESSEIN : aucune règle de bouton, champ, `h1`, `h2`, `p`, `a`,
+ * `table`, `th`, `td` — `base.css` les livre, primitive `.mtb-tableau` comprise ·
+ * aucune règle sur `.screen-reader-text`, servie par le cœur · aucune sur
+ * `.mtb-tableau--chiots`, ce modificateur ne portant aucune différence visuelle ·
+ * AUCUN état vide au sens du §9.1 : une fiche est remplie, pas composée
+ * (décision 17), donc §9.1 y est inatteignable et la règle applicable est §9.3
+ * et §9.4 — c'est la garde contre une cinquième convention (dette T13) · aucune
+ * transition ni animation, donc rien à honorer pour `prefers-reduced-motion` ·
+ * aucun `!important`.
+ */
+
+/* =====================================================================
+ * 1. Le rythme du document — MASTER §7.3, §5.1
+ * ================================================================== */
+
+/* §7.3 : « sections séparées de --rythme-section ». L'écart est porté par la
+   marge HAUTE et jamais par la basse, et ce n'est pas un goût : la règle 9.2-1
+   de `base.css` remet à zéro la marge basse de tout composant suivi d'un
+   composant, et sur une fiche TOUS les enfants directs du canal portent une
+   classe `mtb-`. Une marge basse serait écrite pour être annulée.
+   Corollaire mesuré : la règle 9.2-2 de `base.css` ne s'active jamais ici, faute
+   d'enfant direct sans classe `mtb-`. Vérifié sur les six fiches. */
+.mtb-fiche .mtb-canal > * + * {
+  margin-block-start: var(--rythme-section);
+}
+
+/* Le `h2` qui ouvre une section porte déjà `--e-7` (`base.css:202`) ; cumulé au
+   `--rythme-section` de la section, il donnerait jusqu'à 136 px entre deux
+   sections — le défaut même que T23 vient de payer un étage plus haut. La
+   section porte le rythme, le titre ne le double pas. (0,2,1) contre (0,0,1) :
+   gagné par la spécificité, sans dépendre de l'ordre des feuilles. */
+.mtb-fiche .mtb-canal > * > h2:first-child {
+  margin-block-start: 0;
+}
+
+/* =====================================================================
+ * 2. Primitives partagées — décision 30, MASTER §3.3, §6.2, §6.6, §9.3
+ *
+ * POURQUOI `.mtb-photo` ET `.mtb-dispo` SONT ÉCRITES ICI — MESURE, PAS
+ * PRÉFÉRENCE. Elles vivent aussi dans `blocs/mtb-derniere-portee.css` et
+ * `blocs/mtb-liste-portees.css`, servies par `wp_enqueue_block_style()`, donc
+ * seulement sur les pages qui rendent ces blocs. RELEVÉ SUR UNE FICHE CHIEN
+ * RENDUE, feuilles imprimées dans le `head` : `mtb-jetons`, `mtb-base`,
+ * `mtb-entete-pied`, `mtb-galerie-photos-style`, `mtb-bloc-mtb-coordonnees-plan`
+ * — NI `mtb-derniere-portee`, NI `mtb-liste-portees`. Sans les règles ci-dessous
+ * le portrait n'aurait ni ratio, ni cerne, ni `object-fit` (l'image dicterait la
+ * hauteur, ce que §6 interdit en tête), l'emplacement structurant du §9.2
+ * n'aurait aucune dimension, et le badge perdrait sa pastille, l'un de ses trois
+ * signaux du §3.3.
+ * Écrites NUES (décision 30) et à l'identique de leurs sœurs : au jour du hissage
+ * dans un domicile commun (dette T-#12-a), ce §2 est une SUPPRESSION, jamais un
+ * arbitrage. Sur une fiche, aucune feuille sœur n'étant servie, il n'existe aucun
+ * conflit de cascade — mesuré, pas espéré.
+ * ================================================================== */
+
+/* 2.1  Le badge — §3.3, §12.9. Trois signaux, jamais la couleur seule : le mot,
+   la forme de la pastille, la couleur. Le rembourrage n'est pas chiffré par
+   §5.1 : valeur reprise telle quelle de `blocs/mtb-derniere-portee.css:96` pour
+   que les deux écritures restent littéralement identiques. */
+.mtb-dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-2) var(--e-3);
+  border-radius: var(--r-1);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+/* Pastille en CSS pur, ni image ni police d'icônes (§13) ; le `50%` est la seule
+   exception d'arrondi du site (§5.2), admise à 0,6 em. Elle hérite de
+   `currentColor` : son contraste est celui du libellé, par construction. */
+.mtb-dispo::before {
+  content: "";
+  flex: none;
+  inline-size: .6em;
+  block-size: .6em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+/* Disque plein — 5,25:1 (§12.4) ; `--calcaire` est la seule encre que §3.2
+   autorise sur `--sauge`. */
+.mtb-dispo--disponible {
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+.mtb-dispo--disponible::before {
+  background-color: currentColor;
+}
+
+/* Demi-disque — 10,78:1 (§12.3) ; `--laiton` en bord non textuel, 3,15:1,
+   autorisé par §12.3. Le dégradé vient du §3.3 lui-même, seule exception à
+   l'interdit de dégradé du §13. */
+.mtb-dispo--reserve {
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+  border: 1px solid var(--laiton);
+}
+
+.mtb-dispo--reserve::before {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+}
+
+/* Anneau vide — 6,47:1 (§12.1) ; `--bord-actif` EST le bord que §5.3 destine
+   nommément à « Portée passée ». L'anneau vide est déjà le défaut du `::before`. */
+.mtb-dispo--passee {
+  background-color: var(--calcaire);
+  color: var(--texte-doux);
+  border: var(--bord-actif);
+}
+
+/* 2.2  Le cadre photo — §6.1, §6.2, §6.6. `--calcaire-creux` est à la fois le
+   fond du PNG détouré, celui de l'image qui ne charge pas et celui de
+   l'emplacement structurant du §9.2 ; `--texte-doux` est l'encre du texte `alt`
+   affiché dans le cadre quand l'image échoue (5,79:1, §12.3). `relative` n'est
+   là que comme bloc conteneur du cerne. */
+.mtb-photo {
+  position: relative;
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+/* §6.6, LE CERNE. NE « SIMPLIFIEZ » PAS CETTE RÈGLE EN PORTANT L'OMBRE SUR LE
+   CADRE OU SUR L'`<img>` : elle disparaît. Mesuré sur pixels lus par la feuille
+   sœur (`blocs/mtb-derniere-portee.css:183`) — sur le cadre, une ombre « inset »
+   se peint sous les descendants et l'`<img>` remplit sa boîte ; sur l'`<img>`,
+   l'ombre intérieure d'un élément remplacé se peint sous le contenu remplacé. Le
+   pseudo-élément est OBLIGATOIRE. Ce n'est pas une ombre portée : l'interdit du
+   §13 vise les ombres sous les cartes, pas ce cerne que §5.3 définit en jeton.
+   `pointer-events: none` : jamais un clic pris par le cadre. */
+.mtb-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+/* §6.2 mot pour mot. SIXIÈME ÉCRITURE d'`object-position: var(--point-interet,
+   50% 38%)` dans ce thème — dette T18 AGGRAVÉE, signalée à lead-design-mtb.
+   LA CLASSE EST RÉPÉTÉE pour peser (0,2,1) contre le `img` de `base.css:130`,
+   qui impose `block-size: auto` et qui, dans la toile de l'éditeur, y pèse
+   (0,1,1). `display: block` : restée en ligne, l'image dépasserait du cadre de
+   la hauteur de ses jambages. */
+.mtb-photo.mtb-photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+}
+
+/* 2.3  Le vocabulaire de l'absence — §9.3. 6,47:1 sur `--calcaire` et 7,01:1 sur
+   `--blanc`, les deux seuls fonds où cette classe apparaît. La chaîne vient
+   TOUJOURS du serveur : aucune règle ici n'en fabrique ni n'en cache une. */
+.mtb-etat-doux {
+  color: var(--texte-doux);
+}
+
+/* 2.4  Le lien externe — §8.6 : chevron en CSS pur, deux bordures de 1 px
+   `--laiton`, 7 × 7 px, pivotées. Aucune police d'icônes, aucun SVG, aucune
+   requête (§13). `--laiton` mesure 3,51:1 (§12.1) : au-dessus des 3:1 exigés
+   d'un indicateur NON TEXTUEL, et §3.1 l'y autorise expressément. LA COULEUR
+   N'EST PAS LE SIGNAL : le libellé est doublé de « (nouvelle fenêtre) » dans le
+   nom accessible, émis par le gabarit. */
+.mtb-lien-externe::after {
+  content: "";
+  display: inline-block;
+  flex: none;
+  inline-size: 7px;
+  block-size: 7px;
+  margin-inline-start: var(--e-2);
+  border-block-start: 1px solid var(--laiton);
+  border-inline-end: 1px solid var(--laiton);
+  transform: rotate(45deg);
+  vertical-align: baseline;
+}
+
+/* 2.5  L'étiquette en petites capitales laiton — ligne « h4 » du §4.5, que
+   `base.css:224` pose sur `h4`. Aucun `h4` n'existe dans ces gabarits, où les
+   mêmes étiquettes sont des `<span>`, des `<p>` de rôle et des `<dt>` : la
+   déclaration est reprise à l'identique sur les crochets réellement émis.
+   CONTRAINTE DU §4.5 RESPECTÉE — « trois mots maximum » : le plus long libellé
+   atteint est « Génétique de robe ». */
+.mtb-fiche-portee__etiquette,
+.mtb-carte-portee__etiquette,
+.mtb-carte-parent__role,
+.mtb-fiche-chien__champs > dt,
+.mtb-carte-parent__sante > dt {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+}
+
+/* 2.6  La valeur d'un champ — « valeur en corps » (§7.5-2) : aucune couleur
+   nommée, donc l'encre héritée `--texte`. Chiffres à chasse fixe (§1) et coupure
+   d'un n° LOF ou d'un affixe long (§4.5, §7.7).
+   AUCUNE DÉCLARATION DE `color` ICI, ET C'EST VOLONTAIRE : le gabarit pose
+   `class="mtb-fiche__valeur mtb-etat-doux"` sur la même balise quand la valeur
+   est absente ; les deux classes pèsent (0,1,0), et ne rien déclarer supprime le
+   conflit au lieu de le gagner. */
+.mtb-fiche__valeur,
+.mtb-fiche-portee__date-valeur,
+.mtb-carte-parent__sante > dd {
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: break-word;
+}
+
+/* =====================================================================
+ * 3. Fiche portée — MASTER §7.4
+ * ================================================================== */
+
+/* 3.1  Identité (§7.4-1). Le `h1` et son filet double sont livrés par
+   `base.css:185` ; rien n'est réécrit.
+   Étiquette et valeur sur une même ligne, qui se replie plutôt que de déborder ;
+   `baseline` aligne la petite capitale sur la date malgré leurs deux tailles. */
+.mtb-fiche-portee__date,
+.mtb-carte-portee__date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-2);
+}
+
+/* Le badge est un `<p>` : sans cette remise en ligne il occuperait toute la
+   largeur du canal et son fond deviendrait une bande. `white-space` reste
+   `normal` — un repli vaut mieux qu'un débordement à 360 px (§7.7). */
+.mtb-fiche-portee__dispo,
+.mtb-carte-portee__dispo {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+/* 3.2  Les parents (§7.4-2, §9.4). « Deux cartes côte à côte ≥ --bp-fiche,
+   empilées en dessous. » `auto-fill` serait FAUX ici : §7.4-2 impose DEUX cartes,
+   et la grille explicite est ce qui garantit le §9.4 (« les deux cartes gardent
+   la même taille »). `list-style: none` : le marqueur n'a plus de sens en grille,
+   et `role="list"` posé par le gabarit préserve la sémantique. */
+.mtb-cartes-parents {
+  display: grid;
+  gap: var(--e-6);
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+@media screen and (min-width: 64rem) {
+  .mtb-cartes-parents {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* §3.2 range la carte parent parmi les surfaces `--blanc` ; `--e-5` est le
+   « padding de carte » du §5.1 ; §5.4 interdit toute ombre — la profondeur vient
+   du fond posé. `flex` en colonne SERT LE §9.4 : le bloc d'accès est poussé en
+   bas (voir `margin-block: auto 0` plus bas), si bien que deux cartes de contenus
+   inégaux gardent la même silhouette et que celle sans fiche n'a « simplement pas
+   de bouton », sans devenir une carte grisée. */
+.mtb-carte-parent,
+.mtb-carte-portee {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blanc);
+  padding: var(--e-5);
+}
+
+/* `base.css:219` donne au `h3` sa famille et sa taille ; seules ses marges sont
+   reprises, le `--e-5` du haut doublant le rembourrage en tête de carte. */
+.mtb-carte-parent__nom,
+.mtb-carte-portee__titre {
+  margin-block: var(--e-2) var(--e-3);
+  overflow-wrap: break-word;
+}
+
+.mtb-carte-parent__role,
+.mtb-carte-portee__role {
+  margin-block-end: 0;
+}
+
+/* Étalon extérieur : « nom et élevage en clair, sans lien, sans carte grisée »
+   (§9.3). L'élevage reste du corps de texte — MASTER ne lui donne ni encre ni
+   taille propre, et lui en inventer une ajouterait un signal non prévu. */
+.mtb-carte-parent__elevage {
+  margin-block-end: var(--e-4);
+}
+
+.mtb-carte-parent__sante {
+  margin-block-end: var(--e-4);
+}
+
+.mtb-carte-parent__sante > dd {
+  margin-inline-start: 0;
+  margin-block-end: var(--e-3);
+}
+
+/* LA LIGNE QUI TIENT LE §9.4 : `auto` pousse le bloc d'accès au bas de la carte.
+   Les deux cartes gardent la même taille, et celle sans fiche n'a simplement pas
+   ce bloc — aucune carte grisée, aucun lien désactivé. */
+.mtb-carte-parent__acces {
+  margin-block: auto 0;
+}
+
+/* §12.10 : cible ≥ 44 px. Un lien de contenu en ligne mesure ~28 px de haut ;
+   `inline-flex` lui donne la hauteur sans figer sa boîte. Le soulignement et
+   l'encre viennent de `base.css:248` — c'est un lien de contenu au sens du §8.2,
+   §7.4-2 écrivant « un lien "Voir la fiche" ».
+   ÉCART INTERNE DE MASTER, RELEVÉ SANS ÊTRE ARBITRÉ : §9.4 parle du « bouton »
+   de cette même carte. On suit la section qui décrit la carte, et on signale. */
+.mtb-carte-parent__lien,
+.mtb-carte-portee__lien,
+.mtb-fiche-portee__voisine {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+}
+
+/* 3.3  Les chiots (§7.4-3) — AUCUNE RÈGLE, ET C'EST LE BUT DE LA PRIMITIVE : le
+   `<table class="mtb-tableau mtb-tableau--chiots">` est entièrement habillé par
+   `base.css` §10, repli en lignes libellées compris.
+   Le canal large que §7.4-3 exige est porté par la `<section>`, pas par le
+   `<table>` : `base.css:522` ne vise que `.mtb-canal > .alignwide` et n'atteint
+   jamais un petit-fils. Mesuré après correction du balisage : section, `h2` et
+   tableau à 1088 px (= `--l-large`), contre 576 auparavant. Conséquence à
+   connaître : le message « Liste des chiots non renseignée. » y passe aussi,
+   alors que §9.3 le range en canal texte — même arbitrage que #15 pour ses
+   propres titres de discipline. */
+
+/* 3.4  Le commentaire (§7.4-4) : prose en canal texte, livrée par `base.css`.
+   Seule garde, le dernier paragraphe ne pousse pas sa marge hors de la section.
+   Classe doublée pour peser (0,2,0) contre le `p` de `base.css:241`, qui pèse
+   (0,1,1) une fois préfixé dans la toile de l'éditeur. */
+.mtb-fiche-portee__commentaire.mtb-fiche-portee__commentaire > :last-child {
+  margin-block-end: 0;
+}
+
+/* 3.5  Navigation entre portées (§7.4-6). GRILLE À DEUX COLONNES, et non
+   `justify-content: space-between`, parce qu'un seul des deux liens existe aux
+   extrémités de la série (mesuré : F 2026 n'a pas de précédente, H 2026 pas de
+   suivante) : avec `space-between`, un « Portée suivante » seul se collerait à
+   GAUCHE, à la place du lien absent. §9.3 : le lien manquant n'existe pas, ni
+   désactivé ni mentionné — aucune règle ne dessine un vide.
+   `minmax(0, 1fr)` : sans le minimum à zéro, un libellé long élargirait sa
+   colonne et provoquerait un débordement à 360 px. */
+.mtb-fiche-portee__voisines {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-4);
+}
+
+.mtb-fiche-portee__voisine--precedente {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.mtb-fiche-portee__voisine--suivante {
+  grid-column: 2;
+  justify-self: end;
+}
+
+/* =====================================================================
+ * 4. Fiche chien — MASTER §7.5, §6.8, §9.2
+ * ================================================================== */
+
+/* 4.1  Le nom complet sous le `h1` — ligne « Nom complet d'un chien » du §4.5,
+   « seul endroit où la serif descend dans une fiche », d'où l'absence de toute
+   autre règle de serif ici. §9.4 : jamais de troncature à « … » sur un nom de
+   chien ; il se coupe, il ne se perd pas.
+   ORDRE VISUEL SIGNALÉ, NON CORRIGÉ : §7.5-1 dit « juste dessous », or
+   `base.css:185` pose le filet double sous le `h1`, qui s'intercale donc entre le
+   nom d'usage et le nom complet. Les deux règles sont dans MASTER ; on ne tranche
+   pas en CSS. */
+.mtb-fiche-chien__nom-complet {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: var(--t-md);
+  line-height: 1.3;
+  color: var(--pin);
+  overflow-wrap: break-word;
+}
+
+/* 4.2  Sous `--bp-fiche` : « le portrait passe au-dessus du texte, pleine largeur
+   du canal texte » (§6.8). Le gabarit pose `alignwide` sur cette enveloppe ; sans
+   ce plafond, à 1000 px de fenêtre le portrait ferait ~940 px de large donc
+   ~1175 px de haut. `--l-texte` le ramène EXACTEMENT sur le canal texte : les
+   pistes large et texte sont concentriques dans la grille du §7.1, un bloc de
+   36 rem centré dans la première s'aligne au pixel sur la seconde (vérifié au
+   rendu). Classe de contexte répétée pour peser (0,2,0) contre
+   `.mtb-canal > .alignwide` de `base.css:522` et `:777` : à égalité, l'ordre de
+   source tranche, et cette feuille est servie après. */
+@media screen and (max-width: 63.999rem) {
+  .mtb-fiche .mtb-fiche-chien__presentation {
+    max-inline-size: var(--l-texte);
+  }
+}
+
+/* ≥ `--bp-fiche` : §6.8 mot pour mot.
+   PAS DE `position: sticky`. §6.8 ne l'autorise que « si la colonne de droite
+   dépasse 1,5 fois la hauteur » du portrait — une comparaison de hauteurs que CSS
+   ne sait pas exprimer. Un sticky inconditionnel produirait un mouvement de
+   quelques pixels sur les fiches courtes : honorer à moitié une règle vaut moins
+   que ne pas l'honorer. Non implémenté, signalé. */
+@media screen and (min-width: 64rem) {
+  .mtb-fiche-chien__presentation {
+    display: grid;
+    grid-template-columns: minmax(16rem, 22rem) 1fr;
+    gap: var(--e-7);
+    align-items: start;
+  }
+}
+
+/* Le ratio `4/5` du §6.1 est PORTÉ PAR LE CADRE et non par l'image : rien ne se
+   déplace au chargement (§6.9), et l'emplacement garde sa hauteur même sans
+   photo. La marge basse sert sous 64 rem, quand le portrait passe au-dessus du
+   texte ; au-dessus, la gouttière de la grille l'absorbe. */
+.mtb-fiche-chien__portrait {
+  aspect-ratio: var(--r-portrait);
+  margin-block-end: var(--e-5);
+}
+
+/* Les cinq cadrages de la liste fermée du §6.2. Quatre s'écrivent en mots-clés,
+   donc sans un seul chiffre ; le cinquième, « Centre », N'A PAS DE RÈGLE et
+   retombe sur le défaut `50% 38%` de la primitive. C'est DÉLIBÉRÉ, et c'est
+   l'alignement sur `blocs/mtb-grille-chiens.css:345` : le lire géométriquement
+   enterrerait le défaut justifié du §6.2 (« la tête est au-dessus du centre
+   géométrique ») sur toutes les fiches d'un coup. `mtb-fiche-information.css:124`
+   fait l'inverse — c'est la dette T16-bis, qui appartient à lead-design-mtb ; on
+   ne l'aggrave pas d'un troisième sens. Le repli couvre aussi une clé inattendue.
+   MESURÉ : haut_gauche `0% 0%` · haut `50% 0%` · centre, clé inconnue et attribut
+   vide `50% 38%` · haut_droite `100% 0%` · bas `50% 100%`. */
+.mtb-fiche-chien__portrait[data-cadrage="haut_gauche"] { --point-interet: left top; }
+.mtb-fiche-chien__portrait[data-cadrage="haut"]        { --point-interet: center top; }
+.mtb-fiche-chien__portrait[data-cadrage="haut_droite"] { --point-interet: right top; }
+.mtb-fiche-chien__portrait[data-cadrage="bas"]         { --point-interet: center bottom; }
+
+/* 4.3  Le portrait absent : un emplacement STRUCTURANT (§9.2). « L'emplacement
+   garde son ratio 4/5, fond --calcaire-creux, cerne, filet double en bord bas, et
+   au centre le nom d'usage en Newsreader 400 --t-md --texte-doux. AUCUN
+   pictogramme, aucune silhouette, aucune image de remplacement. » C'est le seul
+   endroit de ce lot où un vide occupe de la place, et §9.2 l'écrit exprès : la
+   fiche chien doit avoir la même silhouette pour les dix-sept chiens.
+   CONTRASTE MESURÉ : 5,79:1, AA (§12.3). §9.2 annonce 6,47:1, qui est la valeur
+   sur `--calcaire` ; le fond prescrit par la même phrase étant `--calcaire-creux`,
+   c'est 5,79:1 qui s'applique. Écart interne au document, relevé, tenu.
+   LE FILET DOUBLE EN BORD BAS vient de §9.2 ; il n'est pas dans la liste close du
+   §2.1, et §9.2 étant la section qui décrit cet emplacement, on l'applique et on
+   signale la tension. */
+.mtb-fiche-chien__portrait--vide {
+  display: grid;
+  place-items: center;
+  padding-inline: var(--e-4);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% var(--filet-double-h);
+}
+
+.mtb-fiche-chien__portrait-nom {
+  margin-block: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-md);
+  line-height: 1.3;
+  color: var(--texte-doux);
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+/* 4.4  Les listes de définition (§7.5-2 à §7.5-4). L'étiquette est au 2.5, la
+   valeur au 2.6 ; il ne reste ici que le rythme des lignes.
+   DISPOSITION EMPILÉE et non deux colonnes : MASTER ne décrit aucune disposition
+   de `<dl>`. L'empilement est celui du navigateur — il n'invente rien, se
+   comporte identiquement à 360 px et à 1440 px, et ne fixe aucune largeur
+   d'étiquette qui pourrait rogner « Génétique de robe ». Une variante à deux
+   colonnes serait une décision visuelle : question pour lead-design-mtb.
+   `--bord-fin` entre deux lignes : §5.3 le destine exactement à la « séparation
+   DÉCORATIVE entre lignes d'une liste ». Le dernier filet est retiré, il
+   fermerait la liste comme un cadre. */
+.mtb-fiche-chien__champs > dd {
+  margin-inline-start: 0;
+  padding-block-end: var(--e-3);
+  border-block-end: var(--bord-fin);
+}
+
+.mtb-fiche-chien__champs > dt {
+  padding-block-start: var(--e-3);
+}
+
+.mtb-fiche-chien__champs > dd:last-child {
+  border-block-end: 0;
+  padding-block-end: 0;
+}
+
+/* Les lignes libres sont recopiées telles quelles par le serveur, une par `<li>`.
+   Aucune règle d'apparence : MASTER n'en décrit pas, et leur retirer leurs puces
+   serait une décision visuelle absente du document. Seul l'écart d'avec le `<dl>`
+   qui les précède est posé. */
+.mtb-fiche-chien__autres-tests,
+.mtb-fiche-chien__autres-titres {
+  margin-block-start: var(--e-4);
+}
+
+/* 4.5  Les portées où ce chien est père ou mère (§7.5-6) — « en cartes », et sans
+   photo : la fonction de lecture n'en rend pas, le gabarit n'en cherche pas.
+   `auto-fill` ET JAMAIS `auto-fit` : §9.4 exige qu'un seul élément dans une
+   grille de plusieurs colonnes garde sa largeur de colonne et reste à gauche, au
+   lieu de s'étirer sur toute la ligne ; `auto-fit` fait l'inverse.
+   `min(100%, 14rem)` : à 360 px la carte prend toute la largeur du canal plutôt
+   que de forcer une piste de 14 rem, ce qui interdit le débordement du §7.7. */
+.mtb-cartes-portees {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: var(--e-6);
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.mtb-carte-portee.mtb-carte-portee > :last-child {
+  margin-block-end: 0;
+}
+
+/* 4.6  Le lien pedigree (§7.5-7, §8.6) : `inline-flex` aligne le chevron du 2.4
+   sur le libellé et donne la cible de 44 px du §12.10 ; `fit-content` empêche la
+   boîte de s'étendre sur tout le canal, ce qui laisserait le chevron flotter loin
+   du texte. */
+.mtb-fiche-chien__pedigree > .mtb-lien-externe {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+/* =====================================================================
+ * 5. La fiche protégée par mot de passe — MASTER §9.5
+ *
+ * « Encart --calcaire-creux avec filet double vertical, étiquette "Page
+ * protégée", phrase, champ + bouton. Aucun indice sur le contenu. » Forme reprise
+ * de `blocs/mtb-encart-appel.css:22`, septième emplacement du filet double de la
+ * liste close du §2.1.
+ * ================================================================== */
+.mtb-encart-protege {
+  background-color: var(--calcaire-creux);
+  background-image: var(--filet-double-v);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: var(--filet-double-h) 100%;
+  padding: var(--e-6);
+  padding-inline-start: calc(var(--e-6) + var(--filet-double-h));
+}
+
+/* PAIRE NON TABULÉE : `--laiton-texte` sur `--calcaire-creux` mesure 4,75:1 sur
+   les pixels rendus — AA pour du texte normal, mais ABSENTE du §12.3, qui déclare
+   interdite toute paire qu'il ne liste pas. Question bloquante posée à
+   lead-design-mtb ; en attendant, c'est la seule encre d'étiquette que MASTER
+   nomme, et la remplacer serait inventer. */
+.mtb-encart-protege__etiquette {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+  margin-block-end: var(--e-2);
+}
+
+/* Corps sur `--calcaire-creux`, encre `--texte` héritée, 10,78:1 (§12.3) : aucune
+   déclaration de couleur, donc aucune paire nouvelle. */
+.mtb-encart-protege__phrase {
+  margin-block-end: var(--e-5);
+}
+
+/* Le formulaire du cœur est habillé par `base.css` ; seule garde, sa dernière
+   boîte ne pousse pas sa marge hors du rembourrage de l'encart. Classe doublée
+   pour peser (0,2,0) contre le `p` de `base.css:241`, à (0,1,1) dans la toile. */
+.mtb-encart-protege.mtb-encart-protege > :last-child,
+.mtb-encart-protege.mtb-encart-protege .post-password-form > :last-child {
+  margin-block-end: 0;
+}
