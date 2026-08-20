@@ -181,7 +181,12 @@ Résolution de l'identifiant, **trois crans, dans cet ordre** :
 > terme, `get_queried_object_id()` rendait `20`, `get_post_type( 20 )` rendait `'mtb_chien'` (la fiche
 > de Luna), le garde-fou laissait passer, et **le palmarès de Luna s'affichait sur une page sans
 > rapport** — exactement le scénario que ce paragraphe prétendait empêcher. Un identifiant ne dit pas
-> de quelle table il vient ; seul l'**objet** le dit. Demander `get_queried_object()` et n'accepter
+> de quelle table il vient ; seul l'**objet** le dit.
+>
+> > **Un identifiant ne dit pas de quelle table il vient ; seul l'objet le dit.**
+> > *Retenue par l'orchestrateur le 2026-08-20 comme règle réutilisable au-delà de cette issue.*
+>
+> Demander `get_queried_object()` et n'accepter
 > qu'un `WP_Post` ferme la collision à la source. Re-mesuré : collision simulée → `''` ; vraie fiche
 > chien → identifiant correct, aucune régression. Le garde-fou de type reste : il est le second
 > verrou, pas le premier.
@@ -486,6 +491,40 @@ rendus** (décision 36) :
   ~2 600 o transférés. Page Travail complète estimée ~130 000 o pour un budget de 200 000.
 
 ---
+
+### 2 bis. Pourquoi les fonctions ne routent pas par `render_block()` — mesuré, et c'est un refus motivé
+
+Le correctif « défensif » évident serait de faire passer `mtb_tableau_resultats_du_chien_rendu()` par
+`render_block()`, pour que le filtre `render_block_{$nom}` se déclenche et que la feuille parte quel
+que soit l'appelant. **Il a été mesuré, et il est nuisible. Il n'est pas implémenté.**
+
+**Ce qu'il rapporterait : rien.** L'habillage vient de `base.css` §10, servie sur toutes les pages.
+Injecter la feuille de bloc sur le chemin PHP ne change **aucune** des 21 propriétés calculées
+relevées, ni à 360 px ni à 1440 px.
+
+**Ce qu'il coûterait : la garantie de l'identifiant explicite.** Mesuré sur la pile, requête simulée
+sur la fiche de Luna :
+
+```
+ROUTE WP_Block, postId=0, sur la page de Luna : 534 octets -> FUITE, palmarès rendu
+APPEL DIRECT mtb_tableau_resultats_du_chien_rendu(0)  : 0 octets
+```
+
+La raison est structurelle et non contournable : `render.php` ne peut recevoir un identifiant que par
+`$block->context['postId']`, et **un contexte à zéro est indistinguable de « aucun contexte »** — donc
+le repli sur `get_queried_object()` s'enclenche et rend le chien de la page courante. **Le troisième
+paramètre `?int $chien_id` ne traverse pas `render_block()`.** Router par là réintroduirait, sur le
+chemin le plus exposé, exactement la classe de défaut que l'amendement du §3 vient de fermer.
+
+Les deux variantes sont pires : `wp_enqueue_style( 'mtb-bloc-mtb-tableau-resultats' )` depuis
+l'extension mettrait un nom de fichier **du thème** dans le plugin (frontière du contrat #1 §8) ;
+déclencher `apply_filters( 'render_block', … )` à la main passerait `null` là où le cœur documente un
+`WP_Block` et ferait repasser le balisage dans toute la chaîne de filtres de mise en page.
+
+**Ce qui manquait n'était pas un mécanisme, c'était une phrase.** Elle est écrite des deux côtés :
+l'habillage vient de `base.css` §10, et **le jour où quelqu'un retire ce §10, les deux chemins tombent
+ensemble**, pas seulement celui du gabarit. Une primitive partagée par deux consommateurs ne peut pas
+être garantie par l'un d'eux.
 
 ## 6. États spéciaux
 
