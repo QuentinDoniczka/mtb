@@ -173,7 +173,7 @@ n'invente rien.** Le contrat gelé prévoyait des pages en charpente ; il est am
 | Accueil | `https://www.mtbrabant.com/` | **déjà capturée** par #16 → `source/accueil.md` |
 | Travail | `https://www.mtbrabant.com/travail/` | **déjà capturée** par #16 → `source/travail.md` |
 | BHPL | `https://www.mtbrabant.com/bhpl/` | à capturer (51 063 o) |
-| BHPL en France | `https://www.mtbrabant.com/bhpl/bhpl-en-france/` | à capturer (29 049 o) |
+| BHPL en France | `https://www.mtbrabant.com/bhpl/bhpl-en-france/` | ~~à capturer (29 049 o)~~ → **302, protégée par mot de passe, non capturable** (voir ci-dessous) |
 | Littérature | `https://www.mtbrabant.com/bhpl/litt%C3%A9rature/` | à capturer (35 541 o) |
 | Placement | `https://www.mtbrabant.com/placement/` | à capturer (31 205 o) |
 | Mentions légales | `https://www.mtbrabant.com/mentions-l%C3%A9gales/` | à capturer (33 151 o) |

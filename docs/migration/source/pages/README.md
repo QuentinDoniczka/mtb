@@ -78,7 +78,22 @@ sha256( HTML_reçu  avec  s/(929224983(&amp;|&)t=)[0-9]{10}/\1EPOCH/g )
 
 Capture par `curl` le **2026-08-20**.
 
-| Fichier | Taille du HTML reçu | SHA-256 du HTML reçu | SHA-256 **stable** (voir ci-dessous) | U+00A0 | Lignes de texte non vides |
+**Le condensé de cette colonne n'est pas reproductible, et ce n'est pas un défaut.** Le HTML servi
+par IONOS porte un horodatage de cache qui change à chaque requête (mécanisme détaillé sous le
+tableau). La colonne vaut donc pour **la requête de cette ligne**, jamais pour le document : deux
+relevés du même fichier donnent deux valeurs, et **les deux sont vraies**. **Les invariants à
+comparer sont la taille en octets et le compte d'U+00A0** ; pour un condensé rejouable, la colonne
+« SHA-256 stable ».
+
+**Les condensés de ce tableau ont été relevés lors d'une requête distincte de celle qui a produit la
+capture correspondante.** L'en-tête de chaque fichier `.md` porte donc, sous l'intitulé « SHA-256 du
+HTML reçu », une autre valeur — `bhpl.md` : `1ec29929…` · `litterature.md` : `6d2a937f…` ·
+`placement.md` : `d37234c9…` · `mentions-legales.md` : `87d1b3d3…`. **Aucune valeur n'a été
+recalculée, remplacée ni harmonisée** : taille et compte d'U+00A0 concordent des deux côtés, ce qui
+est exactement ce que le mécanisme d'horodatage prédit. Seul `bhpl-en-france.md` échappe à la règle,
+son corps étant vide (302) : son condensé est celui de la chaîne vide, donc reproductible.
+
+| Fichier | Taille du HTML reçu | SHA-256 **de la requête de cette ligne** | SHA-256 **stable** (voir ci-dessous) | U+00A0 | Lignes de texte non vides |
 |---|---|---|---|---|---|
 | `bhpl.md` | 51 063 o | `65a31deed44f166cf8ecd62b9c2bc1484fa0bd720dff3a865e6f353ffabb77ab` | `580718e1d17f319d43dd406c7a5f0e4e297168847d245bc10d6d83dad6d3fbc1` | 38 | 121 |
 | `bhpl-en-france.md` | 0 o (réponse 302 sans corps) | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` | — | 0 | — |
