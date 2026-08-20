@@ -1,35 +1,30 @@
 /*
- * MTB — Socle
- * Chargement des polices, normalisation, styles d'éléments, anneau de focus,
- * grille à trois canaux, lien d'évitement.
+ * MTB — Socle. Dépend de tokens.css.
  *
- * Dépend de tokens.css. Aucune valeur brute ici (MASTER §13) hors la liste
- * close ci-dessous, chaque cas étant justifié une seconde fois à l'endroit où
- * il est écrit. Toutes ces valeurs sont RECOPIÉES de MASTER, aucune n'est
- * inventée, et aucune n'a de jeton — MASTER n'en définit pas, et en créer un
- * serait l'invention que le contrat interdit :
+ * VALEURS BRUTES — liste close (MASTER §13), toutes RECOPIÉES de MASTER, aucune
+ * n'a de jeton et en créer un serait l'invention que le contrat interdit ;
+ * chacune est rejustifiée à l'endroit où elle est écrite :
+ *   1. descripteurs de @font-face — métriques de fichier de police, pas des
+ *      valeurs de design (§4.2, question D6 du §15) ;
+ *   2. minimum tactile de 48px, boutons et champs (§8.4, §8.5) ;
+ *   3. épaisseurs et décalages écrits en toutes lettres par le §8 : anneau 2px
+ *      + décalage 2px (§8.1), soulignement 1px puis 2px au survol et décalage
+ *      .2em (§8.2), cerne 1px et translateY(1px) (§8.4), bord d'erreur 2px
+ *      (§8.5) ;
+ *   4. interlignes, graisses et interlettres du tableau du §4.5 ;
+ *   5. segment de 6rem du filet double sous un h2 (§2.1) ;
+ *   6. gabarit de colonnes de .mtb-canal (§7.1) — seule sa structure est
+ *      littérale, ses longueurs sont des jetons ;
+ *   7. repli de tableau du §7.6 et minimum tactile de 44px du §12.10, énumérés
+ *      un à un aux §10 et §11.
+ * Ne comptent pas : 0, 100 % et les mots-clés CSS.
  *
- *   1. les descripteurs de @font-face — ce sont des métriques de fichier de
- *      police, pas des valeurs de design (§4.2, question D6 du §15) ;
- *   2. le minimum tactile de 48px sur les boutons et les champs (§8.4, §8.5) ;
- *   3. les épaisseurs et décalages écrits en toutes lettres par le §8 :
- *      anneau de focus 2px + décalage 2px (§8.1), soulignement de lien 1px puis
- *      2px au survol et décalage .2em (§8.2), cerne intérieur 1px et
- *      translateY(1px) du bouton (§8.4), bord d'erreur 2px (§8.5) ;
- *   4. les interlignes, les graisses et les interlettres du tableau du §4.5,
- *      colonne par colonne ;
- *   5. le segment de 6rem du filet double sous un h2 (§2.1) ;
- *   6. le gabarit de colonnes de .mtb-canal, recopié tel quel du §7.1 — ses
- *      longueurs sont toutes des jetons, seule sa structure est littérale ;
- *   7. les valeurs du repli de tableau du §7.6 et le minimum tactile de 44px du
- *      §12.10, énumérées une à une aux §10 et §11 en fin de fichier.
+ * Seule requête média du fichier : le repli des tableaux du §10 (--bp-tableau).
+ * Aucun autre point de rupture du §7.2 ne commande une règle du socle.
  *
- * Ne comptent pas comme valeurs brutes : 0, 100 % et les mots-clés CSS, qui ne
- * portent aucune décision de design.
- *
- * Ce fichier n'écrivait AUCUNE requête média jusqu'au §10 ci-dessous, où le
- * repli des tableaux du §7.6 en impose une (--bp-tableau). Aucun autre point de
- * rupture du §7.2 ne commande une règle du socle.
+ * NUMÉROS DE LIGNE CITÉS PLUS BAS : ils DÉSIGNENT UNE RÈGLE, PAS UNE LIGNE, et
+ * ils ont déjà dérivé (cf. §9) ; l'allègement de −4 613 o de commentaires les
+ * décale d'une centaine de lignes de plus. Se repérer au sélecteur.
  */
 
 /* =====================================================================
@@ -37,10 +32,10 @@
  * Deux fichiers variables auto-hébergés, zéro requête tierce.
  * ================================================================== */
 
-/* Le double « src » n'entraîne aucun double téléchargement : le navigateur
-   retient la première entrée dont il reconnaît le format. « woff2-variations »
-   est la forme écrite par MASTER §4.2 ; « woff2 » ferme le cas des navigateurs
-   qui ignorent cette chaîne de format et sauteraient l'entrée entière. */
+/* Double « src », aucun double téléchargement : le navigateur retient la
+   première entrée dont il reconnaît le format. « woff2-variations » est la
+   forme écrite par MASTER §4.2 ; « woff2 » ferme le cas des moteurs qui
+   ignorent cette chaîne et sauteraient l'entrée entière. */
 @font-face {
   font-family: "Newsreader";
   src: url("../fonts/newsreader-var-latin.woff2") format("woff2-variations"),
@@ -63,11 +58,9 @@
 
 /* Replis métriquement ajustés — MASTER §4.2, question D6 du §15.
    Les quatre descripteurs sont MESURÉS sur les fichiers sous-ensemblés livrés
-   ici, pas estimés : méthode, corpus et chiffres sont consignés dans
-   assets/fonts/polices.md. Ce sont des métriques de fichier de police, pas des
-   valeurs de design : MASTER ne définit aucun jeton pour elles et il est
-   interdit d'en inventer un. Objectif : décalage de mise en page nul pendant
-   le « swap ». */
+   ici, pas estimés : méthode, corpus et chiffres dans assets/fonts/polices.md.
+   Métriques de fichier de police, pas des valeurs de design : aucun jeton, et
+   en inventer un est interdit. Objectif : décalage nul pendant le « swap ». */
 @font-face {
   font-family: "Newsreader repli";
   src: local("Georgia");
@@ -97,10 +90,10 @@
 }
 
 html {
-  /* MASTER §4.2 : l'axe opsz de Newsreader suit alors la taille rendue. */
+  /* MASTER §4.2 : l'axe opsz suit alors la taille rendue. */
   font-optical-sizing: auto;
-  /* Empêche l'agrandissement automatique du texte au basculement en paysage
-     sur iOS, qui casserait l'échelle fluide du §4.4. */
+  /* iOS : sans cela, le basculement en paysage agrandit le texte et casse
+     l'échelle fluide du §4.4. */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -112,14 +105,12 @@ body {
   font-weight: 400;
   font-size: var(--t-base);
   line-height: 1.65;
-  /* MASTER §4.5 : hyphens sur le corps et les titres. Hérité par tout le
-     document. Suppose lang="fr" sur <html>, rendu par le cœur. */
+  /* MASTER §4.5. Suppose lang="fr" sur <html>, rendu par le cœur. */
   hyphens: auto;
 }
 
-/* Les tailles et graisses de titres sont déclarées une par une plus bas ;
-   on repart d'une base neutre pour ne laisser aucun défaut du navigateur
-   s'exprimer, en particulier sur h5 et h6 que MASTER ne décrit pas. */
+/* Base neutre : aucun défaut du navigateur ne s'exprime, en particulier sur
+   h5 et h6 que MASTER ne décrit pas. */
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-size: inherit;
@@ -148,30 +139,22 @@ textarea {
 
 /* =====================================================================
  * 3. Styles d'éléments — MASTER §4.5
- * La hiérarchie se construit par la famille et la taille, jamais par la
- * couleur : trois encres seulement sur fond clair.
  * ================================================================== */
 
 /* --- L'élément signature au niveau des éléments — MASTER §2.1 ---
-   Quatre des huit emplacements de la liste close sont des styles d'éléments et
-   sont donc rendus ici : sous le h1, sous chaque h2, à la place de chaque hr,
-   et au bord gauche d'une citation. Les quatre autres — bord bas de l'en-tête,
-   bord haut du pied de page, bord bas d'un bandeau photo, au-dessus de l'encart
-   « dernière portée » — sont des composants et appartiennent à l'epic Gabarits.
+   Quatre des huit emplacements de la liste close sont rendus ici : sous le h1,
+   sous chaque h2, à la place de chaque hr, au bord gauche d'une citation. Les
+   quatre autres sont des composants (epic Gabarits).
 
-   Le dispositif est un background-image, jamais une border : c'est le vide de
-   2 px entre le trait sauge de 3 px et le trait laiton de 1 px qui fait lire un
-   double filet gravé plutôt qu'une grosse bordure. Un seul jeton porte les
-   huit emplacements — changer --filet-double change tout le site en une ligne.
+   background-image et JAMAIS une border : c'est le vide de 2 px entre le trait
+   sauge de 3 px et le trait laiton de 1 px qui fait lire un filet gravé.
 
-   La règle « au-dessous de --e-3 d'espace disponible, on emploie --bord-fin »
-   ne se pose pas au niveau élément : le gabarit de §2.1 réserve lui-même
-   --e-4 + 6 px, toujours au-dessus du seuil.
+   Le seuil « au-dessous de --e-3, employer --bord-fin » ne se pose pas ici : le
+   gabarit du §2.1 réserve --e-4 + 6 px, toujours au-dessus.
 
-   MASTER §5.1 ne donne le rapport « espace dessus / espace dessous » que pour
-   h2 (--e-7 / --e-4) et h3 (--e-5 / --e-3). La marge de h4 n'y est nulle part :
-   elle reste à zéro, question ouverte — une étiquette sans marge ne produit pas
-   de défaut visible. */
+   QUESTION OUVERTE : §5.1 ne donne le rapport dessus/dessous que pour h2
+   (--e-7 / --e-4) et h3 (--e-5 / --e-3) ; la marge de h4 n'y est nulle part et
+   reste à zéro — une étiquette sans marge ne produit pas de défaut visible. */
 
 /* --- Titres --- */
 
@@ -192,7 +175,6 @@ h1 {
   letter-spacing: -.015em;
   text-wrap: balance;
   color: var(--pin);
-  /* Filet double, pleine largeur du canal texte. */
   background-image: var(--filet-double);
   background-repeat: no-repeat;
   background-position: left bottom;
@@ -208,8 +190,7 @@ h2 {
   line-height: 1.12;
   letter-spacing: -.01em;
   color: var(--pin);
-  /* Filet double en segment de 6rem — MASTER §2.1 et §4.5. 6rem est écrit en
-     littéral : c'est la longueur du segment, aucun jeton ne la porte. */
+  /* Segment de 6rem — §2.1 : littéral, aucun jeton ne porte cette longueur. */
   background-image: var(--filet-double);
   background-repeat: no-repeat;
   background-position: left bottom;
@@ -226,8 +207,8 @@ h3 {
   color: var(--pin);
 }
 
-/* Étiquette. MASTER §4.5 : majuscules + .16em à 13 px n'est lisible qu'en
-   libellés très courts — trois mots au maximum, jamais une phrase. */
+/* Étiquette — §4.5 : majuscules + .16em à 13 px n'est lisible qu'en trois mots
+   au maximum, JAMAIS une phrase. */
 h4 {
   font-family: var(--sans);
   font-weight: 600;
@@ -262,9 +243,8 @@ a:hover {
 }
 
 /* --- Citation — MASTER §4.5 et §2.1 ---
-   Seul emplacement de la liste close où le filet est VERTICAL : bord gauche,
-   pleine hauteur. D'où --filet-double-v (dégradé « to right ») et une taille
-   de fond de 6 px de large sur 100 % de haut. */
+   Seul emplacement de la liste close où le filet est VERTICAL, d'où
+   --filet-double-v. */
 blockquote {
   font-family: var(--serif);
   font-weight: 400;
@@ -279,18 +259,16 @@ blockquote {
 }
 
 /* --- Séparateur — MASTER §2.1 : le filet double vient « à la place de chaque
-   <hr> », pleine largeur du canal.
-   L'apparence par défaut du navigateur doit disparaître entièrement : la
-   bordure « inset » de 1 px et la hauteur intrinsèque qu'elle donne sont
-   remplacées par une boîte de 6 px de haut qui ne porte que le filet.
+   <hr> », pleine largeur du canal. L'apparence par défaut du navigateur
+   disparaît entièrement.
 
    La marge de --e-7 n'est pas décorative : §2.1 interdit deux filets doubles
-   « de suite sans au moins --e-7 d'écart ». Un <hr> est par construction placé
-   entre deux blocs qui peuvent eux-mêmes en porter un — un h2, par exemple.
-   C'est donc l'écart minimal que la règle impose, pas une valeur choisie.
+   « de suite sans au moins --e-7 d'écart », et un <hr> est par construction
+   entre deux blocs qui peuvent en porter un — un h2, par exemple. C'est
+   l'écart minimal que la règle impose, pas une valeur choisie.
 
-   Le second sélecteur n'est pas un doublon. Le bloc Séparateur du cœur charge
-   sa propre feuille dès qu'il est inséré dans une page, vérifiée dans
+   SPÉCIFICITÉ, second sélecteur : le bloc Séparateur du cœur charge sa propre
+   feuille dès qu'il est inséré, vérifiée dans
    wp-includes/blocks/separator/style.min.css de WordPress 6.9 :
 
      .wp-block-separator { border: none; border-top: 2px solid }
@@ -298,9 +276,8 @@ blockquote {
    Elle pèse (0,1,0) contre (0,0,1) à « hr » seul : sans contre-mesure, un trait
    plein de 2 px en currentColor se dessinerait PAR-DESSUS le filet double. Le
    couple hr.wp-block-separator pèse (0,1,1) et l'emporte quel que soit l'ordre
-   de chargement des feuilles. Chaque sélecteur de la liste garde sa propre
-   spécificité : « hr » couvre le séparateur écrit à la main, le second couvre
-   celui inséré depuis l'éditeur. */
+   de chargement des feuilles. « hr » couvre le séparateur écrit à la main, le
+   second celui inséré depuis l'éditeur. */
 hr,
 hr.wp-block-separator {
   border: 0;
@@ -317,11 +294,8 @@ hr.wp-block-separator {
 }
 
 /* MASTER §2.1 : « Un h2 immédiatement suivi d'un <hr> : le <hr> n'est pas
-   rendu. » Le combinateur de frère adjacent l'exprime exactement, sans
-   acrobatie : le h2 porte déjà son filet, un second serait le doublon que la
-   liste close interdit. display: none le retire aussi de l'arbre
-   d'accessibilité, ce qui est bien le sens de « n'est pas rendu » pour un
-   séparateur purement visuel. */
+   rendu. » display: none le retire aussi de l'arbre d'accessibilité, ce qui est
+   bien le sens de « n'est pas rendu » pour un séparateur purement visuel. */
 h2 + hr {
   display: none;
 }
@@ -335,9 +309,9 @@ figcaption {
 }
 
 /* --- Tableaux — MASTER §4.5 ---
-   Ce qui suit habille tout <table> du site. Le dépliement en lignes libellées
-   sous --bp-tableau (§7.6) demande en plus l'attribut data-libelle et la classe
-   .mtb-tableau : il vit au §10, en fin de fichier. */
+   Tout <table> du site. Le repli en lignes libellées sous --bp-tableau (§7.6)
+   exige en plus la classe .mtb-tableau et l'attribut data-libelle : il vit au
+   §10, en fin de fichier. */
 table {
   border-collapse: collapse;
 }
@@ -369,9 +343,9 @@ th {
 }
 
 /* --- Boutons — MASTER §8.4 ---
-   48 px est un minimum d'accessibilité écrit en pixels par MASTER (§8.4 pour le
-   bouton, §8.5 pour le champ) ; aucun jeton ne le porte et il est interdit d'en
-   créer un. Il couvre le seuil de 44 px du §12.10 avec de la marge. */
+   48 px est un minimum d'accessibilité écrit en pixels par MASTER (§8.4 bouton,
+   §8.5 champ) ; aucun jeton ne le porte, en créer un est interdit. Il couvre le
+   seuil de 44 px du §12.10 avec de la marge. */
 button,
 input[type="submit"],
 input[type="button"] {
@@ -414,9 +388,8 @@ input[type="submit"][disabled] {
   cursor: not-allowed;
 }
 
-/* --- Champs de formulaire — MASTER §8.5 ---
-   L'étiquette est toujours visible au-dessus du champ : un placeholder ne
-   tient jamais lieu d'étiquette (§13). */
+/* --- Champs de formulaire — MASTER §8.5 : un placeholder ne tient JAMAIS lieu
+   d'étiquette (§13), qui reste visible au-dessus du champ. --- */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -437,8 +410,8 @@ textarea {
   font-size: var(--t-base);
 }
 
-/* Aucune hauteur fixe : c'est l'attribut rows qui dimensionne la zone, et le
-   texte peut croître sans être rogné au zoom 200 % (§7.8). */
+/* Aucune hauteur fixe : rows dimensionne la zone, et le texte croît sans être
+   rogné au zoom 200 % (§7.8). */
 textarea {
   line-height: 1.65;
 }
@@ -458,14 +431,13 @@ textarea[aria-invalid="true"] {
 }
 
 /* =====================================================================
- * 4. Anneau de focus — MASTER §8.1
- * Un seul anneau, partout, y compris posé sur une photographie.
- * Anneau clair collé à l'élément, anneau sombre juste dehors : comme
- * --calcaire (L = 0,8773) et --pin (L = 0,0152) encadrent toute la plage de
- * luminance, le meilleur des deux est toujours ≥ 3,77:1 (§12.8).
+ * 4. Anneau de focus — MASTER §8.1. Un seul, partout, y compris sur une photo.
+ * Anneau clair collé à l'élément, anneau sombre juste dehors : --calcaire
+ * (L = 0,8773) et --pin (L = 0,0152) encadrant toute la plage de luminance, le
+ * meilleur des deux est toujours ≥ 3,77:1 (§12.8).
  * Le box-shadow est un anneau, pas une ombre portée : l'interdit du §13 vise
  * les ombres douces sur cartes, pas ce dispositif que MASTER écrit lui-même.
- * Le survol n'utilise jamais d'anneau : focus et survol ne se confondent pas.
+ * Le survol n'utilise JAMAIS d'anneau : focus et survol ne se confondent pas.
  * ================================================================== */
 :focus-visible {
   outline: 2px solid var(--pin);
@@ -489,26 +461,24 @@ textarea[aria-invalid="true"] {
                    var(--marge-page) [pleine-fin];
 }
 
-/* Neutralisation des règles de mise en page du cœur.
-   Le balisage porte layout: "constrained" — ce qui donne à l'éditrice les
-   commandes « Largeur étendue » et « Pleine largeur ». Le cœur émet alors,
-   vérifié dans wp-includes/block-supports/layout.php de WordPress 6.9 :
+/* Neutralisation des règles de mise en page du cœur, que layout: "constrained"
+   déclenche — c'est lui qui donne à l'éditrice « Largeur étendue » et « Pleine
+   largeur ». Vérifié dans wp-includes/block-supports/layout.php de WP 6.9 :
 
      .wp-container-… > :where(:not(.alignleft):not(.alignright):not(.alignfull))
        { max-width: 36rem; margin-left: auto !important; margin-right: auto !important }
      .wp-container-… > .alignwide { max-width: 68rem }
 
-   Ces largeurs font double emploi avec la grille ci-dessus. Le sélecteur du
-   cœur pèse (0,1,0) — :where() ne compte pas — contre (0,3,0) ici : l'ordre de
-   source n'entre pas en jeu, la neutralisation est stable.
+   Double emploi avec la grille ci-dessus. Le sélecteur du cœur pèse (0,1,0) —
+   :where() ne compte pas — contre (0,3,0) ici : l'ordre de source n'entre pas
+   en jeu, la neutralisation est stable.
 
    !important assumé, et seul du thème : le cœur pose lui-même ses marges
    automatiques en !important, il n'existe aucun autre moyen de les retirer.
    Il le faut : une marge auto sur un élément de grille désactive son
-   étirement, si bien qu'un titre court serait dimensionné à son contenu puis
-   centré dans le canal au lieu d'être étiré et aligné à gauche.
-   .alignwide est exclue — c'est le seul enfant qui doit rester centré,
-   puisqu'il est plafonné à --l-large. */
+   étirement, et un titre court serait dimensionné à son contenu puis centré au
+   lieu d'être étiré à gauche. .alignwide est exclue — seul enfant qui doit
+   rester centré, puisqu'il est plafonné à --l-large. */
 .mtb-canal.is-layout-constrained > *:not(.alignwide) {
   max-inline-size: none;
   margin-inline: 0 !important;
@@ -544,16 +514,14 @@ textarea[aria-invalid="true"] {
 /* =====================================================================
  * 6. Lien d'évitement — MASTER §3.2, §8.1, §10.3
  *
- * Le cœur injecte sa propre feuille en ligne pour .skip-link.screen-reader-text
- * (fond #eee, encre #444) : deux valeurs hors des quinze jetons du §3.1, et une
- * paire absente du tableau §12. Cette feuille est imprimée APRÈS la nôtre, donc
- * l'ordre de source ne suffit pas : la classe est répétée pour porter le
- * sélecteur à (0,4,0) contre (0,3,0) au cœur — deux classes plus la
- * pseudo-classe :focus. C'est ce qui évite un !important.
+ * Le cœur injecte en ligne, APRÈS notre feuille, .skip-link.screen-reader-text
+ * (fond #eee, encre #444) : hors des quinze jetons du §3.1, paire absente du
+ * tableau §12. L'ordre de source ne suffit donc pas : la classe est répétée
+ * pour porter le sélecteur à (0,4,0) contre (0,3,0) au cœur — deux classes plus
+ * la pseudo-classe :focus. C'est ce qui évite un !important.
  *
- * MASTER §3.2 range le lien d'évitement parmi les surfaces --pin ; l'encre
- * autorisée retenue est --calcaire (14,23:1, §12.5). L'anneau de focus du §8.1
- * reste visible sur ce fond sombre par son anneau clair intérieur.
+ * §3.2 range le lien d'évitement parmi les surfaces --pin ; encre --calcaire
+ * (14,23:1, §12.5). L'anneau du §8.1 y reste visible par son anneau clair.
  * ================================================================== */
 .skip-link.skip-link.screen-reader-text:focus {
   inset-block-start: var(--e-2);
@@ -577,52 +545,47 @@ textarea[aria-invalid="true"] {
  *
  * AJOUT EN FIN DE FICHIER, JAMAIS UNE LIGNE AU-DESSUS : six chaînes partagent
  * cet arbre de travail sur `main` et ce fichier est le seul qu'elles se
- * partagent. Toute chaîne qui viendra ajouter ici le fera de la même façon.
+ * partagent. Toute chaîne qui ajoutera ici le fera de la même façon.
  *
  * ────────────────────────────────────────────────────────────────────
  * DETTE T7-BIS, CRÉÉE SCIEMMENT ET À NE PAS DÉCOUVRIR PAR SURPRISE :
  * les déclarations des règles 1 à 5 ci-dessous DUPLIQUENT celles des lignes
  * 370-410 (`button`, `input[type=submit]`, `input[type=button]`). Le correctif
  * propre est d'ajouter les deux sélecteurs doublés aux quatre listes de
- * sélecteurs existantes — un diff de quatre lignes — ce que la consigne
- * append-only interdit tant que six chaînes écrivent en parallèle.
- * RISQUE EN ATTENDANT : une modification du bouton faite d'un seul côté passe
- * inaperçue. Le bouton du site est donc décrit à DEUX endroits de ce fichier,
- * et il faut les changer ENSEMBLE. À solder par `refacto-mtb`, hors lot
- * parallèle.
+ * sélecteurs existantes, ce que la consigne append-only interdit tant que six
+ * chaînes écrivent en parallèle. RISQUE EN ATTENDANT : le bouton du site est
+ * décrit à DEUX endroits de ce fichier, et il faut les changer ENSEMBLE.
+ * À solder par `refacto-mtb`, hors lot parallèle.
  * ────────────────────────────────────────────────────────────────────
  *
  * POURQUOI LE SÉLECTEUR EST DOUBLÉ. Le cœur imprime ses styles globaux EN LIGNE
- * DANS LE `head`, après nos feuilles : l'ordre de source ne peut donc pas
- * gagner et il faut la spécificité. Chaque classe est écrite deux fois pour
- * porter le sélecteur à (0,2,0) sans recourir à `!important` — même dispositif
- * qu'au lien d'évitement ci-dessus.
+ * DANS LE `head`, après nos feuilles : l'ordre de source ne peut pas gagner, il
+ * faut la spécificité. Chaque classe est écrite deux fois pour porter le
+ * sélecteur à (0,2,0) sans `!important` — même dispositif qu'au lien
+ * d'évitement ci-dessus.
  *
- * CE QUE LE CŒUR IMPOSE, RELEVÉ SUR LE RENDU RÉEL (WordPress 6.9 de la pile,
- * pas supposé) :
+ * CE QUE LE CŒUR IMPOSE, RELEVÉ SUR LE RENDU RÉEL (WordPress 6.9 de la pile) :
  *   · `:root :where(.wp-element-button, .wp-block-button__link)` (0,0,1)
  *     → `background-color:#32373c`, `color:#fff`, `border-width:0`,
  *       `padding: calc(.667em + 2px) calc(1.333em + 2px)`, `text-decoration:none`
  *       et, plus grave, `font-family/font-size/font-weight/letter-spacing/
  *       line-height/text-transform: inherit`. À (0,0,1) contre (0,0,1) au
- *       `button` de la ligne 370, l'ORDRE tranche — et il tranche pour le cœur.
+ *       `button` de la ligne 370, l'ORDRE tranche — pour le cœur.
  *   · `:where(.wp-block-button__link)` (0,0,0) de la feuille du bloc
  *     → `border-radius:9999px` (une gélule, quand §13 plafonne le rayon à 2 px)
  *       et `text-decoration:none`, qui PERD contre le `a` (0,0,1) de la
- *       ligne 248 : d'où le soulignement laiton constaté sur le bouton du cœur.
+ *       ligne 248 : d'où le soulignement laiton constaté.
  *   · `.wp-block-button__link` (0,1,0) → `display:inline-block`,
  *     `text-align:center`.
  *
  * `.wp-element-button` EST DANS LA LISTE, et ce n'est pas un ajout gratuit : le
  * cœur le cible à (0,1,0) et (0,0,1), ce qui bat le `button` (0,0,1) de la
- * ligne 370. Le bouton du bloc Recherche — donc celui de la page 404 et de la
- * page de résultats — est AUJOURD'HUI en `#32373c` dans une gélule malgré ce
- * fichier. Même défaut, même famille, même correctif.
+ * ligne 370. Le bouton du bloc Recherche — page 404 et page de résultats — est
+ * AUJOURD'HUI en `#32373c` dans une gélule malgré ce fichier.
  *
  * `min-block-size: 48px`, `inline-flex` et le centrage ne sont pas des valeurs
- * de design : 48 px est le minimum tactile écrit en pixels par MASTER §8.4 (il
- * couvre les 44 px du §12.10 avec de la marge), et un `a` ne centre pas son
- * libellé comme un `button`. Même justification qu'à la ligne 366.
+ * de design : même justification qu'à la ligne 366, et un `a` ne centre pas son
+ * libellé comme un `button`.
  * ================================================================== */
 
 /* 1. Apparence unique du bouton — MASTER §8.4 : fond `--sauge`, libellé
@@ -696,11 +659,9 @@ textarea[aria-invalid="true"] {
 }
 
 /* 6. Variation « Contour » du bloc Bouton, ramenée à l'apparence unique du
-      §8.4 — MASTER n'y définit QU'UN bouton.
-      Sans cela, la variation donne `background-color: initial` +
-      `color: currentColor`, donc avec notre encre un bouton CALCAIRE SUR
-      CALCAIRE, illisible, atteignable en un clic : un échec AA franc, pas une
-      imperfection.
+      §8.4 — MASTER n'y définit QU'UN bouton. Sans cela, `background-color:
+      initial` + `color: currentColor` donnent, avec notre encre, un bouton
+      CALCAIRE SUR CALCAIRE, illisible, atteignable en un clic : échec AA franc.
 
       MESURE, ET ELLE CONTREDIT LE CONTRAT #6 §12 : sur le cœur de cette pile,
       ces règles sont écrites `:root :where(.wp-block-button.is-style-outline >
@@ -709,15 +670,12 @@ textarea[aria-invalid="true"] {
       contrat l'impose et parce qu'il n'a pas toujours été inerte : sur un cœur
       qui n'enveloppe pas ces règles dans `:where()`, elles pèsent (0,4,0). D'où
       la classe répétée TROIS fois, qui porte le sélecteur à (0,5,0) : à (0,4,0)
-      il y aurait égalité, et une égalité se tranche par l'ordre de source —
-      c'est-à-dire en faveur du cœur. Un garde-fou qui perd les égalités ne
-      garde rien.
+      il y aurait égalité, tranchée par l'ordre de source en faveur du cœur.
 
-      Contrepartie honnête : la variation devient un réglage qui ne change rien,
-      donc trompeur dans l'éditeur. Un bouton trompeur mais lisible vaut mieux
-      qu'un bouton honnête et invisible. Le vrai correctif est de retirer la
-      variation par `block_type_metadata` dans functions.php — hors empreinte,
-      dette T14. */
+      Contrepartie assumée : la variation devient un réglage qui ne change rien,
+      donc trompeur dans l'éditeur — mais un bouton trompeur et lisible vaut
+      mieux qu'un bouton honnête et invisible. Vrai correctif : retirer la
+      variation par `block_type_metadata` dans functions.php, dette T14. */
 .wp-block-button.is-style-outline > .wp-block-button__link.wp-block-button__link.wp-block-button__link,
 .wp-block-button .wp-block-button__link.is-style-outline.is-style-outline.is-style-outline {
   padding-inline: var(--e-4);
@@ -731,52 +689,39 @@ textarea[aria-invalid="true"] {
  * 8. La piste large employée en entier — MASTER §7.1
  *    Amendement 6 du contrat #6. Complète la règle de la ligne 522.
  *
- * AJOUT EN FIN DE FICHIER, JAMAIS UNE LIGNE AU-DESSUS, pour la même raison
- * que la section 7 : six chaînes partagent cet arbre de travail sur `main` et
- * ce fichier est le seul qu'elles se partagent.
+ * AJOUT EN FIN DE FICHIER, JAMAIS UNE LIGNE AU-DESSUS, même raison qu'au §7.
  *
  * CE QUE CETTE DÉCLARATION RÉPARE, MESURÉ AU NAVIGATEUR ET NON DÉDUIT. La
  * ligne 531 pose `margin-inline: auto` sur `.mtb-canal > .alignwide` pour le
- * centrer dans la piste `large`, puisqu'il y est plafonné à --l-large. Or sur
- * un ÉLÉMENT DE GRILLE une marge automatique annule l'étirement : la piste
- * cesse d'imposer sa largeur, l'élément est dimensionné en `fit-content` sur
- * son contenu, et les marges automatiques absorbent tout le reste de la piste.
- * C'est exactement le mécanisme que le commentaire de la ligne 502 décrit déjà
- * pour les autres enfants du canal — .alignwide en était exclue, donc jamais
- * réparée. Constat sur la pile, un groupe `alignwide` à texte court : 170,7 px
- * de large à 1280 px de fenêtre, pour une piste de 1184 px et un plafond de
- * 1088 px. `grid-column` et `max-inline-size` étaient justes ; seule la
- * largeur employée était fausse.
+ * centrer dans la piste `large`, où il est plafonné à --l-large. Or sur un
+ * ÉLÉMENT DE GRILLE une marge automatique annule l'étirement : l'élément est
+ * dimensionné en `fit-content` sur son contenu et les marges absorbent le reste
+ * de la piste — le mécanisme que le commentaire de la ligne 502 décrit déjà
+ * pour les autres enfants du canal, dont .alignwide était exclue. CONSTAT sur
+ * la pile, un groupe `alignwide` à texte court : 170,7 px de large à 1280 px de
+ * fenêtre, pour une piste de 1184 px et un plafond de 1088 px. `grid-column` et
+ * `max-inline-size` étaient justes ; seule la largeur employée était fausse.
  *
- * `100 %` est une MÉCANIQUE, pas une valeur de design : c'est « toute la piste
- * que la grille du §7.1 m'a donnée », que le plafond --l-large de la ligne 530
- * ramène ensuite à sa borne. Le centrage de la ligne 531 est conservé — il
- * redevient même effectif, puisqu'un élément plafonné et non plus rétréci a
- * enfin du mou à répartir de part et d'autre. C'est pour cela que
- * `inline-size: 100%` est retenu plutôt que `margin-inline: 0`, qui rendrait
- * la même largeur mais collée au bord de la piste, contre l'intention que la
+ * `100 %` est une MÉCANIQUE, pas une valeur de design : « toute la piste que la
+ * grille du §7.1 m'a donnée », que le plafond --l-large de la ligne 530 ramène
+ * ensuite à sa borne. Retenu plutôt que `margin-inline: 0`, qui rendrait la
+ * même largeur mais collée au bord de la piste, contre l'intention que la
  * ligne 531 écrit noir sur blanc.
  *
- * POURQUOI CETTE FORME TIENT SANS SÉLECTEUR DOUBLÉ. Ici on ne combat pas le
- * cœur mais une déclaration à nous, dans notre propre feuille : sélecteur
- * identique et donc spécificité identique à la ligne 522, si bien que c'est
- * l'ORDRE DE SOURCE qui tranche — et il tranche pour la déclaration appendue.
- * Doubler la classe n'apporterait rien et masquerait ce fait.
+ * PAS DE SÉLECTEUR DOUBLÉ : on ne combat pas le cœur mais notre propre feuille
+ * — spécificité identique à la ligne 522, c'est donc l'ORDRE DE SOURCE qui
+ * tranche, et il tranche pour la déclaration appendue.
  *
  * ────────────────────────────────────────────────────────────────────
- * DETTE T18, CRÉÉE SCIEMMENT ET À NE PAS DÉCOUVRIR PAR SURPRISE, exactement
- * de la même famille que T7-bis ci-dessus : cette déclaration vit LOIN de la
- * règle qu'elle complète (ligne 522), et rien à la ligne 522 ne signale
- * qu'elle est complétée deux cents lignes plus bas. Le correctif propre est
- * d'ajouter `inline-size: 100%` dans le bloc de la ligne 522 — un diff d'une
- * ligne — ce que la consigne append-only interdit tant que six chaînes
- * écrivent en parallèle dans ce fichier.
- * RISQUE EN ATTENDANT : quelqu'un qui relit la ligne 522 pour comprendre le
- * canal large y voit une règle incomplète ; quelqu'un qui la modifie peut
- * laisser cette déclaration orpheline, ou la contredire, sans qu'aucun outil
- * ne le signale. Le canal large porte la grille de chiens, la liste de
- * portées et les tableaux de résultats (§7.1) : les deux endroits se lisent
- * ENSEMBLE. À solder par `refacto-mtb`, hors lot parallèle.
+ * DETTE T18, CRÉÉE SCIEMMENT ET À NE PAS DÉCOUVRIR PAR SURPRISE, même famille
+ * que T7-bis : cette déclaration vit LOIN de la règle qu'elle complète (ligne
+ * 522), et rien à la ligne 522 ne le signale. Le correctif propre est d'y
+ * ajouter `inline-size: 100%`, ce que la consigne append-only interdit tant
+ * que six chaînes écrivent en parallèle dans ce fichier.
+ * RISQUE EN ATTENDANT : qui relit la ligne 522 y voit une règle incomplète ;
+ * qui la modifie peut laisser cette déclaration orpheline, ou la contredire,
+ * sans qu'aucun outil ne le signale. Les deux endroits se lisent ENSEMBLE.
+ * À solder par `refacto-mtb`, hors lot parallèle.
  * ────────────────────────────────────────────────────────────────────
  * ================================================================== */
 .mtb-canal > .alignwide { inline-size: 100%; }
@@ -860,18 +805,11 @@ textarea[aria-invalid="true"] {
  * POURQUOI ICI, ET CE N'EST PAS THÉORIQUE : le tableau des chiots d'une portée
  * est écrit par le gabarit du thème (`single-mtb_portee.php`) et n'est le rendu
  * d'AUCUN bloc — `wp_enqueue_block_style()` ne se déclenche donc jamais pour lui
- * et aucune feuille de composant ne le couvre. Sans ce §10 il s'afficherait sans
- * filets et SANS REPLI MOBILE — défilement horizontal à 360 px, échec AA.
- * HISTORIQUE, À NE PAS RELIRE COMME L'ÉTAT ACTUEL : le palmarès de la fiche chien
- * a été dans le même cas tant qu'il passait par un appel de fonction. C'est la
- * mesure relevant `mtb-bloc-mtb-tableau-resultats` ABSENT du `head` qui a fait
- * basculer cet appel sur `do_blocks()` (contrat #16 §11 bis F,
- * `single-mtb_chien.php`) ; sa feuille est de nouveau enfilée, et ce §10 ne lui
- * sert plus que de socle commun.
- * DOUBLON À SUPPRIMER PAR #15, PAS PAR CETTE CHAÎNE : le §1 de
- * `blocs/mtb-tableau-resultats.css` répète ce bloc mot pour mot (sa dette
- * T-#15-a, « à payer avant tout second consommateur » — c'est cette issue). En
- * attendant, les deux jeux coexistent : identiques en effet, rien de visible.
+ * et aucune feuille de composant ne le couvre. Le palmarès (#15) a été dans le
+ * même cas jusqu'à son passage par `do_blocks()` (contrat #16 §11 bis F,
+ * `single-mtb_chien.php`). NE JAMAIS RETIRER CE §10 : les deux consommateurs
+ * tomberaient sans filets et SANS REPLI MOBILE — défilement horizontal à
+ * 360 px, échec AA.
  *
  * Le `border-collapse` de la l. 336 est ce qui peint le filet posé sur `<tr>` :
  * ne pas le retirer. VALEURS BRUTES — liste close, recopiées de §7.6, aucune

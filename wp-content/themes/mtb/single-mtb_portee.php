@@ -192,14 +192,16 @@ function mtb_portee_rendre_les_chiots( array $portee ): void {
 	$chiots   = isset( $portee['chiots'] ) && is_array( $portee['chiots'] ) ? $portee['chiots'] : array();
 	$colonnes = isset( $portee['chiots_colonnes'] ) && is_array( $portee['chiots_colonnes'] ) ? $portee['chiots_colonnes'] : array();
 	$message  = isset( $portee['chiots_message'] ) ? (string) $portee['chiots_message'] : '';
+	$a_chiots = array() !== $chiots;
+	$classes  = 'mtb-fiche-portee__chiots' . ( $a_chiots ? ' alignwide' : '' );
 	?>
-	<section class="mtb-fiche-portee__chiots alignwide">
+	<section class="<?php echo esc_attr( $classes ); ?>">
 		<h2>Les chiots</h2>
 
-		<?php if ( array() === $chiots ) : ?>
+		<?php if ( ! $a_chiots ) : ?>
 			<p class="mtb-etat-doux"><?php echo esc_html( $message ); ?></p>
 		<?php else : ?>
-			<?php /* `mtb-tableau` est la primitive nommée par §7.6 : sans elle, le dépliage en lignes libellées ne l'atteint pas et le tableau déborde à 360 px. Le canal large de §7.4-3 est porté par la <section> : `base.css` ne vise que `.mtb-canal > .alignwide`, et un petit-fils n'est jamais atteint. */ ?>
+			<?php /* `mtb-tableau` est la primitive nommée par §7.6 : sans elle, le dépliage en lignes libellées ne l'atteint pas et le tableau déborde à 360 px. Le canal large de §7.4-3 est porté par la <section> et non par le `<table>` : `base.css` ne vise que `.mtb-canal > .alignwide`, et un petit-fils n'est jamais atteint. Il n'est porté que lorsque le tableau existe, car la même `<section>` porte l'état vide, que §9.3 range en canal texte. */ ?>
 			<table class="mtb-tableau mtb-tableau--chiots">
 				<thead>
 					<tr>
