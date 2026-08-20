@@ -283,7 +283,14 @@ partagé entre les trois chaînes parallèles (décision 23).
 Plafond `BRIEF.md` §12 : **200 000 octets** par page, HTML + CSS + JS décompressés, hors polices et
 photos.
 
-**Mesure d'entrée, après le travail de #16 : `/essai-accueil/` = 196 434 o, soit 3 566 o de marge.**
+> **Chiffre périmé — voir §11, qui fait foi.** La valeur ci-dessous est une **mesure d'entrée**, prise
+> en cours de lot. Elle a été rendue fausse par deux commits de chaînes sœurs arrivés après elle :
+> `4ad6938` (#16, « repasser sous le budget de poids ») et `a09df8f` (#15, allègement de la feuille du
+> tableau de résultats). La mesure finale, prise cache froid sur les octets réseau réels, donne
+> **70 138 o de HTML + CSS + JS** sur la page la plus lourde. La règle gelée ci-dessous reste valable ;
+> l'alarme sur la marge ne l'est plus.
+
+**Mesure d'entrée, désormais périmée : `/essai-accueil/` = 196 434 o, soit 3 566 o de marge.**
 C'est la page la plus lourde du site, et le contenu réel va l'alourdir.
 
 **Règle gelée, opposable à tous les agents de la chaîne :**
@@ -301,10 +308,52 @@ propriété exclusive de #16 ce lot (§9), et les rouvrir rouvrirait son travail
 
 ## 10. Constaté, non corrigé
 
-- **T22** — `base.css:302-311` donne au `<hr>` sa hauteur et son dégradé sans jamais poser d'`inline-size` :
-  le filet double rend **0 px de large**. Conséquence de conception ici : **aucun des huit motifs ne pose
-  de `core/separator`.**
-- **T23** — `.mtb-canal` est une grille (`base.css:477-485`) sans `row-gap` : les marges verticales des
-  composants ne fusionnent jamais. Se verra sur les huit, et plus que partout sur Travail (jusqu'à onze
-  composants empilés).
-- **T13** — quatre conventions d'état vide, réunies pour la première fois sur une même page.
+*Amendé le 2026-08-20 après mesure au navigateur : T22 et T23 ont été payées par #16 pendant ce lot.
+Les valeurs héritées d'`ETAT.md` (0 px, 134/173 px) sont **périmées**.*
+
+- **T22 — réparée par #16.** Mesuré sur une page d'essai portant un `core/separator` :
+  `<hr class="wp-block-separator">` rend **576 px de large, 6 px de haut**, `inline-size: 576px`.
+  Ce n'est plus 0 px. La conséquence de conception reste néanmoins appliquée : **aucun des huit motifs
+  ne pose de `core/separator`** — la décision a été prise avant la mesure et rien n'oblige à la rouvrir.
+- **T23 — réparée par #16.** Écart vertical entre composants consécutifs de `.mtb-canal`, mesuré à
+  1440 px : **86 px, uniforme, sur les huit paires** relevées (Accueil ×3, BHPL ×2, Travail ×1,
+  Placement ×2). Le lot 4 mesurait 134 px et 173 px. Aucune ligne de `base.css` n'a été touchée par #17.
+- **T13 — toujours ouverte, et désormais visible.** Les quatre conventions d'état vide cohabitent
+  effectivement sur une même page pour la première fois. Mesuré **dans l'éditeur** : 6 cadres d'état
+  vide sur l'Accueil, 9 sur BHPL en France, **27 sur Travail**. **Au public : aucun** — décision 26 et
+  D12 tenues. Constatée, non corrigée.
+- **Hors empreinte, à router** : le favicon public est le logo WordPress
+  (`/wp-includes/images/w-logo-blue-white-bg.png`, 4 405 o, première partie, aucun tiers).
+  Cibles interactives sous 44 px relevées ailleurs : lien du titre de site dans l'en-tête **22 px** (#18),
+  liens de chien dans le tableau de résultats **19 px** (#15), liens de nom dans la grille de chiens
+  **28 px** (#13/#14). #17 n'introduit aucun élément interactif.
+
+## 11. D8 — le budget, et comment il se lit
+
+Mesuré cache froid, octets réseau réels (CDP `encodedDataLength`), page la plus lourde = **l'Accueil**
+(et non Travail : Travail ne rend qu'un tableau sur neuf blocs posés, l'Accueil empile six composants).
+
+| | Accueil | Travail |
+|---|---|---|
+| Total cache froid, polices comprises | 222 670 o | 207 476 o |
+| **HTML + CSS + JS — le périmètre du budget** | **70 138 o** | **54 944 o** |
+| dont les deux polices, hors budget | 148 127 o | 148 127 o |
+
+**D8 est tenue, avec une marge de 2,8×.** La décision 14 d'`ETAT.md` est explicite : la contrainte du
+brief §12 sur les polices est un **nombre de fichiers — deux maximum, tenu** ; le budget chiffré de
+200 000 o porte sur **HTML + CSS + JS**. Le dépassement apparent des 200 000 o sur six pages est
+entièrement imputable à `newsreader-var-latin.woff2` (124 474 o), actif partagé par tout le site, servi
+une seule fois, hors de l'empreinte de #17.
+
+**Poids public ajouté par #17 : 0 octet.** Aucun CSS, aucun JS, et un `index.html` allégé de 74 o.
+Les 6 044 o des huit fichiers de motifs sont des fichiers de thème, jamais servis au navigateur.
+
+## 12. Vocabulaire réel de WordPress 6.9 — mesuré à l'écran
+
+Les libellés que voit Fabienne **ne sont pas** ceux que le plan supposait. À recopier exactement dans
+la fiche d'aide (décision 43 — une fiche qui ment est un défaut bloquant) :
+
+- la modale de création de page s'appelle **« Choisir une composition »**, pas « Choisir un motif » ;
+- l'onglet de l'insérteur s'appelle **« Compositions »**, pas « Motifs » ;
+- les catégories proposées sont **« Toutes », « Contenu de départ », « Texte »** — les huit
+  compositions apparaissent dans les trois.
