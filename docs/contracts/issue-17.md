@@ -339,11 +339,33 @@ Mesuré cache froid, octets réseau réels (CDP `encodedDataLength`), page la pl
 | **HTML + CSS + JS — le périmètre du budget** | **70 138 o** | **54 944 o** |
 | dont les deux polices, hors budget | 148 127 o | 148 127 o |
 
-**D8 est tenue, avec une marge de 2,8×.** La décision 14 d'`ETAT.md` est explicite : la contrainte du
-brief §12 sur les polices est un **nombre de fichiers — deux maximum, tenu** ; le budget chiffré de
-200 000 o porte sur **HTML + CSS + JS**. Le dépassement apparent des 200 000 o sur six pages est
-entièrement imputable à `newsreader-var-latin.woff2` (124 474 o), actif partagé par tout le site, servi
-une seule fois, hors de l'empreinte de #17.
+**Les polices sont hors budget, et c'est acquis.** La décision 14 d'`ETAT.md` est explicite : la
+contrainte du brief §12 sur les polices est un **nombre de fichiers — deux maximum, tenu** ; le budget
+chiffré porte sur **HTML + CSS + JS**. Le dépassement apparent des 200 000 o sur six pages, mesuré
+polices comprises, est entièrement imputable à `newsreader-var-latin.woff2` (124 474 o), actif partagé
+par tout le site, servi une seule fois, hors de l'empreinte de #17.
+
+### 11.1 Une ambiguïté du brief que #17 ne peut pas trancher seule
+
+**`BRIEF.md` §12 écrit « HTML + CSS + JS < 200 Ko hors photos » et ne dit pas si les octets sont
+comptés compressés ou décompressés.** Les deux lectures ne donnent pas le même verdict :
+
+| Page | Octets réseau (compressés) | Décompressés |
+|---|---|---|
+| Travail | 58 439 o ✅ | 170 658 o ✅ (marge 29 342 o) |
+| **Accueil** | 72 413 o ✅ | **210 680 o ❌ — 10 680 o au-dessus** |
+
+**Je ne déclare donc pas D8 tenue sans réserve.** Elle est tenue en octets réseau, et manquée de 5,3 %
+sur l'Accueil en octets décompressés. L'arbitrage appartient au niveau du lot, pas à cette chaîne.
+
+**La cause est identifiée, chiffrée, et entièrement hors de l'empreinte de #17** : le projet expédie
+au navigateur des feuilles non minifiées, commentaires compris — `base.css` 42 648 o,
+`mtb-bandeau-ouverture.css` 33 980 o, `entete-pied.css` 28 269 o, `mtb-grille-chiens.css` 26 333 o.
+Une étape de minification rendrait la marge d'un coup, sans retirer un mot de contenu.
+
+**Ce que #17 ajoute au poids public : 0 octet** — aucun CSS, aucun JS, et un `index.html` qui a
+maigri. Aucun octet de dépassement ne lui est imputable, et la règle gelée au §9bis reste entière :
+**un dépassement se chiffre et se ventile, il ne se résout jamais en tronquant le contenu.**
 
 **Poids public ajouté par #17 : 0 octet.** Aucun CSS, aucun JS, et un `index.html` allégé de 74 o.
 Les 6 044 o des huit fichiers de motifs sont des fichiers de thème, jamais servis au navigateur.
