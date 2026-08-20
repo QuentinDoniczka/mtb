@@ -320,8 +320,11 @@ Les valeurs héritées d'`ETAT.md` (0 px, 134/173 px) sont **périmées**.*
   Placement ×2). Le lot 4 mesurait 134 px et 173 px. Aucune ligne de `base.css` n'a été touchée par #17.
 - **T13 — toujours ouverte, et désormais visible.** Les quatre conventions d'état vide cohabitent
   effectivement sur une même page pour la première fois. Mesuré **dans l'éditeur** : 6 cadres d'état
-  vide sur l'Accueil, 9 sur BHPL en France, **27 sur Travail**. **Au public : aucun** — décision 26 et
-  D12 tenues. Constatée, non corrigée.
+  vide sur l'Accueil, 9 sur BHPL en France, et **27 sur Travail — chiffre périmé**. Les 27 ont été
+  comptés quand `patterns/travail.php` posait **neuf** blocs de tableau ; depuis **A3bis** il n'en pose
+  qu'un, et le motif ne compte plus que quatre blocs au total. Le chiffre n'a pas été recompté et **ne
+  doit être repris nulle part** — `doc-client-mtb` a eu raison de refuser de l'écrire dans la fiche
+  d'aide. **Au public : aucun cadre** — décision 26 et D12 tenues, cela reste vrai. Constatée, non corrigée.
 - **Hors empreinte, à router** : le favicon public est le logo WordPress
   (`/wp-includes/images/w-logo-blue-white-bg.png`, 4 405 o, première partie, aucun tiers).
   Cibles interactives sous 44 px relevées ailleurs : lien du titre de site dans l'en-tête **22 px** (#18),

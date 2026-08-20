@@ -64,8 +64,10 @@ Deux titres arrivent déjà écrits, dans **Page BHPL — la race** : **Santé**
 **Génétique des couleurs**. Vous pouvez les garder, les corriger, ou les effacer.
 
 **Le modèle Page d'accueil pose la charpente de l'accueil ; il ne décide pas quelle page sert d'accueil
-au site.** Ce réglage-là a été fait une fois pour toutes et n'est pas dans vos écrans. Si vous avez
-besoin d'en changer, appelez-nous.
+au site.** Ce choix-là a été fait une fois pour toutes, et **vous ne pouvez pas le changer vous-même** :
+l'écran qui le porte n'est pas dans votre menu de gauche, et c'est normal. Créer une page avec ce
+modèle ne la met donc pas à la place de l'accueil actuel. **Si vous avez besoin d'en changer,
+appelez-nous** — c'est l'affaire de deux minutes de notre côté.
 
 ---
 
@@ -101,7 +103,11 @@ voie quoi que ce soit d'inachevé.
 tirets, portant le nom du composant en majuscules et une phrase qui commence par
 « Ce bloc n'affiche rien tant que… ». **C'est normal, c'est voulu, et ce n'est pas une panne.** Ce
 cadre n'existe que pour vous. Une page fraîchement créée à partir d'un modèle en montre plusieurs d'un
-coup : c'est simplement la charpente qui attend vos mots.
+coup, parfois beaucoup : c'est simplement la charpente qui attend vos mots.
+
+**Côté visiteurs, il n'y en a aucun** — pas un seul, même sur une page à moitié remplie et publiée.
+Si vous publiez une page dont vous n'avez encore rempli que la première section, le site montre cette
+section, et rien d'autre.
 
 > **Capture à prendre :** une page qui vient d'être créée avec le modèle **Page d'accueil**, rien de
 > saisi, tous les cadres gris visibles d'un coup — pour qu'elle reconnaisse cet écran sans s'inquiéter.
@@ -121,8 +127,8 @@ avez déjà saisi ailleurs.
 - **La dernière portée** de l'accueil et **la liste des portées** de la page Placement se mettent à
   jour à chaque portée publiée.
 - **Les reproducteurs** de l'accueil suivent vos fiches de chien.
-- **Le téléphone de l'encart d'appel** et **les coordonnées des mentions légales** viennent de votre
-  écran de réglages.
+- **Le téléphone de l'encart d'appel** et **les coordonnées des mentions légales** viennent de l'écran
+  **Coordonnées**, dans le menu de gauche.
 
 **Vous ne tapez jamais deux fois la même chose.** Si vous vous surprenez à recopier un résultat, une
 portée, un nom de chien ou votre adresse dans le texte d'une page, arrêtez-vous : c'est le signe qu'il
@@ -157,6 +163,25 @@ comme sur n'importe quelle page.
 
 Dans les deux cas, **le titre est écrit une fois et une seule**. Vous n'avez rien à régler.
 
+### Si vous déplacez le bandeau, le titre revient en haut
+
+C'est la seule chose à savoir, et vous la rencontrerez le jour où vous réorganiserez une page.
+
+**Le bandeau ne porte le grand titre que s'il est le tout premier élément de la page.** Si vous le
+descendez sous une section de texte, ou si vous le glissez à l'intérieur d'un **Groupe**, alors le
+titre de la page **réapparaît en haut**, au-dessus du texte — et reste aussi écrit sur la photo du
+bandeau. Vous le voyez donc **deux fois**.
+
+**Rien n'est cassé, rien n'est perdu**, et l'écran vous le dit lui-même : un message jaune s'affiche
+sur le bandeau, « *Ce bandeau n'est pas le premier bloc de la page : le titre s'affichera deux fois.
+Déplacez-le tout en haut.* »
+
+**Ce qu'il faut faire** : remontez le bandeau tout en haut avec la petite flèche de sa barre d'outils,
+jusqu'à ce que le message jaune disparaisse. Le titre redevient unique aussitôt.
+
+> **Capture à prendre :** un bandeau descendu en deuxième position, le message jaune visible en entier
+> au-dessus de lui.
+
 Le bandeau est décrit en entier dans *Mettre une photo en haut d'une page*.
 
 ---
@@ -183,8 +208,8 @@ place habituelle, au-dessus du texte. Rien n'est perdu, la page reste juste.
 ## Ce qui ne se saisit jamais dans une page
 
 **Votre adresse, votre téléphone et votre courriel ne se tapent dans aucune page.** Ils sont saisis à
-un seul endroit, dans un écran de réglages, et s'affichent ensuite partout où le site en a besoin — y
-compris dans les mentions légales.
+un seul endroit, dans l'écran **Coordonnées** du menu de gauche, et s'affichent ensuite partout où le
+site en a besoin — y compris dans les mentions légales.
 
 Voir *Modifier vos coordonnées, une fois pour tout le site*.
 
@@ -204,6 +229,8 @@ changement — et l'un des deux finirait par mentir.
 - **Le titre de la page n'apparaît pas au-dessus du texte.** Il est dans le bandeau, sur la photo.
 - **Le titre s'affiche au-dessus du texte alors que vous attendiez un bandeau.** Ce modèle-là n'en a
   pas : ce sont les mentions légales et la politique de confidentialité.
+- **Le titre s'affiche deux fois, et un message jaune le dit sur le bandeau.** Le bandeau n'est plus le
+  premier élément de la page. **Ce qu'il faut faire** : remontez-le tout en haut. Voir plus haut.
 - **La galerie ne montre encore aucune photo.** Aucune n'a été choisie ; côté visiteurs, il n'y a rien
   du tout à cet endroit.
 - **Dans l'écran de modification, la page est plus étroite que sur le site.** C'est la fenêtre de
@@ -213,7 +240,8 @@ changement — et l'un des deux finirait par mentir.
 
 - La fenêtre **Choisir une composition** ne propose aucun des huit modèles.
 - Le bouton **+** ne propose pas d'onglet **Compositions**.
-- Le titre de la page s'affiche **deux fois** sur le site.
+- Le titre de la page s'affiche **deux fois** sur le site **alors que le bandeau est bien tout en haut
+  de la page et qu'aucun message jaune ne s'affiche**.
 - Un titre de discipline apparaît en double sur la page Travail.
 
 **Ce qu'il vaut mieux ne pas faire :**
@@ -221,6 +249,10 @@ changement — et l'un des deux finirait par mentir.
 - **Ne dupliquez jamais une page existante pour en créer une autre.** Partez d'un modèle : c'est
   exactement à cela qu'ils servent, et vous ne traînerez pas le texte de la page précédente.
 - **Ne posez pas deux fois le même modèle dans une page.**
+- **Sur la page Travail, ne posez pas un tableau de résultats par discipline.** Le modèle en pose un
+  seul, et c'est le bon : lui seul montre aussi les résultats dont la **Discipline** n'a pas été
+  choisie. Plusieurs tableaux réglés chacun sur une discipline les laisseraient de côté, sans rien
+  vous dire.
 - **Ne recopiez pas une portée, un chien ou un résultat dans le texte d'une page.** Ils se saisissent
   dans leurs écrans et s'affichent tout seuls.
 
@@ -252,10 +284,14 @@ chacune vient. À faire en une passe, sur des pages d'essai.
 | `captures/modeles-accueil-remplie.png` | La même page, remplie et **publiée**, vue sur le site | Le bandeau avec son titre, une section de texte, la dernière portée, les reproducteurs, l'encart d'appel |
 | `captures/modeles-travail-sur-le-site.png` | Une page créée avec **Page Travail**, **publiée**, vue sur le site | Le bandeau, la première section de texte, les tableaux de résultats avec leurs titres de discipline, **puis la seconde section de texte** — pour montrer qu'elle n'a rien tapé de ces tableaux, et que son texte peut continuer en dessous |
 | `captures/modeles-mentions-legales.png` | Une page créée avec **Page Mentions légales**, **publiée** | Le titre affiché **en haut de la page**, sans bandeau, puis les coordonnées — pour montrer les deux régimes de titre |
+| `captures/modeles-bandeau-plus-premier.png` | Une page d'essai où le **Bandeau d'ouverture** a été descendu en deuxième position | Le message jaune sur le bandeau, lisible en entier : « Ce bandeau n'est pas le premier bloc de la page : le titre s'affichera deux fois. Déplacez-le tout en haut. » |
+| `captures/modeles-travail-non-renseigne.png` | Une page **Page Travail** publiée, sur le site, avec au moins un résultat dont la **Discipline** n'a pas été choisie | Le dernier tableau, intitulé **Non renseigné** — pour qu'elle reconnaisse ce titre et sache quoi en faire. Texte et noms neutres |
 
-**Deux libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** :
-l'entrée du menu à trois points qui supprime un composant, et le bouton qui ferme la fenêtre
-**Choisir une composition**. Tous deux sont décrits par leur place, jamais nommés.
+**Quatre libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** :
+l'entrée du menu à trois points qui supprime un composant, le bouton qui ferme la fenêtre
+**Choisir une composition**, l'entrée de menu **Toutes les pages** et le bouton **Ajouter une page**.
+Les deux premiers sont décrits par leur place, jamais nommés ; les deux derniers sont à confirmer lors
+de la passe de captures, en même temps que la première image.
 
 **Aucune capture ne doit montrer un nom de chien, une date de naissance, un résultat ou une photo non
 validés** : utilisez des pages d'essai et un texte neutre.
