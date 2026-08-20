@@ -369,21 +369,39 @@ La feuille est coupée en deux sections, et **la coupure est une clause de ce co
 > est payée** : le repli de §7.6 ne dépend plus de la présence du bloc. `base.css:917-923` demande en
 > retour la suppression du §1 de la feuille de bloc, devenu redondant.
 >
-> **Décision : le §1 reste en place pour le commit de cette chaîne, et sa suppression est
-> séquencée après le commit de `base.css` par #16.** Raison, et elle tient à la structure du projet
-> plutôt qu'à la prudence : le dépôt est **mono-branche, arbre partagé, sans branche pour rattraper**.
-> Si je retire le §1 maintenant et que le `base.css` de #16 — **non commité au moment où j'écris** —
-> n'atterrit pas ou est révisé, le tableau se rend **sans filets et sans repli mobile** : défilement
-> horizontal à 360 px, échec AA, **en silence**. Garder le doublon laisse au contraire un défaut
-> **visible**, mesuré bénin (les deux jeux de déclarations sont identiques en effet ; les quatre
-> combinaisons de spécificité et d'ordre ont été vérifiées sur la règle la plus exposée, `display:
-> none` gagne dans les quatre). Entre un défaut silencieux et un défaut visible, la décision 27 et
-> l'histoire de T13 tranchent dans le même sens.
+> **Second amendement du 2026-08-20 — le §1 a été supprimé. Il n'y a plus qu'une section.**
 >
-> **Le geste de suppression est indissociable de T-#15-c et T-#15-e**, et il faut le faire d'un seul
-> coup : retirer le §1, retirer le doublage `.mtb-tableau.mtb-tableau td` devenu inutile et trompeur,
-> factoriser la recette de masquage écrite deux fois, et resynchroniser les renvois de ligne vers
-> `base.css` — **tous périmés** de 2 à 9 lignes depuis que #16 a fait croître le fichier.
+> J'avais d'abord décidé de garder le §1 pour le commit de cette chaîne et de séquencer sa suppression
+> après le commit de `base.css` par #16. Raison : mono-branche, arbre partagé, et le `base.css` de #16
+> **non commité** — si le §1 partait et que `base.css` n'atterrissait pas, le tableau se rendait sans
+> repli mobile, échec AA **silencieux**.
+>
+> **L'orchestrateur a tranché dans l'autre sens, et il a repris le couplage à son niveau** :
+> *« garde uniquement ce qui est propre à ton bloc — pas une ligne de la primitive, pas de copie de
+> sécurité. Une duplication temporaire est une duplication permanente. »* La raison est meilleure que
+> la mienne sur le fond : c'est le motif de T18, déjà matérialisé à **cinq exemplaires** dans ce
+> projet, et la divergence avait **déjà commencé** (10,78 contre 10,79). J'ai remonté l'état exact —
+> la primitive est dans `base.css` **dans l'arbre de travail mais dans aucun commit** — et
+> l'orchestrateur vérifie le couplage au test d'intégration de lot. **Exécuté.**
+>
+> **Trois dettes payées d'un seul geste** : T-#15-a (primitive dans une feuille conditionnelle),
+> T-#15-c (le doublage `.mtb-tableau.mtb-tableau td`, **recopié nulle part**), T-#15-e (recette de
+> masquage écrite deux fois). **La règle de coupure franche n'a plus d'objet** et a été retirée.
+>
+> **Vérifié après suppression, pas déduit** : `base.css` §10 couvre le §1 supprimé **déclaration par
+> déclaration** (comparaison automatique, commentaires retirés — une seule différence, le doublage,
+> qui est précisément T-#15-c). Sur les quatre pages des deux chemins de rendu, à 360 et 1440 px,
+> **zéro différence de valeur calculée** avant/après. Dans la toile de l'éditeur réduite, le
+> rembourrage reste celui du repli **sans** la classe doublée : la toile est une iframe où le cœur ne
+> préfixe pas, donc `td` y pèse (0,0,1) contre (0,1,1) pour `.mtb-tableau td` — l'écart de spécificité
+> suffit, le doublage n'avait de raison d'être que tant que les deux règles vivaient dans deux
+> feuilles.
+>
+> **Ce qui reste dans la feuille** : une règle, quatre déclarations — l'affectation au canal large.
+> 37 070 o → **10 158 o**. Effet de bord mesuré : sous le seuil de 20 000 o, le cœur **incorpore** la
+> feuille par `wp_maybe_inline_styles()` — plus de `<link>` sur le site public, un `<style
+> id="mtb-bloc-mtb-tableau-resultats-inline-css">` à la place. **Tout contrôle qui cherchait la
+> poignée dans un `<link>` doit désormais chercher le `<style>`.**
 
 Points gelés à l'intérieur du §1 :
 
@@ -627,11 +645,11 @@ une affirmation « aucune notice PHP » n'a de sens que **mesurée sur une page 
 | # | Dette | À payer par |
 |---|---|---|
 | ~~**T-#15-a**~~ | ~~**La primitive `.mtb-tableau` vit dans une feuille de bloc**, donc n'atteint que les pages portant le bloc — mèche datée vers un échec AA sur les fiches portée.~~ **PAYÉE PENDANT LE LOT PAR #16**, qui a hissé la primitive dans `base.css` §10 (l. 964-1115). Vérifié sur la pile : `base.css` est servie sur `/chien/luna/` et porte la requête média de §7.6 et la règle de cellule vide. **Reste dû** : la suppression du §1 de la feuille de bloc, séquencée **après** le commit de `base.css` par #16 — voir l'amendement du §5 | ✅ **payée** ; suppression du doublon à séquencer |
-| **T-#15-a bis** | **La primitive est définie deux fois** le temps que les deux commits atterrissent. Bénin aujourd'hui (déclarations identiques en effet, ordre et spécificité vérifiés sur les quatre combinaisons de la règle la plus exposée), **divergent demain** — c'est le patron exact de T13. Premier symptôme déjà là : `base.css:1013` tabule `--texte`/`--calcaire-creux` à 10,78:1, la feuille de bloc à 10,79:1. *Vérifié le 2026-08-20 : la valeur exacte est **10,7854**, donc **la feuille de bloc a raison** et `base.css` arrondit vers le bas. Ma rédaction initiale supposait l'inverse — la divergence est arrivée, dans l'autre sens que prévu, ce qui est précisément pourquoi un doublon ne se laisse pas vivre.* | un commit de suite, avec T-#15-c et T-#15-e |
+| ~~**T-#15-a bis**~~ | ~~La primitive définie deux fois.~~ **SANS OBJET** — le §1 a été supprimé le 2026-08-20 sur arbitrage de l'orchestrateur. Il n'y a plus qu'une définition, dans `base.css` §10. *La divergence annoncée avait bien commencé avant la suppression, et dans l'autre sens que je le supposais : la valeur exacte est **10,7854**, donc c'était la feuille de bloc qui avait raison et `base.css` qui arrondissait vers le bas. C'est exactement pourquoi un doublon ne se laisse pas vivre.* | ✅ **close** |
 | **T-#15-b** | **Le sexe du chien n'est pas rendu** (§9). Q-e de `issue-5.md` §13 | `lead-design-mtb`, puis révision de §7.6 |
-| **T-#15-c** | **La classe doublée `.mtb-tableau.mtb-tableau td`** n'existe que pour battre le préfixage `.editor-styles-wrapper` de la toile. Au hissage dans `base.css`, elle devient **inutile et trompeuse** et doit être retirée dans le même geste | avec T-#15-a |
+| ~~**T-#15-c**~~ | ~~La classe doublée `.mtb-tableau.mtb-tableau td`.~~ **PAYÉE le 2026-08-20** avec la suppression du §1 : elle n'est **recopiée nulle part**, et la mesure dans la toile confirme qu'elle était inutile une fois les deux règles dans la même feuille | ✅ **payée** |
 | **T-#15-d** | **Le repli de §7.6 détruit les rôles de tableau** sous 48 rem (`display: block`/`grid`) : le `<thead>` découpé n'est plus *associé* aux cellules, il est lu comme une suite de mots avant les données pendant que chaque `::before` répète le même libellé — **double énoncé possible**. Patron de `MASTER.md`, pas de notre écriture ; le corriger demande des attributs ARIA côté serveur | `lead-design-mtb`, puis une issue `a11y` |
-| **T-#15-e** | **La recette de masquage accessible est écrite deux fois** dans la feuille (`caption` hors requête média, `thead` dedans) ; le thème n'a **aucune** primitive `.mtb-invisible` — vérifié, la seule occurrence est `.skip-link.screen-reader-text:focus`, dont l'état masqué vient d'une feuille en ligne du cœur | avec T-#15-a |
+| ~~**T-#15-e**~~ | ~~La recette de masquage accessible écrite deux fois dans la feuille.~~ **PAYÉE le 2026-08-20** : les deux occurrences vivaient dans le §1, supprimé. *Le thème n'a toujours **aucune** primitive `.mtb-invisible` — la seule occurrence est `.skip-link.screen-reader-text:focus`, dont l'état masqué vient d'une feuille en ligne du cœur. La recette existe maintenant deux fois **dans `base.css` §10**, hors de cette empreinte* | ✅ payée ici ; le besoin de primitive reste, dans `base.css` |
 | **T-#15-f** | **Trois conventions de `supports` coexistent** dans `includes/blocks/`. Ce module prend la plus sûre ; la divergence reste | une issue de consolidation |
 | **T-#15-g** | **`docs/contracts/issue-1.md` §11 doit recevoir une ligne** `blocks / tableau-resultats / #15`. Hors de l'empreinte d'écriture de cette chaîne | `/lead-mtb` à la clôture du lot |
 
@@ -648,7 +666,15 @@ pas ce code** : le site source range lui-même *Cavage* sous « Autres disciplin
 discipline se rend exactement comme les huit autres.
 
 **Questions de design, pour `lead-design-mtb`** — aucune ne bloque l'écriture, toutes bloquent la
-ratification :
+ratification.
+
+> **Avertissement du 2026-08-20, à ne pas perdre.** Ces questions portaient sur des règles qui vivent
+> désormais dans **`base.css` §10** (#16), hors de cette empreinte. Vérifié après la suppression du
+> §1 : **Q-front-3, Q-front-4 et Q-front-7 sont bien reconsignées dans `base.css` §10** ; **Q-front-2
+> (partiellement), Q-front-5 et Q-front-6 ne le sont nulle part.** Ce contrat est donc leur **seul**
+> point de conservation — les cinq paires du §12.3 manquantes et la hauteur de cible en cellule se
+> perdraient si on ne lisait que la feuille. Q-front-1 est la seule qui porte encore sur une règle
+> présente dans `mtb-tableau-resultats.css`.
 
 | # | Question | Coût de la réponse |
 |---|---|---|

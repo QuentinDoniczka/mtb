@@ -1,49 +1,49 @@
 /*
  * MTB — Tableau de résultats
  * Habillage du bloc `mtb/tableau-resultats` (extension mtb-core). Le balisage est
- * gelé par docs/contracts/issue-15.md §4 : cette feuille est écrite contre lui,
- * crochet par crochet, et ne cible AUCUNE classe qu'il n'émet pas.
+ * gelé par docs/contracts/issue-15.md §4 : cette feuille est écrite contre lui et
+ * ne cible AUCUNE classe qu'il n'émet pas.
  *
- * CE QU'ELLE HABILLE — deux objets distincts, et c'est tout le sujet du fichier :
- *   · la PRIMITIVE `.mtb-tableau` (§1) : ce qu'EST un tableau dans ce système,
- *     quel que soit le contenu qu'il porte — MASTER §4.5, §5.3, §7.6, §12.9 ;
- *   · le BLOC `.mtb-tableau-resultats` (§2) : la place dont ce composant-ci
- *     dispose ICI, dans la grille à trois canaux — MASTER §7.1.
+ * CE QU'ELLE HABILLE — une seule chose : LA PLACE dont ce composant dispose ICI,
+ * dans la grille à trois canaux (MASTER §7.1). Une règle, quatre déclarations.
  *
- * CONTRAT DE BALISAGE — crochets C-1 à C-12, contrat §4.3, liste CLOSE. Ce que
- * le serveur émet, et rien d'autre :
+ * CE QU'ELLE N'HABILLE PLUS, ET CE N'EST PAS UN MANQUE : rien de ce qu'EST un
+ * tableau. Ni la largeur du `<table>`, ni la légende masquée, ni le filet entre
+ * deux lignes, ni le survol, ni le repli en lignes libellées de MASTER §7.6.
+ * TOUT CELA VIT DANS `base.css` §10, sous la classe nue `.mtb-tableau` — une
+ * primitive nommée par MASTER s'écrit UNE SEULE FOIS, dans la feuille servie
+ * partout (décision 30). `base.css` part de `wp_enqueue_scripts` sur TOUTES les
+ * pages : le repli du §7.6 ne dépend donc plus de la présence de ce bloc, et le
+ * jour où le tableau des chiots d'une portée (MASTER §7.4) portera
+ * `class="mtb-tableau"`, il se rendra habillé sans qu'une ligne soit écrite ici.
+ * Cette feuille en a porté un doublon jusqu'au hissage : il n'en reste RIEN, et
+ * rien ne doit y revenir — une duplication temporaire est une duplication
+ * permanente.
+ *
+ * ------------------------------------------------------------------
+ *  AVERTISSEMENT — CE COMPOSANT A DEUX CHEMINS DE RENDU, ET AUCUN DES DEUX
+ *  N'OBTIENT SON HABILLAGE DE TABLEAU DE CETTE FEUILLE.
+ *
+ *   · le BLOC posé dans une page : le cœur le rend, `render_block` se déclenche,
+ *     cette feuille est mise en file — elle n'apporte que le canal ;
+ *   · l'APPEL PHP `mtb_tableau_resultats_du_chien_rendu()` depuis
+ *     `single-mtb_chien.php` (#16) : `render_block` NE SE DÉCLENCHE PAS, cette
+ *     feuille est ALORS ABSENTE de la page — vérifié, zéro occurrence de
+ *     `mtb-bloc-mtb-tableau-resultats` sur `/chien/rex/` et `/chien/luna/` — et
+ *     le palmarès s'y habille pourtant entièrement, par `base.css` §10.
+ *
+ *  CONSÉQUENCE : le jour où quelqu'un retirerait le §10 de `base.css`, LES DEUX
+ *  CHEMINS TOMBERAIENT ENSEMBLE — filets, légende, survol et surtout le repli
+ *  mobile, donc défilement horizontal à 360 px et échec AA. La seule chose qui
+ *  resterait alors est ce qui est écrit ci-dessous : l'affectation au canal.
+ * ------------------------------------------------------------------
+ *
+ * CONTRAT DE BALISAGE — ce que cette feuille vise RÉELLEMENT, et rien d'autre :
  *   C-1  `class="mtb-tableau-resultats"` sur la racine du bloc.
- *   C-2  `class="mtb-tableau"` sur CHAQUE `<table>`, en classe UNIQUE ET NUE.
- *        Aucune seconde classe, aucun modificateur de mode.
- *   C-3  `data-libelle="…"` sur CHAQUE `<td>`, valeur = exactement le libellé
- *        de colonne, à l'octet près (Année · Chien · Niveau · Discipline ·
- *        Conducteur · Pays). Décision 10. C'est la matière du repli du §1.5.
- *   C-4  Un `<td>` vide est STRICTEMENT vide — zéro caractère entre les deux
- *        balises — ET porte `class="mtb-tableau__cellule--vide"`. Les deux
- *        crochets, et le sélecteur du §1.5.5 vise leur union.
- *   C-5  Un `<td>` non vide contient EXACTEMENT UN NŒUD ENFANT (un passage de
- *        texte, ou un élément unique qui peut contenir ce qu'il veut). Deux
- *        enfants directs = deux éléments de grille, et le troisième retombe
- *        SOUS l'étiquette, colonne 1, à chaque ligne — invisible au-dessus de
- *        768 px. Clause écrite d'avance pour le jour où le sexe du chien
- *        s'imprimera à côté du nom (dette T-#15-b).
- *   C-6  `<thead>` avec une ligne de `<th scope="col">`. Jamais des `<td>`,
- *        JAMAIS de `role` ni d'`aria-hidden` — voir l'avertissement du §1.5.1.
- *   C-7  `<tbody>` explicite. Le CSS vise `tbody > tr` : filet et survol sans
- *        jamais toucher la ligne d'en-tête.
- *   C-8  `<caption>` premier enfant de chaque `<table>`, sans classe.
- *   C-9  `<h2>` nu par groupe en mode discipline ; aucun titre en mode
- *        `chien-courant`. Aucune règle de cette feuille ne le vise.
- *   C-10 Racine et `<section>` en flux normal, sans `style=`, sans classe
- *        d'alignement du cœur (`alignwide` / `alignfull`) : c'est le THÈME qui
- *        affecte le canal, mécanisme unique du catalogue.
- *   C-11 Un `<a>` si et seulement si l'URL est non vide ; sinon le nom en clair,
- *        sans classe ni attribut distinct. Aucun style de « lien mort » ici.
- *   C-12 Une discipline sans aucune ligne n'émet ni `h2`, ni `<table>`, ni
- *        conteneur vide (MASTER §9.3). Rien n'est masqué en CSS.
- *   Plus `data-discipline="…"` sur la `<section>` : il porte la CLÉ STOCKÉE, qui
- *   n'apparaît nulle part ailleurs dans le balisage. AUCUNE règle ne le vise, et
- *   surtout aucune règle ne doit jamais styler une discipline PAR SA VALEUR.
+ * Les autres crochets du contrat §4.3 (`mtb-tableau`, `data-libelle`, `<thead>`,
+ * `<tbody>`, `<caption>`, la cellule vide) restent des points de contrat, mais
+ * ils sont désormais consommés par `base.css` §10 : ne les cherchez pas ici, et
+ * n'écrivez pas ici la règle qui les viserait.
  *
  * MISE EN FILE D'ATTENTE : automatique, rien n'est déclaré nulle part.
  * `mtb_feuilles_de_blocs()` (themes/mtb/functions.php:195-250) parcourt le
@@ -51,504 +51,54 @@
  * s'il existe. Poignée `mtb-bloc-mtb-tableau-resultats`, dépendance `mtb-jetons`
  * (tokens.css), aucune autre. LE NOM DU FICHIER EST LE SEUL LIEN : un caractère
  * d'écart avec `mtb/tableau-resultats` et la feuille n'est jamais servie, sans
- * erreur ni avertissement. Cette feuille atteint AUSSI la toile de l'éditeur,
- * depuis le correctif de #6 — voir le §1.5.3 pour ce que cela coûte.
+ * erreur ni avertissement. Elle atteint AUSSI la toile de l'éditeur, depuis le
+ * correctif de #6 — d'où la note de spécificité du §1.1.
  *
- * CE QU'ELLE N'ATTEINT PAS, ET POURQUOI CE N'EST PAS UN DÉFAUT — MESURÉ.
- * `wp_enqueue_block_style()` s'accroche au filtre `render_block` : la feuille
- * ne part QUE si le cœur rend une instance du bloc. Un GABARIT PHP qui appelle
- * `mtb_tableau_resultats_du_chien_rendu()` — c'est le cas de la fiche chien de
- * #16 — ne déclenche donc PAS ce filtre, et cette feuille est ALORS ABSENTE :
- * vérifié le 2026-08-20 sur `/chien/luna/` et `/chien/rex/`, zéro occurrence.
- * L'habillage du tableau y arrive quand même, ENTIÈREMENT, par la primitive
- * `.mtb-tableau` hissée dans `base.css` §10 (l. 902-1117), servie sur toutes
- * les pages. Injecter cette feuille sur ces pages ne modifie AUCUNE valeur
- * calculée, à 360 px comme à 1440 px — mesuré, différence nulle.
- * Ce qui ne vit qu'ici, c'est le §2 : l'affectation au canal large, sur le
- * sélecteur `.mtb-canal > .mtb-tableau-resultats`. Il ne s'appliquerait pas
- * davantage sur la fiche chien, où #16 enveloppe le composant dans une
- * `<section class="mtb-fiche-chien__palmares alignwide">` et lui donne le canal
- * large par cette voie — mesuré : 1088 px, exactement `--l-large`.
- * DÉPENDANCE À NE PAS LAISSER IMPLICITE : le rendu serveur de ce composant est
- * habillé par `base.css`, pas par cette feuille. Le jour où le §1 ci-dessous
- * sera supprimé (T-#15-a), cette phrase restera vraie ; le jour où quelqu'un
- * retirerait le §10 de `base.css`, LES DEUX CHEMINS tomberaient, pas seulement
- * le chemin de gabarit.
- *
- * ------------------------------------------------------------------
- *  DETTE T-#15-a — PAYÉE PENDANT LE LOT, PAR #16, ET LE §1 CI-DESSOUS EST
- *  DÉSORMAIS UN DOUBLON EN SURSIS.
- *
- *  MASTER §7.6 décrit `.mtb-tableau` comme une PRIMITIVE, et base.css lui
- *  réservait sa place, vide, par un commentaire. #16 A HISSÉ LA PRIMITIVE :
- *  elle vit maintenant dans `base.css` §10 (l. 902-1117), requête média de
- *  §7.6 et règle de cellule vide comprises. `base.css` étant servie sur
- *  TOUTES les pages, le repli du §7.6 ne dépend plus de la présence du bloc :
- *  le jour où le tableau des chiots d'une portée (MASTER §7.4) emploiera
- *  `class="mtb-tableau"`, il se rendra habillé. LA MÈCHE EST ÉTEINTE.
- *
- *  MESURÉ le 2026-08-20 sur la pile, aux deux largeurs : sur `/chien/rex/`,
- *  où le palmarès est rendu par un GABARIT PHP et où cette feuille-ci n'est
- *  donc JAMAIS mise en file (`render_block` ne se déclenche pas), la légende
- *  masquée, l'en-tête découpé, le filet de ligne, la grille `128px 184px` du
- *  repli et la disparition de la cellule vide sont tous en place, de
- *  `base.css` seule. Injecter cette feuille sur cette page ne change AUCUNE
- *  valeur calculée, à 360 px comme à 1440 px.
- *
- *  CE QUI RESTE DÛ : la suppression pure et simple du §1 ci-dessous, SÉQUENCÉE
- *  APRÈS le commit de `base.css` par #16 — le dépôt est mono-branche, arbre
- *  partagé, sans branche pour rattraper un `base.css` qui n'atterrirait pas.
- *  Le geste est écrit et se fait d'un seul coup : on coupe entre le §1 et le
- *  §2, on jette le §1, on retire avec lui le doublage du §1.5.3 (dette
- *  T-#15-c) et la recette de masquage écrite deux fois ici (dette T-#15-e).
- *  Rien à arbitrer. En attendant, les deux jeux de déclarations sont
- *  identiques en effet — mesuré ci-dessus — et le doublon est VISIBLE, ce qui
- *  vaut toujours mieux qu'un défaut silencieux.
- * ------------------------------------------------------------------
- *
- * RÈGLE DE COUPURE FRANCHE — clause du contrat §5, à ne jamais assouplir :
- *   · AUCUN sélecteur du §1 ne nomme `mtb-tableau-resultats` ;
- *   · AUCUN sélecteur du §2 ne nomme `mtb-tableau` ;
- *   · `.mtb-tableau-resultats .mtb-tableau { … }` EST INTERDIT DANS CE FICHIER.
- * Écrire une seule règle mixte, c'est transformer une coupure en arbitrage le
- * jour du hissage. Le test est celui du contrat #12 §10.4a : le §1 décrit ce
- * qu'EST un tableau, le §2 la place dont il dispose ICI.
- *
- * VALEURS BRUTES EMPLOYÉES — liste CLOSE, toutes recopiées de MASTER, aucune
- * inventée, aucune ne dispose d'un jeton (en créer un serait l'invention que le
- * contrat interdit) :
- *
- *   1. `47.999rem` — c'est `--bp-tableau` (48 rem, tokens.css:165) moins un
- *      millième. Écrite en littéral parce qu'UNE REQUÊTE MÉDIA NE LIT PAS UNE
- *      PROPRIÉTÉ PERSONNALISÉE : tokens.css:157-167 le documente, et MASTER §7.6
- *      procède lui-même ainsi dans son bloc de code.
- *   2. `8rem` et `1fr` — gabarit de colonnes du repli, recopiés verbatim de
- *      MASTER §7.6. `8rem` est une valeur de design que MASTER fournit sans
- *      jeton, même statut que le `6rem` du segment de filet de base.css:216.
- *      Ce n'est pas un chiffre au hasard : c'est la plus courte piste qui tienne
- *      « CONDUCTEUR » sur une ligne (≈ 102 px calculés, contre 128 px de piste).
- *      Voir la limite connue en Q-front-2, au bas de cet en-tête.
- *   3. `50%` dans `clip-path: inset(50%)` — recopié verbatim de MASTER §7.6.
- *   4. `1px`, deux fois (`inline-size` et `block-size` du `<thead>` découpé et
- *      du `<caption>`) — mécanique de la recette de masquage accessible, pas une
- *      décision visuelle. base.css énumère déjà des minima en pixels au même
- *      titre.
- *   5. `600`, `1.35` et `.14em` dans le `::before` du repli — recopiés verbatim
- *      de MASTER §7.6, et identiques à ce que base.css:363-373 pose déjà sur
- *      `th` (ligne « Tableau, en-tête » du §4.5).
- *
- * Ne comptent pas comme valeurs brutes : `100%`, `0`, et les mots-clés CSS
- * (`absolute`, `hidden`, `nowrap`, `block`, `grid`, `none`, `auto`), qui ne
- * portent aucune décision de design.
+ * VALEURS BRUTES EMPLOYÉES : AUCUNE. Ne comptent pas comme telles `100%` et le
+ * mot-clé `auto`, qui sont des mécaniques et ne portent aucune décision de
+ * design ; `large-debut` / `large-fin` sont les noms de lignes de la grille de
+ * `base.css`, pas des valeurs.
  *
  * ABSENCES DÉLIBÉRÉES — une absence écrite est une décision, une absence muette
  * est un oubli :
  *
- *   · AUCUNE règle sur le `<h2>`. base.css:203-218 le livre entièrement :
- *     Newsreader 500, `--t-xl`, filet double de 6 rem, `margin-block: var(--e-7)
- *     var(--e-4)` — soit 48 px au-dessus et 16 px en dessous, exactement le
- *     rapport que MASTER §5.1 prescrit pour un `h2`. Les neuf paires titre +
- *     tableau se lisent donc comme neuf blocs SANS QU'UNE VALEUR SOIT CHOISIE
- *     ICI. En écrire une serait recréer, à l'intérieur du composant, la dette
- *     T23 qu'on paie ailleurs.
- *   · AUCUNE règle sur le lien d'une cellule. base.css:250-262 (MASTER §8.2)
- *     donne `--sauge-fonce` et le SOULIGNEMENT PERMANENT `--laiton` — qui est le
- *     signal non chromatique exigé par MASTER §12.9 et n'est jamais retiré dans
- *     une cellule —, et base.css:474-479 donne l'anneau de focus unique de
- *     MASTER §8.1 (≥ 3,77:1 sur n'importe quel fond, §12.8). AUCUN style de
- *     « lien mort » : un nom sans fiche se lit exactement comme un nom avec
- *     fiche, moins le soulignement. Ni grisé, ni italique, ni mention.
+ *   · AUCUNE règle ne franchit la racine du bloc. Ni sur le `<h2>` de discipline
+ *     — `base.css` le livre entièrement, filet double de 6 rem et
+ *     `margin-block: var(--e-7) var(--e-4)` compris, exactement le rapport de
+ *     MASTER §5.1 —, ni à l'intérieur du tableau, cellules et liens compris
+ *     (`base.css` §3 pour la typographie et le lien, §10 pour la primitive).
+ *     Écrire ici une valeur qui existe là-bas, c'est ouvrir la divergence qu'on
+ *     vient de refermer.
  *   · AUCUNE apparence d'état vide (`.mtb-etat-vide*`). MASTER §9.1 exige UNE
  *     SEULE apparence pour les dix composants du catalogue ; elle vit dans
- *     editor.css, hors de cette empreinte. En figer une copie ici garantirait
- *     une divergence de plus (dette T13).
- *   · AUCUNE règle `@media print`, ET C'EST LA BONNE RÉPONSE — voir §1.5.
- *   · AUCUN conteneur à défilement horizontal, aucun `overflow-x`. MASTER §7.6
- *     l'interdit en toutes lettres : c'est précisément ce que le repli remplace.
- *   · AUCUN `table-layout: fixed`, aucune largeur de colonne, aucun
- *     `min-inline-size` de colonne, aucune règle `:nth-child`, aucun alignement
- *     par colonne. Le nombre de colonnes VARIE d'un tableau à l'autre sur la
- *     même page : toute largeur écrite serait fausse pour l'un des neuf, et
- *     `fixed` écraserait la colonne Chien. L'année est numérique, mais MASTER ne
- *     prescrit nulle part de l'aligner à droite — `tabular-nums` (base.css:359)
- *     suffit à l'empiler proprement, et en décider serait une invention.
- *   · AUCUNE bordure de tableau, aucun encadrement, aucun fond de cellule au
- *     repos, aucun rayon : « des filets qui séparent au lieu d'encadrer »
- *     (MASTER §1), cinq fonds et pas un de plus (§3.2), `--r-0` par défaut
- *     partout (§5.2) — rien dans un tableau n'est une commande.
- *   · AUCUN filet double : MASTER §2.1 l'interdit dans une cellule de tableau et
- *     sa liste d'emplacements est CLOSE. Les `h2` en portent un, de base.css :
- *     un par groupe, jamais deux, jamais dans le tableau.
- *   · AUCUN `@media (hover: hover)` autour du survol : MASTER n'en emploie aucun
- *     et son §12.9 range explicitement la ligne survolée parmi les états du
- *     système.
+ *     editor.css, hors de cette empreinte.
+ *   · AUCUN `overflow-x`, AUCUN conteneur à défilement horizontal sur la racine.
+ *     MASTER §7.6 l'interdit en toutes lettres : le repli le remplace. Un
+ *     tableau qui déborderait ne se rattrape pas ici.
+ *   · AUCUNE règle `@media print` : une feuille d'impression servie SEULEMENT
+ *     quand ce bloc est sur la page produirait dix feuilles divergentes. Une
+ *     feuille d'impression est GLOBALE ou n'est pas.
  *   · AUCUNE transition, AUCUNE animation : aucun jeton de durée n'existe et le
  *     contrat #2 interdit d'en inventer un. Rien à honorer pour
  *     `prefers-reduced-motion`, faute de mouvement à réduire.
  *   · AUCUN `url()`, AUCUN `@import`, AUCUNE origine tierce, AUCUNE image,
  *     AUCUNE police d'icônes, ZÉRO OCTET DE JAVASCRIPT.
  *
- * QUESTIONS OUVERTES POUR lead-design-mtb, consignées et non comblées :
+ * QUESTION OUVERTE POUR lead-design-mtb, consignée et non comblée :
  *   Q-front-1 : MASTER §7.1 range les TITRES en canal texte et les TABLEAUX DE
  *     RÉSULTATS en canal large ; ce composant contient les deux. Canal large
- *     retenu pour l'ensemble (contrat §10 arbitrage 8) — voir §2.1.
- *   Q-front-2 : `8rem` suit la taille de police RACINE. Sous un agrandissement
- *     du TEXTE SEUL (racine à 32 px), l'étiquette prend 256 px des 324
- *     disponibles à 360 px — et la gouttière `--e-3` DOUBLE elle aussi, de 12 à
- *     24 px, puisqu'elle est en `rem` : il reste donc 324 − 256 − 24 = 44 px à
- *     la valeur, et non 56. (Le chiffre de 56 px, écrit ici et dans le contrat
- *     §10 Q-front-2, oubliait la gouttière ; corrigé après recalcul, signalé
- *     pour amendement du contrat.) Le zoom PAGE de MASTER §7.8 n'est pas
- *     concerné. Correctif possible : `minmax(0, 8rem) 1fr`.
- *   Q-front-3 : le repli détruit les rôles de tableau (dette T-#15-d) ; les
- *     restaurer par ARIA demande des attributs côté serveur.
- *   Q-front-4 : MASTER ne mentionne `<caption>` NULLE PART. Masqué visuellement
- *     ici, seule voie non inventive — voir §1.2.
- *   Q-front-5 : deux paires encre/fond manquent au §12.3, et MASTER §12 déclare
- *     interdite toute paire absente de ses tableaux. Elles ne naissent d'aucune
- *     règle nouvelle : elles naissent de la RENCONTRE entre le survol de ligne
- *     (§1.4, prescrit par §12.9) et des styles déjà livrés. Recalculées avec la
- *     formule de MASTER §3, puis LUES SUR PIXELS RENDUS — les deux méthodes
- *     concordent au centième :
- *       `--pin` / `--calcaire-creux`          = 12,75:1  (AAA)
- *       `--laiton-texte` / `--calcaire-creux` =  4,75:1  (AA, marge 0,25)
- *     Les deux passent ; les deux restent à inscrire au §12.3.
- *   Q-front-6 : hauteur de cible d'un lien de cellule. MASTER §12.10 exige
- *     44 px ; ni §7.6 ni §4.5 ne prescrivent de hauteur pour un lien DANS UNE
- *     CELLULE, et la solution de mtb-liste-portees.css (`display: block;
- *     min-block-size: 44px`) déformerait la grille du repli. Aucune hauteur
- *     n'est inventée ici.
- *   Q-front-7 : le renvoi de MASTER §7.6 vers un « §9.6 » pointe dans le vide —
- *     le §9 s'arrête à 9.5. Déjà consigné par le contrat #2 ; reconsigné ici,
- *     non comblé.
+ *     retenu pour l'ensemble (contrat §10 arbitrage 8) — voir §1.1.
+ * Les questions qui portaient sur la primitive (repli, étiquette de `8rem`,
+ * rôles de tableau détruits par le repli, `<caption>` absent de MASTER, paires
+ * de contraste nées du survol) ont suivi la primitive : elles se traitent
+ * désormais devant `base.css` §10, pas devant ce fichier.
  */
 
 /* =====================================================================
- * §1  LA PRIMITIVE .mtb-tableau
- *     DÉJÀ HISSÉE DANS base.css §10 (l. 902-1117) PAR #16 : CE BLOC EST UN
- *     DOUBLON, À SUPPRIMER APRÈS LE COMMIT DE base.css — voir T-#15-a
- *
- * Tout ce qui suit décrit CE QU'EST UN TABLEAU dans ce système. Rien n'y
- * mentionne les résultats de travail, et rien n'y suppose un nombre de
- * colonnes : le tableau des chiots d'une portée (MASTER §7.4) prendra ces
- * règles sans une ligne d'adaptation.
- *
- * Ce que base.css livre DÉJÀ et qu'on ne réaffirme donc pas :
- *   `table { border-collapse: collapse }` (l. 345-347) — c'est lui qui fait
- *   peindre correctement, en mode tableau, le filet posé sur `<tr>` au §1.3 ;
- *   `th, td { overflow-wrap: break-word }` (l. 349-354), filet de sécurité de
- *   MASTER §7.7 pour un affixe long ; toute la typographie de cellule et
- *   d'en-tête du §4.5 (l. 356-373), soulignement `--bord-fort` du `<th>`
- *   compris. Cette feuille n'en réécrit pas une déclaration.
+ * §1  LE BLOC .mtb-tableau-resultats
  * ================================================================== */
 
-/* --- §1.1  Le tableau occupe la largeur qu'on lui donne ---------------
- *
- * EXTRAPOLATION SIGNALÉE, au même titre que la marge du `h1` de base.css:187 :
- * MASTER ne chiffre pas la largeur d'un tableau. Mais un `<table>` se dimensionne
- * sur son contenu, et un tableau de trois colonnes courtes (Année · Chien ·
- * Niveau) flotterait à gauche d'un canal de 1088 px, son soulignement
- * `--bord-fort` s'arrêtant au milieu de la page : les « filets qui séparent » du
- * §1 se liraient comme un fragment. `100%` est une MÉCANIQUE — « toute la place
- * qu'on m'a donnée » —, pas une valeur de design : aucun jeton à inventer.
- *
- * `table-layout` RESTE `auto`, délibérément. Le nombre de colonnes varie d'un
- * tableau à l'autre SUR LA MÊME PAGE ; `fixed` figerait des colonnes égales et
- * écraserait la colonne Chien, la seule dont le contenu soit long. */
-.mtb-tableau {
-  inline-size: 100%;
-}
-
-/* --- §1.2  La légende : nom du tableau, retiré à l'œil ----------------
- *
- * Le `<caption>` porte le NOM ACCESSIBLE du tableau (« RING », « Palmarès de
- * travail »). C'est lui qui distingue, dans la liste des tableaux d'un lecteur
- * d'écran, neuf entrées nommées de neuf entrées « tableau ».
- *
- * POURQUOI IL EST MASQUÉ ET NON AFFICHÉ : MASTER ne mentionne `<caption>` nulle
- * part. Le rendre visible exigerait une typographie de légende de tableau qui
- * n'existe pas dans le document — donc de l'inventer, ce qui est interdit. Le
- * masquer emploie en revanche un mécanisme que MASTER écrit lui-même au §7.6.
- * C'est la seule voie non inventive. Question Q-front-4.
- *
- * POURQUOI CETTE RECETTE ET PAS `display: none` : voir l'avertissement en
- * majuscules du §1.5.1 — il vaut mot pour mot ici. `display: none` et
- * `visibility: hidden` retireraient le nom du tableau de l'arbre
- * d'accessibilité, c'est-à-dire exactement le contraire du but.
- *
- * Le thème n'a AUCUNE primitive de masquage accessible à réutiliser : vérifié,
- * la seule occurrence est `.skip-link.screen-reader-text:focus` (base.css:562),
- * dont l'état masqué vient d'une feuille EN LIGNE DU CŒUR scopée au lien
- * d'évitement. Les six déclarations sont donc écrites deux fois dans ce fichier,
- * ici et au §1.5.1, parce que leurs portées diffèrent. Dette T-#15-e, à solder
- * avec le hissage — pas par une classe utilitaire inventée aujourd'hui. */
-.mtb-tableau > caption {
-  position: absolute;
-  /* La boîte EXISTE toujours : réduite à 1 px, elle ne capte plus le pointeur
-     et n'allonge plus la zone défilable du document. */
-  inline-size: 1px;
-  block-size: 1px;
-  /* Corollaire obligatoire des deux précédentes. EXCEPTION ASSUMÉE à MASTER
-     §7.8 (« aucun overflow: hidden sur un conteneur susceptible de contenir du
-     texte ») : l'interdit du §7.8 protège du texte DESTINÉ À ÊTRE LU À L'ŒIL
-     contre l'écrêtage au zoom. Ce texte-ci est délibérément soustrait à l'œil,
-     et `overflow` n'a aucune incidence sur l'arbre d'accessibilité : rien de ce
-     que le §7.8 protège n'est en jeu. Écrit, pas passé en douce. */
-  overflow: hidden;
-  clip-path: inset(50%);
-  /* Dans une boîte de 1 px, chaque mot se briserait caractère par caractère et
-     fabriquerait une colonne de plusieurs milliers de pixels de haut, découpée
-     mais toujours comptée dans la hauteur défilable. */
-  white-space: nowrap;
-}
-
-/* --- §1.3  Le filet qui sépare deux lignes ----------------------------
- *
- * MASTER §5.3 : `--bord-fin` est une séparation DÉCORATIVE entre lignes d'une
- * liste. Elle ne porte aucune information, son 1,41:1 sur `--calcaire` est donc
- * conforme (§12.1) — et c'est bien pour cela qu'elle ne délimite jamais un
- * contrôle.
- *
- * DÉPLACEMENT ASSUMÉ, ET C'EST UN DÉPLACEMENT, PAS UNE MODIFICATION : MASTER
- * §7.6 écrit cette déclaration à l'intérieur de sa requête média, sur `tr`. Un
- * filet de séparation n'a aucune raison de n'exister que sur téléphone — le §1
- * de MASTER (« des filets qui séparent au lieu d'encadrer ») vaut aux deux
- * largeurs, et le `border-collapse: collapse` de base.css:346 le peint
- * correctement en mode tableau. Même valeur, même jeton, UNE SEULE ÉCRITURE,
- * deux mises en page servies.
- *
- * PORTÉE `tbody >`, et elle compte : la ligne de `<thead>` porte déjà le
- * soulignement `--bord-fort` de base.css:372. Un `--bord-fin` par-dessous ferait
- * DEUX TRAITS sous l'en-tête. C'est aussi la raison pour laquelle le contrat
- * exige un `<tbody>` explicite (C-7). */
-.mtb-tableau tbody > tr {
-  border-block-end: var(--bord-fin);
-}
-
-/* --- §1.4  La ligne survolée ------------------------------------------
- *
- * MASTER §12.9, ligne « Ligne survolée d'un tableau » : fond creusé, et AUCUN
- * second signal — « une ligne survolée ne porte aucune information ». C'est la
- * seule ligne du §12.9 où MASTER autorise explicitement un signal unique, et la
- * règle générale du §8 (« deux signaux au minimum ») n'est donc pas enfreinte :
- * il n'y a rien à signaler.
- *
- * Le survol ne donne accès à RIEN (MASTER §12.10, dernière ligne) : la ligne
- * n'est pas cliquable, seul l'éventuel lien de nom l'est, et il est atteignable
- * au clavier indépendamment.
- *
- * CE QUE CE FOND PRODUIT COMME PAIRES ENCRE/FOND. Les cinq ratios ci-dessous ne
- * sont pas recopiés de MASTER : ils ont été LUS SUR PIXELS RENDUS (décision 36),
- * en survolant la ligne par un vrai événement souris, en capturant l'écran et en
- * échantillonnant le fond dominant et le pixel le plus sombre du glyphe. Les
- * encres relevées valent exactement les jetons, et les ratios lus reproduisent
- * les ratios tabulés :
- *   `--texte` / `--calcaire-creux`        10,79:1  AAA  — §12.3, tabulée
- *   `--sauge-fonce` / `--calcaire-creux`   6,92:1  AAA  — §12.3, tabulée (lien)
- *   `--laiton` / `--calcaire-creux`        3,15:1  ≥ 3:1, non textuel — §12.3
- *   `--pin` / `--calcaire-creux`          12,75:1  AAA  — ABSENTE du §12.3
- *   `--laiton-texte` / `--calcaire-creux`  4,75:1  AA   — ABSENTE du §12.3
- * Les deux dernières naissent du survol d'une ligne portant un lien lui-même
- * survolé (base.css:258) et, sous 48 rem, une étiquette `::before`. Question
- * Q-front-5 : elles PASSENT, mais MASTER §12 déclare interdite toute paire
- * absente de ses tableaux. On ne renonce pas au survol, qui est au §12.9, et on
- * n'invente aucune couleur pour le contourner. */
-.mtb-tableau tbody > tr:hover {
-  background-color: var(--calcaire-creux);
-}
-
-/* --- §1.5  Le repli en lignes libellées — MASTER §7.6 -----------------
- *
- * « Aucun défilement horizontal, aucun conteneur à barre de défilement. Sous
- * --bp-tableau, chaque <tr> devient un bloc et chaque cellule affiche son
- * libellé de colonne. »
- *
- * `47.999rem` = `--bp-tableau` (48 rem) moins un millième — littéral n° 1 de
- * l'en-tête. Une requête média exprimée en `rem` se résout sur la taille de
- * police INITIALE de la racine, la valeur est donc stable : à 1280 px zoomés à
- * 200 %, la fenêtre vaut 640 px CSS, et 640 < 767,98 — le repli s'active, ce que
- * MASTER §7.8 décrit exactement.
- *
- * `@media screen` ET NON `@media (max-width: …)` SEUL : c'est CETTE MENTION,
- * et rien d'autre, qui rend vraie l'exigence « en impression le tableau reste un
- * tableau » de MASTER §7.6. `screen` exclut `print` : à l'impression le
- * `<thead>` est visible, les `<tr>` sont des lignes, les `<td>` des cellules,
- * les `::before` ne sont pas générés et aucune cellule n'est retirée. ZÉRO RÈGLE
- * D'IMPRESSION À ÉCRIRE — et en écrire ici serait doublement faux : une
- * invention visuelle qu'aucun § de MASTER n'autorise, et une feuille
- * d'impression servie SEULEMENT quand ce bloc est sur la page, donc dix feuilles
- * d'impression divergentes à terme. Une feuille d'impression est GLOBALE ou
- * n'est pas.
- *
- * Les deux règles sorties de cette requête (§1.3 et §1.4) sont sûres à
- * l'impression : un filet fin sous chaque ligne est ce qu'un tableau imprimé
- * doit avoir, et `:hover` ne s'active jamais sur papier.
- *
- * MESURE DU REPLI À 360 px — CALCULÉE PUIS LUE SUR PIXELS RENDUS le 2026-08-20,
- * les deux méthodes concordent au pixel : `--marge-page` = 5 vw = 18 px, canal =
- * 324 px, rembourrage horizontal nul (le `tr` n'a que du `padding-block`, le
- * `td` que `var(--e-1) 0`) ; 324 − 128 (étiquette) − 12 (`--e-3`) = 184 px pour
- * la valeur — relevé en navigateur à 360 px de large,
- * `grid-template-columns` calculé = `128px 184px`, et
- * `scrollWidth === clientWidth === 360` sur la page Travail comme sur une fiche
- * chien : AUCUN DÉFILEMENT HORIZONTAL. Le plus long mot insécable du contenu
- * repris, « Upper'Side », mesure ≈ 78 px : il tient très largement, et
- * `overflow-wrap: break-word`
- * (base.css:353) reste le filet de sécurité. MASTER §7.7 interdit toute largeur
- * fixe > 300 px : 128 px, tenu de loin.
- * ------------------------------------------------------------------ */
-@media screen and (max-width: 47.999rem) {
-
-  /* §1.5.1  L'en-tête : retiré à l'œil, CONSERVÉ AU LECTEUR D'ÉCRAN.
-   *
-   * ------------------------------------------------------------------
-   *  NE JAMAIS REMPLACER CES DÉCLARATIONS PAR `display: none`,
-   *  `visibility: hidden` NI PAR UN `aria-hidden` SUR LE `<thead>`.
-   *  QUELQU'UN « CORRIGERA » CECI UN JOUR : VOICI POURQUOI IL AURA TORT.
-   *
-   *  1. LES TROIS RETIRENT LE `<thead>` DE L'ARBRE D'ACCESSIBILITÉ. Il
-   *     ne resterait alors, pour nommer les colonnes, que le
-   *     `content: attr(data-libelle)` du §1.5.4 — DU CONTENU GÉNÉRÉ,
-   *     qui n'est ni copiable, ni exposé au mode lecture des
-   *     navigateurs, ni restitué de façon garantie par tous les couples
-   *     navigateur / lecteur d'écran. On échangerait une information
-   *     certaine contre une information conditionnelle.
-   *  2. `aria-hidden="true"` SUR UN `<thead>` DONT LES `<th>` SONT LE
-   *     MÉCANISME NATIF D'ASSOCIATION EST CONTRADICTOIRE PAR
-   *     CONSTRUCTION : sur tout agent qui conserve les rôles de
-   *     tableau, les cellules pointeraient vers des en-têtes retirés de
-   *     l'arbre et seraient annoncées SANS EN-TÊTE DU TOUT. Strictement
-   *     pire que l'état actuel.
-   *  3. `visibility: hidden` réserve la boîte ET retire de l'arbre : le
-   *     pire des deux.
-   *  4. CETTE RÈGLE VIT DANS UN `@media screen`. Qui la remplace par
-   *     `display: none` finira par la sortir de la requête média — cela
-   *     arrive — ET FERA DISPARAÎTRE LES EN-TÊTES DE L'IMPRESSION, où
-   *     le tableau reste un tableau et où le `::before` ne compense
-   *     rien.
-   * ------------------------------------------------------------------
-   *
-   * Deux déclarations sont verbatim de MASTER §7.6 (`position`, `clip-path`) ;
-   * les quatre autres sont ajoutées pour la même raison qu'au §1.2 — la boîte
-   * existe toujours. Pas de `margin: -1px` : la boîte est hors flux, il n'y a
-   * aucun trou de 1 px à rattraper ; c'est un vestige de la recette
-   * `clip: rect()`.
-   *
-   * RÉSERVE HONNÊTE, DETTE T-#15-d : `tr { display: block }` et
-   * `td { display: grid }` retirent aux éléments leurs rôles de tableau sur la
-   * plupart des moteurs. Le `<thead>` découpé n'est alors plus ASSOCIÉ aux
-   * cellules — il est lu comme une suite de mots avant les données pendant que
-   * chaque `::before` répète le même libellé : double énoncé possible. C'est le
-   * patron de MASTER §7.6, pas une écriture d'ici ; le corriger demande des
-   * attributs ARIA côté serveur ET un arbitrage de design. Q-front-3. */
-  .mtb-tableau thead {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  /* §1.5.2  Chaque ligne devient un bloc.
-   * `display` et `padding-block` verbatim de MASTER §7.6 ; le `border-block-end`
-   * que MASTER écrivait ici a été DÉPLACÉ au §1.3, où il sert aux deux mises en
-   * page — voir la justification là-bas. */
-  .mtb-tableau tr {
-    display: block;
-    padding-block: var(--e-4);
-  }
-
-  /* §1.5.3  Chaque cellule devient une paire étiquette / valeur.
-   * Verbatim de MASTER §7.6, sélecteur renforcé.
-   *
-   * CLASSE DOUBLÉE, ET CE N'EST PAS DE LA COQUETTERIE — SEULE RÈGLE DOUBLÉE DE
-   * CETTE FEUILLE. Dans la toile de l'éditeur, le cœur préfixe les styles
-   * d'éditeur par `.editor-styles-wrapper` : le `td { padding: var(--e-3) }` de
-   * base.css:356-361 y pèse (0,1,1), EXACTEMENT le poids de `.mtb-tableau td`.
-   * À égalité, l'ordre de source tranche — et l'ordre entre une feuille de bloc
-   * et `add_editor_style()` n'est garanti nulle part. À (0,2,1) la règle gagne
-   * sur le site COMME dans la toile, sans `!important`. Même remède que
-   * mtb-bandeau-alerte.css:47-51.
-   * DETTE T-#15-c : au hissage dans base.css, ce doublage devient inutile et
-   * trompeur, et se retire dans le même geste. */
-  .mtb-tableau.mtb-tableau td {
-    display: grid;
-    grid-template-columns: 8rem 1fr;
-    gap: var(--e-3);
-    padding: var(--e-1) 0;
-  }
-
-  /* §1.5.4  L'étiquette de colonne, prise sur le crochet C-3.
-   * Verbatim de MASTER §7.6. La raccourcie `font:` remet `font-variant-numeric`
-   * à `normal` — sans effet ici : aucun des six libellés de colonne ne contient
-   * de chiffre.
-   * ÉCART INTERNE DE MASTER, RELEVÉ SANS ÊTRE CORRIGÉ : l'étiquette repliée est
-   * en `--laiton-texte` (ligne « h4 » du §4.5, reprise telle quelle au §7.6) là
-   * où le `<th>` du mode tableau est en `--pin` (ligne « Tableau, en-tête »).
-   * Les deux sont dans MASTER : on recopie, on n'arbitre pas. */
-  .mtb-tableau td::before {
-    content: attr(data-libelle);
-    font: 600 var(--t-xs)/1.35 var(--sans);
-    text-transform: uppercase;
-    letter-spacing: .14em;
-    color: var(--laiton-texte);
-  }
-
-  /* §1.5.5  La cellule vide disparaît entièrement.
-   *
-   * ------------------------------------------------------------------
-   *  CETTE RÈGLE VIT À L'INTÉRIEUR DE LA REQUÊTE MÉDIA. NE JAMAIS L'EN
-   *  SORTIR. EN MODE TABLEAU, `display: none` SUR UNE CELLULE
-   *  DÉCALERAIT TOUTE LA LIGNE D'UNE COLONNE : les valeurs glisseraient
-   *  sous les mauvais en-têtes, et un tableau qui ment est pire qu'un
-   *  tableau absent. C'est la panne la plus grave que cette feuille
-   *  puisse produire.
-   * ------------------------------------------------------------------
-   *
-   * POURQUOI ELLE EXISTE : la décision 10 interdit de retirer `data-libelle`.
-   * Sans cette règle, un `<td>` vide imprimerait son étiquette suivie de rien,
-   * UNE FOIS PAR LIGNE, sur toute la colonne Pays.
-   *
-   * POURQUOI `display: none` ET NON `content: none` SUR LE `::before` : mesuré.
-   * `content: none` marche, mais laisse la cellule dans la grille —
-   * `display: grid` + `padding: var(--e-1) 0` = 8 px de vide mort PAR LIGNE,
-   * soit ~200 px de blanc inexpliqué sur un tableau de 25 lignes. `display: none`
-   * retire l'étiquette ET son rembourrage, pour une déclaration au lieu d'une.
-   * Aucun coût d'accessibilité : la cellule n'a RIEN à annoncer, c'est la
-   * définition même de `:empty`.
-   *
-   * DEUX CROCHETS, ET LE SÉLECTEUR VISE LEUR UNION (contrat §10 arbitrage 1) :
-   * `:empty` est le SEUL MÉCANISME DU PROJET DONT LA CORRECTION DÉPENDE D'UN
-   * OCTET D'ESPACEMENT dans un `sprintf` — il échoue sur un simple retour à la
-   * ligne, ce qui ne se voit ni à `php -l`, ni à la revue, ni au-dessus de
-   * 48 rem. La classe `mtb-tableau__cellule--vide` (C-4) le double. Son NOM
-   * appartient à l'espace de la primitive, et non à `mtb-tableau-resultats__*` :
-   * c'est ce qui permet à cette règle de partir avec le §1 le jour du hissage,
-   * sans violer la règle de coupure franche.
-   *
-   * SPÉCIFICITÉ : LES DEUX SÉLECTEURS PÈSENT (0,2,1) — `.mtb-tableau` plus
-   * `:empty` pour l'un, `.mtb-tableau` plus `.mtb-tableau__cellule--vide` pour
-   * l'autre, une pseudo-classe pesant exactement autant qu'une classe. C'est
-   * aussi le poids du §1.5.3 : aucun des deux ne gagne par la spécificité, et
-   * c'est l'ORDRE DE SOURCE qui tranche. Il est ici déterministe, et c'est la
-   * seule raison pour laquelle cette règle est correcte : les deux règles
-   * vivent dans la même feuille, celle-ci en second. NE JAMAIS LA REMONTER
-   * AU-DESSUS DU §1.5.3. */
-  .mtb-tableau td:empty,
-  .mtb-tableau td.mtb-tableau__cellule--vide {
-    display: none;
-  }
-}
-
-/* =====================================================================
- * §2  LE BLOC .mtb-tableau-resultats
- *     CE QUI RESTE ICI APRÈS LE HISSAGE DU §1
- *
- * Une seule règle : la place dont ce composant dispose dans la page.
- * ================================================================== */
-
-/* --- §2.1  Le canal large --------------------------------------------
+/* --- §1.1  Le canal large --------------------------------------------
  *
  * MASTER §7.1 range nommément « tableaux de résultats » dans le canal large.
  *
@@ -560,29 +110,31 @@
  * par la décision 33. Mais MASTER §7.6 lie le `h2` à son tableau comme une UNITÉ
  * (« un h2 par discipline, un tableau par discipline »), et un titre commençant
  * 256 px à DROITE de son propre tableau serait pire. Q-front-1 ; la bascule
- * coûte ces quatre lignes, isolées ici — c'est aussi à cela que sert la coupure.
+ * coûte ces quatre lignes.
  *
  * MÉCANISME UNIQUE DU CANAL, choisi pour tout le catalogue : le THÈME affecte le
  * canal, sur la classe racine du composant, depuis la feuille du bloc. Ni classe
  * `alignwide` émise par l'extension (contrat #1 §8 le lui interdit), ni règle de
- * canal écrite dans une feuille de l'extension.
+ * canal écrite dans une feuille de l'extension. Sur la fiche chien, où le
+ * composant est rendu par un appel PHP, ce sélecteur ne s'applique pas : #16
+ * enveloppe le palmarès dans une `<section class="… alignwide">` et lui donne le
+ * canal par cette voie — mesuré, 1088 px, exactement `--l-large`.
  *
  * SPÉCIFICITÉ, ET NON ORDRE DE SOURCE : l'ordre d'impression des deux feuilles
  * n'est garanti nulle part, et il DIFFÈRE d'un contexte à l'autre — sur le site
  * `base.css` part de `wp_enqueue_scripts` et sort dans l'en-tête tandis que
  * cette feuille, mise en file au rendu du bloc, sort en pied ; dans la toile de
  * l'éditeur, `base.css` arrive par `add_editor_style()` et rien ne fixe son rang.
- * C'est déjà la raison du doublage du §1.5.3. `.mtb-canal > *` (base.css)
- * affecte le canal texte à (0,1,0) ; les deux classes ci-dessous pèsent (0,2,0)
- * et gagnent sans `!important`, dans la toile de l'éditeur comme sur le site.
+ * `.mtb-canal > *` (base.css) affecte le canal texte à (0,1,0) ; les deux classes
+ * ci-dessous pèsent (0,2,0) et gagnent sans `!important`, dans la toile de
+ * l'éditeur comme sur le site.
  *
  * LES QUATRE DÉCLARATIONS VONT ENSEMBLE — ce sont celles que base.css applique à
- * `.alignwide` (l. 531-541), transposées sur la racine du composant. Forme
- * reprise telle quelle de mtb-grille-chiens.css:164-169. `inline-size: 100%` est
- * OBLIGATOIRE : sur un ÉLÉMENT DE GRILLE, une marge automatique annule
- * l'étirement, la piste cesse d'imposer sa largeur et l'élément se dimensionne
- * sur son contenu — un tableau de trois colonnes courtes se retrouverait centré
- * dans le vide.
+ * `.alignwide`, transposées sur la racine du composant. Forme reprise telle
+ * quelle de mtb-grille-chiens.css. `inline-size: 100%` est OBLIGATOIRE : sur un
+ * ÉLÉMENT DE GRILLE, une marge automatique annule l'étirement, la piste cesse
+ * d'imposer sa largeur et l'élément se dimensionne sur son contenu — un tableau
+ * de trois colonnes courtes se retrouverait centré dans le vide.
  *
  * ------------------------------------------------------------------
  *  INTERDIT, ET IL EST ICI POUR UNE RAISON MÉCANIQUE PRÉCISE :
