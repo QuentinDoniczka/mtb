@@ -2,7 +2,7 @@
 /**
  * Title:        Page BHPL — la race
  * Slug:         mtb/bhpl
- * Description:  La charpente de la page de présentation de la race : bandeau, une section libre, Santé, Génétique des couleurs, galerie.
+ * Description:  La charpente de la page de présentation de la race : bandeau d'ouverture, une fiche d'information, puis les fiches « Santé » et « Génétique des couleurs », galerie photos.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page

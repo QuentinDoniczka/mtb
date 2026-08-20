@@ -2,7 +2,7 @@
 /**
  * Title:        Page BHPL en France
  * Slug:         mtb/bhpl-en-france
- * Description:  La charpente de la page sur la race en France : bandeau, deux sections libres, galerie.
+ * Description:  La charpente de la page sur la race en France : bandeau d'ouverture, deux fiches d'information, galerie photos.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page

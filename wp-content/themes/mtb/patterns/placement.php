@@ -2,7 +2,7 @@
 /**
  * Title:        Page Placement
  * Slug:         mtb/placement
- * Description:  La charpente de la page Placement : bandeau, deux sections libres, la liste des portées, encart d'appel.
+ * Description:  La charpente de la page Placement : bandeau d'ouverture, deux fiches d'information, la liste des portées, encart d'appel.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page

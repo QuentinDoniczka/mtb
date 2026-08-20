@@ -2,7 +2,7 @@
 /**
  * Title:        Page Littérature
  * Slug:         mtb/litterature
- * Description:  La charpente de la page Littérature : bandeau, une section libre, galerie.
+ * Description:  La charpente de la page Littérature : bandeau d'ouverture, une fiche d'information, galerie photos.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page

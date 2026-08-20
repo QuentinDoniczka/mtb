@@ -2,7 +2,7 @@
 /**
  * Title:        Page Travail
  * Slug:         mtb/travail
- * Description:  La charpente de la page Travail : bandeau, une section libre, puis les résultats de travail, toutes disciplines confondues. Une discipline sans résultat n'affiche rien.
+ * Description:  La charpente de la page Travail : bandeau d'ouverture, une fiche d'information, puis le tableau des résultats de travail, toutes disciplines confondues. Une discipline sans résultat n'affiche rien.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page

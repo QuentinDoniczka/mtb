@@ -2,7 +2,7 @@
 /**
  * Title:        Page Politique de confidentialité
  * Slug:         mtb/politique-de-confidentialite
- * Description:  La charpente de la politique de confidentialité : trois sections libres à remplir.
+ * Description:  La charpente de la politique de confidentialité : trois fiches d'information à remplir.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page

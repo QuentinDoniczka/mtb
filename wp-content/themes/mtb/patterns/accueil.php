@@ -2,7 +2,7 @@
 /**
  * Title:        Page d'accueil
  * Slug:         mtb/accueil
- * Description:  La charpente de l'accueil : bandeau, message temporaire, dernière portée, présentation, reproducteurs, encart d'appel.
+ * Description:  La charpente de l'accueil : bandeau d'ouverture, bandeau d'alerte, encart dernière portée, une fiche d'information, la grille des chiens reproducteurs, encart d'appel.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page

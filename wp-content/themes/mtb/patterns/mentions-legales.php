@@ -2,7 +2,7 @@
 /**
  * Title:        Page Mentions légales
  * Slug:         mtb/mentions-legales
- * Description:  La charpente des mentions légales : deux sections libres, puis les coordonnées de l'élevage et le plan d'accès.
+ * Description:  La charpente des mentions légales : deux fiches d'information, puis les coordonnées de l'élevage et le plan d'accès.
  * Categories:   text
  * Block Types:  core/post-content
  * Post Types:   page
