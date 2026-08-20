@@ -1,159 +1,35 @@
 /*
- * MTB — Tableau de résultats
- * Habillage du bloc `mtb/tableau-resultats` (extension mtb-core). Le balisage est
- * gelé par docs/contracts/issue-15.md §4 : cette feuille est écrite contre lui et
- * ne cible AUCUNE classe qu'il n'émet pas.
+ * MTB — Tableau de résultats · bloc `mtb/tableau-resultats` (mtb-core).
+ * Raisonnement complet : docs/contracts/issue-15.md.
  *
- * CE QU'ELLE HABILLE — une seule chose : LA PLACE dont ce composant dispose ICI,
- * dans la grille à trois canaux (MASTER §7.1). Une règle, quatre déclarations.
+ * FEUILLE INCORPORÉE : sous 20 000 o le cœur l'écrit EN LIGNE dans le HTML (`path`
+ * passé à `wp_enqueue_block_style()`, functions.php). Tout octet ajouté ici,
+ * commentaire compris, est facturé sur CHAQUE page portant le bloc.
  *
- * CE QU'ELLE N'HABILLE PLUS, ET CE N'EST PAS UN MANQUE : rien de ce qu'EST un
- * tableau. Ni la largeur du `<table>`, ni la légende masquée, ni le filet entre
- * deux lignes, ni le survol, ni le repli en lignes libellées de MASTER §7.6.
- * TOUT CELA VIT DANS `base.css` §10, sous la classe nue `.mtb-tableau` — une
- * primitive nommée par MASTER s'écrit UNE SEULE FOIS, dans la feuille servie
- * partout (décision 30). `base.css` part de `wp_enqueue_scripts` sur TOUTES les
- * pages : le repli du §7.6 ne dépend donc plus de la présence de ce bloc, et le
- * jour où le tableau des chiots d'une portée (MASTER §7.4) portera
- * `class="mtb-tableau"`, il se rendra habillé sans qu'une ligne soit écrite ici.
- * Cette feuille en a porté un doublon jusqu'au hissage : il n'en reste RIEN, et
- * rien ne doit y revenir — une duplication temporaire est une duplication
- * permanente.
+ * CE QU'ELLE HABILLE : la place du composant dans la grille (MASTER §7.1), rien
+ * d'autre. Seul crochet visé : `.mtb-tableau-resultats`, racine émise par
+ * mtb-core/includes/blocks/tableau-resultats/balisage.php.
  *
- * ------------------------------------------------------------------
- *  AVERTISSEMENT — CE COMPOSANT A DEUX CHEMINS DE RENDU, ET AUCUN DES DEUX
- *  N'OBTIENT SON HABILLAGE DE TABLEAU DE CETTE FEUILLE.
+ * CE QU'ELLE N'HABILLE PAS : ce qu'EST un tableau. La primitive `.mtb-tableau`
+ * — largeur, légende, filets, survol, repli en lignes libellées de MASTER §7.6 —
+ * vit dans `base.css` §10, servie sur TOUTES les pages.
  *
- *   · le BLOC posé dans une page : le cœur le rend, `render_block` se déclenche,
- *     cette feuille est mise en file — elle n'apporte que le canal ;
- *   · l'APPEL PHP `mtb_tableau_resultats_du_chien_rendu()` depuis
- *     `single-mtb_chien.php` (#16) : `render_block` NE SE DÉCLENCHE PAS, cette
- *     feuille est ALORS ABSENTE de la page — vérifié, zéro occurrence de
- *     `mtb-bloc-mtb-tableau-resultats` sur `/chien/rex/` et `/chien/luna/` — et
- *     le palmarès s'y habille pourtant entièrement, par `base.css` §10.
+ * AVERTISSEMENT : DEUX CHEMINS DE RENDU — le bloc posé dans une page, et
+ * `do_blocks()` appelé par `single-mtb_chien.php` (#16), qui prend son canal de sa
+ * `<section … alignwide>`. AUCUN DES DEUX n'obtient son habillage de tableau d'ici.
+ * Retirer le §10 de `base.css` LES FAIT TOMBER TOUS LES DEUX — filets, survol,
+ * repli mobile, donc défilement horizontal à 360 px et échec AA. Il ne resterait
+ * ici que le canal.
  *
- *  CONSÉQUENCE : le jour où quelqu'un retirerait le §10 de `base.css`, LES DEUX
- *  CHEMINS TOMBERAIENT ENSEMBLE — filets, légende, survol et surtout le repli
- *  mobile, donc défilement horizontal à 360 px et échec AA. La seule chose qui
- *  resterait alors est ce qui est écrit ci-dessous : l'affectation au canal.
- * ------------------------------------------------------------------
+ * Q-front-1 (ouverte, lead-design-mtb) : MASTER §7.1 se contredit — titres en
+ * canal texte, tableaux de résultats en canal large, et le composant contient les
+ * deux. Canal large retenu pour l'ensemble (contrat §10, arbitrage 8) ; écart
+ * mesuré : à 1440 px, les `h2` commencent 256 px à gauche de la prose.
  *
- * CONTRAT DE BALISAGE — ce que cette feuille vise RÉELLEMENT, et rien d'autre :
- *   C-1  `class="mtb-tableau-resultats"` sur la racine du bloc.
- * Les autres crochets du contrat §4.3 (`mtb-tableau`, `data-libelle`, `<thead>`,
- * `<tbody>`, `<caption>`, la cellule vide) restent des points de contrat, mais
- * ils sont désormais consommés par `base.css` §10 : ne les cherchez pas ici, et
- * n'écrivez pas ici la règle qui les viserait.
- *
- * MISE EN FILE D'ATTENTE : automatique, rien n'est déclaré nulle part.
- * `mtb_feuilles_de_blocs()` (themes/mtb/functions.php:195-250) parcourt le
- * registre des blocs sur `wp_loaded` et sert `assets/css/blocs/<espace>-<nom>.css`
- * s'il existe. Poignée `mtb-bloc-mtb-tableau-resultats`, dépendance `mtb-jetons`
- * (tokens.css), aucune autre. LE NOM DU FICHIER EST LE SEUL LIEN : un caractère
- * d'écart avec `mtb/tableau-resultats` et la feuille n'est jamais servie, sans
- * erreur ni avertissement. Elle atteint AUSSI la toile de l'éditeur, depuis le
- * correctif de #6 — d'où la note de spécificité du §1.1.
- *
- * VALEURS BRUTES EMPLOYÉES : AUCUNE. Ne comptent pas comme telles `100%` et le
- * mot-clé `auto`, qui sont des mécaniques et ne portent aucune décision de
- * design ; `large-debut` / `large-fin` sont les noms de lignes de la grille de
- * `base.css`, pas des valeurs.
- *
- * ABSENCES DÉLIBÉRÉES — une absence écrite est une décision, une absence muette
- * est un oubli :
- *
- *   · AUCUNE règle ne franchit la racine du bloc. Ni sur le `<h2>` de discipline
- *     — `base.css` le livre entièrement, filet double de 6 rem et
- *     `margin-block: var(--e-7) var(--e-4)` compris, exactement le rapport de
- *     MASTER §5.1 —, ni à l'intérieur du tableau, cellules et liens compris
- *     (`base.css` §3 pour la typographie et le lien, §10 pour la primitive).
- *     Écrire ici une valeur qui existe là-bas, c'est ouvrir la divergence qu'on
- *     vient de refermer.
- *   · AUCUNE apparence d'état vide (`.mtb-etat-vide*`). MASTER §9.1 exige UNE
- *     SEULE apparence pour les dix composants du catalogue ; elle vit dans
- *     editor.css, hors de cette empreinte.
- *   · AUCUN `overflow-x`, AUCUN conteneur à défilement horizontal sur la racine.
- *     MASTER §7.6 l'interdit en toutes lettres : le repli le remplace. Un
- *     tableau qui déborderait ne se rattrape pas ici.
- *   · AUCUNE règle `@media print` : une feuille d'impression servie SEULEMENT
- *     quand ce bloc est sur la page produirait dix feuilles divergentes. Une
- *     feuille d'impression est GLOBALE ou n'est pas.
- *   · AUCUNE transition, AUCUNE animation : aucun jeton de durée n'existe et le
- *     contrat #2 interdit d'en inventer un. Rien à honorer pour
- *     `prefers-reduced-motion`, faute de mouvement à réduire.
- *   · AUCUN `url()`, AUCUN `@import`, AUCUNE origine tierce, AUCUNE image,
- *     AUCUNE police d'icônes, ZÉRO OCTET DE JAVASCRIPT.
- *
- * QUESTION OUVERTE POUR lead-design-mtb, consignée et non comblée :
- *   Q-front-1 : MASTER §7.1 range les TITRES en canal texte et les TABLEAUX DE
- *     RÉSULTATS en canal large ; ce composant contient les deux. Canal large
- *     retenu pour l'ensemble (contrat §10 arbitrage 8) — voir §1.1.
- * Les questions qui portaient sur la primitive (repli, étiquette de `8rem`,
- * rôles de tableau détruits par le repli, `<caption>` absent de MASTER, paires
- * de contraste nées du survol) ont suivi la primitive : elles se traitent
- * désormais devant `base.css` §10, pas devant ce fichier.
+ * `inline-size: 100%` requis : sur un élément de grille, une marge auto annule
+ * l'étirement de la piste. Racine sans marge verticale ni `display: grid` (T23) :
+ * en flux normal, les marges des `h2` fusionnent, jamais sur une grille.
  */
-
-/* =====================================================================
- * §1  LE BLOC .mtb-tableau-resultats
- * ================================================================== */
-
-/* --- §1.1  Le canal large --------------------------------------------
- *
- * MASTER §7.1 range nommément « tableaux de résultats » dans le canal large.
- *
- * CANAL LARGE POUR TOUT LE BLOC, TITRES COMPRIS — arbitrage 8 du contrat §10.
- * MASTER §7.1 se contredit sur ce composant : il range les TITRES en canal texte
- * et les TABLEAUX DE RÉSULTATS en canal large, et le composant contient les deux.
- * L'écart est réel et mesurable : à 1440 px, les `h2` de discipline commencent
- * 256 px à gauche de la prose de la page Travail — la famille de défaut relevée
- * par la décision 33. Mais MASTER §7.6 lie le `h2` à son tableau comme une UNITÉ
- * (« un h2 par discipline, un tableau par discipline »), et un titre commençant
- * 256 px à DROITE de son propre tableau serait pire. Q-front-1 ; la bascule
- * coûte ces quatre lignes.
- *
- * MÉCANISME UNIQUE DU CANAL, choisi pour tout le catalogue : le THÈME affecte le
- * canal, sur la classe racine du composant, depuis la feuille du bloc. Ni classe
- * `alignwide` émise par l'extension (contrat #1 §8 le lui interdit), ni règle de
- * canal écrite dans une feuille de l'extension. Sur la fiche chien, où le
- * composant est rendu par un appel PHP, ce sélecteur ne s'applique pas : #16
- * enveloppe le palmarès dans une `<section class="… alignwide">` et lui donne le
- * canal par cette voie — mesuré, 1088 px, exactement `--l-large`.
- *
- * SPÉCIFICITÉ, ET NON ORDRE DE SOURCE : l'ordre d'impression des deux feuilles
- * n'est garanti nulle part, et il DIFFÈRE d'un contexte à l'autre — sur le site
- * `base.css` part de `wp_enqueue_scripts` et sort dans l'en-tête tandis que
- * cette feuille, mise en file au rendu du bloc, sort en pied ; dans la toile de
- * l'éditeur, `base.css` arrive par `add_editor_style()` et rien ne fixe son rang.
- * `.mtb-canal > *` (base.css) affecte le canal texte à (0,1,0) ; les deux classes
- * ci-dessous pèsent (0,2,0) et gagnent sans `!important`, dans la toile de
- * l'éditeur comme sur le site.
- *
- * LES QUATRE DÉCLARATIONS VONT ENSEMBLE — ce sont celles que base.css applique à
- * `.alignwide`, transposées sur la racine du composant. Forme reprise telle
- * quelle de mtb-grille-chiens.css. `inline-size: 100%` est OBLIGATOIRE : sur un
- * ÉLÉMENT DE GRILLE, une marge automatique annule l'étirement, la piste cesse
- * d'imposer sa largeur et l'élément se dimensionne sur son contenu — un tableau
- * de trois colonnes courtes se retrouverait centré dans le vide.
- *
- * ------------------------------------------------------------------
- *  INTERDIT, ET IL EST ICI POUR UNE RAISON MÉCANIQUE PRÉCISE :
- *  LA RACINE DU BLOC N'A AUCUNE MARGE VERTICALE, ET N'EST JAMAIS
- *  `display: grid` NI `display: flex`.
- *
- *  C'est la cause exacte de la dette T23 : `.mtb-canal` est une grille, et
- *  LES MARGES D'ÉLÉMENTS DE GRILLE NE FUSIONNENT JAMAIS. En laissant la
- *  racine en FLUX NORMAL, sans rembourrage ni bordure haute, les marges des
- *  `h2` fusionnent normalement À L'INTÉRIEUR du composant : 48 px entre deux
- *  groupes, pas 48 px plus autre chose. Le composant n'ajoute rien au cumul,
- *  et le rythme ne dépend d'aucun choix de balisage — que le serveur
- *  enveloppe ou non chaque groupe dans une `<section>`, les marges la
- *  traversent.
- *  Un futur besoin d'espacement poussera naturellement vers
- *  `display: grid; gap: …` : ce serait faire rentrer T23 dans le composant
- *  par la fenêtre. L'espace vient des marges du `h2`, de base.css, et de là
- *  seulement.
- * ------------------------------------------------------------------ */
 .mtb-canal > .mtb-tableau-resultats {
   grid-column: large-debut / large-fin;
   inline-size: 100%;

@@ -417,6 +417,45 @@ Points gelés à l'intérieur du §1 :
 | Impression | **Aucune `@media print`, et c'est la bonne réponse.** Tout le repli est enfermé dans `@media screen`, media qui exclut `print` : en impression le tableau reste un tableau, en-têtes visibles, `::before` non générés, aucune cellule retirée. **Zéro règle à écrire.** Une feuille d'impression est globale ou n'est pas ; en écrire une ici produirait à terme neuf feuilles d'impression divergentes |
 | `table-layout` | **reste `auto`.** Le nombre de colonnes varie d'un tableau à l'autre sur la même page ; `fixed` figerait des colonnes égales et écraserait la colonne Chien |
 
+> **Troisième amendement du 2026-08-20 — la feuille est passée de 10 158 o à 1 999 o, et la raison
+> vaut pour tout le catalogue.**
+>
+> #16 est ensuite passée à `do_blocks()` (`single-mtb_chien.php:297`), donc `render_block` se déclenche
+> sur le chemin de la fiche chien et `wp_enqueue_block_style()` sert bien la feuille — **ce qui rend le
+> §0 obsolète une seconde fois**, dans le bon sens cette fois. Mais `functions.php` passe `path`, donc
+> sous 20 000 o le cœur **incorpore** la feuille : **10 165 o injectés dans chaque fiche chien**,
+> mesuré.
+>
+> Or le fichier ne contenait plus que **159 o de CSS effectif pour 9 999 o de commentaire** — 98,4 %.
+> **Le commentaire de la maison était gratuit tant que la feuille sortait en `<link>`** (un fichier mis
+> en cache une fois) ; **incorporé, il est facturé au budget D8 de chaque page, à chaque visite.**
+> En-tête ramené à l'essentiel opérationnel : **−8 159 o sur chaque page portant le bloc**, règle CSS
+> inchangée au caractère près (MD5 identique avant/après), aucune régression mesurée à 360 et 1440 px.
+>
+> *Effet de bord gratuit : ce fichier était le seul des neuf en CRLF ; réécrit en LF comme ses sœurs,
+> 162 des 8 159 octets viennent de là.*
+>
+> **Ce que la contrainte de poids a chassé de la feuille est conservé ici, et nulle part ailleurs :**
+>
+> 1. **Le point de rupture silencieux de la mise en file.** `mtb_feuilles_de_blocs()`
+>    (`functions.php:195-250`) parcourt le registre des blocs sur `wp_loaded` et sert
+>    `assets/css/blocs/<espace>-<nom>.css`. **Le nom du fichier est le seul lien** : un caractère
+>    d'écart avec `mtb/tableau-resultats` et la feuille n'est **jamais servie, sans erreur ni
+>    avertissement**. Poignée `mtb-bloc-mtb-tableau-resultats`, dépendance `mtb-jetons`. Elle atteint
+>    aussi la toile de l'éditeur depuis le correctif de #6.
+> 2. **Le sélecteur gagne par spécificité, jamais par ordre de source.** `.mtb-canal > *` pèse (0,1,0),
+>    `.mtb-canal > .mtb-tableau-resultats` pèse (0,2,0). L'ordre d'impression des deux feuilles n'est
+>    garanti nulle part et **diffère d'un contexte à l'autre** — `base.css` en tête via
+>    `wp_enqueue_scripts`, celle-ci au rendu du bloc ; dans l'éditeur, `add_editor_style()` ne fixe
+>    aucun rang. C'est pourquoi il n'y a **aucun `!important`**.
+> 3. **Provenance des quatre déclarations** : ce sont celles que `base.css` applique à `.alignwide`,
+>    transposées sur la racine du composant, reprises telles quelles de `mtb-grille-chiens.css`. C'est
+>    le mécanisme de canal de tout le catalogue — **le thème affecte le canal, jamais l'extension**.
+> 4. **Absences délibérées** : aucun état vide (§9.1, apparence unique dans `editor.css`) · aucun
+>    `overflow-x` (§7.6 l'interdit) · aucune `@media print` (une feuille d'impression est globale ou
+>    n'est pas, sinon dix feuilles divergentes) · aucune transition, faute de jeton de durée · aucun
+>    `url()`, `@import`, origine tierce, image, police d'icônes, ni octet de JavaScript.
+
 Points gelés à l'intérieur du §2 :
 
 | Point | Décision |
