@@ -939,12 +939,12 @@ textarea[aria-invalid="true"] {
 /* =====================================================================
  * 11. Les liens de recours — MASTER §9.5, §12.10
  *
- * AUCUNE NEUTRALISATION DE L'HABILLAGE DE NAVIGATION, ET C'EST UNE MESURE : le
- * `wp:home-link` du cœur porte des classes `wp-block-navigation-item*`, mais
- * toutes les règles qui les habillent sont scopées sous `.wp-block-navigation`
- * ou sous `.mtb-nav` / `.mtb-plan-du-site` (`entete-pied.css:204`). RELEVÉ sur
- * 404 et sur la recherche vide : les trois liens sont identiques propriété par
- * propriété — neutraliser serait de la CSS morte.
+ * RIEN À NEUTRALISER : les éléments sortent tous de `mtb/lien-de-recours`, qui
+ * émet `<li class="mtb-lien-de-recours"><a href>` — une classe, un `<a>` nu, et
+ * les sélecteurs d'ici les atteignent PAR CONSTRUCTION (la classe : crochet
+ * libre). PIÈGE : la liste compte TROIS, DEUX OU UN élément, le bloc s'omettant
+ * en silence si sa destination manque (« La meute », dette T30) — `:last-child`
+ * reste juste, `:nth-child(3)` mentirait.
  * Seul est écrit ce que le navigateur ne donne pas : §12.10 « Cibles ≥ 44 px,
  * écart ≥ --e-2 », `44px` étant un minimum écrit en pixels par MASTER (même
  * statut que le 48 px de la l. 366) et `inline-flex` la seule façon de le rendre

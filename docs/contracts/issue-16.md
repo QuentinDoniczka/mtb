@@ -502,10 +502,49 @@ mutualisé PHP standard », et rien d'autre. `href="/"` reste **objectivement fa
 pas à la racine d'un domaine, et le défaut mérite d'être payé — simplement, **il n'est pas bloquant au
 titre du brief**.
 
-**Ce qui est livré** : « Accueil » par `wp:home-link` (URL calculée) ; « Les portées » et « La meute »
-par `href` statique. → **dette T28 : deux liens de recours à URL non calculée dans deux gabarits
-statiques**, à payer par la première issue qui rouvre `functions.php` ou par un bloc
-`mtb/lien-de-recours` côté extension.
+**Ce qui est livré — T28 payée le 2026-08-20**, `/lead-mtb` ayant ouvert `mtb-core` pour un dossier neuf.
+Le premier état livré (« Accueil » par `wp:home-link`, les deux autres en `href` statique) est remplacé
+par **trois blocs frères** :
+
+```html
+<!-- wp:mtb/lien-de-recours {"cible":"accueil"} /-->
+<!-- wp:mtb/lien-de-recours {"cible":"portees"} /-->
+<!-- wp:mtb/lien-de-recours {"cible":"meute"} /-->
+```
+
+| `cible` | Adresse **calculée au rendu** | Libellé, fourni par le serveur |
+|---|---|---|
+| `accueil` | `home_url( '/' )` | **Accueil** |
+| `portees` | `get_post_type_archive_link( 'mtb_portee' )` | **Les portées** |
+| `meute` | `get_page_by_path( 'la-meute' )` puis `get_permalink()` | **La meute** |
+
+Rendu : `<li class="mtb-lien-de-recours"><a href="…">Libellé</a></li>` — **une seule classe, un `<a>` nu**.
+**Rend la chaîne vide** — jamais un `<li>` vide, jamais une puce orpheline — dans quatre cas mesurés :
+`get_post_type_archive_link()` rend `false` · la page n'existe pas · elle n'est pas publiée · **elle est
+protégée par mot de passe** (`get_page_by_path()` ne filtre ni l'état ni le mot de passe, et rend
+brouillons et corbeille : les deux gardes sont explicites).
+
+**`"inserter": false` — premier bloc non insérable du catalogue.** Il rend un `<li>` : hors d'une liste
+il n'a aucun sens, et l'éleveuse obtiendrait un élément orphelin sans comprendre pourquoi. Elle ne le
+voit jamais, ne le règle jamais : **il n'a pas de fiche d'aide et n'en aura pas** — D3 vise les
+composants qu'elle manipule. Le choix est écrit sur seize lignes dans `bootstrap.php`, pour qu'un futur
+lecteur n'y voie pas un oubli.
+
+**Deux limites assumées, écrites en commentaire dans `rendu.php`** :
+- **le slug `la-meute` est une convention codée en dur.** Si l'éleveuse nomme sa page « Nos chiens », le
+  lien **n'apparaît pas** — silencieux, mais honnête : mieux vaut un lien absent qu'un lien mort. La
+  vraie réponse est un réglage d'administration désignant la page, hors de cette issue ;
+- **T30 en découle** : sur l'installation de l'éleveuse, la page n'existant pas, les pages d'erreur
+  afficheront **deux** liens et non trois. Le comportement est correct ; c'est l'exigence de §9.5 qui
+  devient conditionnelle. À dire ainsi, sans le survendre.
+
+**Ce qui reste refusé** : transformer `404.html`/`search.html` en `404.php`/`search.php`. Ce serait dans
+l'empreinte, ça marcherait, et ça laisserait **deux `.html` morts** que la troncature du §1.2 rend
+inatteignables **sans un mot**.
+
+**Résidu hors périmètre, signalé** : le **menu principal** en base porte deux liens personnalisés
+`href="/portees/"` et `href="/la-meute/"` en dur, sur **toutes** les pages. Même défaut que T28, mais
+dans du **contenu** que l'éleveuse édite elle-même (Apparence → Menus), pas dans du code de gabarit.
 
 **Ce qui est refusé** : transformer `404.html`/`search.html` en `404.php`/`search.php`. Ce serait dans
 l'empreinte, ça marcherait, et ça laisserait **deux fichiers `.html` morts** que la troncature du §1.2
@@ -889,7 +928,7 @@ Numéros **proposés** ; `docs/ETAT.md` appartient à `/lead-mtb`.
 
 | # | Dette |
 |---|---|
-| **T28** | **Deux liens de recours à URL non calculée** (« Les portées », « La meute ») dans `404.html` et `search.html`. Faux dès qu'un site n'est pas à la racine d'un domaine, et muets si un slug change. Payable par la première issue qui rouvre `functions.php`, ou par un bloc `mtb/lien-de-recours` côté extension |
+| ~~**T28**~~ | ~~Deux liens de recours à URL non calculée.~~ **PAYÉE le 2026-08-20** par le bloc `mtb/lien-de-recours` (§10). Les trois adresses sont calculées au rendu et le lien s'omet en silence quand sa destination n'existe pas. **Reste dû, hors de cette issue** : les deux mêmes URL en dur dans les **entrées de menu** en base, qui sont du contenu et non du code |
 | **T29** | **Les libellés d'identité de la fiche chien sont écrits dans le thème**, faute de `libelle` sur les champs de `mtb_get_chien()` (`lecture.php:292-330`), alors que la portée les fournit. Duplication : un libellé changé dans `MASTER.md` §10.2 devra l'être à deux endroits |
 | **T30** | **« La meute » n'existe que dans la base de développement.** Sur l'installation de Fabienne, la page n'existera pas et le lien de recours pointera dans le vide. La fiche d'aide dit « créez cette page », jamais « elle existe » |
 | **T31** | **Deux balisages de tableau coexistent** — le palmarès (extension, #15) et les chiots (thème, #16) — donc deux implémentations de la **décision 10**. Atténué, pas fermé, par la primitive `.mtb-tableau` unique de `base.css` : les deux **doivent** la porter |

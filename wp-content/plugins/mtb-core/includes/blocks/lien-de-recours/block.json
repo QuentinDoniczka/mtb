@@ -1,0 +1,67 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/lien-de-recours",
+	"title": "Lien de recours",
+	"category": "mtb",
+	"icon": "external",
+	"description": "Un lien de recours des pages « introuvable » et « résultats de recherche ». Son adresse est calculée par le site ; il disparaît si sa destination n’existe pas.",
+	"keywords": [ "recours", "secours", "404", "recherche", "introuvable" ],
+	"attributes": {
+		"cible": {
+			"type": "string",
+			"enum": [ "accueil", "portees", "meute" ],
+			"default": "accueil"
+		}
+	},
+	"supports": {
+		"inserter": false,
+		"multiple": true,
+		"align": false,
+		"alignWide": false,
+		"anchor": false,
+		"ariaLabel": false,
+		"className": false,
+		"customClassName": false,
+		"html": false,
+		"lock": false,
+		"renaming": false,
+		"reusable": false,
+		"splitting": false,
+		"layout": false,
+		"position": false,
+		"border": false,
+		"shadow": false,
+		"color": {
+			"background": false,
+			"text": false,
+			"link": false,
+			"gradients": false,
+			"button": false,
+			"enableContrastChecker": false
+		},
+		"typography": {
+			"fontSize": false,
+			"lineHeight": false,
+			"textAlign": false
+		},
+		"spacing": {
+			"margin": false,
+			"padding": false,
+			"blockGap": false
+		},
+		"dimensions": {
+			"aspectRatio": false,
+			"minHeight": false
+		},
+		"background": {
+			"backgroundImage": false,
+			"backgroundSize": false
+		},
+		"filter": {
+			"duotone": false
+		}
+	},
+	"editorScript": "mtb-lien-de-recours-editeur",
+	"render": "file:./render.php"
+}
