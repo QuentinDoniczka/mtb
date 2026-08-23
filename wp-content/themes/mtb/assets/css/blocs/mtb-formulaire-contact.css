@@ -1,0 +1,263 @@
+/*
+ * MTB — Formulaire de contact · bloc `mtb/formulaire-contact` (mtb-core).
+ * Raisonnement complet : docs/contracts/issue-22.md. « § » = design-system/MASTER.md.
+ *
+ * FEUILLE INCORPORÉE : sous 20 000 o le cœur l'écrit EN LIGNE dans le HTML (`path` passé
+ * à `wp_enqueue_block_style()`). Tout octet ajouté ici, COMMENTAIRE COMPRIS, est facturé
+ * sur chaque page portant le bloc. Le nom du fichier est contractuel :
+ * `mtb_feuilles_de_blocs` (functions.php) le dérive du nom du bloc et `continue` EN
+ * SILENCE s'il manque — une lettre d'écart donne un formulaire nu, sans journal.
+ *
+ * CE QU'ELLE NE REDÉCLARE JAMAIS — base.css le sert à tout le site (se repérer AU
+ * SÉLECTEUR, les numéros de ligne dérivent) : `input[type=…], select, textarea` (48 px,
+ * --blanc, --bord-actif, --r-1), `textarea` (interligne, AUCUNE hauteur fixe, §7.8),
+ * `input:focus-visible` (bord --sauge), `input[aria-invalid="true"]` (bord 2 px --oxyde,
+ * le signal d'erreur du §8.5), `button` (les quatre états du §8.4), `:focus-visible`
+ * (l'anneau du §8.1, y compris sur la racine qui porte tabindex="-1"), `.mtb-canal > *`
+ * (le canal texte du §7.1), `.mtb-etat-vide*` d'editor.css (§9.1). Une seconde
+ * définition serait un doublon dont la divergence est datée (dette T-#15-a).
+ *
+ * JAMAIS `:invalid`, `:valid`, `:user-invalid` : le formulaire porte `novalidate` ET
+ * `required`, donc un champ obligatoire est invalide dès le premier affichage et le
+ * peindre accuserait la visiteuse avant qu'elle ait tapé un caractère (contrat §6.2).
+ * JAMAIS `form.mtb-formulaire-contact__formulaire` : l'aperçu d'éditeur emploie un
+ * `<div>` sous la même classe (contrat §6.3) ; les autres éléments y sont figés.
+ * SPÉCIFICITÉ : classe doublée dès qu'une règle reprend une propriété que base.css pose
+ * sur un ÉLÉMENT (`p`, `h2`) — base.css passe par `add_editor_style()`, qui préfixe ses
+ * sélecteurs dans la toile et les porte à (0,1,1) ; cette feuille-ci ne l'est pas.
+ *
+ * VALEURS BRUTES — LISTE CLOSE, deux et pas une de plus, aucun jeton ne les porte et
+ * en créer un serait l'invention qu'interdit le §13 : `44px`, minimum tactile écrit en
+ * pixels par le §12.10 (même statut que le 48 px de base.css) ; `600`, graisse de
+ * l'étiquette, DÉRIVÉE de la ligne « en-tête de tableau » du §4.5 — motif à la règle 4,
+ * ratification Q-22-6. Ne comptent pas : 0, 100 % et les mots-clés CSS.
+ * NI TRANSITION NI ANIMATION : rien à honorer pour `prefers-reduced-motion`. AUCUNE
+ * REQUÊTE MÉDIA : le repli à 360 px tient aux règles 7, 16 et 20 et au canal texte.
+ *
+ * ÉCARTS ET QUESTIONS — RECONSIGNÉS, NI RE-LITIGÉS NI COMBLÉS (contrat §13, §17) :
+ *  · Q-22-4 — --oxyde est absent du §3.2 (encres admises sur --calcaire-creux) mais
+ *    tabulé 6,04:1 AA au §12.3. EMPLOYÉ, règle 19 ; c'est la mesure qui tranche.
+ *  · Q-22-5 — le filet double vertical de la confirmation (§9.5) n'est pas dans la liste
+ *    close du §2.1, qui range même « champs de formulaire » parmi les emplacements
+ *    interdits. §9.5 APPLIQUÉ, règle 15.
+ *  · Q-22-6 — le §5.1 ne chiffre aucun espacement de formulaire, le §4.5 n'a de ligne ni
+ *    pour l'étiquette ni pour la note d'aide. Les écarts (--e-5 entre groupes, --e-2 dans
+ *    un groupe, --e-6 sous un encart) et la graisse 600 de l'étiquette sont DÉRIVÉS de
+ *    règles voisines, à ratifier par lead-design-mtb.
+ *  · NOUVEAU, à trancher par lead-design-mtb — --pin sur --calcaire-creux : le §3.2
+ *    l'autorise (il inscrit --pin parmi les encres de ce fond) mais le §12.3 NE LE
+ *    TABULE PAS, alors que le §12 pose qu'« une paire absente de ce tableau est une
+ *    paire interdite ». La paire est rendue par le `h2` des deux encarts (contrat A6),
+ *    dont base.css tient l'encre. 12,75:1, AAA — LU SUR PIXELS RENDUS (décision 36) et
+ *    recoupé par la formule du §3. Même cas de figure que Q-22-4, autre couleur.
+ *  · Q-22-8 — résumé, confirmation et encart d'information partagent --calcaire-creux.
+ *    Aucun ne fait porter d'information à la COULEUR : le sens est dans les mots que le
+ *    serveur écrit, et seule la confirmation porte le filet vertical du §9.5.
+ *  · ÉCART AU CONTRAT §7, crochet 8 — aucune hauteur minimale n'est écrite sur `__zone`.
+ *    MASTER ne chiffre aucune hauteur de zone de saisie ; en inventer une serait la
+ *    valeur brute qu'interdit le §13, et une hauteur fixe casserait le zoom 200 % (§7.8).
+ *    La hauteur vient de `rows="8"`, contractuel (contrat §6.2), et du plancher de 48 px.
+ */
+
+/* 1. Rythme vertical du composant dans la page (§5.1). max() : --rythme-section tombe à
+   40 px sous 360 px, sous les --e-7 que le §2.1 impose entre deux filets doubles — la
+   confirmation en porte un, le h2 qui précède le bloc dans la page en porte un autre.
+   La racine est un élément de grille de .mtb-canal, donc une racine de contexte de
+   formatage : aucune marge d'enfant ne traverse ses bords et les écarts écrits plus bas
+   sont ceux qu'on lit. Ni overflow ni hauteur : l'un rognerait l'anneau de focus de la
+   racine, qui porte tabindex="-1" et reçoit le saut d'ancre après le 303 (§7.8). */
+.mtb-formulaire-contact {
+  margin-block: max(var(--rythme-section), var(--e-7));
+}
+
+/* 2. __formulaire — l'écart vertical entre groupes, et rien d'autre. Grille plutôt que
+   marges : les deux `input[type=hidden]` et le piège de la règle 12 sont en
+   display:none, et un gap ne leur laisse aucun vide fantôme, là où des marges en
+   auraient laissé. JAMAIS qualifié par son élément (contrat §6.3, arbitrage A5). */
+.mtb-formulaire-contact__formulaire {
+  display: grid;
+  gap: var(--e-5);
+}
+
+/* 3. __champ — le GROUPE étiquette + aide + saisie + erreur, arbitrage central du
+   contrat (§7, A1). La grille donne aux trois enfants en ligne (label, span, strong) le
+   `display: block` que le §8.5 exige de l'étiquette, et l'« écart au-dessus » du
+   message d'erreur de la règle 9 : une seule déclaration pour les deux. */
+.mtb-formulaire-contact__champ {
+  display: grid;
+  gap: var(--e-2);
+}
+
+/* 4. Étiquette — §8.5 : visible AU-DESSUS du champ, jamais un placeholder (§13).
+   Graisse DÉRIVÉE (Q-22-6) : le §4.5 n'a pas de ligne « étiquette de champ » ; 600 est
+   celle qu'il donne à l'en-tête de tableau, la voisine la plus proche. Ni majuscules ni
+   interlettre : ce n'est pas l'étiquette h4 du §4.5, et « Votre adresse de courriel »
+   dépasse les trois mots au-delà desquels le §4.5 la déclare illisible. */
+.mtb-formulaire-contact__etiquette {
+  font-weight: 600;
+}
+
+/* 5 et 6. « (obligatoire) » écrit dans l'étiquette, JAMAIS un astérisque coloré (§8.5),
+   et la note d'aide : même statut de texte secondaire, donc même recette.
+   --texte-doux sur --calcaire : 6,47:1 (§12.1). */
+.mtb-formulaire-contact__obligatoire,
+.mtb-formulaire-contact__aide {
+  font-size: var(--t-sm);
+  color: var(--texte-doux);
+}
+
+/* 7. __saisie — LARGEUR UNIQUEMENT : hauteur, fond, bord, rayon, focus et bord d'erreur
+   sont les primitives de base.css. 100 % ne fait pas double emploi avec l'étirement
+   d'un élément de grille : Safari n'étire pas les contrôles de formulaire, et la zone
+   retomberait alors sur la largeur intrinsèque de son `cols` — un débordement
+   horizontal à 360 px (§7.7). Aucune largeur fixe, le §13 en interdit toute au-delà de
+   300 px et le canal texte plafonne déjà à --l-texte. */
+.mtb-formulaire-contact__saisie {
+  inline-size: 100%;
+}
+
+/* 8. __zone — la poignée de redimensionnement reste verticale : à l'horizontale, la
+   visiteuse peut pousser la zone hors de la fenêtre et rien ne l'y ramène. Aucune
+   hauteur ici : voir l'écart déclaré en tête. */
+.mtb-formulaire-contact__zone {
+  resize: vertical;
+}
+
+/* 9. __erreur — --oxyde sur --calcaire : 6,74:1, AA (§12.1). L'écart au-dessus vient du
+   gap de la règle 3. Le préfixe « Erreur : » est DANS le texte que le serveur écrit
+   (§12.9, contrat §6.4) : jamais un `content:`, qui disparaît de la copie de texte et
+   de certains modes de restitution. La couleur n'est ici que le troisième signal, après
+   le mot et la bordure de 2 px de base.css. */
+.mtb-formulaire-contact__erreur {
+  color: var(--oxyde);
+}
+
+/* 10. Mention d'information, au-dessus du bouton (écart 10 du contrat).
+   margin-block-end à 0 : le `p` de base.css ajouterait --e-4 au gap de la règle 2, et
+   la mention se décollerait des actions plus que les champs entre eux. */
+.mtb-formulaire-contact .mtb-formulaire-contact__mention {
+  margin-block-end: 0;
+  font-size: var(--t-sm);
+  color: var(--texte-doux);
+}
+
+/* 11. `.mtb-formulaire-contact__actions` — SEUL CROCHET DÉLIBÉRÉMENT NON STYLÉ, et
+   nommé ici en toutes lettres pour que la recherche de la décision 46 le trouve dans
+   les deux sens (contrat §7, V23, V-front-2). Son rôle est structurel : il tient le
+   <button> HORS de la grille de la règle 2, où l'étirement d'un élément de grille lui
+   donnerait toute la largeur du canal. Dans ce bloc en flux normal, le bouton reste à
+   la largeur de son libellé, et le §8.4 l'habille entièrement depuis base.css — une
+   déclaration ici serait une seconde source de vérité. */
+
+/* 12. Piège à robots — crochet FONCTIONNEL : sans lui, « Ne remplissez pas ce champ. »
+   s'affiche à la visiteuse. display:none plutôt qu'un masquage par découpe (A7) : c'est
+   la recette qui minimise les FAUX POSITIFS SUR UN HUMAIN, en empêchant le remplissage
+   automatique de la plupart des navigateurs, et un message humain détruit est
+   irréversible (décision 45). Objection consignée : un robot qui lit le style calculé
+   saute un champ invisible — il contourne aussi bien la découpe. Effet second : le
+   champ quitte l'arbre d'accessibilité, ce qu'exige l'`aria-hidden="true"` de son
+   conteneur (règle axe `aria-hidden-focus`). */
+.mtb-formulaire-contact__piege {
+  display: none;
+}
+
+/* 13 et 17. Les deux encarts en creux (§3.2). Ni rayon (--r-0 EST le défaut), ni
+   bordure, ni ombre (§5.4), NI FILET DOUBLE : le §2.1 le réserve à huit emplacements et
+   aucun n'est un encart de message. Seule la confirmation en porte un (règle 15) —
+   c'est, avec les mots, ce qui la distingue de ces deux-ci sans recourir à la couleur
+   (§12.9). Le résumé et l'encart d'information ne coexistent jamais ; ils se
+   distinguent l'un de l'autre par leur titre, par la liste d'ancres du premier et par
+   les lignes de recours du second (Q-22-8). */
+.mtb-formulaire-contact__resume,
+.mtb-formulaire-contact__information {
+  margin-block-end: var(--e-6);
+  background-color: var(--calcaire-creux);
+  padding: var(--e-6);
+}
+
+/* 14 et 18. V-front-17. base.css donne un filet double à TOUT h2 ; il tomberait ici À
+   L'INTÉRIEUR d'un encart, emplacement absent de la liste close du §2.1. Surcharge de
+   contexte (décision 30) et non variante de titre : la famille, la taille et l'encre du
+   §4.5 sont conservées, seul le fond de filet est retiré, avec le rembourrage qui le
+   réservait. L'espace au-dessus du titre vient du rembourrage de l'encart, d'où
+   margin-block-start à 0 ; celui du dessous reste le --e-4 du §5.1. */
+.mtb-formulaire-contact .mtb-formulaire-contact__resume-titre,
+.mtb-formulaire-contact .mtb-formulaire-contact__information-titre {
+  margin-block: 0 var(--e-4);
+  background-image: none;
+  padding-block-end: 0;
+}
+
+/* Liste du résumé : `__resume-liste` et `__resume-ligne` ont été retirés (contrat §7.1),
+   deux sélecteurs descendants suffisent. --e-2 est l'écart minimal entre deux cibles
+   tactiles (§12.10) ; il s'ajoute à la hauteur de 44 px de la règle 16. Ni puce ni
+   indentation retirées : le §9 ne prescrit rien pour une liste d'erreurs, et le défaut
+   du navigateur laisse 220 px de texte à 360 px, sans débordement. */
+.mtb-formulaire-contact__resume li + li {
+  margin-block-start: var(--e-2);
+}
+
+/* 15. Confirmation — §9.5 mot à mot : encart --calcaire-creux, filet double VERTICAL
+   --sauge, PAS DE COCHE VERTE (une couleur seule ne dirait rien, §12.9) ; le sens est
+   porté par « Message envoyé. » en <strong>. Forme du filet reprise de la citation de
+   base.css : un fond, jamais une bordure — c'est le vide de 2 px entre le trait sauge
+   et le trait laiton qui fait lire un filet gravé. Écart Q-22-5 consigné en tête. */
+.mtb-formulaire-contact__confirmation {
+  margin-block-end: var(--e-6);
+  background-color: var(--calcaire-creux);
+  background-image: var(--filet-double-v);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: var(--filet-double-h) 100%;
+  padding: var(--e-6);
+  padding-inline-start: calc(var(--e-6) + var(--filet-double-h));
+}
+
+/* 16. __reprise — « Écrire un autre message » est la seule sortie de l'état de
+   confirmation. margin-block-end à 0 : dernier enfant de la racine, le `p` de base.css
+   pousserait sa marge sous le composant. */
+.mtb-formulaire-contact .mtb-formulaire-contact__reprise {
+  margin-block-end: 0;
+}
+
+/* Cibles tactiles des trois familles de liens du composant : elles ne peuvent pas
+   dépendre de la hauteur d'une ligne de texte (§12.10). 44px en est recopié tel quel,
+   liste close en tête. inline-flex donne la hauteur sans figer la boîte
+   et laisse le texte se replier ; max-inline-size est indispensable et non décoratif :
+   une boîte en ligne se dimensionne sur son contenu minimal, et `overflow-wrap:
+   break-word` ne réduit pas ce minimal — sans plafond, une adresse de courriel longue
+   déborderait du canal à 360 px au lieu d'y être coupée (§7.7). */
+.mtb-formulaire-contact__resume a,
+.mtb-formulaire-contact__reprise a,
+.mtb-formulaire-contact__information-recours a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  max-inline-size: 100%;
+}
+
+/* 19. Cause de l'échec, préfixée « Erreur : » par le serveur. --oxyde sur
+   --calcaire-creux : 6,04:1, AA (§12.3) — écart Q-22-4 consigné en tête. Le mot vient
+   en premier, l'encart ensuite, la couleur en troisième : aucune information n'est
+   portée par elle seule (§12.9). */
+.mtb-formulaire-contact__information-texte {
+  color: var(--oxyde);
+}
+
+/* 20. Lignes de recours. break-word : une adresse de courriel ne provoque jamais de
+   défilement horizontal à 360 px (§7.7, §4.5) et la propriété descend jusqu'au texte du
+   lien de la règle 16. L'écart entre les deux cibles est le --e-4 que base.css donne au
+   `p`, au-dessus des --e-2 exigés par le §12.10. */
+.mtb-formulaire-contact__information-recours {
+  overflow-wrap: break-word;
+}
+
+/* Garde : aucun dernier enfant ne pousse sa marge hors du rembourrage de son encart, ce
+   qui le rendrait plus large en bas que sur les trois autres côtés. ÉCRITE EN DERNIER,
+   NE PAS LA DÉPLACER. Classe doublée : à (0,1,0) elle perdrait dans la toile de
+   l'éditeur contre le `p` de base.css, qui y pèse (0,1,1). Le résumé n'y figure pas :
+   son dernier enfant est le <ul>, dont base.css remet déjà la marge à zéro. */
+.mtb-formulaire-contact__confirmation.mtb-formulaire-contact__confirmation > :last-child,
+.mtb-formulaire-contact__information.mtb-formulaire-contact__information > :last-child {
+  margin-block-end: 0;
+}

@@ -1,0 +1,67 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mtb/formulaire-contact",
+	"title": "Formulaire de contact",
+	"description": "Un formulaire nom, courriel, message. Le message part par courriel à l'élevage ; il n'est pas enregistré sur le site.",
+	"category": "mtb",
+	"icon": "email",
+	"keywords": [ "contact", "formulaire", "écrire", "courriel", "message", "mail" ],
+	"usesContext": [ "postId" ],
+	"attributes": {
+		"mention": {
+			"type": "string",
+			"default": "Votre message est envoyé par courriel à l'élevage. Il n'est pas enregistré sur ce site."
+		}
+	},
+	"supports": {
+		"align": false,
+		"alignWide": false,
+		"anchor": false,
+		"ariaLabel": false,
+		"className": false,
+		"customClassName": false,
+		"html": false,
+		"lock": false,
+		"renaming": false,
+		"splitting": false,
+		"layout": false,
+		"position": false,
+		"border": false,
+		"shadow": false,
+		"inserter": true,
+		"multiple": false,
+		"reusable": false,
+		"color": {
+			"background": false,
+			"text": false,
+			"link": false,
+			"gradients": false,
+			"button": false,
+			"enableContrastChecker": false
+		},
+		"typography": {
+			"fontSize": false,
+			"lineHeight": false,
+			"textAlign": false
+		},
+		"spacing": {
+			"margin": false,
+			"padding": false,
+			"blockGap": false
+		},
+		"dimensions": {
+			"aspectRatio": false,
+			"minHeight": false
+		},
+		"background": {
+			"backgroundImage": false,
+			"backgroundSize": false
+		},
+		"filter": {
+			"duotone": false
+		}
+	},
+	"render": "file:./render.php",
+	"editorScript": "mtb-formulaire-contact-editeur"
+}
