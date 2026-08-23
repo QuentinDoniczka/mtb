@@ -73,6 +73,19 @@ PHP
 log "langue, fuseau horaire, format des permaliens…"
 $WP language core install fr_FR --activate >/dev/null 2>&1 || log "AVERTISSEMENT : installation de la langue fr_FR impossible (hors-ligne ?)"
 $WP option update WPLANG fr_FR >/dev/null
+# "option update WPLANG" passe par sanitize_option('WPLANG'), qui n'accepte que les locales
+# réellement installées (wp-content/languages/…) et vide silencieusement l'option sinon — sans
+# faire échouer la commande ci-dessus. Si le téléchargement du paquet fr_FR a échoué juste
+# au-dessus (poste hors-ligne, miroir indisponible…), le site sert alors <html lang="en-US">
+# tout en laissant ce script conclure "terminé." comme si tout s'était bien passé. On relit
+# l'option pour transformer ce silence en signal explicite (dette T39).
+wplang_effectif="$($WP option get WPLANG 2>/dev/null)"
+if [ "$wplang_effectif" != "fr_FR" ]; then
+	site_non_francophone=1
+	log "ERREUR : la locale du site n'est PAS fr_FR après provisionnement (WPLANG='${wplang_effectif}'). Le paquet de langue fr_FR n'a probablement pas pu être téléchargé (poste hors-ligne ?). Le site sert <html lang=\"en-US\">. Relancer 'make provision' avec un accès réseau pour corriger."
+else
+	site_non_francophone=0
+fi
 $WP option update timezone_string "Europe/Paris" >/dev/null
 $WP option update date_format "d/m/Y" >/dev/null
 $WP option update blogdescription "Élevage de bergers hollandais du Mont Brabant" >/dev/null
@@ -175,7 +188,15 @@ log "nettoyage du contenu par défaut de WordPress (lien codé en dur vers l'anc
 # aucune erreur.
 $WP search-replace 'http://localhost:8080/wp-admin/' '/wp-admin/' wp_posts --precise >/dev/null 2>&1 || true
 
+# La chaîne "[provision] terminé." est le signal de fin de provisionnement attendu par les
+# scripts/agents qui patientent sur les logs (ex. docker-mtb) — elle doit toujours apparaître
+# telle quelle, y compris quand une erreur non bloquante a été détectée plus haut : sinon plus
+# rien n'attend jamais la fin du provisionnement. L'alerte T39 est répétée juste après, dans
+# une ligne distincte, pour rester visible sans casser ce contrat.
 log "terminé."
+if [ "${site_non_francophone:-0}" -eq 1 ]; then
+	log "ERREUR : rappel — le site n'est PAS en fr_FR (voir « ERREUR » ci-dessus). Relancer 'make provision' avec un accès réseau."
+fi
 
 # Le conteneur reste en vie pour que WP-CLI reste disponible en cas d'exécution ponctuelle
 # (make wp, make shell) et pour que le healthcheck du service reflète l'état du provisionnement.

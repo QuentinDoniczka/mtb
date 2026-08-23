@@ -12,7 +12,18 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends msmtp \
     && rm -rf /var/lib/apt/lists/*
 
-COPY msmtprc /etc/msmtprc
-COPY mail.ini /usr/local/etc/php/conf.d/zz-mtb-mail.ini
+# Contexte de build = racine du dépôt (voir compose.yaml) : docker/mail/ est partagé avec
+# l'image wpcli, qui a le même besoin d'envoyer du courrier (voir docker/wpcli/Dockerfile).
+COPY docker/mail/msmtprc /etc/msmtprc
+COPY docker/mail/mail.ini /usr/local/etc/php/conf.d/zz-mtb-mail.ini
 
-RUN chmod 600 /etc/msmtprc
+# Les processus Apache qui traitent les requêtes web (donc wp_mail() appelé depuis PHP, ex.
+# le formulaire de contact #22) tournent sous l'utilisateur "www-data", jamais "root" — c'est
+# la configuration standard de cette image officielle. Le fichier doit donc appartenir à
+# www-data pour rester lisible par le processus qui en a besoin, tout en restant fermé à
+# quiconque d'autre (600 = lecture/écriture au seul propriétaire). "root:root 600" (l'ancien
+# réglage) empêchait www-data de le lire : c'est ce qui rendait wp_mail() muet sur un
+# démarrage à froid tout en semblant fonctionner après une correction manuelle perdue à la
+# prochaine recréation du conteneur — d'où la correction ici, dans l'image, et non à la main.
+RUN chown www-data:www-data /etc/msmtprc \
+    && chmod 600 /etc/msmtprc

@@ -28,7 +28,8 @@ services:
 
   wordpress:
     build:
-      context: ./docker/wordpress
+      context: .
+      dockerfile: docker/wordpress/Dockerfile
     restart: unless-stopped
     depends_on:
       db:
@@ -55,7 +56,9 @@ services:
       start_period: 40s
 
   wpcli:
-    image: wordpress:cli-php8.1
+    build:
+      context: .
+      dockerfile: docker/wpcli/Dockerfile
     restart: unless-stopped
     # Doit écrire dans le même volume que "wordpress" (cœur, wp-content/uploads, wp-content/languages).
     # L'image wp-cli (Alpine) a www-data en uid 82 ; l'image wordpress (Debian) l'a en uid 33.
