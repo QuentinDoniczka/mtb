@@ -1062,3 +1062,126 @@ La hauteur vient donc de `rows="8"` (contractuel, §6.2) et du plancher de 48 px
 **T-#22-i — la feuille est incorporée en ligne AVEC ses ~5 Ko de commentaires**, sur chaque page
 portant le bloc (19 166 o sans bloc → **37 553 o** avec). Choix assumé et écrit en tête de feuille ;
 consigné ici parce que le §18 le chiffrait sans le nommer comme un coût récurrent.
+
+---
+
+## 21. Amendement du 2026-08-23 — reprise ciblée : Q-22-1 tranchée, T-#22-e payée
+
+Deux points restaient après la jonction. L'un attendait un arbitrage de l'utilisateur, l'autre était
+dû par ricochet à une fiche d'une autre issue. Les voici, avec ce qui a été **mesuré à l'écran**.
+
+### 21.1 Q-22-1 est TRANCHÉE — « texte par défaut minimal et vrai »
+
+**Arbitrage de l'utilisateur, 2026-08-23.** La mention par défaut ne dit **que ce qui est
+vérifiable** : à quoi sert le message, à qui il est envoyé, et qu'aucune copie n'est conservée sur le
+site. **Pas de durée de conservation** — il n'y en a pas. **Pas de responsable de traitement nommé** —
+la raison sociale manque encore aux Mentions légales, et l'inventer serait un fait faux. L'éleveuse
+remplace ce texte par le sien quand elle veut : **la mention reste un réglage libre du bloc**, jamais
+une constante.
+
+**Trois passages du texte gelé sont amendés** — et, selon la convention de ce contrat (§18), ils ne
+sont pas réécrits au-dessus : ce qui suit les corrige. Ce sont le **§4.1** (tableau des attributs), le
+**§6.2** (l'exemple de balisage de l'état 1, dont la ligne `__mention` porte encore les deux anciennes
+phrases) et le **§9** (ligne « Mention par défaut »). **Nouvelle valeur par défaut de l'attribut
+`mention`** :
+
+> Votre message est envoyé par courriel à l'élevage. Votre nom et votre adresse de courriel
+> l'accompagnent, pour que l'élevage puisse vous répondre. Le site n'en garde aucune copie : ni votre
+> message, ni votre nom, ni votre adresse ne sont enregistrés ici.
+
+**Ce ne sont pas trois phrases de rédaction juridique : ce sont trois descriptions du comportement du
+code**, chacune adossée à une ligne, comme les deux qu'elles remplacent.
+
+| Phrase | Ce qui la rend vraie |
+|---|---|
+| « Votre message est envoyé par courriel à l'élevage. » | `traitement.php:405-410` — `wp_mail( $adresse, … )`, où `$adresse` vient de `destination()` (`destination.php:101-107`), tirée de `mtb_get_coordonnees_elevage()['courriel']['valeur']` |
+| « Votre nom et votre adresse de courriel l'accompagnent, pour que l'élevage puisse vous répondre. » | `messages.php` `corps_courriel()`, lignes `'Nom : '` et `'Courriel : '` ; et `traitement.php:399-401`, l'en-tête `Reply-To:` de la visiteuse, qui n'existe que pour cela. Le membre de phrase reprend **mot pour mot** `AIDE_COURRIEL` (`messages.php:42`) — reprise voulue |
+| « Le site n'en garde aucune copie : ni votre message, ni votre nom, ni votre adresse ne sont enregistrés ici. » | Décision 45, **vérifiable par recherche et re-mesurée ce jour** : le module compte 0 `update_option`, 0 `add_option`, 0 `set_transient`, 0 `$wpdb`, 0 `setcookie`, 0 `session_start`, 0 `wp_insert_post` |
+
+**Ce que le texte tait, et pourquoi il continue de le taire** — le §12 reste valable mot pour mot :
+aucune durée (il n'y a pas de conservation), aucun droit d'accès ou de suppression, aucun responsable
+de traitement. **Interdit d'écriture nouveau et opposable : jamais « vous pouvez demander la
+suppression ».** Le site n'a rien à supprimer, et cette phrase engagerait l'éleveuse à vider sa propre
+boîte de courriels sur demande — ce que ni le code ni personne ne garantit. C'est la promesse la plus
+tentante à recopier d'un autre site ; elle est la seule expressément proscrite.
+
+**Aucune promesse de réponse n'est prise** : « pour que l'élevage **puisse** vous répondre » énonce une
+finalité, pas un engagement. Cohérent avec le §6.5, qui refusait déjà « L'élevage vous répondra ».
+
+### 21.2 Q-22-2, second volet : la destination reste `mtbrabant@gmail.com`, et n'est écrite nulle part
+
+**Tranché** : la destination reste l'adresse de l'écran **Coordonnées**, livré par #38. **Mesuré sur
+la pile**, option `mtb_core_coordonnees` **absente de la base** — donc dans l'état le plus froid
+possible :
+
+```
+mtb_get_coordonnees_elevage()['courriel']['valeur'] = 'mtbrabant@gmail.com'
+destination()             = 'mtbrabant@gmail.com'
+destination_utilisable()  = true
+```
+
+Elle vient de `valeurs_de_depart()` (`includes/query/coordonnees/option.php:44-51`, recopiée du brief
+§7). **Le V21 du contrat tient** : `grep -r 'mtbrabant@gmail.com'` sur
+`includes/blocks/formulaire-contact/` rend **zéro**, et le dépôt entier n'en compte **qu'un seul
+exemplaire**, celui de `option.php`. C'est ce qui rend **D1** vraie ici : l'éleveuse change la
+destination du formulaire sans qu'on ouvre un fichier.
+
+### 21.3 §4.1 amendé — le littéral par défaut n'a plus qu'UN exemplaire
+
+**Défaut trouvé et corrigé pendant la reprise.** `messages.php:94` déclarait
+`const MENTION_PAR_DEFAUT`, **référencée nulle part** : ni `rendu.php` (le cœur remplit l'attribut
+manquant par `WP_Block::prepare_attributes_for_render()`), ni `editeur.js` (il lit l'attribut). C'était
+un **second exemplaire du même littéral français**, que la retouche de la mention aurait fait diverger
+en silence — la classe de défaut des décisions 43 et 46, et le §9 aurait été satisfait à la lettre en
+étant faux dans les faits.
+
+**La constante est retirée.** Le littéral vit désormais **une seule fois**, dans
+`block.json → attributes.mention.default`, seul endroit qui puisse le porter : le cœur lit ce fichier
+**avant tout PHP du module**. Un commentaire prend sa place dans `messages.php`, porte la copie de
+lecture **explicitement non normative**, l'adossement du tableau ci-dessus, et l'interdiction de
+réintroduire une constante.
+
+**T-#22-h est élargie** : la frontière JSON/PHP ne couvre plus seulement le `title`, mais aussi la
+valeur par défaut de la mention. Deux littéraux français vivent dans `block.json` parce que le cœur
+l'impose, et c'est écrit plutôt que contourné.
+
+### 21.4 T-#22-e est PAYÉE — la fiche des coordonnées
+
+`docs/guide/coordonnees-modifier-les-coordonnees.md` (livrée par #38 au lot 5) enseignait « Laissez
+vide pour retirer le courriel de tout le site » **sans savoir** que ce geste fait désormais
+disparaître le formulaire de contact. Elle est **le seul endroit** où l'éleveuse pouvait l'apprendre
+au moment du geste. Décision 43 : une fiche fausse vaut un bug. Corrigée dans cette reprise.
+
+`docs/guide/composant-formulaire-contact.md` est mise à jour de la nouvelle mention par défaut et de
+l'interdit du §21.1.
+
+### 21.5 Ce qui a été mesuré à l'écran
+
+Pile `http://localhost:3005`, page **Contact** (ID 4) portant le composant, **session de l'éleveuse**
+(`fabienne`, Éditeur natif) — jamais en session d'administration. Pilotage par Chrome sans affichage,
+protocole de débogage.
+
+| Mesure | Résultat |
+|---|---|
+| Mention par défaut **rendue au visiteur**, bloc posé **sans attribut `mention`** | les trois phrases, entières, dans `<p class="mtb-formulaire-contact__mention">`. Apostrophes typographiées par `wptexturize` — mise en forme du cœur, pas un écart de texte |
+| Menu de gauche de l'éleveuse | `… Résultats de travail · Coordonnées · Commentaires …` — **menu de premier niveau**, sous `edit_pages`. La formulation « dans le menu Coordonnées » (A10) est **confirmée à l'usage**, pas seulement en lecture |
+| Aide du champ **Courriel**, lue à l'écran | « L'adresse électronique à laquelle on vous écrit. […] Laissez vide pour retirer le courriel de tout le site. » |
+| Champ **Courriel** vidé, **Enregistrer** | avis « **Coordonnées enregistrées.** » |
+| **Site public**, aussitôt après | **0 occurrence** du composant, **feuille de style non chargée**, aucun cadre vide, aucune marge fantôme. **Il reste le titre « Écrire à l'élevage » tapé au-dessus, suivi de rien** — 285 px de contenu |
+| **Écran de modification**, courriel vide | encadré gris **576 × 145 px**, **au-dessus** de la représentation : « FORMULAIRE DE CONTACT » puis « Ce bloc n'affiche rien tant qu'aucun courriel n'est enregistré dans le menu Coordonnées. » La représentation **reste visible en dessous**, champ de la mention compris |
+| Adresse retapée, **Enregistrer** | le formulaire **revient seul**, **sans rouvrir ni republier** la page Contact |
+
+**Constat nouveau, consigné parce qu'il n'était écrit nulle part** : le composant disparaît, mais **le
+titre que l'éleveuse a tapé au-dessus reste**. Le visiteur lit alors une invitation à écrire suivie du
+vide. Ce n'est pas un défaut du composant — il ne peut pas effacer un bloc voisin — mais c'est une
+conséquence qu'elle doit connaître, et elle est désormais dans sa fiche.
+
+### 21.6 Ce qui n'a PAS été vérifié dans cette reprise
+
+- **Aucun envoi de courriel n'a été refait.** Ce n'était pas nécessaire : les deux vérifications
+  portent sur du texte rendu et sur une disparition de bloc. Les lignes du §20.2 restent en l'état.
+- **L'adresse présente mais NON VALIDE** (§4.4, phrase 2) n'a **pas** été regardée à l'écran pendant
+  cette reprise. Le comportement est lu dans le code et déjà écrit dans la fiche du composant ; il n'a
+  pas été remesuré.
+- **V18** (bloc dans un vrai élément de gabarit) reste **ouverte**, inchangée.
+- La **logique d'expéditeur `From:`** reste ouverte, inchangée.

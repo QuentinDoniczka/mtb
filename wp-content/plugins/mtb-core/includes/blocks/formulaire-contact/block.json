@@ -11,7 +11,7 @@
 	"attributes": {
 		"mention": {
 			"type": "string",
-			"default": "Votre message est envoyé par courriel à l'élevage. Il n'est pas enregistré sur ce site."
+			"default": "Votre message est envoyé par courriel à l'élevage. Votre nom et votre adresse de courriel l'accompagnent, pour que l'élevage puisse vous répondre. Le site n'en garde aucune copie : ni votre message, ni votre nom, ni votre adresse ne sont enregistrés ici."
 		}
 	},
 	"supports": {

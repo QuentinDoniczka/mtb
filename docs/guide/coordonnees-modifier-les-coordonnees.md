@@ -51,6 +51,7 @@ Après **Enregistrer**, et sans que vous ouvriez quoi que ce soit d'autre :
   y a des mois.
 - **Tous les composants Coordonnées et plan d'accès** posés dans vos pages.
 - **Le bas de chaque page du site**, où l'adresse, le téléphone et le courriel s'affichent déjà.
+- **Le formulaire de contact de votre page Contact**, qui écrit aussitôt à la nouvelle adresse.
 
 Il n'y a **aucune page à rouvrir, aucun composant à reposer, rien à republier.**
 
@@ -62,7 +63,7 @@ Il n'y a **aucune page à rouvrir, aucun composant à reposer, rien à republier
 |---|---|
 | **Adresse** | Une zone de trois lignes. Elle accepte les retours à la ligne : appuyez sur **Entrée** pour passer à la ligne suivante, et l'adresse s'affichera coupée exactement comme vous l'avez écrite. Son aide dit : « L'adresse de l'élevage, telle que vous l'écrivez. Le champ « Adresse » d'un composant posé dans une page, lui, ne change que cette page. Laissez vide pour retirer l'adresse de tout le site. » |
 | **Téléphone** | Son aide dit : « Le numéro auquel les familles vous joignent. Le champ « Téléphone » d'un composant posé dans une page ne change que cette page. Laissez vide pour retirer le numéro de tout le site. » |
-| **Courriel** | Son aide dit : « L'adresse électronique à laquelle on vous écrit. Le champ « Courriel » d'un composant posé dans une page ne change que cette page. Laissez vide pour retirer le courriel de tout le site. » |
+| **Courriel** | Son aide dit : « L'adresse électronique à laquelle on vous écrit. Le champ « Courriel » d'un composant posé dans une page ne change que cette page. Laissez vide pour retirer le courriel de tout le site. » **C'est aussi l'adresse qui reçoit les messages du formulaire de contact.** Le vider ne retire donc pas seulement une ligne d'affichage : **le formulaire disparaît de votre page Contact.** Voir plus bas. |
 | **Page de contact** | Son aide dit : « La page vers laquelle mènent les boutons du site qui ne désignent aucune page eux-mêmes. Choisissez « Aucune » pour qu'aucun bouton ne s'affiche. » |
 
 Aujourd'hui, l'écran arrive rempli de vos coordonnées, telles que le site les donne déjà :
@@ -120,6 +121,23 @@ rien à dire : **il ne s'affiche plus du tout** au visiteur — pas d'encadré v
 page. Vous, en modifiant la page, vous verrez à sa place un cadre annonçant qu'il n'affiche rien. Pour
 le faire revenir : retapez le numéro ici, ou choisissez une **Page de contact**.
 
+**Un second cas, et celui-là compte davantage.** Le champ **Courriel** ne sert pas qu'à afficher votre
+adresse : **c'est lui qui dit où partent les messages du formulaire de contact.** Videz-le, enregistrez,
+et **le formulaire disparaît entièrement de votre page Contact** — plus de champs, plus de bouton, pas
+de cadre vide, pas de trou dans la page.
+
+**Et le titre que vous aviez tapé au-dessus du formulaire, lui, reste.** C'est le piège : le visiteur
+lit une invitation à vous écrire, et il n'y a plus rien en dessous pour le faire.
+
+**Ce qu'il faut faire :** retapez votre adresse dans **Courriel**, puis **Enregistrer**. Le formulaire
+revient tout seul sur la page Contact, **sans rouvrir ni republier cette page**. Si vous vouliez
+vraiment retirer le formulaire, rouvrez la page Contact et **retirez aussi ce titre**, pour ne pas
+laisser une invitation sans suite.
+
+En modifiant la page Contact, vous verrez alors un cadre gris annonçant que le composant n'affiche rien
+tant qu'aucun courriel n'est enregistré dans le menu **Coordonnées** ; le formulaire reste dessiné en
+dessous, **rien n'est perdu**. Voir *Recevoir les messages des visiteurs par courriel*.
+
 ---
 
 ## La page de contact
@@ -153,9 +171,11 @@ des encarts, lui, ne bouge pas.
 - **Les couleurs, les lettres et la place de vos coordonnées sur le site** sont fixées par le design du
   site. Vous décidez du contenu ; l'allure ne bouge pas.
 - **Un champ vidé n'affiche jamais « Non renseigné »**, ni tiret, ni ligne blanche. La ligne s'en va.
+  **Un cas va plus loin** : le **Courriel** vidé ne retire pas une ligne, il retire le formulaire de
+  contact tout entier — voir plus haut.
 
-**Vous ne pouvez rien casser depuis cet écran.** Au pire, une information disparaît du site — et il
-suffit de la retaper ici pour qu'elle revienne partout.
+**Vous ne pouvez rien casser depuis cet écran.** Au pire, une information disparaît du site — le
+formulaire de contact compris — et il suffit de la retaper ici pour qu'elle revienne partout.
 
 ---
 
@@ -176,6 +196,10 @@ suffit de la retaper ici pour qu'elle revienne partout.
   affiché**), puis **Mettre à jour**.
 - **Une ligne a disparu du site.** Le champ correspondant est vide ici. Retapez-le, enregistrez : elle
   revient partout.
+- **Le formulaire de contact ne s'affiche plus sur la page Contact.** Le champ **Courriel** est vide
+  ici. Retapez votre adresse, enregistrez : le formulaire revient tout seul, sans rouvrir ni republier
+  la page Contact. Regardez ensuite cette page : **le titre que vous aviez tapé au-dessus du
+  formulaire, lui, était resté** pendant tout ce temps.
 - **Un encart d'appel ne s'affiche plus du tout sur le site.** Le champ **Téléphone** est vide *et*
   **Page de contact** vaut **Aucune** : cet encart n'a plus rien à montrer. Retapez le numéro, ou
   choisissez une page.
@@ -198,7 +222,8 @@ suffit de la retaper ici pour qu'elle revienne partout.
   évite.
 - **N'écrivez pas votre adresse ou votre numéro à la main dans le texte d'une page.** Même raison.
 - **Ne videz pas un champ pour « faire propre ».** Un champ vide retire l'information de tout le site,
-  y compris du bas de page.
+  y compris du bas de page. **Et le Courriel va plus loin** : le vider fait aussi disparaître le
+  formulaire de contact de votre page Contact, en laissant en place le titre écrit au-dessus.
 
 **Si quelque chose vous inquiète** : ne cliquez pas sur **Enregistrer**, quittez l'écran, notez l'heure
 et appelez-nous. Un écran quitté sans enregistrer n'a jamais rien changé au site.
@@ -206,7 +231,9 @@ et appelez-nous. Un écran quitté sans enregistrer n'a jamais rien changé au s
 ---
 
 Pour poser vos coordonnées dans une page, voir *Afficher vos coordonnées et un plan d'accès*. Pour
-inviter les visiteurs à vous appeler en fin de page, voir *Inviter les visiteurs à vous appeler*.
+inviter les visiteurs à vous appeler en fin de page, voir *Inviter les visiteurs à vous appeler*. Pour
+le formulaire qui reçoit les messages à l'adresse écrite ici, voir *Recevoir les messages des visiteurs
+par courriel*.
 
 ---
 

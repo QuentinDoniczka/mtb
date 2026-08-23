@@ -89,9 +89,43 @@ const CONFIRMATION_PREFIXE = 'Message envoyé.';
 const CONFIRMATION_TEXTE   = "Votre message a été envoyé par courriel à l'élevage.";
 const CONFIRMATION_REPRISE = 'Écrire un autre message';
 
-/* Mention d'information — valeur de départ de l'unique attribut du bloc. */
-
-const MENTION_PAR_DEFAUT = "Votre message est envoyé par courriel à l'élevage. Il n'est pas enregistré sur ce site.";
+/*
+ * Mention d'information — LE TEXTE PAR DÉFAUT NE VIT PAS ICI, ET NE DOIT PAS Y REVENIR.
+ *
+ * Il vit dans la clé « attributes.mention.default » de « block.json », seul endroit qui puisse le
+ * porter : le cœur lit ce fichier AVANT tout PHP du module, et remplit lui-même l'attribut manquant
+ * par « WP_Block::prepare_attributes_for_render() ». C'est la même frontière JSON/PHP que le
+ * « title » du bloc, déjà consignée en dette T-#22-h. Une constante ici serait un SECOND exemplaire
+ * du même littéral français, que personne ne lirait et qui divergerait en silence à la première
+ * retouche — la classe de défaut des décisions 43 et 46. Ne pas « corriger » cette absence.
+ *
+ * Copie de lecture, NON NORMATIVE — « block.json » fait foi en cas d'écart :
+ *
+ *   Votre message est envoyé par courriel à l'élevage. Votre nom et votre adresse de courriel
+ *   l'accompagnent, pour que l'élevage puisse vous répondre. Le site n'en garde aucune copie : ni
+ *   votre message, ni votre nom, ni votre adresse ne sont enregistrés ici.
+ *
+ * Chaque phrase est adossée à du code, et n'affirme rien de plus que lui :
+ *
+ * 1. « envoyé par courriel à l'élevage » — « traitement.php » lignes 405-410, « wp_mail( $adresse,
+ *    … ) », où « $adresse » vient de « destination() » (« destination.php » lignes 101-107), tirée
+ *    de « mtb_get_coordonnees_elevage()['courriel']['valeur'] ».
+ * 2. « Votre nom et votre adresse […] l'accompagnent, pour que l'élevage puisse vous répondre » —
+ *    « corps_courriel() » ci-dessous, lignes « Nom : » et « Courriel : » ; et « traitement.php »
+ *    lignes 399-401, l'en-tête « Reply-To » de la visiteuse, qui existe pour cela seul. Le membre de
+ *    phrase reprend MOT POUR MOT « AIDE_COURRIEL » ci-dessus, et cette reprise est voulue.
+ * 3. « Le site n'en garde aucune copie » — décision 45 : le module ne compte aucun « update_option »,
+ *    « add_option », « set_transient », « $wpdb », « setcookie », « session_start » ni
+ *    « wp_insert_post ».
+ *
+ * CE QUE LE TEXTE TAIT, ET C'EST DÉLIBÉRÉ : aucune durée de conservation (il n'y en a pas), aucun
+ * droit d'accès ou de suppression (ni le code ni personne ne garantit le vidage d'une boîte de
+ * courriels), aucun responsable de traitement nommé (la raison sociale manque encore aux mentions
+ * légales, et l'inventer serait un fait faux), aucune promesse de réponse — « PUISSE vous
+ * répondre » énonce une finalité, pas un engagement (contrat §6.5).
+ *
+ * La mention reste un réglage libre : l'éleveuse la remplace ou la vide depuis son écran d'édition.
+ */
 
 /*
  * Éditeur — les mots que l'éleveuse lit dans son écran d'édition, et nulle part ailleurs.

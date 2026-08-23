@@ -29,8 +29,13 @@ dans le menu **Coordonnées** et le formulaire écrit à la nouvelle, sans que v
 **À savoir avant de vider ce champ** : si le champ **Courriel** du menu **Coordonnées** est vide, ou
 s'il ne contient pas une adresse de courriel valide, **le formulaire disparaît entièrement du site**.
 Les visiteurs ne voient plus rien du tout à sa place — pas de cadre vide, pas de trou dans la page. Il
-revient tout seul dès que l'adresse est retapée. *(La fiche des coordonnées dit « Laissez vide pour
-retirer le courriel de tout le site » : c'est vrai, et cela retire aussi le formulaire de contact.)*
+revient tout seul dès que l'adresse est retapée, **sans rouvrir ni republier la page Contact**. *(La
+fiche des coordonnées dit « Laissez vide pour retirer le courriel de tout le site » : c'est vrai, et
+cela retire aussi le formulaire de contact.)*
+
+**Un point à connaître** : **le titre que vous avez tapé au-dessus du formulaire, lui, reste.** Le
+visiteur lit alors une invitation à vous écrire, suivie de rien. Si vous vouliez vraiment retirer le
+formulaire, retirez aussi ce titre.
 
 ---
 
@@ -110,19 +115,34 @@ ne l'envoie — c'est sa raison d'être, et c'est pour cela qu'elle est là plut
 
 **Elle arrive déjà écrite**, mot pour mot :
 
-> Votre message est envoyé par courriel à l'élevage. Il n'est pas enregistré sur ce site.
+> Votre message est envoyé par courriel à l'élevage. Votre nom et votre adresse de courriel
+> l'accompagnent, pour que l'élevage puisse vous répondre. Le site n'en garde aucune copie : ni votre
+> message, ni votre nom, ni votre adresse ne sont enregistrés ici.
 
 **Vous pouvez la réécrire**, c'est prévu : cliquez dedans et tapez. Vous pouvez aussi poser un lien sur
 quelques mots. **Rien d'autre ne se règle** : ni gras, ni couleur, ni taille.
 
-**Ces deux phrases décrivent ce que le site fait réellement.** Si vous les réécrivez, **elles doivent
-rester vraies** : ne promettez pas que le message est conservé, ni qu'il sera effacé au bout d'un
-délai — le site n'en garde aucune copie, donc il n'y a rien à conserver ni à effacer.
+**Ces trois phrases décrivent ce que le site fait réellement.** Si vous les réécrivez, **elles doivent
+rester vraies** :
+
+- ne promettez pas que le message est conservé, ni qu'il sera effacé au bout d'un délai — le site n'en
+  garde aucune copie, donc il n'y a rien à conserver ni à effacer ;
+- **n'écrivez jamais « vous pouvez demander la suppression de votre message ».** C'est la phrase la
+  plus tentante à recopier d'un autre site, et c'est celle qu'il ne faut pas faire : le site n'a rien
+  à supprimer, puisqu'il ne garde rien. Elle vous engagerait, vous, à vider votre propre boîte de
+  courriels à la demande — et rien ne vous y oblige.
 
 **Ce que cette phrase ne dit pas, et pourquoi.** Elle ne parle **ni de durée de conservation, ni de
 droit d'accès ou de suppression, ni de responsable des données**. C'est délibéré : ce sont des
-engagements que **personne ne peut prendre à votre place**. Si vous voulez les écrire, **ces
-phrases-là vous appartiennent** : tapez-les ici, ou dites-le-nous et nous les rédigerons avec vous.
+engagements que **personne ne peut prendre à votre place**, et le nom officiel de l'élevage n'est
+encore écrit nulle part sur le site. Si vous voulez les écrire, **ces phrases-là vous appartiennent** :
+tapez-les ici, ou dites-le-nous et nous les rédigerons avec vous.
+
+**Pourquoi cette phrase s'est allongée.** Elle tenait autrefois en deux phrases. Nous y avons ajouté
+**ce qui était vérifiable, et rien d'autre** : à quoi sert le message (vous permettre de répondre), ce
+qui part avec lui (votre visiteur donne son nom et son adresse), et qu'aucune copie n'en est gardée
+ici. Ce qui reste absent l'est toujours pour la même raison qu'avant : cela ne se vérifie pas, cela se
+promet.
 
 **Si vous effacez entièrement cette phrase**, le formulaire **disparaît du site**. Dans l'écran de
 modification, la case grise vous le dit ; les visiteurs, eux, ne voient rien du tout. Retapez une
