@@ -26,6 +26,28 @@
  * `.mtb-photo__nom`, `.mtb-carte-portee__identifiant` — et ils ne sont pas
  * stylés. Les noms réellement émis sont ceux employés ci-dessous.
  *
+ * CETTE VÉRIFICATION N'A COUVERT QU'UN SENS, ET LA REVUE DU LOT 6 L'A ÉTABLI :
+ * elle prouvait qu'aucune règle ne vise une classe absente, jamais qu'aucune
+ * classe émise ne reste sans règle. Trois l'étaient — les trois crochets de
+ * filiation de la fiche chien — et l'une d'elles, `__parent-elevage`, PRODUISAIT
+ * UN FAIT D'ÉLEVAGE FAUX faute d'une déclaration (voir 4.4 bis). Le sens manquant
+ * est désormais parcouru, et les deux crochets qui restent sans règle le sont
+ * DÉLIBÉRÉMENT, pour la raison dite ici :
+ *   · `.mtb-fiche-chien__parent-nom` — le nom occupe déjà sa ligne, l'élevage qui
+ *     le suit étant passé en bloc au 4.4 bis. Une seconde déclaration de `block`
+ *     serait redondante ; c'est le RÉSULTAT à l'écran qui compte, pas le nombre
+ *     de règles.
+ *   · `.mtb-fiche-chien__parent-lien` — il n'y a rien à séparer : un parent rendu
+ *     en lien N'A JAMAIS D'ÉLEVAGE, `chien/lecture.php:542-559`
+ *     (`parent_depuis_fiche()`) ne renseignant pas la clé. VÉRIFIÉ AU RENDU sur
+ *     une fiche dont le père est une fiche et la mère un nom libre : le lien est
+ *     bien seul dans son `<dd>`. Reste ouverte, et signalée sans être corrigée
+ *     ici, la cible tactile du §12.10 — MESURÉ : `display: inline`, 22 px de
+ *     haut, contre les 44 px exigés. Le corriger sur ce seul crochet créerait
+ *     une quatrième convention de cible dans cette feuille (3.2, 4.6, et ici)
+ *     pour un défaut que partage TOUT lien en ligne du site. Question de portée
+ *     générale, pour lead-design-mtb, pas une retouche de cette fiche.
+ *
  * VALEURS BRUTES — liste CLOSE, toutes RECOPIÉES de MASTER, aucune inventée,
  * aucune ne dispose d'un jeton : `63.999rem`/`64rem` (= `--bp-fiche` ; littérales
  * car une requête média ne lit pas une propriété personnalisée) · `16rem`/`22rem`
@@ -536,6 +558,29 @@
 .mtb-fiche-chien__champs > dd:last-child {
   border-block-end: 0;
   padding-block-end: 0;
+}
+
+/* 4.4 bis  LA FILIATION — le nom du parent et son élevage sont DEUX informations
+   (§7.5-2 « Père × Mère » ; §9.3, dernière ligne : « Nom et élevage en clair »).
+   DÉFAUT CORRIGÉ, MESURÉ AU NAVIGATEUR : le gabarit émet les deux valeurs dans
+   deux `<span>` frères et AUCUNE règle ne les visait, si bien que « Sire » de
+   l'élevage « Eenhoorn » se lisait « Sire Eenhoorn » — un chien qui n'existe pas.
+   Un fait d'élevage FAUX produit par une mise en forme absente, ce que la
+   contrainte d'exactitude du domaine et D11 existent pour empêcher.
+   LA SÉPARATION EST RECOPIÉE DE LA CARTE PARENT DE LA FICHE PORTÉE, où la même
+   donnée se lit déjà juste : `--e-3`, la marge basse du `h3` posée au 3.2. Aucune
+   valeur nouvelle, et les deux fiches du lot se lisent enfin pareil.
+   AUCUNE ENCRE, AUCUNE TAILLE, AUCUNE GRAISSE : MASTER ne donne rien en propre à
+   l'élevage — le 3.2 le dit déjà — et lui inventer un signal serait pire que le
+   défaut. `--texte-doux` serait FAUX : c'est le vocabulaire de l'absence du §9.3,
+   or un élevage renseigné n'est pas une donnée absente. Le seul signal est donc
+   spatial, et il suffit : un simple repli de ligne longue n'écarte que de
+   l'interligne, jamais de `--e-3` de plus.
+   PORTE SUR `display` ET NON SUR UN `::before` : aucun contenu généré, donc rien
+   qu'un lecteur d'écran doive ignorer et rien qui se copie-colle. */
+.mtb-fiche-chien__parent-elevage {
+  display: block;
+  margin-block-start: var(--e-3);
 }
 
 /* Les lignes libres sont recopiées telles quelles par le serveur, une par `<li>`.
