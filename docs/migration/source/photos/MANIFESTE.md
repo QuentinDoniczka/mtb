@@ -34,22 +34,31 @@ texte se retape ; une photographie de 2011 non.
   compression, aucun renommage. Le condensé SHA-256 porte sur les octets déposés.
 - **Aucun fait d'élevage n'est écrit ici** : aucun chien nommé, aucune photo datée, aucun
   contenu d'image décrit. Les seules colonnes descriptives sont ce qui est **écrit** dans le
-  source : l'attribut `alt` (§6) et les pages qui citent l'image.
+  source : l'attribut `alt` (§7) et les pages qui citent l'image.
+- **Rejouable sans le site source** : les cinq scripts qui ont produit ce dossier sont dans
+  `outils-photos/`, avec leurs relevés intermédiaires (`ids.json`, `mesures.json`,
+  `choix.json`, `telecharges.json`). Aucun chiffre de ce manifeste n'est saisi à la main : il
+  est **entièrement régénéré** par `5-manifeste.py`. Le recensement et le dépouillement se
+  rejouent hors ligne ; seules la sonde et le dépôt touchent le réseau, et ils **reprennent**
+  au lieu de recommencer.
 
 ## 2. Comment la rendition a été choisie — par mesure, jamais par convention
 
-**Le préfixe le plus gros n'est pas le même d'une image à l'autre.** Pour chaque identifiant,
-les quatre formes ont été sondées — `cache_`, `teaserbox_`, `thumb_`, et l'identifiant nu — et
-celle dont les **dimensions en pixels** sont les plus grandes est retenue (à dimensions égales,
-la plus lourde). Les dimensions sont **mesurées sur les octets reçus**, pas déduites du nom.
+**Le préfixe le plus gros n'est pas le même d'une image à l'autre.** Pour chaque identifiant
+`cc_images`, les quatre formes ont été sondées — `cache_`, `teaserbox_`, `thumb_`, et
+l'identifiant nu — et celle dont les **dimensions en pixels** sont les plus grandes est retenue
+(à dimensions égales, la plus lourde). Les dimensions sont **mesurées sur les octets reçus**,
+pas déduites du nom.
 
-Une sonde exploratoire a testé 31 préfixes candidats (`original_`, `big_`, `full_`, `large_`,
+Une sonde exploratoire (`outils-photos/0-explorer-prefixes.py`) a testé 31 formes candidates,
+l'identifiant nu compris (`original_`, `big_`, `full_`, `large_`,
 `preview_`, `master_`, `raw_`, `zoom_`, `lightbox_`…) sur quatre identifiants témoins :
 **seuls `cache_`, `teaserbox_` et `thumb_` répondent 200**. L'identifiant nu
 (`/s/cc_images/16791790.jpg`, sans préfixe) répond **404 sur les 191 identifiants `cc_images`** :
 cette forme d'URL n'existe pas sur IONOS.
 
-Résultat sur les 192 identifiants :
+Résultat sur les 192 identifiants — la ligne `(nu)` est le bandeau `emotionheader.jpeg`, servi
+hors `cc_images` et sans préfixe (§5.1) :
 
 | Préfixe retenu | Identifiants |
 |---|---|
@@ -57,13 +66,21 @@ Résultat sur les 192 identifiants :
 | `teaserbox_` | 59 |
 | `(nu)` | 1 |
 
-Sur **59 identifiants, `cache_` n'est pas la plus grande rendition** — c'est `teaserbox_` qui
-l'est. Une règle a priori aurait donc perdu de la définition sur près d'un tiers du stock.
+Sur **59 des 191 identifiants `cc_images`, `cache_` n'est pas la plus grande rendition** — c'est
+`teaserbox_` qui l'est, et l'écart va jusqu'à `17365005.JPG` : `teaserbox_` 720×1080 contre
+`cache_` 200×300. Une règle a priori (« prendre `cache_` ») aurait perdu de la définition sur
+près d'un tiers du stock.
+
+Structure observée, sans exception sur les 191 identifiants : **`cache_` existe toujours**, et il
+est accompagné **soit** de `teaserbox_` (60 identifiants) **soit** de `thumb_` (131), jamais des
+deux. Là où `teaserbox_` existe, il est le plus grand **59 fois sur 60** — l'unique exception est
+`7128435.png` (`cache_` 490×540 contre `teaserbox_` 186×205). `thumb_` n'est retenu **aucune
+fois** : il plafonne à 150 px de grand côté.
 
 ## 3. Résolution disponible — constat à remonter
 
-**IONOS ne sert aucun original.** Les dimensions retenues s'empilent sur des plafonds de
-redimensionnement :
+**Ce dossier contient la plus grande rendition publiquement servie, et ce n'est presque jamais
+l'original.** Les dimensions retenues s'empilent sur des plafonds de redimensionnement :
 
 | Grand côté de la rendition retenue | Identifiants |
 |---|---|
@@ -78,10 +95,10 @@ redimensionnement :
 | 960 px | 6 |
 | 851 px | 3 |
 
-Mesuré sur **l'ensemble des 383 renditions servies**, pas seulement sur les retenues : le grand
-côté de `cache_` ne dépasse jamais **1527 px** (49 renditions exactement à 1024 px), celui de
-`teaserbox_` **1080 px**, celui de `thumb_` **150 px**. **4 renditions seulement**, toutes
-hauteurs confondues, dépassent 1024 px de grand côté :
+Mesuré sur **l'ensemble des 383 renditions servies**, pas seulement sur les retenues : sur les
+191 renditions `cache_`, **49 s'arrêtent exactement à 1024 px** de grand côté, 140 restent en
+dessous et **2 seulement** dépassent ce seuil. `teaserbox_` ne dépasse jamais **1080 px**,
+`thumb_` jamais **150 px**. Au total, **4 renditions** sur 383 dépassent 1024 px de grand côté :
 
 | Identifiant | Préfixe | Dimensions |
 |---|---|---|
@@ -90,8 +107,13 @@ hauteurs confondues, dépassent 1024 px de grand côté :
 | `7437995.jpg` | `cache_` | 719×1080 |
 | `7437996.jpg` | `cache_` | 1527×1080 |
 
-Le tassement de 49 identifiants sur exactement 1024 px, et de dizaines d'autres sur 768 ou 800,
-est la signature d'un **redimensionnement au téléversement**, pas de photographies natives.
+Le tassement de 49 identifiants sur **exactement** 1024 px, et de dizaines d'autres sur 768 ou
+800, est la signature d'un **redimensionnement au téléversement** : ces images-là sont
+certainement des dérivés. Aucune rendition servie par le site ne dépasse **1527×1080**, soit
+**1,6 mégapixel** — l'ordre de grandeur d'un appareil de 2005, pas celui des photographies
+d'origine. Pour les quatre exceptions ci-dessus, rien ne permet de trancher : elles peuvent être
+des originaux de petite taille comme des dérivés. **Cela ne se déduit pas et n'est pas supposé
+ici.**
 
 > **Question bloquante pour D4.** Si les originaux pleine définition existent, ils sont dans le
 > gestionnaire de médias IONOS de l'éleveuse, **hors de portée d'un téléchargement public**.
@@ -105,7 +127,7 @@ Le contrat (§4) impose de **mesurer avant de télécharger** et d'arrêter au-d
 passage de mesure seule (requêtes avec plage d'octets, une par rendition, séquentielles) a
 donné **33 694 075 octets** (32.13 Mo) pour les 192 renditions retenues — **sous le plafond**, le
 téléchargement a donc eu lieu. Le poids réellement déposé est identique au poids mesuré, ligne
-à ligne (§7).
+à ligne (§8).
 
 ## 5. Les 192 photographies archivées
 
@@ -117,7 +139,7 @@ contestable.
 
 | Identifiant | Fichier déposé | URL d'origine retenue | Préfixe retenu — dimensions comparées | HTTP | Octets | Dimensions | SHA-256 | Pages citantes |
 |---|---|---|---|---|---|---|---|---|
-| `emotionheader.jpeg` | `emotionheader.jpeg` | https://www.mtbrabant.com/s/img/emotionheader.jpeg | `(nu)` — 920×313 ; seule rendition servie | 200 | 77536 | 920×313 | `5389a5451b50128071bfc58045a9070e4f52e126849ea7d57af87a2817cdd6b3` | 53 fichiers `.html` (voir §5)<br>45 fichiers `.md` (voir §5) |
+| `emotionheader.jpeg` | `emotionheader.jpeg` | https://www.mtbrabant.com/s/img/emotionheader.jpeg | `(nu)` — 920×313 ; seule rendition servie | 200 | 77536 | 920×313 | `5389a5451b50128071bfc58045a9070e4f52e126849ea7d57af87a2817cdd6b3` | 53 fichiers `.html` (liste en §5.1)<br>45 fichiers `.md` (liste en §5.1) |
 | `13346836.jpg` | `13346836.jpg` | https://www.mtbrabant.com/s/cc_images/teaserbox_13346836.jpg | `teaserbox_` — 184×274 ; `cache_` 67×99 · `(nu)` 404 · `thumb_` 404 | 200 | 7758 | 184×274 | `f920725d8563a666e3d3b8f0c6845dae05730855e35c808c799027208bc53ddd` | `chien-youry.html`<br>`chiens/chien-youry.md` |
 | `13346839.png` | `13346839.png` | https://www.mtbrabant.com/s/cc_images/teaserbox_13346839.png | `teaserbox_` — 246×205 ; `cache_` 121×100 · `(nu)` 404 · `thumb_` 404 | 200 | 7674 | 246×205 | `ce63e3c1c67d0fb958436f51cc0573cb9461f3ba6186c9fae19ad8ed5ba77708` | `chien-youry.html`<br>`chiens/chien-youry.md` |
 | `13346842.jpg` | `13346842.jpg` | https://www.mtbrabant.com/s/cc_images/teaserbox_13346842.jpg | `teaserbox_` — 237×213 ; `cache_` 103×92 · `(nu)` 404 · `thumb_` 404 | 200 | 15208 | 237×213 | `68914df7a4107796b5621f0779e87dce2bdf324ecbbbd35eeabeb12e0c774811` | `chien-youry.html`<br>`chiens/chien-youry.md` |
@@ -316,12 +338,25 @@ bandeau (`?…920px.313px`) est de même **ignoré par le serveur** (mesuré : l
 paramètre, avec ce paramètre, et avec `4000px.4000px`, renvoie les mêmes 77 536 octets et les
 mêmes 920×313).
 
-### Identifiants distincts servant des octets identiques
+### 5.1 Le bandeau `emotionheader.jpeg`
+
+Seule image citée par plus d'un fichier `.html` : elle est servie par le gabarit, en tête de
+**53 des 54** pages archivées. La seule qui ne la porte pas est `bhpl-en-france.html`,
+la 53ᵉ URL hors sitemap du §2 du contrat — celle qui répond **302** parce qu'elle est protégée
+par mot de passe sur l'ancien site, et dont le HTML archivé n'est donc pas une page de contenu.
+
+Elle est citée par **45** des 59 réductions `.md` de `../`. Les 191 identifiants `cc_images`
+sont, eux, cités par **exactement un fichier `.html`** chacun ; 8 d'entre eux sont cités par
+**deux** `.md`, ce qui est la trace des deux captures de `/` et de `/travail/` par deux passes
+(§6 du contrat), et non d'une photo réutilisée.
+
+### 5.2 Identifiants distincts servant des octets identiques
 
 Constat **factuel**, relevé et non interprété : plusieurs identifiants IONOS distincts
-servent des fichiers au SHA-256 identique — la même image téléversée plusieurs fois dans
-l'éditeur IONOS. **Ils ne sont pas fusionnés** : la clé d'archivage est l'identifiant, et
-chacun est cité par une page différente.
+servent des octets rigoureusement identiques (même SHA-256). Ce qui a produit cette
+situation ne se déduit pas du site et n'est pas supposé ici. **Ces identifiants ne sont pas
+fusionnés** : la clé d'archivage est l'identifiant IONOS, et chacun est cité par une page
+différente.
 
 | SHA-256 | Identifiants | Dimensions |
 |---|---|---|
@@ -330,7 +365,220 @@ chacun est cité par une page différente.
 | `68914df7a4107796…` | `13346842.jpg` `13346853.jpg` `14801505.jpg` `14894211.jpg` `15016007.jpg` `16458627.jpg` `17364999.jpg` `17603625.jpg` `18989107.jpg` `6410246.jpg` `6410368.jpg` `6419772.jpg` | 237×213 |
 | `05dc5ac1d58ad739…` | `14834172.png` `16372512.png` | 1024×621 |
 
-## 6. Textes alternatifs écrits dans le source
+## 6. Renditions écartées
+
+Toutes les autres renditions qui **répondent 200**, avec leurs dimensions et leur poids. C'est
+ce tableau qui rend le choix du §2 contestable : il suffit d'y lire une ligne plus grande que la
+retenue pour prendre la chaîne en défaut.
+
+| Identifiant | Préfixe écarté | Dimensions | Octets | Rendition retenue à la place |
+|---|---|---|---|---|
+| `13346836.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `13346839.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `13346842.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `13346847.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `13346851.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `13346853.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `13553829.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `13553855.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `14079082.jpg` | `thumb_` | 37×25 | 3742 | `cache_` 960×640 |
+| `14079083.jpg` | `thumb_` | 16×25 | 3535 | `cache_` 400×600 |
+| `14079084.jpg` | `thumb_` | 37×25 | 3708 | `cache_` 800×533 |
+| `14079085.jpg` | `thumb_` | 37×25 | 3725 | `cache_` 800×533 |
+| `14079086.JPG` | `thumb_` | 37×25 | 1450 | `cache_` 1024×682 |
+| `14079087.jpg` | `thumb_` | 16×25 | 3551 | `cache_` 512×768 |
+| `14079088.JPG` | `thumb_` | 37×25 | 1414 | `cache_` 1024×682 |
+| `14079089.JPG` | `thumb_` | 37×25 | 1271 | `cache_` 1024×682 |
+| `14079090.JPG` | `thumb_` | 37×25 | 1486 | `cache_` 1024×682 |
+| `14079091.JPG` | `thumb_` | 37×25 | 1414 | `cache_` 1024×682 |
+| `14079092.JPG` | `thumb_` | 16×25 | 577 | `cache_` 512×768 |
+| `14079093.JPG` | `thumb_` | 16×25 | 555 | `cache_` 512×768 |
+| `14079094.JPG` | `thumb_` | 16×25 | 536 | `cache_` 512×768 |
+| `14079095.JPG` | `thumb_` | 37×25 | 1319 | `cache_` 1024×682 |
+| `14079096.JPG` | `thumb_` | 16×25 | 553 | `cache_` 512×768 |
+| `14079097.jpg` | `thumb_` | 37×25 | 3684 | `cache_` 960×640 |
+| `14079098.jpg` | `thumb_` | 37×25 | 3839 | `cache_` 1024×682 |
+| `14079099.jpg` | `thumb_` | 18×25 | 1078 | `cache_` 576×768 |
+| `14335936.jpg` | `thumb_` | 150×103 | 5729 | `cache_` 800×553 |
+| `14359713.jpg` | `thumb_` | 16×25 | 541 | `cache_` 399×600 |
+| `14801494.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `14801503.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `14801505.jpg` | `cache_` | 112×100 | 4626 | `teaserbox_` 237×213 |
+| `14834170.jpg` | `thumb_` | 37×25 | 1659 | `cache_` 812×544 |
+| `14834171.JPG` | `thumb_` | 37×25 | 1475 | `cache_` 1024×682 |
+| `14834172.png` | `thumb_` | 40×24 | 2991 | `cache_` 1024×621 |
+| `14834173.JPG` | `thumb_` | 16×25 | 579 | `cache_` 512×768 |
+| `14893746.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `14893748.png` | `cache_` | 120×100 | 8052 | `teaserbox_` 246×205 |
+| `14894211.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `14894226.jpg` | `thumb_` | 28×25 | 751 | `cache_` 873×768 |
+| `15015993.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `15016002.png` | `cache_` | 120×100 | 8052 | `teaserbox_` 246×205 |
+| `15016007.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `15016098.jpg` | `thumb_` | 37×25 | 3719 | `cache_` 1024×682 |
+| `15016099.jpg` | `thumb_` | 16×25 | 3495 | `cache_` 512×768 |
+| `15016100.jpg` | `thumb_` | 16×25 | 586 | `cache_` 512×768 |
+| `15221411.jpg` | `thumb_` | 40×23 | 2286 | `cache_` 851×506 |
+| `15221412.JPG` | `thumb_` | 37×25 | 686 | `cache_` 849×570 |
+| `15221413.jpg` | `thumb_` | 37×25 | 1445 | `cache_` 948×637 |
+| `15221414.jpg` | `thumb_` | 35×25 | 3801 | `cache_` 1024×727 |
+| `15221415.jpg` | `thumb_` | 14×25 | 1027 | `cache_` 233×396 |
+| `15456230.jpg` | `thumb_` | 37×25 | 3667 | `cache_` 1024×682 |
+| `15456231.jpg` | `thumb_` | 16×25 | 3559 | `cache_` 512×768 |
+| `15456232.JPG` | `thumb_` | 16×25 | 835 | `cache_` 512×768 |
+| `15456233.jpg` | `thumb_` | 34×25 | 3715 | `cache_` 1024×748 |
+| `15465856.jpg` | `thumb_` | 35×25 | 923 | `cache_` 1024×724 |
+| `15465857.png` | `thumb_` | 37×25 | 3246 | `cache_` 1024×679 |
+| `15465858.png` | `thumb_` | 40×23 | 3054 | `cache_` 1024×609 |
+| `15465859.png` | `thumb_` | 38×25 | 3076 | `cache_` 1024×666 |
+| `15501544.JPG` | `cache_` | 475×673 | 78897 | `teaserbox_` 580×822 |
+| `16372509.jpg` | `thumb_` | 40×23 | 2534 | `cache_` 851×506 |
+| `16372510.JPG` | `thumb_` | 37×25 | 1475 | `cache_` 800×533 |
+| `16372511.JPG` | `thumb_` | 16×25 | 579 | `cache_` 400×600 |
+| `16372512.png` | `thumb_` | 40×24 | 2991 | `cache_` 1024×621 |
+| `16372513.JPG` | `thumb_` | 17×25 | 531 | `cache_` 529×768 |
+| `16372514.png` | `thumb_` | 18×25 | 2110 | `cache_` 480×640 |
+| `16372515.jpg` | `thumb_` | 37×25 | 3696 | `cache_` 1024×682 |
+| `16372516.JPG` | `thumb_` | 37×25 | 754 | `cache_` 891×590 |
+| `16372517.JPG` | `thumb_` | 37×25 | 1582 | `cache_` 1024×682 |
+| `16372518.jpg` | `thumb_` | 37×25 | 3931 | `cache_` 1024×682 |
+| `16372519.jpg` | `thumb_` | 17×25 | 552 | `cache_` 552×768 |
+| `16410057.jpg` | `thumb_` | 37×25 | 3951 | `cache_` 1024×682 |
+| `16410058.jpg` | `thumb_` | 36×25 | 1578 | `cache_` 812×562 |
+| `16410059.jpg` | `thumb_` | 37×25 | 3723 | `cache_` 1024×682 |
+| `16410060.jpg` | `thumb_` | 39×25 | 3720 | `cache_` 1024×654 |
+| `16410061.jpg` | `thumb_` | 37×25 | 1180 | `cache_` 960×640 |
+| `16410062.JPG` | `thumb_` | 16×25 | 800 | `cache_` 512×768 |
+| `16410063.JPG` | `thumb_` | 37×25 | 1397 | `cache_` 1024×682 |
+| `16410064.jpg` | `thumb_` | 17×25 | 3449 | `cache_` 542×768 |
+| `16410065.jpg` | `thumb_` | 25×25 | 1139 | `cache_` 768×768 |
+| `16410066.jpg` | `thumb_` | 40×23 | 1181 | `cache_` 851×506 |
+| `16410067.jpg` | `thumb_` | 37×25 | 2600 | `cache_` 1024×682 |
+| `16427154.jpg` | `thumb_` | 16×25 | 574 | `cache_` 400×600 |
+| `16427155.jpg` | `thumb_` | 18×25 | 644 | `cache_` 557×768 |
+| `16427156.JPG` | `thumb_` | 16×25 | 467 | `cache_` 512×768 |
+| `16458617.jpg` | `cache_` | 66×98 | 2021 | `teaserbox_` 184×274 |
+| `16458622.png` | `cache_` | 120×100 | 8052 | `teaserbox_` 246×205 |
+| `16458627.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `16497476.png` | `cache_` | 658×428 | 570321 | `teaserbox_` 900×585 |
+| `16503147.jpg` | `thumb_` | 18×25 | 620 | `cache_` 563×768 |
+| `16503148.JPG` | `thumb_` | 16×25 | 490 | `cache_` 512×768 |
+| `16503149.JPG` | `thumb_` | 16×25 | 468 | `cache_` 512×768 |
+| `16503150.jpg` | `thumb_` | 33×25 | 1200 | `cache_` 1024×768 |
+| `16503151.JPG` | `thumb_` | 21×25 | 695 | `cache_` 645×768 |
+| `16717128.jpg` | `thumb_` | 40×22 | 1859 | `cache_` 945×525 |
+| `16717129.jpg` | `thumb_` | 18×25 | 624 | `cache_` 437×600 |
+| `16717130.JPG` | `thumb_` | 37×25 | 1517 | `cache_` 1024×682 |
+| `16717131.jpg` | `thumb_` | 16×25 | 447 | `cache_` 512×768 |
+| `16717132.jpg` | `thumb_` | 16×25 | 443 | `cache_` 512×768 |
+| `16717133.JPG` | `thumb_` | 37×25 | 1334 | `cache_` 1024×682 |
+| `16717134.jpg` | `thumb_` | 37×25 | 3996 | `cache_` 1024×682 |
+| `16717135.jpg` | `thumb_` | 37×25 | 596 | `cache_` 1024×682 |
+| `16717136.jpg` | `thumb_` | 16×25 | 505 | `cache_` 512×768 |
+| `16791790.jpg` | `thumb_` | 37×25 | 3707 | `cache_` 1024×682 |
+| `16791791.jpg` | `thumb_` | 16×25 | 1009 | `cache_` 512×768 |
+| `16791792.jpg` | `thumb_` | 16×25 | 3534 | `cache_` 512×768 |
+| `16791793.jpg` | `thumb_` | 37×25 | 3757 | `cache_` 1024×682 |
+| `16791794.jpg` | `thumb_` | 16×25 | 3559 | `cache_` 512×768 |
+| `16791795.jpg` | `thumb_` | 34×25 | 608 | `cache_` 901×655 |
+| `16791796.JPG` | `thumb_` | 16×25 | 552 | `cache_` 506×768 |
+| `17248756.JPG` | `cache_` | 253×253 | 36890 | `teaserbox_` 900×900 |
+| `17364989.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `17364999.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `17365000.png` | `cache_` | 119×99 | 7976 | `teaserbox_` 246×205 |
+| `17365005.JPG` | `cache_` | 200×300 | 8483 | `teaserbox_` 720×1080 |
+| `17422748.jpg` | `cache_` | 650×454 | 262277 | `teaserbox_` 900×629 |
+| `17457668.png` | `thumb_` | 21×25 | 2110 | `cache_` 511×600 |
+| `17457669.JPG` | `thumb_` | 37×25 | 1555 | `cache_` 1024×682 |
+| `17457670.JPG` | `thumb_` | 16×25 | 461 | `cache_` 512×768 |
+| `17457677.jpg` | `thumb_` | 36×25 | 964 | `cache_` 800×555 |
+| `17457678.jpg` | `thumb_` | 20×25 | 496 | `cache_` 614×768 |
+| `17457679.jpg` | `thumb_` | 33×25 | 1148 | `cache_` 1024×768 |
+| `17457680.jpg` | `thumb_` | 16×25 | 988 | `cache_` 511×768 |
+| `17457681.JPG` | `thumb_` | 37×25 | 1698 | `cache_` 1024×682 |
+| `17603603.jpg` | `cache_` | 66×98 | 2021 | `teaserbox_` 184×274 |
+| `17603607.png` | `cache_` | 120×100 | 8052 | `teaserbox_` 246×205 |
+| `17603625.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `17603639.jpg` | `thumb_` | 25×25 | 1232 | `cache_` 616×600 |
+| `17603640.jpg` | `thumb_` | 37×25 | 986 | `cache_` 800×533 |
+| `18214736.jpg` | `thumb_` | 35×25 | 2073 | `cache_` 800×559 |
+| `18214737.JPG` | `thumb_` | 37×25 | 1654 | `cache_` 1024×682 |
+| `18214738.JPG` | `thumb_` | 39×25 | 886 | `cache_` 1024×654 |
+| `18273970.JPG` | `thumb_` | 37×25 | 1556 | `cache_` 1024×682 |
+| `18273971.JPG` | `thumb_` | 37×25 | 1618 | `cache_` 1024×682 |
+| `18507513.jpg` | `thumb_` | 37×25 | 1544 | `cache_` 960×640 |
+| `18507514.jpg` | `thumb_` | 37×25 | 1206 | `cache_` 960×640 |
+| `18507515.jpg` | `thumb_` | 20×25 | 527 | `cache_` 500×600 |
+| `18507516.jpeg` | `thumb_` | 34×25 | 877 | `cache_` 1024×750 |
+| `18507517.JPG` | `thumb_` | 16×25 | 576 | `cache_` 499×768 |
+| `18507518.jpeg` | `thumb_` | 33×25 | 1385 | `cache_` 1024×764 |
+| `18989099.jpg` | `cache_` | 66×98 | 2021 | `teaserbox_` 184×274 |
+| `18989103.png` | `cache_` | 116×96 | 7637 | `teaserbox_` 246×205 |
+| `18989107.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `18989112.png` | `thumb_` | 37×25 | 3133 | `cache_` 1024×682 |
+| `18989138.jpg` | `thumb_` | 39×25 | 613 | `cache_` 1024×646 |
+| `18989139.jpg` | `thumb_` | 40×22 | 849 | `cache_` 1024×576 |
+| `18989140.jpg` | `thumb_` | 16×25 | 551 | `cache_` 512×768 |
+| `18989141.jpg` | `thumb_` | 16×25 | 557 | `cache_` 512×768 |
+| `18989142.JPG` | `thumb_` | 37×25 | 1558 | `cache_` 1024×682 |
+| `19031597.jpg` | `thumb_` | 16×25 | 1051 | `cache_` 511×768 |
+| `19031598.jpg` | `thumb_` | 18×25 | 1197 | `cache_` 557×768 |
+| `19031599.jpg` | `thumb_` | 17×25 | 1150 | `cache_` 548×768 |
+| `19031600.JPG` | `thumb_` | 33×25 | 828 | `cache_` 1024×768 |
+| `19031601.jpg` | `thumb_` | 16×25 | 1050 | `cache_` 511×768 |
+| `19031602.JPG` | `thumb_` | 37×25 | 1465 | `cache_` 1024×682 |
+| `19031603.JPG` | `thumb_` | 37×25 | 1701 | `cache_` 1024×682 |
+| `19031691.JPG` | `thumb_` | 37×25 | 1582 | `cache_` 800×533 |
+| `19031692.JPG` | `thumb_` | 37×25 | 1607 | `cache_` 800×533 |
+| `19031693.JPG` | `thumb_` | 37×25 | 1503 | `cache_` 800×533 |
+| `19031694.JPG` | `thumb_` | 37×25 | 1552 | `cache_` 800×533 |
+| `19031695.JPG` | `thumb_` | 37×25 | 1554 | `cache_` 800×533 |
+| `19031696.JPG` | `thumb_` | 37×25 | 1554 | `cache_` 800×533 |
+| `19031697.JPG` | `thumb_` | 37×25 | 1536 | `cache_` 800×533 |
+| `19031698.JPG` | `thumb_` | 37×25 | 1486 | `cache_` 800×533 |
+| `19228730.jpg` | `cache_` | 328×218 | 38681 | `teaserbox_` 900×600 |
+| `5971927.JPG` | `cache_` | 253×253 | 14817 | `teaserbox_` 792×792 |
+| `5971928.JPG` | `cache_` | 253×250 | 24259 | `teaserbox_` 900×892 |
+| `5972679.jpg` | `cache_` | 254×251 | 35063 | `teaserbox_` 900×892 |
+| `5983206.jpg` | `cache_` | 658×465 | 44925 | `teaserbox_` 900×636 |
+| `5992782.jpg` | `cache_` | 658×372 | 65510 | `teaserbox_` 900×508 |
+| `6163654.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `6163665.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `6163682.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `6163702.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `6163707.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `6410246.jpg` | `cache_` | 112×100 | 4626 | `teaserbox_` 237×213 |
+| `6410334.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `6410368.jpg` | `cache_` | 103×92 | 4012 | `teaserbox_` 237×213 |
+| `6412830.jpg` | `cache_` | 116×174 | 6740 | `teaserbox_` 640×960 |
+| `6419772.jpg` | `cache_` | 101×90 | 3968 | `teaserbox_` 237×213 |
+| `6427420.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `6427427.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `6427430.png` | `cache_` | 121×100 | 8068 | `teaserbox_` 246×205 |
+| `6427437.jpg` | `cache_` | 67×99 | 1981 | `teaserbox_` 184×274 |
+| `6427450.png` | `cache_` | 120×100 | 8052 | `teaserbox_` 246×205 |
+| `6427455.png` | `cache_` | 120×100 | 8052 | `teaserbox_` 246×205 |
+| `6477274.JPG` | `cache_` | 215×305 | 21114 | `teaserbox_` 759×1080 |
+| `6477315.JPG` | `cache_` | 253×251 | 14840 | `teaserbox_` 900×896 |
+| `7127390.jpg` | `cache_` | 435×290 | 22371 | `teaserbox_` 900×600 |
+| `7128435.png` | `teaserbox_` | 186×205 | 7518 | `cache_` 490×540 |
+| `7437995.jpg` | `thumb_` | 25×25 | 3627 | `cache_` 719×1080 |
+| `7437996.jpg` | `thumb_` | 25×25 | 497 | `cache_` 1527×1080 |
+
+**191 renditions écartées** pour 192 retenues, soit les 383 renditions servies.
+
+### 6.1 Formes d'URL qui ne sont pas servies
+
+Sondées et **404** — ce ne sont pas des photos perdues, ce sont des URL qui n'existent pas :
+
+| Forme sondée | 404 | 200 |
+|---|---|---|
+| `cache_` | 0 | 191 |
+| `teaserbox_` | 131 | 60 |
+| `thumb_` | 60 | 131 |
+| `(nu)` | 191 | 1 |
+
+## 7. Textes alternatifs écrits dans le source
 
 Relevé **verbatim** de l'attribut `alt` des balises `<img>` du HTML source. Rien n'est complété :
 un `alt` vide est reporté vide. Aucun texte alternatif n'a été rédigé pour cette archive —
@@ -353,7 +601,7 @@ Les seules valeurs non vides, recopiées **verbatim** :
 Ce sont les **deux seuls** endroits où le site source attache un nom à une image. Rien n'est
 déduit de ces `alt` ici : ils sont relevés, pas interprétés.
 
-## 7. Vérification
+## 8. Vérification
 
 Chaque fichier déposé a été relu après écriture :
 
@@ -367,7 +615,7 @@ Chaque fichier déposé a été relu après écriture :
 - **somme** : le total des tailles sur disque vaut **33 694 075 octets**, égal au total mesuré avant
   téléchargement.
 
-## 8. Échecs
+## 9. Échecs
 
 **Aucun.** Les 192 identifiants recensés ont au moins une rendition qui répond 200/206, et
 les 192 ont été déposés. Aucune photo recensée n'est manquante.
@@ -376,11 +624,13 @@ Pour mémoire, le seul « 404 » massif du relevé est l'**identifiant nu** sans
 (`/s/cc_images/<id>.<ext>`), qui n'existe pas sur IONOS : ce n'est pas une photo perdue,
 c'est une forme d'URL que le serveur ne sert pas.
 
-## 9. Mobilier de gabarit écarté
+## 10. Mobilier de gabarit écarté
 
 Trois images sont servies sur presque toutes les pages et **n'appartiennent pas à l'élevage** :
-ce sont des éléments du gabarit IONOS. Elles sont écartées et nommées ici pour que l'écart soit
-vérifiable.
+ce sont des éléments d'interface du gabarit IONOS, servis soit depuis le CDN commun à toutes
+les vitrines IONOS (`cdn.website-start.de`), soit depuis le chemin d'un module
+(`/proxy/static/mod/facebook/`). Elles sont écartées et nommées ici pour que l'écart soit
+vérifiable. **Ce sont les trois seules images écartées** : tout le reste est archivé.
 
 | URL | Présence | Nature |
 |---|---|---|
@@ -388,11 +638,13 @@ vérifiable.
 | `//cdn.website-start.de/s/img/cc/printer.gif` | 53 des 54 pages | icône « imprimer » du gabarit |
 | `https://www.mtbrabant.com/proxy/static/mod/facebook/files/img/facebook-share-icon.png` | 51 des 54 pages | icône de partage Facebook du module IONOS |
 
-**`emotionheader.jpeg` n'est pas écarté** : bien que servi par le gabarit
-(`/s/img/`, hors `cc_images`), c'est une photographie de l'élevage. Il est archivé comme les
-autres, sous le nom `emotionheader.jpeg`.
+**`emotionheader.jpeg` n'est pas écarté**, bien qu'il soit servi par le gabarit et hors
+`cc_images` : il est hébergé **sur le domaine du site** (`www.mtbrabant.com/s/img/`), il est
+**propre à ce site** — l'URL ne porte aucun nom de module ni de CDN partagé — et c'est une
+photographie du bandeau. Il est archivé comme les autres, sous le nom `emotionheader.jpeg`.
+Son contenu n'est pas décrit ici, et son `alt` dans le source est vide.
 
-## 10. Total
+## 11. Total
 
 | | |
 |---|---|

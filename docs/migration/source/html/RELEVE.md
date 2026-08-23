@@ -53,10 +53,16 @@ Les entités `&nbsp;` du document, elles, ne sont **pas** comptées dans ces col
 
 Chaque page servie se termine par un commentaire `<!-- rendered at … -->`. Sur les 53 fichiers non
 vides, ces dates s'échelonnent du **15 au 20 août 2026** — toutes **antérieures** à la requête du
-23 août. C'est la raison mesurable pour laquelle les tailles et les SHA stables de `bhpl`,
-`litterature`, `placement`, `mentions-legales`, `accueil`, `travail` et `portee-u2-2023` sont
-**identiques** à ceux relevés par les passes #16 et #17 les 20 et 21 août : le site n'a pas changé
-entre-temps, et IONOS a resservi le même rendu.
+23 août. C'est la raison mesurable pour laquelle les tailles de `bhpl`, `litterature`, `placement`,
+`mentions-legales`, `travail` et `portee-u2-2023`, ainsi que les SHA stables de `bhpl`,
+`litterature`, `placement` et `mentions-legales` — les quatre seuls que ces passes aient relevés,
+dans `../pages/README.md` — sont **identiques** à ceux des passes #16 et #17, dont les captures sont
+datées du 20 août : le site n'a pas changé entre-temps, et IONOS a resservi le même rendu.
+
+**`accueil` fait exception, et l'écart n'est pas résolu** : `../accueil.md` déclare **47 384 o**,
+`../pages/accueil.md` **47 385 o**, et le fichier archivé ici pèse **47 382 o**. Aucun mot ne
+diffère d'un relevé à l'autre ; voir l'anomalie 2 d'`../ECART-PASSE-16.md` et l'anomalie 1
+d'`../INVENTAIRE.md`.
 
 ## Relevé
 

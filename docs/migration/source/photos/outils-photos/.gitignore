@@ -1,0 +1,4 @@
+# Artefact de compilation Python : régénéré à chaque exécution, jamais versionné.
+# `chemins.py` et `reseau.py` étant importés par les scripts numérotés, ce dossier en produit un
+# à chaque passage de la chaîne photo.
+__pycache__/
