@@ -1,52 +1,64 @@
 [
   {
-    "identifiant": "A3 2025",
+    "identifiant": "DEMO1 2025",
     "date_naissance": "2025-03-14",
-    "pere": { "type": "fiche_chien", "reference": "rex-du-mont-brabant" },
-    "mere": { "type": "fiche_chien", "reference": "luna-du-mont-brabant" },
-    "nb_males": 3,
-    "nb_femelles": 2,
+    "pere": { "type": "fiche", "reference": "demo-rex" },
+    "mere": { "type": "fiche", "reference": "demo-luna" },
+    "males": 3,
+    "femelles": 2,
     "disponibilite": "disponible",
-    "texte_libre": "Fixture de démonstration : portée avec chiots disponibles.",
     "chiots": [
-      { "nom": "Ajax", "sexe": "male", "lof": "LOF DEMO 000001", "devenir": "disponible" },
-      { "nom": "Alba", "sexe": "femelle", "lof": "LOF DEMO 000002", "devenir": "réservée" }
-    ]
+      { "nom": "Ajax", "sexe": "male", "lof": "LOF DEMO 000001", "devenir": "Disponible" },
+      { "nom": "Alba", "sexe": "femelle", "lof": "LOF DEMO 000002", "devenir": "Réservée" }
+    ],
+    "galerie": ["portee-demo-portrait-test"],
+    "texte_libre": "Fixture de démonstration — portée avec chiots disponibles, père et mère par fiche.",
+    "commentaire": "Seule portée à porter une galerie et deux parents par fiche : elle alimente l'encart « dernière portée », le bloc Portées des fiches Rex et Luna, et la carte parent (dette T32)."
   },
   {
-    "identifiant": "S2 2023",
+    "identifiant": "DEMO2 2023",
     "date_naissance": "2023-09-02",
-    "pere": { "type": "nom_libre", "nom": "Iko de l'Élevage Extérieur", "elevage": "Élevage Extérieur" },
-    "mere": { "type": "fiche_chien", "reference": "luna-du-mont-brabant" },
-    "nb_males": 2,
-    "nb_femelles": 3,
+    "pere": {
+      "type": "exterieur",
+      "nom": "Étalon de démonstration",
+      "elevage": "Élevage de démonstration",
+      "sante": "HD : A\nED : 0\nADN identifié : oui"
+    },
+    "mere": { "type": "fiche", "reference": "demo-luna" },
+    "males": 0,
+    "femelles": 3,
     "disponibilite": "reserve",
-    "texte_libre": "Fixture de démonstration : portée entièrement réservée, père hors élevage saisi en texte libre.",
     "chiots": [
-      { "nom": "Sasha", "sexe": "femelle", "lof": "LOF DEMO 000003", "devenir": "placée" }
-    ]
+      { "nom": "Sasha", "sexe": "femelle", "lof": "LOF DEMO 000003", "devenir": "Placée en famille" }
+    ],
+    "galerie": [],
+    "texte_libre": "Fixture de démonstration — portée entièrement réservée, père hors élevage saisi en texte libre.",
+    "commentaire": "Trois états qu'aucune autre fixture n'atteint : parent_hors_elevage, les tests de santé d'un parent recopiés (_mtb_pere_sante, jamais rempli jusqu'ici), et un compteur à ZÉRO mâle — le fait d'élevage que la décision 21 existe pour distinguer de « non renseigné »."
   },
   {
-    "identifiant": "L 1995",
+    "identifiant": "DEMO3 1995",
     "date_naissance": "1995-05-20",
-    "pere": { "type": "nom_libre", "nom": "Bram (fondateur)", "elevage": "" },
-    "mere": { "type": "nom_libre", "nom": "Kessy (fondatrice)", "elevage": "" },
-    "nb_males": 4,
-    "nb_femelles": 4,
+    "pere": { "type": "exterieur", "nom": "Fondateur de démonstration", "elevage": "" },
+    "mere": { "type": "exterieur", "nom": "Fondatrice de démonstration", "elevage": "" },
+    "males": 4,
+    "femelles": 4,
     "disponibilite": "passee",
-    "texte_libre": "Fixture de démonstration : ancienne portée, aucun chiot encore actif.",
-    "chiots": []
+    "chiots": [],
+    "galerie": [],
+    "texte_libre": "Fixture de démonstration — ancienne portée, aucun chiot listé.",
+    "commentaire": "Les deux parents extérieurs SANS élevage : la nuance de la décision 18 selon laquelle un élevage vide ne vaut pas « Non renseigné ». Portée la plus ancienne du jeu : borne basse de l'index et de la navigation précédente/suivante."
   },
   {
-    "identifiant": "D1 2022",
+    "identifiant": "DEMO4 2022",
     "date_naissance": "2022-06-01",
     "pere": null,
     "mere": null,
-    "nb_males": null,
-    "nb_femelles": null,
+    "males": null,
+    "femelles": null,
     "disponibilite": "reserve",
-    "texte_libre": "",
     "chiots": [],
-    "note_fixture": "Portée délibérément incomplète — pas de photo, pas de liste de chiots. Sert à vérifier D12 : un contenu mal rempli ne doit jamais casser la page."
+    "galerie": [],
+    "texte_libre": "",
+    "commentaire": "Portée délibérément incomplète — ni parents, ni effectifs, ni chiots, ni photo, ni commentaire. Sert à vérifier D12 : un contenu mal rempli ne doit jamais casser la page. NE RIEN Y AJOUTER."
   }
 ]

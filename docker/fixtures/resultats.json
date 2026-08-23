@@ -1,18 +1,57 @@
 [
   {
-    "discipline": "RING",
-    "chien": "rex-du-mont-brabant",
+    "discipline": "ring",
+    "reference": "demo-rex",
+    "chien_nom": "",
+    "sexe": "male",
     "annee": 2021,
-    "niveau_ou_titre": "Brevet",
-    "conducteur": "Fabienne Guéneau",
-    "pays": null
+    "niveau": "Brevet",
+    "conducteur": null,
+    "pays": null,
+    "commentaire": "Palmarès de la fiche Rex. Colonnes Conducteur et Pays absentes de ce groupe."
   },
   {
-    "discipline": "IGP",
-    "chien": "cesar-du-mont-brabant",
+    "discipline": "igp_rci",
+    "reference": "demo-cesar",
+    "chien_nom": "",
+    "sexe": "male",
     "annee": 2015,
-    "niveau_ou_titre": "IGP1",
-    "conducteur": "Fabienne Guéneau",
-    "pays": null
+    "niveau": "IGP1",
+    "conducteur": null,
+    "pays": null,
+    "commentaire": "Discipline dont la clé stockée (igp_rci) ne se déduit PAS du libellé affiché (IGP / RCI) : c'est l'entrée qui aurait été perdue en silence avec l'ancienne valeur « IGP »."
+  },
+  {
+    "discipline": "autres_disciplines",
+    "reference": "demo-vega",
+    "chien_nom": "",
+    "sexe": "femelle",
+    "annee": 2019,
+    "niveau": "Épreuve de démonstration — niveau 1",
+    "conducteur": null,
+    "pays": null,
+    "commentaire": "Neuvième discipline (décision 11), contestée et jamais exercée par aucune fixture."
+  },
+  {
+    "discipline": "mondioring",
+    "reference": null,
+    "chien_nom": "Ubac de Démonstration",
+    "sexe": "male",
+    "annee": 2018,
+    "niveau": "Mondioring 2",
+    "conducteur": "Conducteur de démonstration",
+    "pays": null,
+    "commentaire": "Chien sans fiche — le cas MAJORITAIRE selon issue-5.md:141 — et seule ligne à remplir Conducteur : fait apparaître la colonne conditionnelle Conducteur sur ce groupe et sur lui seul."
+  },
+  {
+    "discipline": "pistage",
+    "reference": "demo-rex",
+    "chien_nom": "",
+    "sexe": "male",
+    "annee": 2022,
+    "niveau": "Pistage — brevet",
+    "conducteur": null,
+    "pays": "Belgique",
+    "commentaire": "Seule ligne à Pays non vide : fait apparaître la colonne conditionnelle Pays sur ce groupe et sur lui seul, et exerce l'exception nommée de la décision 18 (Pays vide signifie « pas à l'étranger », jamais « Non renseigné »)."
   }
 ]
