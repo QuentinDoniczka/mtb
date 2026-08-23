@@ -9,7 +9,7 @@ dépend de Docker. La cible reste un hébergement mutualisé PHP standard.
 |---------|------|-------|
 | `db` | Base de données | `mariadb:10.11` |
 | `wordpress` | PHP + WordPress + serveur web | construit depuis `docker/wordpress/` (`wordpress:php8.1-apache` + msmtp) |
-| `wpcli` | Installation, activation, provisionnement, fixtures | `wordpress:cli-php8.1` |
+| `wpcli` | Installation, activation, provisionnement, fixtures | construit depuis `docker/wpcli/` (`wordpress:cli-php8.1` + msmtp) |
 | `mail` | Capteur de courrier local (formulaire de contact) | `axllent/mailpit` |
 
 **Pourquoi PHP 8.1** : c'est une version encore couramment proposée (par défaut ou au choix) par
@@ -84,22 +84,28 @@ silence — donc ne jamais réintroduire les anciennes clés (`chiots_disponible
 `portee_passee`) supprimées de ce fichier.
 
 **État aujourd'hui** : les types de contenu *portée*, *chien* et *résultat de travail* existent et
-s'éditent depuis le lot 2, mais la commande WP-CLI `wp mtb import-fixtures` qui les créerait à partir
-de ces fichiers JSON **n'est encore livrée par personne** (dette technique **#29** du board — décrite
-au caractère près, forme et signature comprises, dans `docs/contracts/issue-1.md` §
-« `includes/migration/import-fixtures/` »). Le provisionnement sonde la commande (`wp mtb
-import-fixtures --help`) et l'appelle si elle existe ; sinon il journalise l'absence et passe à la
-suite, sans erreur — comportement inchangé, seul le message a été corrigé pour ne plus laisser croire
-que `mtb-core` lui-même manque encore.
+s'éditent depuis le lot 2, et la commande WP-CLI `wp mtb import-fixtures` **est livrée** —
+`wp-content/plugins/mtb-core/includes/migration/import-fixtures/`. La **dette #29 est donc payée** ;
+la forme et la signature de la commande restent décrites dans `docs/contracts/issue-1.md` §
+« `includes/migration/import-fixtures/` ».
 
-**Ce qui reste à faire, côté extension** : `mtb-core` doit exposer une commande WP-CLI
-`wp mtb import-fixtures --portees=… --chiens=… --resultats=…` qui lit ces fichiers JSON et crée les
-publications avec ses propres clés de champs. Ce script Docker ne présuppose et ne fige aucune clé de
-métadonnée — c'est volontaire, pour ne rien avoir à réécrire ici quand le modèle de contenu sera figé
-dans `docs/contracts/`. Une fois la commande livrée, `make provision` suffit à semer les fixtures.
-Note pour cette future commande : `resultats.json` porte encore des libellés (`"RING"`, `"IGP"`) et un
-slug de chien là où le modèle attend des clés fermées (`ring`, `igp_rci`…) — signalé et volontairement
-laissé tel quel par le contrat #5 (dette **T-#5-c**), à convertir par l'issue qui livrera l'import.
+**`make provision` suffit à semer les fixtures.** Le provisionnement sonde la commande
+(`wp mtb import-fixtures --help`) et l'appelle si elle répond — ce qui est désormais le cas. La
+branche de repli qui journalisait l'absence et passait à la suite sans erreur **existe toujours dans
+`docker/provision/provision.sh`** ; elle n'est plus atteinte en fonctionnement normal, mais son
+message parle encore de la dette #29 (voir « Ce qui reste à corriger » ci-dessous).
+
+La **dette T-#5-c est payée elle aussi** : `docker/fixtures/resultats.json` porte maintenant les
+**clés fermées** attendues par le modèle — `"discipline": "ring"`, `"discipline": "igp_rci"` — et non
+plus les libellés `"RING"` / `"IGP"`. Le fichier documente lui-même le piège dans son champ
+`commentaire` : `igp_rci` **ne se déduit pas** du libellé affiché (« IGP / RCI »), et c'est l'entrée
+qui aurait été perdue en silence avec l'ancienne valeur.
+
+**Ce qui reste à corriger** (documentation et journal, sans effet sur le fonctionnement) : le message
+de repli de `docker/provision/provision.sh` annonce encore « `mtb-core` n'a pas encore livré cette
+commande (dette #29) ». Il est devenu inexact ; il n'est émis que si la commande cesse de répondre,
+auquel cas il enverrait sur une fausse piste. À reprendre par l'issue qui touchera la stack —
+ce document ne modifie pas `docker/`.
 
 La page « Contact » et la page protégée par mot de passe, elles, sont créées dès aujourd'hui : ce
 sont des pages WordPress natives, indépendantes du contenu structuré à venir.
@@ -117,16 +123,30 @@ d'intérêt par défaut du thème (`--point-interet: 50% 38%`) et le centre géo
 vérifier à l'œil qu'ils ne coïncident pas (dette **T16-bis**).
 
 Le provisionnement l'importe dans la médiathèque (`wp media import`, idempotent — pas de doublon au
-redémarrage), sans l'attacher à aucune fiche : tant que `wp mtb import-fixtures` n'existe pas, aucun
-provisionnement automatique ne peut créer de portée ni de chien pour la porter. Elle est donc
-disponible pour être assignée **à la main** (bloc « Fiche d'information », photo d'une fiche chien) le
-temps de vérifier le rendu du cadrage.
+redémarrage). **Elle n'est plus à assigner à la main** : depuis que `wp mtb import-fixtures` est
+livrée, les fixtures la rattachent d'elles-mêmes par son slug `portee-demo-portrait-test`, que
+l'import résout en identifiant de média —
+
+- **`chiens.json`** : `"photo": "portee-demo-portrait-test"` sur la fiche `cadrage: "haut"`, la seule
+  du jeu à porter une photo principale ;
+- **`portees.json`** : `"galerie": ["portee-demo-portrait-test"]` sur la portée `demo-rex` × `demo-luna`.
+
+Le réglage « Cadrage de la photo » (`MASTER.md` §6.2) se vérifie donc directement sur la fiche chien
+de démonstration, sans manipulation préalable.
 
 ## Courrier
 
-Le conteneur `wordpress` embarque `msmtp`, configuré pour relayer tout courrier PHP
-(`mail()` / `wp_mail()`) vers `mail` (Mailpit), jamais vers un service externe. C'est un détail de la
-stack de développement uniquement : la configuration de départ de courrier en production dépend de
+**Les deux conteneurs PHP** — `wordpress` **et** `wpcli` — embarquent `msmtp`, configuré pour relayer
+tout courrier PHP (`mail()` / `wp_mail()`) vers `mail` (Mailpit), jamais vers un service externe. Ils
+partagent les mêmes fichiers `docker/mail/msmtprc` et `docker/mail/mail.ini`, d'où le contexte de
+build à la racine du dépôt.
+
+**Pourquoi `wpcli` aussi** : c'est la seconde voie de courrier de la stack. Un `wp_mail()` appelé
+depuis WP-CLI — provisionnement, `wp mtb import-fixtures`, toute commande future — échouait sans lui
+sur `sendmail: can't connect to remote host (127.0.0.1)`, l'image officielle WP-CLI n'ayant pas de
+sendmail local. C'est le motif du service `wpcli` construit plutôt que tiré tel quel.
+
+C'est un détail de la stack de développement uniquement : la configuration de départ de courrier en production dépend de
 l'hébergeur retenu (question ouverte Q5) et n'est pas décidée ici.
 
 Le provisionnement dépose aussi un mu-plugin (`wp-content/mu-plugins/zz-mtb-docker-mail.php`, hors
