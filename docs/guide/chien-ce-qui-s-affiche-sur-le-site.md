@@ -18,7 +18,11 @@ Pour remplir l'écran, voir « Ajouter un chien ». Cette page-ci dit seulement 
    **Né le** ou **Née le**, **Statut**, **Taille**, **Couleur**, **Masque**,
    **Génétique de robe**, **Père**, **Mère**. Le père et la mère viennent de l'encadré
    **Parents** : quand le parent a sa fiche sur le site, son nom est un lien vers elle ; quand vous
-   l'avez saisi à la main, son nom s'affiche en texte, suivi de son **Élevage** si vous l'avez rempli.
+   l'avez saisi à la main, son nom s'affiche en texte, et son **Élevage**, si vous l'avez rempli,
+   s'affiche **sur la ligne du dessous** — jamais à la suite du nom. C'est voulu, et c'est important :
+   un nom et un élevage mis bout à bout sur une même ligne se liraient comme le nom d'un seul chien,
+   qui n'existe pas. Si vous voyez un jour les deux collés sur une seule ligne, c'est une anomalie :
+   signalez-la.
 4. **Santé** — les tests de l'encadré **Santé**.
 5. **Titres et brevets**.
 6. **Palmarès de travail** — voir plus bas.

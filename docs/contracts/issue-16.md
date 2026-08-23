@@ -286,6 +286,52 @@ canal texte avec filet double. Ne pas l'ajouter.
 le contrat #13 §2.2 ne le portent. Le rendre dans le gabarit **n'est donc pas une réécriture** de
 composant au sens de la décision 24.
 
+### 5 bis. Amendement du 2026-08-23 — la carte parent est incomplète, et le contrat le taisait
+
+*Amendé après la revue du lot 6, qui a relevé l'écart en **HIGH**. Aucun code n'est modifié par cet
+amendement : il **déclare** un écart que la version gelée du §5 passait sous silence. Le combler
+appartient à une issue de suite.*
+
+**Ce que `MASTER.md` prescrit.** §7.4-2 (l. 627-630) : « Chaque carte : **portrait `4/5`**, nom d'usage
+en Newsreader 500, **nom complet avec affixe en dessous**, tests de santé… ». §9.2 (l. 802) nomme en
+outre la **carte parent** parmi les *emplacements structurants*, donc soumis au cadre `4/5` conservé
+quand la photo manque.
+
+**Ce que la ligne §7.4-2 du tableau ci-dessus décrit.** Ni portrait, ni nom complet. Elle réécrit la
+prescription en la raccourcissant, **sans un mot d'arbitrage** : aucun des douze arbitrages du §11.2 ne
+la couvre, aucune dette ne la nommait, et `fiches.css` ne la signalait pas alors qu'elle signale
+scrupuleusement six autres écarts. **C'est ce silence qui était le défaut**, plus encore que le manque
+lui-même : l'écart devenait invisible à quiconque relirait le contrat plutôt que `MASTER.md`.
+
+**Pourquoi l'écart existe.** `query/portee/hydratation.php:345-372` construit un parent avec `etat`,
+`libelle`, `fiche_id`, `lien`, `nom`, `elevage`, `sante` — **et rien d'autre**. Ni photo, ni nom
+complet, dans **aucune** des trois formes (`fiche`, `parent_hors_elevage`, `donnee_absente`). Le thème
+ne peut donc pas rendre ce que §7.4-2 demande **sans aller chercher la donnée lui-même**, c'est-à-dire
+sans franchir la frontière que la **décision 41** délimite : le thème interroge les API de navigation
+du cœur, il **ne lit aucune donnée d'élevage**. Rendre le portrait du parent aurait exigé un
+`get_post_thumbnail_id()` sur une fiche chien depuis le gabarit — précisément l'interdit.
+
+**Le traitement §9.2 a bien été livré là où il était possible** : le portrait absent d'une **fiche
+chien** (`fiches.css` 4.3) tient le cadre `4/5`, le fond `--calcaire-creux`, le filet double et le nom
+d'usage centré. La donnée y était exposée (`chien/lecture.php` rend `photo` et `nom_complet`) ; sur la
+carte parent d'une **portée**, elle ne l'est pas. L'écart n'est donc pas un oubli de mise en forme mais
+un **manque de l'extension** — inscrit **M7** au §16, dette **T32**.
+
+**Ce qu'il faudrait pour le combler**, et qui appartient à l'issue de suite, pas à ce lot :
+
+1. `hydratation.php` expose, sur un parent d'état `fiche`, une clé `photo` de la même forme que
+   `chien/lecture.php::photo()` (`id`, `alt`) et une clé `nom_complet` — le serveur possède déjà les
+   deux, `parent_depuis_fiche()` les lit pour la fiche chien.
+2. Les états `parent_hors_elevage` et `donnee_absente` disent explicitement **ce que le thème doit
+   rendre** faute de photo : un étalon extérieur n'a pas de fiche, donc pas de portrait, et §9.2 laisse
+   ouvert si le cadre `4/5` doit alors être **tenu** (silhouette de mise en page) ou **omis** (la carte
+   n'a jamais de portrait). **C'est une question de conception, pas un choix de développeur** — d'où la
+   question posée à `lead-design-mtb` au §16.
+3. Seulement alors, `fiches.css` habille le portrait de carte et le nom complet.
+
+**Interdit, dans l'intervalle** : « simplifier » en faisant lire la vignette du parent au gabarit. Cela
+paierait la dette en cassant la décision 41, ce qui est plus cher que l'écart.
+
 ---
 
 ## 6. `single-mtb_chien.php` — structure imposée par `MASTER.md` §7.5
@@ -933,6 +979,7 @@ Numéros **proposés** ; `docs/ETAT.md` appartient à `/lead-mtb`.
 | **T30** | **« La meute » n'existe que dans la base de développement.** Sur l'installation de Fabienne, la page n'existera pas et le lien de recours pointera dans le vide. La fiche d'aide dit « créez cette page », jamais « elle existe » |
 | **T31** | **Deux balisages de tableau coexistent** — le palmarès (extension, #15) et les chiots (thème, #16) — donc deux implémentations de la **décision 10**. Atténué, pas fermé, par la primitive `.mtb-tableau` unique de `base.css` : les deux **doivent** la porter |
 | **T18 aggravée** | La règle `object-position: var(--point-interet, 50% 38%)` était écrite **cinq** fois ; le portrait de la fiche chien en fait une **sixième**. Pour `lead-design-mtb` |
+| **T32** | **La carte parent d'une fiche de portée rend ni portrait ni nom complet**, là où `MASTER.md` §7.4-2 (l. 627-630) prescrit les deux et où §9.2 (l. 802) la nomme *emplacement structurant*. Cause : `query/portee/hydratation.php:345-372` n'expose ni `photo` ni `nom_complet` sur un parent, dans aucun de ses trois états — le thème ne peut donc pas les rendre sans lire la base lui-même, ce que la **décision 41** lui interdit. Écart **désormais déclaré** au §5 bis ; il ne l'était nulle part avant la revue du lot 6. Voir **M7** |
 
 **Dettes constatées et non payées par cette issue** : **T8** (la recherche et le sitemap ne filtrent
 pas `has_password` — l'archive `/portees/` est refermée de fait par §7.1, le reste appartient à **#23**),
@@ -944,4 +991,17 @@ sur un brouillon, donc l'aperçu d'une fiche non publiée n'a aucune donnée (**
 (**M4**, contourné par `render_block()`) · le parent d'une **portée** dont la fiche est protégée
 retombe en `donnee_absente` et **perd son nom**, alors que le même cas sur une **fiche chien** conserve
 le nom (`hydratation.php:311` contre `lecture.php:550`) — deux comportements pour la même situation,
-et une perte de généalogie (**M6**).
+et une perte de généalogie (**M6**) · **le parent d'une portée n'expose ni photo ni nom complet**
+(`hydratation.php:345-372`), alors que le parent d'une **fiche chien** expose les deux
+(`lecture.php:542-559`, via `photo()` qui rend `id` et `alt`) — c'est la cause de l'écart au §7.4-2
+déclaré au **§5 bis** et de la dette **T32** (**M7**).
+
+**Question pour `lead-design-mtb`, ouverte par M7 et à trancher avant l'issue de suite** : quand le
+parent est un **étalon extérieur** — donc sans fiche, sans photo et sans nom complet par construction,
+et non par oubli de saisie — la carte doit-elle **tenir** le cadre `4/5` vide du §9.2, ou **l'omettre** ?
+§9.2 range la carte parent parmi les emplacements structurants et prescrit alors « au centre le nom
+d'usage **du chien** », formule qui suppose une fiche ; §7.4-2 écrit en sens inverse qu'un étalon
+extérieur s'affiche « sans lien, **sans carte vide** ». Les deux phrases ne se recouvrent pas, et le
+§9.4 (« les deux cartes gardent la même taille ») dépend de la réponse. **Aucun développeur ne doit
+trancher cela** : tenir le cadre inventerait une réserve pour une photo qui n'existera jamais ; l'omettre
+donnerait deux silhouettes de carte différentes sur la même portée.
