@@ -151,6 +151,75 @@ if [ -z "$($WP post list --post_type=page --name=espace-prive --field=ID)" ]; th
 	log "page protégée par mot de passe « Espace privé » créée (mot de passe de démo : chiot2026)."
 fi
 
+log "composition de l'accueil et de la page Contact (décision utilisateur du 23/08/2026 : un démarrage à froid doit montrer le site, pas une coquille vide)…"
+# Contenu de démonstration uniquement : les blocs ci-dessous tirent leur texte des fixtures
+# (docker/fixtures/*.json, "DEMO…", affixe « de Démonstration »), jamais d'un fait d'élevage réel.
+theme_actif="$($WP theme list --status=active --field=name 2>/dev/null)"
+plugin_actif="$($WP plugin list --status=active --field=name 2>/dev/null)"
+
+motif_accueil="${WP_PATH}/wp-content/themes/mtb/patterns/accueil.php"
+accueil_id=""
+if [ "$theme_actif" != "mtb" ]; then
+	log "AVERTISSEMENT : thème mtb non actif — accueil non composée. Relancer le provisionnement une fois le thème actif."
+elif [ ! -f "$motif_accueil" ]; then
+	log "AVERTISSEMENT : motif mtb/accueil introuvable (${motif_accueil} absent) — accueil non composée."
+else
+	# Le balisage de blocs de la page vient du motif "mtb/accueil" du thème (patterns/accueil.php),
+	# LU à chaque provisionnement plutôt que recopié à la main ici : ce script ne devient jamais une
+	# seconde source de vérité sur « ce qui compose l'accueil » à côté du thème.
+	#
+	# Volontairement PAS "<!-- wp:pattern {"slug":"mtb/accueil"} /-->" (qui référencerait le motif
+	# sans le développer) : plusieurs composants du catalogue — le bandeau d'ouverture en tête — lisent
+	# le PREMIER BLOC de post_content pour décider qui porte le "h1" de la page (garde 4/5 de
+	# titre-principal.php). Cette lecture porte sur les blocs réellement présents dans post_content ;
+	# un simple renvoi vers le motif la laisserait voir "core/pattern" et casserait la déduplication du
+	# titre (h1 en double constaté à l'écran lors de la vérification du 23/08/2026). On extrait donc le
+	# balisage tel qu'un clic "Insérer" sur ce motif l'aurait copié dans la page — pas une composition
+	# inventée par ce script.
+	blocs_accueil="$(awk '/^\?>/{trouve=1; next} trouve{print}' "$motif_accueil")"
+
+	if [ -z "$blocs_accueil" ]; then
+		log "AVERTISSEMENT : le motif mtb/accueil (patterns/accueil.php) ne contient aucun balisage de bloc après son en-tête PHP — accueil non composée."
+	else
+		accueil_id="$($WP post list --post_type=page --name=accueil --field=ID)"
+		blocs_accueil_tmp="$(mktemp)"
+		printf '%s\n' "$blocs_accueil" > "$blocs_accueil_tmp"
+		if [ -z "$accueil_id" ]; then
+			accueil_id="$($WP post create --post_type=page --post_title="Accueil" --post_status=publish --post_name=accueil \
+				--porcelain "$blocs_accueil_tmp")"
+			log "page « Accueil » créée (id ${accueil_id}), composée avec le motif mtb/accueil."
+		else
+			$WP post update "$accueil_id" "$blocs_accueil_tmp" >/dev/null
+			log "page « Accueil » déjà présente (id ${accueil_id}) — contenu réaffirmé depuis le motif mtb/accueil."
+		fi
+		rm -f "$blocs_accueil_tmp"
+	fi
+fi
+
+if [ -n "$accueil_id" ]; then
+	page_on_front_actuel="$($WP option get page_on_front 2>/dev/null)"
+	show_on_front_actuel="$($WP option get show_on_front 2>/dev/null)"
+	if [ "$show_on_front_actuel" != "page" ] || [ "$page_on_front_actuel" != "$accueil_id" ]; then
+		$WP option update show_on_front page >/dev/null
+		$WP option update page_on_front "$accueil_id" >/dev/null
+		log "page d'accueil du site réglée sur « Accueil » (id ${accueil_id})."
+	else
+		log "page d'accueil du site déjà réglée sur « Accueil »."
+	fi
+fi
+
+if echo "$plugin_actif" | grep -qx "mtb-core"; then
+	contact_id="$($WP post list --post_type=page --name=contact --field=ID)"
+	if [ -n "$contact_id" ]; then
+		$WP post update "$contact_id" --post_content='<!-- wp:mtb/formulaire-contact /-->' >/dev/null
+		log "page « Contact » composée avec le bloc mtb/formulaire-contact (id ${contact_id})."
+	else
+		log "AVERTISSEMENT : page « Contact » introuvable — composition impossible (voir l'étape « pages fixes » ci-dessus)."
+	fi
+else
+	log "AVERTISSEMENT : extension mtb-core non active — page Contact non composée, le bloc mtb/formulaire-contact n'est pas enregistré. Relancer le provisionnement une fois l'extension active."
+fi
+
 log "contenu structuré (portées, chiens, résultats de travail)…"
 if $WP mtb import-fixtures --help >/dev/null 2>&1; then
 	log "commande « wp mtb import-fixtures » détectée (fournie par mtb-core) — import des fixtures…"
