@@ -34,6 +34,9 @@ import re
 import sys
 from html.parser import HTMLParser
 
+# La valeur ci-dessous est une U+00A0 **littérale**, donc invisible à la relecture — et tout ce
+# fichier repose sur le fait qu'elle n'est pas un espace. Ne jamais la retaper à la main : la
+# remplacer par un espace ordinaire ferait mentir le compte d'insécables sans rien casser d'autre.
 NBSP = " "
 
 # Les cinq zones du gabarit IONOS 2111, dans l'ordre imposé par le contrat §3.1.

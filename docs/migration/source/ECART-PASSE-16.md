@@ -279,14 +279,14 @@ Relevées, **non corrigées**. Aucun fichier n'a été modifié.
    coupure qui n'existe pas. Le contrat interdisant de réécrire un fichier existant, le constat est
    déposé ici.
 
-2. **Trois tailles différentes pour la page d'accueil, dont deux le même jour.**
-   Les trois relevés sont : **47 384 o** (`accueil.md`, 20/08), **47 385 o**
-   (`pages/accueil.md`, 20/08), **47 382 o** (`html/RELEVE.md`, 23/08). Trois valeurs différentes
-   pour la même URL, dont deux le même jour. Le rendu servi porte pourtant `rendered at Sat, 15 Aug
-   2026 21:23:45 +0200`, antérieur aux trois requêtes, et la comparaison mot à mot du 20 et du
-   23 août ne montre **aucune différence de texte**. L'origine des 2 ou 3 octets n'a pas pu être
-   établie depuis l'archive seule : les octets du 20 août n'ont pas été conservés. **Aucune ligne de
-   contenu n'est en jeu.** Les neuf autres tailles concordent à l'octet.
+2. **Trois tailles différentes pour la page d'accueil, dont deux le même jour.** Les trois relevés
+   sont : **47 384 o** (`accueil.md`, 20/08), **47 385 o** (`pages/accueil.md`, 20/08) et
+   **47 382 o** (`html/RELEVE.md`, 23/08) — pour la même URL. Le rendu servi porte pourtant
+   `rendered at Sat, 15 Aug 2026 21:23:45 +0200`, antérieur aux trois requêtes, et la comparaison
+   mot à mot du 20 et du 23 août ne montre **aucune différence de texte**. L'origine des 2 ou
+   3 octets n'a pas pu être établie depuis l'archive seule : les octets du 20 août n'ont pas été
+   conservés. **Aucune ligne de contenu n'est en jeu.** Les neuf autres tailles concordent à
+   l'octet.
 
 3. **Un `href` tronqué dans le pied de page des dix fichiers.** La passe #16 rend
    `[LIEN href=javascript:switchView(]Affichage Web[/LIEN]` là où le document porte
