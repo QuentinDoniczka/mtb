@@ -60,3 +60,41 @@ qu'elles ne le sont déjà, et le projet n'a aucun moyen — ni aucune raison �
 En revanche, **l'analyse de secrets de GitHub peut les signaler**. C'est écrit ici une fois, noir sur
 blanc, pour que personne n'ait à rouvrir la question dans six mois : une alerte sur `AIzaSy…` dans ce
 dossier est attendue et sans objet.
+
+## 4. Limite de méthode — la réduction ne porte presque rien du `<head>`
+
+**À lire avant de traiter un `.md` de ce dossier comme complet.**
+
+La convention gelée au contrat `docs/contracts/issue-19.md` §3.1 découpe **cinq zones**, et les cinq
+sont des conteneurs du **`<body>`** : `diywebEmotionHeader`, `diywebMain`, `diywebSecondary`,
+`diywebSidebar`, `diywebFooter`. `outils/reduire.py` n'en sort pas.
+
+**Du `<head>`, une seule chose atteint un `.md` : le `<title>` du document**, et seulement dans
+l'en-tête du §3.3, jamais dans le corps. **Tout le reste du `<head>` est hors du champ de la
+convention** et n'est donc archivé que dans le `.html` :
+
+| Métadonnée du `<head>` | Présente sur | Dans un `.md` ? |
+|---|---|---|
+| `<title>` | 53 pages servies | **oui**, en-tête §3.3 |
+| `name="robots"` | **58 balises** — voir `RELEVE.md` | **non** |
+| `name="description"`, `name="keywords"` | 53 pages, valeurs propres à la page | **non** |
+| `property="og:*"` (`og:title`, `og:description`, `og:image`, `og:url`, `og:type`) | 53 pages | **non** |
+| `property="business:contact_data:*"` (adresse, localité, code postal, téléphone, courriel) | 53 pages | **non** |
+| `name="generator"`, `viewport`, `format-detection`, `Content-Type` | 53 pages | **non** |
+
+**Ce que cette limite a déjà coûté une fois.** Cinq pages — `chien-halan`, `chien-ray-ban`,
+`chien-roxane`, `chien-youry`, `placement` — portent un `robots` à `noindex, nofollow` que les 48
+autres n'ont pas. Le fait était dans les octets archivés depuis le premier jour, et **aucun livrable
+de l'issue #19 ne le mentionnait** : il est hors des cinq zones, donc invisible à qui ne lit que les
+`.md`. Il a fallu la revue du lot 7 pour le voir. Voir `RELEVE.md` et `../INVENTAIRE.md` §10,
+anomalie 4.
+
+**Règle qui en découle, opposable à #20, #21 et #24** : la règle de préséance du §1 — « le `.md` est
+ce qu'on lit, le `.html` tranche en cas de doute » — **ne vaut que pour le contenu rédactionnel**.
+Pour tout ce qui relève de la **métadonnée de page** — indexation, description de référencement,
+partage social, coordonnées de l'en-tête — **le `.md` ne dit rien du tout, et son silence n'est pas
+une absence dans le source.** La seule lecture valable est le `.html`, ou une nouvelle passe
+d'extraction dédiée.
+
+**Aucun `.md` n'est réécrit pour combler cette limite** (contrat §9) : elle est **déclarée**, pas
+corrigée — décision 46 d'`ETAT.md`.

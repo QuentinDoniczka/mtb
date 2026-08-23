@@ -46,6 +46,11 @@ les menus aurait donc perdu cinq pages sans jamais s'en apercevoir.** C'est la r
 laquelle le `sitemap.xml` est la définition opposable des 52 (contrat §1), et pourquoi il est
 archivé comme fichier source à côté de ce document.
 
+**Ces cinq mêmes pages, et elles seules, portent aussi un `robots` à `noindex, nofollow`** dans leur
+HTML — alors qu'elles sont au sitemap. Le fait est mesuré à l'**anomalie 4 du §10** ; son motif est
+la question ouverte **Q23**. **Ne pas les traiter comme des pages ordinaires avant d'avoir la
+réponse** : cela concerne directement la reprise (#20-#21) et les redirections (#24).
+
 - `sitemap.xml` — **7 621 octets**, SHA-256
   `bb78eebcd0fa3d8f3b739b6fad9df1ddf49b6abcd49da033d3f78f76cc09cd1e`, **52 `<loc>`**, 52 adresses
   distinctes. *Recalculé pour ce fichier, concorde avec le relevé de référence du contrat §1.*
@@ -341,7 +346,7 @@ Rappel du contrat §7, parce que c'est le trou que la reprise sera tentée de co
 
 ---
 
-## 8. Trois questions ouvertes — documentées, jamais tranchées
+## 8. Quatre questions ouvertes — documentées, jamais tranchées
 
 ### Q12 — « truffe » et « cavage » sont-ils la même chose pour l'éleveuse ?
 
@@ -388,6 +393,23 @@ donc **les deux**.
 **Aucune conclusion n'est tirée de cette répartition.** Elle est relevée parce qu'elle est factuelle
 et vérifiable ; ce qu'elle veut dire — s'il y en a un — appartient à l'éleveuse.
 
+### Q23 — cinq pages désindexées par balise, et le site ne dit pas pourquoi
+
+Quatre fiches de chiens — **`halan`, `ray-ban`, `roxane`, `youry`** — et la page **`placement`**
+portent un `robots` à `noindex, nofollow` que les 48 autres pages n'ont pas. Ce sont **exactement**
+les cinq pages qu'aucun menu ne lie, et elles sont **pourtant** au `sitemap.xml`.
+
+La mesure complète, le comptage des 58 balises et les trois faits qui se recoupent sont à l'**anomalie
+4 du §10** ; elle n'est pas recopiée ici.
+
+**La question posée à l'éleveuse** : *pourquoi ces cinq pages-là sont-elles à la fois retirées des
+menus et marquées « ne pas indexer », alors que le plan du site les déclare ? Faut-il que le nouveau
+site les reprenne — et si oui, visibles dans les menus, et indexées ou non ?*
+
+**Aucune hypothèse n'est avancée** — ni chiens vendus, ni chiens retirés, ni page obsolète. Le site
+source énonce le **fait**, jamais son **motif**, et le motif est un fait d'élevage. Comme pour Q18,
+ce qui est relevé ici est mesuré et vérifiable ; ce que cela veut dire appartient à l'éleveuse.
+
 ---
 
 ## 9. Vérification
@@ -407,6 +429,7 @@ Rien de ce fichier n'est repris de confiance d'un fichier antérieur. Voici comm
 | En-têtes des `.md` contre `html/RELEVE.md` | Taille du HTML reçu et SHA-256 stable de chaque en-tête confrontés à la ligne correspondante du relevé | **Concordance sur les 38 fichiers qui portent les deux champs, 0 écart.** Les 16 autres — les 10 de la passe #16 et les 6 `.md` de `pages/` antérieurs à `html/` — ne portent pas de champ « SHA-256 stable » : leur en-tête est d'un format antérieur au contrat §3.3. Constat, pas écart. Sur les tailles seules, **52 des 54 concordent à l'octet** ; les 2 exceptions sont les deux captures de l'accueil (anomalie 1) |
 | Insécables | Les 10 comptes déclarés par les `.md` de la passe #16 recomptés **caractère par caractère** dans les fichiers eux-mêmes ; les comptes du document repris de `html/RELEVE.md`, lui-même recalculé ci-dessus | **Les 10 comptes déclarés sont exacts pour le fichier tel qu'il est.** Le tableau du §2 donne le compte du document ; les deux sont mis côte à côte au §2 |
 | Menus | Adresses `href` distinctes recomptées dans `html/bhpl.html` ; présence de chaque adresse orpheline recherchée dans les **54** fichiers HTML | Sous-menu BHPL **29**, sous-menu La meute **13** ; `roxane`, `ray-ban`, `youry`, `halan` et `placement` n'apparaissent **que dans leur propre fichier** ; `jango` apparaît dans **53 des 54** |
+| Balises `robots` (Q23) | Toutes les balises `<meta name="robots">` extraites du `<head>` des **54** fichiers HTML, avec leur **contenu** et leur **position en octets**, puis groupées ; présence des 5 URL concernées recherchée dans `sitemap.xml` | **58 balises** : 48 fichiers à une seule (`index,follow`), **5 à deux** (`noindex, nofollow` en tête de `<head>`, puis `index,follow`), 1 sans aucune (`bhpl-en-france`, 302 vide). Les 5 sont **les mêmes** que les 5 orphelines de la ligne « Menus », et **les 5 sont au `sitemap.xml`**. Anomalie 4 du §10 |
 | Cartes (Q18) | Toutes les balises `<iframe>` extraites des 54 fichiers HTML, groupées par `src` ; zone d'appartenance relevée dans les `.md` correspondants | **4 `src` distincts** : la carte zoom 16 (51 pages), la carte zoom 10 (1 page, `/contact/`), et 2 vidéos YouTube (`portée-c-2007`, `portée-o-2018`) |
 | Photos | Fichiers de `photos/` recomptés et repesés | **192 fichiers**, **33 694 075 octets** — concorde avec le total du §11 de `photos/MANIFESTE.md` |
 
@@ -441,16 +464,17 @@ dont le libellé est réparti sur deux chiens différents.
    **47 382 o** (23/08) — recompté pour ce document. La comparaison mot à mot ne montre **aucune
    différence de texte** et le rendu servi est daté du 15/08, antérieur aux trois requêtes. L'origine
    des deux ou trois octets n'a pas pu être établie depuis l'archive seule : les octets du 20 août
-   n'ont pas été conservés. **Aucune ligne de contenu n'est en jeu.** Les **52 autres** fichiers de capture déclarent une taille identique à l'octet à celle du
-   HTML archivé. Déjà déposée comme anomalie 2 d'`ECART-PASSE-16.md`.
+   n'ont pas été conservés. **Aucune ligne de contenu n'est en jeu.** Les **52 autres** fichiers de
+   capture rattachés aux 52 URL déclarent une taille identique à l'octet à celle du HTML archivé.
+   Déjà déposée comme anomalie 2 d'`ECART-PASSE-16.md`.
 
 2. **Six `.md` de la passe #17 ne portent pas de champ « SHA-256 stable » dans leur en-tête**, leur
    format étant antérieur au contrat §3.3 : `bhpl`, `litterature`, `placement`, `mentions-legales`,
    `accueil` et `travail`. Pour les quatre premiers, la valeur est dans le tableau d'empreintes de
    `pages/README.md`. Pour **`pages/accueil.md` et `pages/travail.md`, elle n'est ni dans l'en-tête,
    ni dans cet index-là** : ces deux fichiers n'appartenaient pas au périmètre de cette passe. Elle
-   est, pour l'URL, dans `html/RELEVE.md` et dans le tableau du §2.
-   Constat, pas défaut : aucun fichier n'est réécrit pour l'ajouter.
+   est, pour l'URL, dans `html/RELEVE.md` et dans le tableau du §2. Constat, pas défaut : aucun
+   fichier n'est réécrit pour l'ajouter.
 
 3. **`la-meute.md`, lu seul, ne contient aucun lien vers une fiche de chien.** Son contenu principal
    tient en un titre, une image et une légende ; les 13 liens vers les fiches sont dans la colonne
@@ -458,18 +482,72 @@ dont le libellé est réparti sur deux chiens différents.
    `sitemap.xml` et dans le tableau du §2 — mais c'est un piège pour qui lirait ce fichier comme
    l'index de la meute. Déjà déposé dans `ECART-PASSE-16.md`.
 
+4. **Cinq pages portent, en plus de la balise commune, un `robots` à `noindex, nofollow` — et le
+   site source se contredit deux fois à leur sujet.** Relevé sur les 54 fichiers de `html/`,
+   **jamais interprété**.
+
+   | Fichier de `html/` | URL | Au `sitemap.xml` ? | Balises `name="robots"` du `<head>` |
+   |---|---|---|---|
+   | `chien-halan.html` | `/la-meute/halan/` | **oui** | `noindex, nofollow` **puis** `index,follow` |
+   | `chien-ray-ban.html` | `/la-meute/ray-ban/` | **oui** | `noindex, nofollow` **puis** `index,follow` |
+   | `chien-roxane.html` | `/la-meute/roxane/` | **oui** | `noindex, nofollow` **puis** `index,follow` |
+   | `chien-youry.html` | `/la-meute/youry/` | **oui** | `noindex, nofollow` **puis** `index,follow` |
+   | `placement.html` | `/placement/` | **oui** | `noindex, nofollow` **puis** `index,follow` |
+
+   Comptage exhaustif des **58** balises `name="robots"` des 54 fichiers : **48 fichiers** n'en
+   portent **qu'une**, `index,follow` ; les **5 ci-dessus** en portent **deux** ;
+   `bhpl-en-france.html` n'en porte **aucune** — c'est le 302 au corps vide (0 octet), il n'a pas de
+   `<head>`. 48 + 5×2 = 58, et 48 + 5 + 1 = 54 : aucun fichier n'échappe au comptage.
+
+   Trois faits mesurés, et **c'est leur recoupement qui fait l'anomalie** :
+
+   1. **Ce sont exactement les cinq pages orphelines des menus.** La ligne « Menus » du §9 mesure
+      déjà, sans en tirer de conclusion, que `roxane`, `ray-ban`, `youry`, `halan` et `placement`
+      « n'apparaissent que dans leur propre fichier ». Les **cinq mêmes**, ni une de plus, ni une de
+      moins. Aucune page indexable n'est orpheline, aucune orpheline n'est sans `noindex`.
+   2. **Les cinq sont pourtant au `sitemap.xml`**, donc dans les 52 — vérifié `<loc>` par `<loc>`.
+      Le site **demande** leur indexation par le sitemap et **l'interdit** par la balise.
+   3. **La contradiction est aussi à l'intérieur d'un même `<head>`.** Les deux balises n'y sont pas
+      au même endroit : le `noindex, nofollow` est au **début du `<head>`** (offset ~272 o),
+      immédiatement après `<meta name="generator" content="IONOS MyWebsite"/>` ; l'`index,follow`
+      est **bien plus loin** (offset ~1 900 à 2 200 o), dans le bloc qui porte les `keywords` et la
+      `description` propres à la page — et c'est à **cette** position que les 48 autres fichiers
+      portent leur unique `index,follow`. Autrement dit : le `noindex, nofollow` est un **ajout** à
+      une position que les autres pages n'utilisent pas. **On n'en conclut pas laquelle des deux
+      ferait foi pour un moteur de recherche** : l'archive ne le dit pas.
+
+   **Ce que cette anomalie coûte si elle reste tue.** `html/README.md` §1 pose que le `.md` est ce
+   qu'on lit et ce qu'on importe, le `.html` ne tranchant qu'en cas de doute — et personne n'a de
+   doute sur une balise dont il ignore l'existence. #20-#21 importerait quatre fiches de chiens et la
+   page Placement comme des pages ordinaires, et #24 les redirigerait en 301 vers des pages
+   indexables. **Une intention éditoriale que le site exprime deux fois serait effacée par
+   omission** — la forme exacte du défaut de la décision 46 d'`ETAT.md` (« un écart non écrit n'est
+   imputable à personne »).
+
+   **Cause structurelle, et c'est elle qui explique le silence** : la convention des cinq zones
+   (contrat §3.1, `outils/reduire.py`) ne découpe que le `<body>`. **Du `<head>`, la réduction ne
+   retient que le `<title>`** ; aucune autre métadonnée ne peut atteindre un `.md`. La limite est
+   désormais déclarée dans `html/README.md` §4 et au contrat §3.1 bis.
+
+   **Aucune explication n'est avancée.** Pourquoi ces cinq pages précises sont désindexées —
+   chiens vendus, chiens retirés, page obsolète, autre chose — est un **fait d'élevage que seule
+   l'éleveuse connaît**. Rangé en **Q23**, §11 ci-dessous.
+
 ---
 
 ## 11. Questions pour l'éleveuse
 
-Aucune question **nouvelle** n'est née de l'inventaire : il n'a rencontré aucune valeur illisible ou
-ambiguë qui lui soit propre. Les questions qu'il croise sont déjà posées ailleurs et **restent
-posées** :
+**Une** question nouvelle est née de la relecture de la capture — **Q23**, ci-dessous : elle n'était
+pas là à la première rédaction de ce document, qui affirmait qu'aucune question nouvelle n'en
+naîtrait. Elle ne vient pas d'une valeur illisible ou ambiguë, mais d'une **métadonnée que la
+convention des cinq zones ne pouvait pas voir** (§10, anomalie 4). Les autres questions que
+l'inventaire croise sont déjà posées ailleurs et **restent posées** :
 
 | Question | Où elle est posée |
 |---|---|
 | **Q12** — « truffe » et « cavage » | §8 ci-dessus, contrat §7 |
 | **Q14** — « Autres disciplines » : disciplines ou rubrique ? | §8 ci-dessus, contrat §7 |
 | **Q18** — lequel des deux points GPS est l'élevage ? | §8 ci-dessus, contrat §7 |
+| **Q23** — pourquoi les fiches de `halan`, `ray-ban`, `roxane`, `youry` et la page `placement` sont-elles les **cinq seules** à porter `noindex, nofollow` et les **cinq seules** absentes des menus, alors qu'elles sont au `sitemap.xml` ? **Faut-il que le nouveau site les reprenne, et si oui, indexées ou non ?** | §10, anomalie 4 |
 | Le **mot de passe** de `/bhpl/bhpl-en-france/`, ou le constat que la page n'a pas à être reprise — et ce que devient alors son entrée de menu | `pages/bhpl-en-france.md` |
 | Les **originaux pleine définition** des photographies existent-ils dans le gestionnaire de médias IONOS, et peuvent-ils être exportés **avant la résiliation de l'abonnement** ? | §7.2 ci-dessus, `photos/MANIFESTE.md` §3 |

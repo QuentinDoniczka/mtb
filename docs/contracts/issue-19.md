@@ -106,6 +106,27 @@ est utilisable tel quel, et il faut le dire.
 Une zone absente du document rend une section absente du `.md`, **jamais une section vide muette** :
 le fichier écrit alors « *(zone absente du document)* ».
 
+### 3.1 bis — Ce que les cinq zones ne peuvent pas porter
+
+*Amendement du 2026-08-23, à la suite de la revue du lot 7. Il n'ajoute aucune obligation et ne
+réécrit aucun fichier : il **déclare une limite** que le contrat gelé laissait implicite.*
+
+**Les cinq zones sont toutes des conteneurs du `<body>`.** Il en découle une conséquence que ce
+contrat n'écrivait nulle part : **du `<head>`, la réduction ne retient que le `<title>`** (§3.3), et
+**aucune autre métadonnée ne peut atteindre un `.md`** — `robots`, `description`, `keywords`,
+`og:*`, `business:contact_data:*`.
+
+Cette limite s'est payée une fois : cinq pages du site source (`chien-halan`, `chien-ray-ban`,
+`chien-roxane`, `chien-youry`, `placement`) portent `noindex, nofollow` et **aucun livrable de #19 ne
+le disait**, alors que les octets étaient archivés. Le détail mesuré est à `INVENTAIRE.md` §10,
+anomalie 4 ; la limite est déclarée à `html/README.md` §4 ; le motif est la question ouverte **Q23**.
+
+**Portée pour #20, #21 et #24** : la règle de préséance du §4 — le `.md` fait foi pour l'import, le
+`.html` tranche — **ne vaut que pour le contenu rédactionnel**. Sur la métadonnée de page, **le
+`.md` est muet, et son silence ne prouve rien sur le source** ; seul le `.html` fait foi.
+
+Conformément au §9, **rien n'est réécrit** : la limite est déclarée, pas comblée.
+
 ### 3.2 Les trois seules transformations autorisées
 
 Aucune ne touche un mot.

@@ -42,6 +42,28 @@ Les entités `&nbsp;` du document, elles, ne sont **pas** comptées dans ces col
 **2 par page servie** (106 au total), toutes dans les ouvreurs de sous-menu
 (`<span class="diyfeDropDownSubOpener">&nbsp;</span>`) de la navigation, donc **hors des cinq zones**.
 
+## Cinq fichiers portent un `noindex, nofollow` que les autres n'ont pas
+
+Le tableau ci-dessous mesure des **octets**, pas des balises — mais celle-ci change ce qu'il faut
+faire des fichiers, donc elle est relevée ici, là où on relève les fichiers. Aucune colonne n'est
+ajoutée : **48 des 54 lignes porteraient la même valeur**, et l'écart tient en cinq noms.
+
+| Fichier | Balises `name="robots"` de son `<head>` |
+|---|---|
+| `chien-halan.html`, `chien-ray-ban.html`, `chien-roxane.html`, `chien-youry.html`, `placement.html` | **deux** : `noindex, nofollow` en tête de `<head>`, puis `index,follow` |
+| les **48** autres fichiers servis | **une** : `index,follow` |
+| `bhpl-en-france.html` | **aucune** — 302 au corps vide, il n'a pas de `<head>` |
+
+Soit **58 balises** sur les 54 fichiers. Ces cinq URL sont **pourtant au `sitemap.xml`**, et ce sont
+**exactement** les cinq que ne lie aucun menu du site.
+
+**Ce fait n'apparaît dans aucun `.md` de capture**, et il ne le pouvait pas : la réduction des cinq
+zones ne découpe que le `<body>` (voir `README.md` §4). Le `.html` est ici le **seul** témoin — c'est
+précisément le cas d'usage de la règle de préséance du §1 de `README.md`.
+
+**Rien n'est conclu de ce relevé.** Le motif de la désindexation est une question ouverte pour
+l'éleveuse — **Q23**, `../INVENTAIRE.md` §8 et anomalie 4 du §10.
+
 ## Deux URL n'ont pas de corps de page
 
 | Slug | Ce qui a été reçu |
