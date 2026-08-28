@@ -302,3 +302,18 @@ Deux captures utiles en complément, si le temps le permet :
 
 **Aucune capture ne doit montrer de nom de chien, de numéro LOF ou de date réelle** tant que le contenu
 n'a pas été validé : utilisez une portée d'essai.
+
+
+## Des portées que vous n'avez pas saisies, dans « Toutes les portées »
+
+En ouvrant **Portées** → **Toutes les portées**, vous verrez peut-être **quelques portées que vous
+n'avez pas créées**. Ce sont des **exemples de test**, posés là pour vérifier que les écrans
+s'affichent bien. **Elles ne viennent pas de votre élevage et elles disparaîtront** quand le site
+sera installé pour de vrai.
+
+**Ne les supprimez pas vous-même** : c'est notre affaire, pas la vôtre.
+
+**Comment les reconnaître.** Ici, c'est visible dès la liste : leur identifiant **commence par
+`DEMO`** — là où les vôtres commencent par une lettre suivie de l'année, comme `M 2016` ou `A3 2025`.
+
+En cas de doute sur une portée, **laissez-la et signalez-la** — c'est toujours la bonne réponse.

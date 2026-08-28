@@ -317,3 +317,69 @@ Tout ce qui suit est **conservé intégralement** dans le texte libre, mais aucu
 - **Les grands-parents** (« Vidéo du grand père de Opium : Symba ») : aucun champ.
 - **`TI`** (grocky, pegaz) et « Enregistrée à Titre initiale » (tesla) : abréviation **non
   développée**, le champ Confirmation reste vide partout.
+
+## Ce que porte la fiche de Pégaz — réponse explicite
+
+La question était : le lien erroné a-t-il été recopié, ou le champ est-il vide ? **Les deux, et à deux
+endroits différents.** Mesuré sur la fiche importée :
+
+| Emplacement | Ce qui s'y trouve |
+|---|---|
+| Champ **Lien pedigree (LOF Select)** | **vide**, avec un motif écrit qui nomme les deux ancres et renvoie à Q-20-5 |
+| **Texte libre** | **les deux ancres, verbatim** — celle de Pégaz (`…/chien/pegaz-eenhoorn-7678490`) et celle de Ray-Ban (`…/chien/ray-ban-7578103`) |
+
+Autrement dit : **l'erreur du site source est recopiée fidèlement dans le texte**, comme tout le
+reste, et **le champ structuré reste vide** parce que choisir laquelle des deux ancres est « le »
+pedigree serait un arbitrage, pas une lecture.
+
+**Une conséquence heureuse, et mesurée.** Sur le site source, l'ancre du **bon** lien est **une seule
+espace insécable** : elle est invisible, donc incliquable. La conversion des marqueurs rend visible
+l'URL de toute ancre vide — et c'est **le seul cas du corpus**, vérifié sur les 247 ancres. Le lien
+correct de Pégaz, que l'ancien site cachait, devient donc cliquable pour la première fois. Le lien
+erroné, lui, reste présent avec son libellé d'origine : on ne corrige pas le source.
+
+## Obligation pour #24 — douze liens internes qui casseront
+
+Après conversion, le texte des 44 contenus porte **69 ancres**, dont **12 pointent vers des pages de
+portées de l'ancien domaine**. `mtbrabant.com` sera résilié : **si la carte de redirections de #24 ne
+couvre pas ces douze cibles, le nouveau site porte douze liens internes cassés.**
+
+Le danger tient à la façon dont on teste : les contrôles de #24 vérifieront **la carte**, pas les
+liens qui s'appuient dessus. Ces douze-là ne se signaleront donc nulle part.
+
+| Fiche / portée | URL citée dans le texte |
+|---|---|
+| `etch` | `https://www.mtbrabant.com/bhpl/portée-m-2016/` |
+| `etch` | `https://www.mtbrabant.com/bhpl/portée-j-2014/` |
+| `grocky` | `https://www.mtbrabant.com/bhpl/portée-r-2020/` |
+| `jango` | `https://www.mtbrabant.com/bhpl/portée-m-2016/` |
+| `jango` | `http://www.mtbrabant.com/bhpl/port%C3%A9e-n-2017/` — **seule en `http://` et en forme encodée** |
+| `opium` | `https://www.mtbrabant.com/bhpl/portée-o-2018/` |
+| `opium` | `https://www.mtbrabant.com/bhpl/portée-p-2019/` |
+| `opium` | `https://www.mtbrabant.com/bhpl/portée-r-2020/` |
+| `opium` | `https://www.mtbrabant.com/bhpl/portée-s2-2021/` |
+| `pegaz` | `https://www.mtbrabant.com/bhpl/portée-s2-2021/` |
+| `pegaz` | `https://www.mtbrabant.com/bhpl/portée-u2-2023/` |
+| `rolex` | `https://www.mtbrabant.com/bhpl/portée-t-2022/` |
+
+Neuf cibles distinctes : `m-2016`, `j-2014`, `r-2020`, `n-2017`, `o-2018`, `p-2019`, `s2-2021`,
+`u2-2023`, `t-2022`. **Toutes les neuf sont des portées reprises par cette issue**, donc toutes ont
+une page d'arrivée : la redirection est possible, il faut seulement qu'elle existe.
+
+**Un bon signe, à dire aussi** : **aucune de ces douze ne pointe vers `cc_images`.** Les 180 adresses
+d'images de l'ancien domaine étaient toutes enfermées dans un lien d'agrandissement, et la conversion
+les a **toutes** retirées. Il ne reste donc, vers l'ancien domaine, **que des liens de page** — jamais
+une image, jamais une requête.
+
+## Deux écarts de comptage à ne pas redécouvrir trop tard
+
+**136 photographies citées, 135 pièces jointes.** Ce n'est pas une perte. Deux identifiants cités —
+`14834172.png` (fiche de `grocky`) et `16372512.png` (portée `R 2020`) — **partagent le même condensé
+SHA-256** (`05dc5ac1…`, 1 095 104 octets) : c'est **une seule image**, publiée à deux endroits. La
+règle « une pièce jointe par condensé distinct » la verse **une fois** et la rattache **aux deux**
+entités. Un relecteur qui compte 136 d'un côté et 135 de l'autre a ici son explication.
+
+**`photo` est un objet à provenance sur les 17 chiens**, là où la consigne de transcription annonçait
+un identifiant nu. Le lecteur du moteur tolère les deux formes, donc **rien n'est à corriger dans le
+code** — mais la consigne et la réalité divergent, et **un écart non écrit n'est imputable à
+personne** (décision 46).

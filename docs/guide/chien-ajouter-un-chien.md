@@ -272,3 +272,20 @@ Deux captures utiles en complément, si le temps le permet :
 
 **Aucune capture ne doit montrer de nom de chien, de numéro LOF ou de résultat de test réel** tant que
 le contenu n'a pas été validé : utilisez une fiche d'essai.
+
+
+## Des fiches que vous n'avez pas saisies, dans « Tous les chiens »
+
+En ouvrant **Chiens** → **Tous les chiens**, vous verrez peut-être **quelques fiches que vous n'avez
+pas créées**, portant des prénoms qui ne sont pas ceux de vos chiens. Ce sont des **exemples de
+test**, posés là pour vérifier que les écrans s'affichent bien. **Ils ne viennent pas de votre
+élevage et ils disparaîtront** quand le site sera installé pour de vrai.
+
+**Ne les supprimez pas vous-même** : c'est notre affaire, pas la vôtre.
+
+**Comment les reconnaître à coup sûr.** Dans la liste, **rien ne les distingue** : leur nom d'usage
+est un prénom ordinaire, comme celui d'un vrai chien. Le repère est **à l'intérieur de la fiche** :
+ouvrez-la, et regardez le **nom complet**, sous le nom d'usage. Celui d'un chien d'exemple **finit
+toujours par « de Démonstration »**. Aucun de vos chiens ne porte cette mention.
+
+En cas de doute sur une fiche, **laissez-la et signalez-la** — c'est toujours la bonne réponse.
