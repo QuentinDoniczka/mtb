@@ -1,0 +1,105 @@
+{
+  "reference": "travail",
+  "titre": "Travail",
+  "statut": "publish",
+  "source": {
+    "capture": "docs/migration/source/pages/travail.md",
+    "html": "docs/migration/source/html/travail.html",
+    "sha256": "c181bffead4a6ef606a1a9e3c7dcd9551ede8ca8710770c08ae9cc25c1a31c74",
+    "zone": "Contenu principal"
+  },
+  "composition": [
+    {
+      "bloc": "mtb/bandeau-ouverture",
+      "attributs": {},
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Le BHPL et les disciplines de travail",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [
+        "Il n'existe pas véritablement de lignées de travail en ce qui concerne le Berger Hollandais à Poil long.",
+        "Depuis l'arrivée du Berger Hollandais en France dans les années 80, les éleveurs ont tenté de produire des chiens ayant des aptitudes au travail. Voir ci dessous les tableaux des résultats par discipline. Merci de me contacter si j'ai omis un résultat.",
+        "Par travail, on entend les disciplines dépendant de la Commission D'utilisation Nationale",
+        "[LIEN href=http://cun-cbg.com/]CUN-CBG[/LIEN] : RING, MondioRing, IGP (anciennement RCI), Campagne, Pistage, Recherche utilitaire, Obéissance, Sauvetage.",
+        "[LIEN href=http://activites-canines.com/agility/presentation/]CNEA[/LIEN] : L'agility dépend quand à elle de la CNEA : Commission Nationale Education et Activités Cynophiles.",
+        "Après 30 ans d'élevage les résultats montrent que la route est encore longue. Les résultats ont été améliorés depuis l'arrivée de sujet poil long dans les lignées de poil court de travail ainsi que les chiens enregistrés à Titre Initial. Reste à voir dans le temps comment ces chiens vont \"tracer\". Des hybrides sont également présents dans la race. Mais il faut retenir qu'en raison de l'hétérosis, ils ont une vigueur hybride qui se perd à la génération suivante.",
+        "Si vous recherchez un chiot berger hollandais poil long pour le travail, je vous conseille de choisir à minima un chiot dont les parents sont très stables en dehors de leur environnement habituel. Encore trop de géniteurs ne réussissent même pas un test de caractère.... Actuellement, il n'y a pas de sens dans la race à prétendre produire du chien de travail lorsque les parents eux mêmes ne sont pas équilibrés. Evidemment deux parents qui travaillent ne garantissent pas non plus l'aptitude au travail des chiots. Mais dans le contexte actuel du berger hollandais à poil long, il n'existe aucune lignée dite de travail. Il faut donc choisir le bon chiot chez le bon éleveur, le bon club, la bonne équipe etc... ",
+        "La selection a toujours existé chez les éleveurs : un chasseur qui fait naitre une portée de deux parents qui sont d'excellent chiens de chasse, vous dira que parfois dans une portée, un chiot ne sera pas bon au travail, mais fera un excellent chien de compagnie.",
+        "Ci dessous les résultats par discipline de chiens LOF."
+      ],
+      "photo": null,
+      "source": "Le BHPL et les disciplines de travail\n\n \n\nIl n'existe pas véritablement de lignées de travail en ce qui concerne le Berger Hollandais à Poil long.\n\nDepuis l'arrivée du Berger Hollandais en France dans les années 80, les éleveurs ont tenté de produire des chiens ayant des aptitudes au travail. Voir ci dessous les tableaux des résultats par discipline. Merci de me contacter si j'ai omis un résultat.\n\n \n\nPar travail, on entend les disciplines dépendant de la Commission D'utilisation Nationale\n\n \n\n[LIEN href=http://cun-cbg.com/]CUN-CBG[/LIEN]\n : RING, MondioRing, IGP (anciennement RCI), Campagne, Pistage, Recherche utilitaire, Obéissance, Sauvetage.\n\n[LIEN href=http://activites-canines.com/agility/presentation/]CNEA[/LIEN]\n: L'agility dépend quand à elle de la CNEA : Commission Nationale Education et Activités Cynophiles.\n\n \n\nAprès 30 ans d'élevage les résultats montrent que la route est encore longue. Les résultats ont été améliorés depuis l'arrivée de sujet poil long dans les lignées de poil court de travail ainsi que les chiens enregistrés à Titre Initial. Reste à voir dans le temps comment ces chiens vont \"tracer\". Des hybrides sont également présents dans la race. Mais il faut retenir qu'en raison de l'hétérosis, ils ont une vigueur hybride qui se perd à la génération suivante.\n\n \n\nSi vous recherchez un chiot berger hollandais poil long pour le travail, je vous conseille de choisir à minima un chiot dont les parents sont très stables en dehors de leur environnement habituel. Encore trop de géniteurs ne réussissent même pas un test de caractère.... Actuellement, il n'y a pas de sens dans la race à prétendre produire du chien de travail lorsque les parents eux mêmes ne sont pas équilibrés. Evidemment deux parents qui travaillent ne garantissent pas non plus l'aptitude au travail des chiots. Mais dans le contexte actuel du berger hollandais à poil long, il n'existe aucune lignée dite de travail. Il faut donc choisir le bon chiot chez le bon éleveur, le bon club, la bonne équipe etc... \n\n \n\nLa selection a toujours existé chez les éleveurs : un chasseur qui fait naitre une portée de deux parents qui sont d'excellent chiens de chasse, vous dira que parfois dans une portée, un chiot ne sera pas bon au travail, mais fera un excellent chien de compagnie.\n\n \n\nCi dessous les résultats par discipline de chiens LOF.\n\n \n\n \n"
+    },
+    {
+      "ecart": "Intertitre « Autres disciplines : » : non recopié en prose. Le composant mtb/tableau-resultats émet déjà ce h2 pour le groupe « autres_disciplines » ; le recopier produirait un second h2 identique (écart §9.12 du contrat #21).",
+      "source": "Autres disciplines : \n"
+    },
+    {
+      "ecart": "Les quatre lignes « Autres disciplines » (<li> d'une <ul> à la source) deviennent quatre résultats de travail dans donnees/resultats.json (discipline « autres_disciplines », famille de source « autres »). Le tableau est calculé, jamais recopié (écarts §9.7 et §9.5 du contrat #21).",
+      "source": "2018 - ♀ H'Alix du Domaine de Drenthe : Cavage Classe B ChF - Prop. Ferrari\n\n2019 : ♀ I'tea's You des Terres d'Alfheim : Agility 3ème au GPF\n\n2010 - ♀ C'Yuna du Mont Brabant : Brevet Maitre Chien Drogue (Suisse)\n\n2012 - ♀ Dixie du Mont Brabant : Qual. Chien de sauvetage \n"
+    },
+    {
+      "ecart": "Cinquième <li> de la liste « Autres disciplines », vide (U+00A0 seule) : espaceur de l'éditeur IONOS, pas un résultat. Écart §9.15 du contrat #21.",
+      "source": " \n"
+    },
+    {
+      "ecart": "Tableau RING : 1 ligne d'en-tête (« <U+00A0> | RING | Niveau », rendue par le composant en h2 + <caption> masqué, écart §9.9), 22 lignes de résultats reprises dans donnees/resultats.json, 1 ligne-espaceur de fin de tableau.",
+      "source": "  | RING | Niveau\n\n2026 | ♂ Ades de la Légion des Loups | Brevet\n\n2026 | ♂ Uhinter Fell du Mont Brabant | Brevet \n\n2025 | ♂ Upper'Side du Mont Brabant | Brevet \n\n2025 | ♂ Kare Saran Jackass dit UROS | Acc2\n\n2024 | ♂ U'Mwaka Moon du Mont Brabant | Brevet \n\n2024 | ♂ Pluton du Mont Brabant | Brevet \n\n2024 | ♂ [LIEN href=https://www.sports-canins.net/clubs/ficheChien.php?IDchiens=5019312]Road Trip du Mont Brabant[/LIEN] | Selectifs 2025\n\n2021 |  ♀ Pegaz Eenhoorn | Ring 1\n\n2021 | ♂ Jango de l'Orée des Crayères | Ring 1\n\n2020 | ♂ Never Back Down du Mont Brabant | Ring 2\n\n2019 | ♂ Jerry Lewis du Mont Brabant dit DEREK | Brevet \n\n2017 | ♀ Link du Hameau des Trois Fontaines | Brevet \n\n2017 | ♂ Jack Nicholson du Mont Brabant dit JEEP | Ring 1\n\n2015 |  ♂ Geb des Crocs de l'Olympe | Ring 2\n\n2014 | ♂ Ice Breaker des Terres d'Alfheim | Brevet\n\n2014 | ♂ E'Ganesh des Crocs de l'Olympe | Ring 3\n\n2013 | ♂ El'Dragons du Hameau des Trois Fontaines | Brevet \n\n2010 | ♀ Bieke dit Broussaille | Brevet \n\n2010 | ♂ Cooper du Mont Brabant | Brevet \n\n2010 | ♂ Estiah'h des Crocs de l'Olympe | Brevet \n\n2007 | ♂ Ucko du Hameau des Trois Fontaines  | Ring 1\n\n1994 | ♂ Storm Haven Guépard | Brevet \n\n   \n"
+    },
+    {
+      "ecart": "Tableau IGP (RCI) : 1 ligne d'en-tête, 4 lignes de résultats reprises dans donnees/resultats.json (le libellé rendu devient « IGP / RCI », écart §9.2), 1 ligne-espaceur de fin de tableau.",
+      "source": "  | IGP (RCI) | Niveau\n\n2021 | ♀ Nebula du Mont Brabant | IGP 3 (Finland)\n\n2021 | ♀ Rita du Royaume de Géane | IGP 1\n\n2013 | ♀ Dixie du Mont Brabant | Certificat RCI\n\n2005 | ♀ Tina du Hameau des Trois Fontaines | Certificat RCI\n\n   \n"
+    },
+    {
+      "ecart": "Tableau Mondioring : 1 ligne d'en-tête, 4 lignes de résultats reprises dans donnees/resultats.json, 2 lignes-espaceurs de fin de tableau.",
+      "source": "  | Mondioring | Niveau\n\n2026 | ♂ Upper'Side du Mont Brabant | Niveau 1\n\n2026 | ♂ Uki du Mont Brabant | Niveau 1\n\n2025 | ♂ Road Trip du Mont Brabant | Niveau 3\n\n2024 | ♂ Prinz Einhorn dit FITZ | Niveau 2\n\n \n\n \n"
+    },
+    {
+      "ecart": "Tableau Obéissance : 1 ligne d'en-tête, 1 ligne de tableau parasite « <U+00A0> | <U+00A0> | <U+00A0> » qui n'est pas un résultat et n'est pas importée (écart §9.13), 19 lignes de résultats reprises dans donnees/resultats.json, 1 ligne-espaceur de fin de tableau.",
+      "source": "  | Obéissance | Niveau\n\n  |   |  \n\n2023 | ♀ Sybele du Rocher des Ducs | Classe 1\n\n2022 | ♂ Pow Wow du Mont Brabant | Brevet\n\n2022 | ♂ Riposte de l'Empire du Louméga | Brevet \n\n2021 | ♂ Oural de la Forestière d'Aigremont | Brevet \n\n2019 | ♂ Er'Next Hartmann von Bavaria | Brevet \n\n2018 | ♀ Métis des Loups de Val d'Aff | Brevet \n\n2017 | ♂ Ice Breaker des Terres d'Alfheim | Classe 3 EXC\n\n2017 | ♀ Luxia du Hameau des Trois Fontaines | Classe 1 EXC\n\n2017 | ♀ Llivia du Hameau des Trois Fontaines | Brevet \n\n2015 | ♀ Ianka du Hameau des Trois Fontaines | Brevet \n\n2015 | ♀ Eclypse du Mont Brabant | Classe 1\n\n2014 | ♀ Gravin du Mont Brabant  | Classe 1\n\n2014 | ♂ Geb des Crocs de l'Olympe | Brevet \n\n2012 | ♀ Delhya du Mont Brabant | Brevet \n\n2011 | ♂ E'Lyko du Hameau des Trois Fontaines | Brevet \n\n2010 | ♂ Exky du Hameau des Trois Fontaines | Brevet \n\n2010 | ♂ Er'Wolf du Hameau des Trois Fontaines | Brevet \n\n2010 | ♂ Estiah'h des Crocs de l'Olympe  | Brevet \n\n2007 | ♂ Vandale  | Brevet \n\n   \n"
+    },
+    {
+      "ecart": "Tableau Sauvetage : 1 ligne d'en-tête, 1 ligne de tableau parasite « <U+00A0> | <U+00A0> | <U+00A0> » non importée (écart §9.13), 1 ligne de résultat reprise dans donnees/resultats.json, 1 ligne-espaceur de fin de tableau.",
+      "source": "  | Sauvetage | Niveau\n\n  |   |  \n\n2009 | ♀ Dixie du Mont Brabant | Brevet \n\n   \n"
+    },
+    {
+      "ecart": "Tableau Pistage : 1 ligne d'en-tête, 3 lignes de résultats reprises dans donnees/resultats.json, 1 ligne-espaceur de fin de tableau.",
+      "source": "  | Pistage | Niveau\n\n2023 |  ♀ Rita du Royaume de Géane | Certificat IFH-V\n\n2016 | ♀ Hardy des Mines d'Odiles | Pistage F Niv.1 EXC\n\n2010 | ♀ Djaï du Hameau des Trois Fontaines | Brevet \n\n   \n"
+    },
+    {
+      "ecart": "Tableau Recherche Utilitaire : 1 ligne d'en-tête, 1 ligne de tableau parasite « <U+00A0> | <U+00A0> | <U+00A0> » non importée (écart §9.13), 4 lignes de résultats reprises dans donnees/resultats.json (le libellé rendu devient « Recherche utilitaire », écart §9.1), 1 ligne-espaceur de fin de tableau.",
+      "source": "  | Recherche Utilitaire | Niveau\n\n  |   |  \n\n2022 | ♀ Ohukia du Mont Brabant | Brevet \n\n2021 | ♂ Lupo du Hameau des Trois Fontaines  | Niveau 2 EXC\n\n2018 | ♀ Hekla des Mines d'Odile | Niveau 3\n\n2015 | ♀ Cana du Mont Brabant | Niveau 3\n\n   \n"
+    },
+    {
+      "bloc": "mtb/tableau-resultats",
+      "attributs": {},
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {},
+      "paragraphes": [
+        "Chien de travail : pas pour les novices ! Je n'ai pas retrouvé le nom de l'auteur.",
+        "=> Si tu demandes quelle est la différence entre un chien de famille et un chien de travail, un chiot de cette portée n'est pas pour toi.",
+        "=> Si les mots maître, ordre, cage, encadrement et structure ne font pas portie de ton langage canin, je ne suis pas pour toi.",
+        "=>Si ta perception d'avoir un chien c'est uniquement profiter d'un grand terrain et jouer à la balle de temps en temps, je ne suis pas pour toi.",
+        "J'assimile vite et j'ai du potentiel mais j'ai besoin d'une famille expérimentée pour pouvoir bien l'exploiter et bien me développer !",
+        "=> J'ai besoin de quelqu'un qui me permettre de canaliser ce qui coule dans mes veines et ce qui me fait claquer les mâchoires (ceux qui savent, savent...)",
+        "=> J'ai besoin de quelqu'un qui va m'apprendre à gérer mes émotions et travaillera sur la frustation",
+        "En résumé, il faut comprendre qu’adopter un chiot de lignée de travail demandera du travail et qu'avec lui tu devras non seulement combler le chien, mais aussi la race afin qu’il devienne stable et équilibré."
+      ],
+      "photo": null,
+      "source": "Chien de travail : pas pour les novices ! Je n'ai pas retrouvé le nom de l'auteur.\n\n \n\n=> Si tu demandes quelle est la différence entre un chien de famille et un chien de travail, un chiot de cette portée n'est pas pour toi.\n\n \n\n=> Si les mots maître, ordre, cage, encadrement et structure ne font pas portie de ton langage canin, je ne suis pas pour toi.\n\n \n\n=>Si ta perception d'avoir un chien c'est uniquement profiter d'un grand terrain et jouer à la balle de temps en temps, je ne suis pas pour toi.\n\n \n\nJ'assimile vite et j'ai du potentiel mais j'ai besoin d'une famille expérimentée pour pouvoir bien l'exploiter et bien me développer !\n\n \n\n=> J'ai besoin de quelqu'un qui me permettre de canaliser ce qui coule dans mes veines et ce qui me fait claquer les mâchoires (ceux qui savent, savent...)\n\n \n\n=> J'ai besoin de quelqu'un qui va m'apprendre à gérer mes émotions et travaillera sur la frustation\n\n \n\n \n\nEn résumé, il faut comprendre qu’adopter un chiot de lignée de travail demandera du travail et qu'avec lui tu devras non seulement combler le chien, mais aussi la race afin qu’il devienne stable et équilibré.\n\n \n\n \n"
+    },
+    {
+      "ecart": "Photo de la source, téléversement DIFFÉRÉ (contrat #21 A5, dette T-#21-a) : docs/ n'est monté dans aucun conteneur (compose.yaml:85-89) et la source ne donne aucun texte alternatif (attribut alt vide) ni aucun nom de fichier lisible. Ni le lien, ni l'image, ni la balise fermante ne sont recopiés : une chaîne contenant « [IMAGE » est refusée en prose (contrat #21 §3.4).",
+      "source": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_16497476.png?t=1660123589]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_16497476.png?t=1660123589 alt=\"\"]\n[/LIEN]"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "reference": "litterature",
+  "titre": "Littérature",
+  "statut": "publish",
+  "source": {
+    "capture": "docs/migration/source/pages/litterature.md",
+    "html": "docs/migration/source/html/litterature.html",
+    "sha256": "791371d931b6ce607641fbee61709a718498a9f128574e5f876c13a73fcc1a77",
+    "zone": "Contenu principal"
+  },
+  "composition": [
+    {
+      "ecart": "Zone « Contenu principal » VIDE dans le HTML reçu (200, 35 541 octets) : la zone diywebMain est présente et ne porte aucun texte. Il n'y a rien à transcrire, et ce n'est pas un oubli. La source publie une page vide, on publie une page vide (contrat #21 §5, état page_sans_contenu du §8) : D11 tenue, pas D4 manquée.",
+      "source": ""
+    },
+    {
+      "bloc": "mtb/bandeau-ouverture",
+      "attributs": {},
+      "photo": null,
+      "source": ""
+    }
+  ]
+}

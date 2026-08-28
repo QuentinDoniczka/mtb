@@ -1,0 +1,45 @@
+{
+  "reference": "politique-de-confidentialite",
+  "titre": "Politique de confidentialité",
+  "statut": "draft",
+  "source": {
+    "capture": "docs/migration/source/pages/politique-de-confidentialite.md",
+    "html": "docs/migration/source/html/politique-de-confidentialite.html",
+    "sha256": "31541ce02b7071c795d8211f55b07331139688d44e1d59fd20ae4ced3817b17b",
+    "zone": "Contenu principal"
+  },
+  "composition": [
+    {
+      "ecart": "La source répond 404 : la page n'existe pas sur l'ancien site et n'est à aucun sitemap (html/RELEVE.md, contrat #19 §2). IONOS sert malgré tout un gabarit complet de 31 462 octets, dont la zone « Contenu principal » ne porte que le message d'erreur du gabarit (« La page requise n'existe plus. ») et le plan du site. Ce n'est pas du contenu rédactionnel de la page : aucune de ces 103 lignes n'est reprise. Charpente seule, en brouillon (BRIEF.md §5.4 « à créer », contrat #17 A7) : aucune durée de conservation, aucun hébergeur, aucun responsable de traitement inventés.",
+      "source": "La page requise n'existe plus.\n\nVeuillez vérifier l'orthographe ou\n[LIEN href=https://www.mtbrabant.com/]retourner sur le site[/LIEN]\n.\n\nPlan du site\n\n[LIEN href=/]Accueil[/LIEN]\n\n[LIEN href=/bhpl/]BHPL[/LIEN]\n\n[LIEN href=/bhpl/portée-a3-2025/]Portée \"A3\" 2025[/LIEN]\n\n[LIEN href=/bhpl/portée-a2-2025/]Portée \"A2\" 2025[/LIEN]\n\n[LIEN href=/bhpl/portée-a1-2025/]Portée \"A1\" 2025[/LIEN]\n\n[LIEN href=/bhpl/portée-v2-2024/]Portée \"V2\"2024[/LIEN]\n\n[LIEN href=/bhpl/portée-v1-2024/]Portée \"V1\"2024[/LIEN]\n\n[LIEN href=/bhpl/portée-u3-2023/]Portée \"U3\" 2023[/LIEN]\n\n[LIEN href=/bhpl/portée-u2-2023/]Portée \"U2\" 2023[/LIEN]\n\n[LIEN href=/bhpl/portée-u1-2023/]Portée \"U1\" 2023[/LIEN]\n\n[LIEN href=/bhpl/portée-t-2022/]Portée \"-T\" 2022[/LIEN]\n\n[LIEN href=/bhpl/portée-s2-2021/]Portée \"S2\" 2021[/LIEN]\n\n[LIEN href=/bhpl/portée-s1-2021/]Portée \"S1\" 2021[/LIEN]\n\n[LIEN href=/bhpl/portée-r-2020/]Portée \"-R\" 2020[/LIEN]\n\n[LIEN href=/bhpl/portée-p2-2019/]Portée \"P2\" 2019[/LIEN]\n\n[LIEN href=/bhpl/portée-p-2019/]Portée \"-P\" 2019[/LIEN]\n\n[LIEN href=/bhpl/portée-o-2018/]Portée \"-O\" 2018[/LIEN]\n\n[LIEN href=/bhpl/portée-n-2017/]Portée \"-N\" 2017[/LIEN]\n\n[LIEN href=/bhpl/portée-m-2016/]Portée \"-M\" 2016[/LIEN]\n\n[LIEN href=/bhpl/portée-j-2014/]Portée \"-J\" 2014[/LIEN]\n\n[LIEN href=/bhpl/portée-h-2012/]Portée \"-H\" 2012[/LIEN]\n\n[LIEN href=/bhpl/portée-g-2011/]Portée \"-G\" 2011[/LIEN]\n\n[LIEN href=/bhpl/portée-f-2010/]Portée \"-F\" 2010[/LIEN]\n\n[LIEN href=/bhpl/portée-e-2009/]Portée \"-E\" 2009[/LIEN]\n\n[LIEN href=/bhpl/portée-d-2008/]Portée \"-D\" 2008[/LIEN]\n\n[LIEN href=/bhpl/portée-c-2007/]Portée \"-C\" 2007[/LIEN]\n\n[LIEN href=/bhpl/portée-s-2001/]Portée \"-S\" 2001[/LIEN]\n\n[LIEN href=/bhpl/portée-m-1996/]Portée \"-M\" 1996[/LIEN]\n\n[LIEN href=/bhpl/portée-l-1995/]Portée \"-L\" 1995[/LIEN]\n\n[LIEN href=/bhpl/bhpl-en-france/]BHPL en France[/LIEN]\n\n[LIEN href=/bhpl/littérature/]Littérature[/LIEN]\n\n[LIEN href=/travail/]Travail[/LIEN]\n\n[LIEN href=/la-meute/]La meute[/LIEN]\n\n[LIEN href=/la-meute/very-best/]Very Best[/LIEN]\n\n[LIEN href=/la-meute/you/]You[/LIEN]\n\n[LIEN href=/la-meute/tesla/]Tesla[/LIEN]\n\n[LIEN href=/la-meute/rolex/]Rolex[/LIEN]\n\n[LIEN href=/la-meute/pégaz/]Pégaz[/LIEN]\n\n[LIEN href=/la-meute/jango/]Jango[/LIEN]\n\n[LIEN href=/la-meute/opium/]Opium[/LIEN]\n\n[LIEN href=/la-meute/grocky/]Grocky[/LIEN]\n\n[LIEN href=/la-meute/etch/]Etch[/LIEN]\n\n[LIEN href=/la-meute/happy/]Happy[/LIEN]\n\n[LIEN href=/la-meute/maya/]Maya[/LIEN]\n\n[LIEN href=/la-meute/tara/]Tara[/LIEN]\n\n[LIEN href=/la-meute/gribouille/]Gribouille[/LIEN]\n\n[LIEN href=/contact/]Contact[/LIEN]\n\n[LIEN href=/mentions-légales/]Mentions légales[/LIEN]"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [],
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [],
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [],
+      "photo": null,
+      "source": ""
+    }
+  ],
+  "commentaire": "Provenance du titre : BRIEF.md §5.4, qui liste cette page parmi les pages libres et la marque « (à créer) ». Il ne vient PAS de la source, qui répond 404 : le <title> servi par le gabarit IONOS pour cette adresse est « Berger Hollandais du Mont Brabant - Accueil », c'est-à-dire celui de la page d'erreur, et non un titre de page. C'est le nom que le projet se donne à lui-même, pas un fait d'élevage."
+}

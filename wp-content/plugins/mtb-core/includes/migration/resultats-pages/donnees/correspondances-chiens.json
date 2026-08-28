@@ -1,0 +1,7 @@
+[
+  {
+    "chien_nom": "Jango de l'Orée des Crayères",
+    "reference": "jango",
+    "justification": "Seule correspondance sûre des 61 lignes. Le tableau RING 2021 de docs/migration/source/html/travail.html écrit « Jango de l'Orée des Crayères » et la fiche de la meute, docs/migration/source/chiens/chien-jango.md (https://www.mtbrabant.com/la-meute/jango/), écrit le même nom : identiques CARACTÈRE POUR CARACTÈRE, sans aucune normalisation d'accent, de casse ni d'espace. Aucun autre nom des 61 n'est dans ce cas : « Pegaz Eenhoorn » du tableau diffère de « Pégaz Eenhoorn » de la fiche par un accent, et « Tina du Hameau des Trois Fontaines » (IGP 2005) n'est rapproché de la fiche « Tina dit Tara du H3F » par aucune preuve — ressembler n'est pas être (contrat #21 §12.1 et §12.2). L'affixe « du Mont Brabant » n'est pas un critère : 19 noms le portent sans avoir de fiche (contrat #21 §7)."
+  }
+]

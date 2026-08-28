@@ -1,0 +1,917 @@
+[
+  {
+    "discipline": "autres_disciplines",
+    "chien_nom": "H'Alix du Domaine de Drenthe",
+    "sexe": "femelle",
+    "annee": 2018,
+    "niveau": "Cavage Classe B ChF - Prop. Ferrari",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "autres",
+      "discipline_source": "Autres disciplines",
+      "ligne": "2018 - ♀ H'Alix du Domaine de Drenthe : Cavage Classe B ChF - Prop. Ferrari"
+    },
+    "commentaire": "« Prop. Ferrari » est un PROPRIÉTAIRE, pas un conducteur : la mention reste verbatim dans le niveau et le champ conducteur reste vide, comme sur les 61 (contrat #21 §12.4)."
+  },
+  {
+    "discipline": "autres_disciplines",
+    "chien_nom": "I'tea's You des Terres d'Alfheim",
+    "sexe": "femelle",
+    "annee": 2019,
+    "niveau": "Agility 3ème au GPF",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "autres",
+      "discipline_source": "Autres disciplines",
+      "ligne": "2019 : ♀ I'tea's You des Terres d'Alfheim : Agility 3ème au GPF"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "autres_disciplines",
+    "chien_nom": "C'Yuna du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2010,
+    "niveau": "Brevet Maitre Chien Drogue (Suisse)",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "autres",
+      "discipline_source": "Autres disciplines",
+      "ligne": "2010 - ♀ C'Yuna du Mont Brabant : Brevet Maitre Chien Drogue (Suisse)"
+    },
+    "commentaire": "Second et dernier niveau du périmètre finissant par une parenthèse. Pays VIDE, parenthèse conservée verbatim (arbitrage A4 du contrat #21)."
+  },
+  {
+    "discipline": "autres_disciplines",
+    "chien_nom": "Dixie du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2012,
+    "niveau": "Qual. Chien de sauvetage",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "autres",
+      "discipline_source": "Autres disciplines",
+      "ligne": "2012 - ♀ Dixie du Mont Brabant : Qual. Chien de sauvetage "
+    },
+    "commentaire": "Figure sous « Autres disciplines » à la source, alors qu'un tableau Sauvetage de la même page porte « 2009 | ♀ Dixie du Mont Brabant | Brevet ». Même chienne, deux années, deux emplacements : aucun rapprochement n'est fait (contrat #21 §12.7)."
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Ades de la Légion des Loups",
+    "sexe": "male",
+    "annee": 2026,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2026 | ♂ Ades de la Légion des Loups | Brevet"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Uhinter Fell du Mont Brabant",
+    "sexe": "male",
+    "annee": 2026,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2026 | ♂ Uhinter Fell du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Upper'Side du Mont Brabant",
+    "sexe": "male",
+    "annee": 2025,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2025 | ♂ Upper'Side du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Kare Saran Jackass dit UROS",
+    "sexe": "male",
+    "annee": 2025,
+    "niveau": "Acc2",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2025 | ♂ Kare Saran Jackass dit UROS | Acc2"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "U'Mwaka Moon du Mont Brabant",
+    "sexe": "male",
+    "annee": 2024,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2024 | ♂ U'Mwaka Moon du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Pluton du Mont Brabant",
+    "sexe": "male",
+    "annee": 2024,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2024 | ♂ Pluton du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Road Trip du Mont Brabant",
+    "sexe": "male",
+    "annee": 2024,
+    "niveau": "Selectifs 2025",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2024 | ♂ [LIEN href=https://www.sports-canins.net/clubs/ficheChien.php?IDchiens=5019312]Road Trip du Mont Brabant[/LIEN] | Selectifs 2025"
+    },
+    "commentaire": "Seule cellule du tableau à porter un lien (207 cellules). Le lien externe de la source, https://www.sports-canins.net/clubs/ficheChien.php?IDchiens=5019312, n'est pas repris : cellule_chien() ne pose un <a> que vers une fiche du site et aucun champ d'URL externe n'existe sur un résultat (écart §9.11 du contrat #21). Seul le libellé du lien est transcrit dans chien_nom."
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Pegaz Eenhoorn",
+    "sexe": "femelle",
+    "annee": 2021,
+    "niveau": "Ring 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2021 |  ♀ Pegaz Eenhoorn | Ring 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Jango de l'Orée des Crayères",
+    "sexe": "male",
+    "annee": 2021,
+    "niveau": "Ring 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2021 | ♂ Jango de l'Orée des Crayères | Ring 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Never Back Down du Mont Brabant",
+    "sexe": "male",
+    "annee": 2020,
+    "niveau": "Ring 2",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2020 | ♂ Never Back Down du Mont Brabant | Ring 2"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Jerry Lewis du Mont Brabant dit DEREK",
+    "sexe": "male",
+    "annee": 2019,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2019 | ♂ Jerry Lewis du Mont Brabant dit DEREK | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Link du Hameau des Trois Fontaines",
+    "sexe": "femelle",
+    "annee": 2017,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2017 | ♀ Link du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Jack Nicholson du Mont Brabant dit JEEP",
+    "sexe": "male",
+    "annee": 2017,
+    "niveau": "Ring 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2017 | ♂ Jack Nicholson du Mont Brabant dit JEEP | Ring 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Geb des Crocs de l'Olympe",
+    "sexe": "male",
+    "annee": 2015,
+    "niveau": "Ring 2",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2015 |  ♂ Geb des Crocs de l'Olympe | Ring 2"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Ice Breaker des Terres d'Alfheim",
+    "sexe": "male",
+    "annee": 2014,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2014 | ♂ Ice Breaker des Terres d'Alfheim | Brevet"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "E'Ganesh des Crocs de l'Olympe",
+    "sexe": "male",
+    "annee": 2014,
+    "niveau": "Ring 3",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2014 | ♂ E'Ganesh des Crocs de l'Olympe | Ring 3"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "El'Dragons du Hameau des Trois Fontaines",
+    "sexe": "male",
+    "annee": 2013,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2013 | ♂ El'Dragons du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Bieke dit Broussaille",
+    "sexe": "femelle",
+    "annee": 2010,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2010 | ♀ Bieke dit Broussaille | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Cooper du Mont Brabant",
+    "sexe": "male",
+    "annee": 2010,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2010 | ♂ Cooper du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Estiah'h des Crocs de l'Olympe",
+    "sexe": "male",
+    "annee": 2010,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2010 | ♂ Estiah'h des Crocs de l'Olympe | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Ucko du Hameau des Trois Fontaines",
+    "sexe": "male",
+    "annee": 2007,
+    "niveau": "Ring 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "2007 | ♂ Ucko du Hameau des Trois Fontaines  | Ring 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "ring",
+    "chien_nom": "Storm Haven Guépard",
+    "sexe": "male",
+    "annee": 1994,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "RING",
+      "ligne": "1994 | ♂ Storm Haven Guépard | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "igp_rci",
+    "chien_nom": "Nebula du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2021,
+    "niveau": "IGP 3 (Finland)",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "IGP (RCI)",
+      "ligne": "2021 | ♀ Nebula du Mont Brabant | IGP 3 (Finland)"
+    },
+    "commentaire": "Un des deux seuls niveaux du périmètre finissant par une parenthèse. Le pays reste VIDE et le niveau garde sa parenthèse verbatim (arbitrage A4 du contrat #21) : renseigner le pays ferait apparaître la colonne Pays sur le tableau IGP et donnerait aux trois autres lignes une cellule vide, qui signifie « obtenu en France » (décision 18)."
+  },
+  {
+    "discipline": "igp_rci",
+    "chien_nom": "Rita du Royaume de Géane",
+    "sexe": "femelle",
+    "annee": 2021,
+    "niveau": "IGP 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "IGP (RCI)",
+      "ligne": "2021 | ♀ Rita du Royaume de Géane | IGP 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "igp_rci",
+    "chien_nom": "Dixie du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2013,
+    "niveau": "Certificat RCI",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "IGP (RCI)",
+      "ligne": "2013 | ♀ Dixie du Mont Brabant | Certificat RCI"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "igp_rci",
+    "chien_nom": "Tina du Hameau des Trois Fontaines",
+    "sexe": "femelle",
+    "annee": 2005,
+    "niveau": "Certificat RCI",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "IGP (RCI)",
+      "ligne": "2005 | ♀ Tina du Hameau des Trois Fontaines | Certificat RCI"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "mondioring",
+    "chien_nom": "Upper'Side du Mont Brabant",
+    "sexe": "male",
+    "annee": 2026,
+    "niveau": "Niveau 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Mondioring",
+      "ligne": "2026 | ♂ Upper'Side du Mont Brabant | Niveau 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "mondioring",
+    "chien_nom": "Uki du Mont Brabant",
+    "sexe": "male",
+    "annee": 2026,
+    "niveau": "Niveau 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Mondioring",
+      "ligne": "2026 | ♂ Uki du Mont Brabant | Niveau 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "mondioring",
+    "chien_nom": "Road Trip du Mont Brabant",
+    "sexe": "male",
+    "annee": 2025,
+    "niveau": "Niveau 3",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Mondioring",
+      "ligne": "2025 | ♂ Road Trip du Mont Brabant | Niveau 3"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "mondioring",
+    "chien_nom": "Prinz Einhorn dit FITZ",
+    "sexe": "male",
+    "annee": 2024,
+    "niveau": "Niveau 2",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Mondioring",
+      "ligne": "2024 | ♂ Prinz Einhorn dit FITZ | Niveau 2"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Sybele du Rocher des Ducs",
+    "sexe": "femelle",
+    "annee": 2023,
+    "niveau": "Classe 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2023 | ♀ Sybele du Rocher des Ducs | Classe 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Pow Wow du Mont Brabant",
+    "sexe": "male",
+    "annee": 2022,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2022 | ♂ Pow Wow du Mont Brabant | Brevet"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Riposte de l'Empire du Louméga",
+    "sexe": "male",
+    "annee": 2022,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2022 | ♂ Riposte de l'Empire du Louméga | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Oural de la Forestière d'Aigremont",
+    "sexe": "male",
+    "annee": 2021,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2021 | ♂ Oural de la Forestière d'Aigremont | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Er'Next Hartmann von Bavaria",
+    "sexe": "male",
+    "annee": 2019,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2019 | ♂ Er'Next Hartmann von Bavaria | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Métis des Loups de Val d'Aff",
+    "sexe": "femelle",
+    "annee": 2018,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2018 | ♀ Métis des Loups de Val d'Aff | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Ice Breaker des Terres d'Alfheim",
+    "sexe": "male",
+    "annee": 2017,
+    "niveau": "Classe 3 EXC",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2017 | ♂ Ice Breaker des Terres d'Alfheim | Classe 3 EXC"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Luxia du Hameau des Trois Fontaines",
+    "sexe": "femelle",
+    "annee": 2017,
+    "niveau": "Classe 1 EXC",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2017 | ♀ Luxia du Hameau des Trois Fontaines | Classe 1 EXC"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Llivia du Hameau des Trois Fontaines",
+    "sexe": "femelle",
+    "annee": 2017,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2017 | ♀ Llivia du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Ianka du Hameau des Trois Fontaines",
+    "sexe": "femelle",
+    "annee": 2015,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2015 | ♀ Ianka du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Eclypse du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2015,
+    "niveau": "Classe 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2015 | ♀ Eclypse du Mont Brabant | Classe 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Gravin du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2014,
+    "niveau": "Classe 1",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2014 | ♀ Gravin du Mont Brabant  | Classe 1"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Geb des Crocs de l'Olympe",
+    "sexe": "male",
+    "annee": 2014,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2014 | ♂ Geb des Crocs de l'Olympe | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Delhya du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2012,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2012 | ♀ Delhya du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "E'Lyko du Hameau des Trois Fontaines",
+    "sexe": "male",
+    "annee": 2011,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2011 | ♂ E'Lyko du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Exky du Hameau des Trois Fontaines",
+    "sexe": "male",
+    "annee": 2010,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2010 | ♂ Exky du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Er'Wolf du Hameau des Trois Fontaines",
+    "sexe": "male",
+    "annee": 2010,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2010 | ♂ Er'Wolf du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Estiah'h des Crocs de l'Olympe",
+    "sexe": "male",
+    "annee": 2010,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2010 | ♂ Estiah'h des Crocs de l'Olympe  | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "obeissance",
+    "chien_nom": "Vandale",
+    "sexe": "male",
+    "annee": 2007,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Obéissance",
+      "ligne": "2007 | ♂ Vandale  | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "sauvetage",
+    "chien_nom": "Dixie du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2009,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Sauvetage",
+      "ligne": "2009 | ♀ Dixie du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "pistage",
+    "chien_nom": "Rita du Royaume de Géane",
+    "sexe": "femelle",
+    "annee": 2023,
+    "niveau": "Certificat IFH-V",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Pistage",
+      "ligne": "2023 |  ♀ Rita du Royaume de Géane | Certificat IFH-V"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "pistage",
+    "chien_nom": "Hardy des Mines d'Odiles",
+    "sexe": "femelle",
+    "annee": 2016,
+    "niveau": "Pistage F Niv.1 EXC",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Pistage",
+      "ligne": "2016 | ♀ Hardy des Mines d'Odiles | Pistage F Niv.1 EXC"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "pistage",
+    "chien_nom": "Djaï du Hameau des Trois Fontaines",
+    "sexe": "femelle",
+    "annee": 2010,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Pistage",
+      "ligne": "2010 | ♀ Djaï du Hameau des Trois Fontaines | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "recherche_utilitaire",
+    "chien_nom": "Ohukia du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2022,
+    "niveau": "Brevet",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Recherche Utilitaire",
+      "ligne": "2022 | ♀ Ohukia du Mont Brabant | Brevet "
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "recherche_utilitaire",
+    "chien_nom": "Lupo du Hameau des Trois Fontaines",
+    "sexe": "male",
+    "annee": 2021,
+    "niveau": "Niveau 2 EXC",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Recherche Utilitaire",
+      "ligne": "2021 | ♂ Lupo du Hameau des Trois Fontaines  | Niveau 2 EXC"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "recherche_utilitaire",
+    "chien_nom": "Hekla des Mines d'Odile",
+    "sexe": "femelle",
+    "annee": 2018,
+    "niveau": "Niveau 3",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Recherche Utilitaire",
+      "ligne": "2018 | ♀ Hekla des Mines d'Odile | Niveau 3"
+    },
+    "commentaire": ""
+  },
+  {
+    "discipline": "recherche_utilitaire",
+    "chien_nom": "Cana du Mont Brabant",
+    "sexe": "femelle",
+    "annee": 2015,
+    "niveau": "Niveau 3",
+    "conducteur": "",
+    "pays": "",
+    "source": {
+      "famille": "tableau",
+      "discipline_source": "Recherche Utilitaire",
+      "ligne": "2015 | ♀ Cana du Mont Brabant | Niveau 3"
+    },
+    "commentaire": ""
+  }
+]

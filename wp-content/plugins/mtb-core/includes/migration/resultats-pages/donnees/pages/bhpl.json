@@ -1,0 +1,131 @@
+{
+  "reference": "bhpl",
+  "titre": "BHPL",
+  "statut": "publish",
+  "source": {
+    "capture": "docs/migration/source/pages/bhpl.md",
+    "html": "docs/migration/source/html/bhpl.html",
+    "sha256": "580718e1d17f319d43dd406c7a5f0e4e297168847d245bc10d6d83dad6d3fbc1",
+    "zone": "Contenu principal"
+  },
+  "composition": [
+    {
+      "bloc": "mtb/bandeau-ouverture",
+      "attributs": {},
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Infos chiots",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [
+        "L'affixe du Mont Brabant existe aujourd'hui depuis les années 1990, soit presque 30 ans d'expérience de la race. C'est aujourd'hui l'affixe le plus ancien à toujours produire, même épisodiquement. Nous ne vivons pas de l'élevage, nous sommes des vrais passionnés de la race. Nous avons toujours élevé dans le respect et la dignité de l'animal. Nous essayons de produire des chiens à la fois excellent compagnon et apte à l'utilité. C'est un travail de longue haleine parce qu'il faut préserver au maximum le bon et le beau. Les résultats obtenus jusqu'à présent nous laisse espèrer que nous sommes sur la bonne voie. Nous avons décidé néanmoins d'utiliser de nouveaux courant de sang pour nous orienter vers des disciplines nécessitant des caractères un peu plus demandeur au travail, aussi certaines portées sont plutôt orientées travail ou famille.",
+        "Nos futurs acquéreurs sont choisis avec beaucoup de soins. L'achat d'un chiot est un engagement pour une dizaine d'années, aussi nous essayons au maximum de vous aider dans le choix de votre chiot ainsi que tout au long de sa vie.",
+        "Voir ci contre notre production !"
+      ],
+      "photo": null,
+      "source": "Infos chiots\n\n \n\nL'affixe du Mont Brabant existe aujourd'hui depuis les années 1990, soit presque 30 ans d'expérience de la race. C'est aujourd'hui l'affixe le plus ancien à toujours produire, même épisodiquement. Nous ne vivons pas de l'élevage, nous sommes des vrais passionnés de la race. Nous avons toujours élevé dans le respect et la dignité de l'animal. Nous essayons de produire des chiens à la fois excellent compagnon et apte à l'utilité. C'est un travail de longue haleine parce qu'il faut préserver au maximum le bon et le beau. Les résultats obtenus jusqu'à présent nous laisse espèrer que nous sommes sur la bonne voie. Nous avons décidé néanmoins d'utiliser de nouveaux courant de sang pour nous orienter vers des disciplines nécessitant des caractères un peu plus demandeur au travail, aussi certaines portées sont plutôt orientées travail ou famille.\n\nNos futurs acquéreurs sont choisis avec beaucoup de soins. L'achat d'un chiot est un engagement pour une dizaine d'années, aussi nous essayons au maximum de vous aider dans le choix de votre chiot ainsi que tout au long de sa vie.\n\n \n\nVoir ci contre notre production !\n\n \n"
+    },
+    {
+      "ecart": "Photo de la source, téléversement DIFFÉRÉ (contrat #21 A5, dette T-#21-a) : docs/ n'est monté dans aucun conteneur (compose.yaml:85-89) et la source ne donne aucun texte alternatif (attribut alt vide) ni aucun nom de fichier lisible. Ni le lien, ni l'image, ni la balise fermante ne sont recopiés : une chaîne contenant « [IMAGE » est refusée en prose (contrat #21 §3.4).",
+      "source": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6412830.jpg?t=1523543930]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6412830.jpg?t=1523543930 alt=\"\"]\n[/LIEN]\n"
+    },
+    {
+      "ecart": "Lignes-espaceurs de l'éditeur IONOS (U+00A0 seule), hors de toute fiche. Ni paragraphe, ni contenu : écart §9.15 du contrat #21.",
+      "source": " \n\n \n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {},
+      "paragraphes": [
+        "Réservations ouvertes sur les portées 2026",
+        "2026 : ♂Uhinter Fell du Mont Brabant ou autre X ♀Very Best From You 2 du Mont Brabant",
+        "portée poil long orientée compagnie"
+      ],
+      "photo": null,
+      "source": "Réservations ouvertes sur les portées 2026\n\n \n\n \n\n \n\n \n\n2026 : ♂Uhinter Fell du Mont Brabant ou autre X ♀Very Best From You 2 du Mont Brabant\n\nportée poil long orientée compagnie\n\n \n\n \n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "COMBIEN POUR UN CHIOT ?",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [
+        "Ecrit en partie par : Sr. Eduardo Loredo Mummer",
+        "Modifié pour les chiens par : Amber French",
+        "\"Laissez-moi vous dire quelques mots, oui vous la personne qui écrit un courriel pour simplement demander le prix. La personne qui appelle et après avoir entendu un prix dit étonnamment : 'Je peux acheter un chiot moins cher ailleurs'",
+        "Je m'adresse aussi à vous, la personne qui se fiche des papiers parce que je veux 'juste un animal de compagnie'.",
+        "Aucun chien n'est juste un animal de compagnie.",
+        "Derrière chaque chiot/chien de lignée pure élevé se cache un BREEDER.",
+        "J'utilise des majuscules pour différencier un éleveur d'une usine ou d'un moulin. Un éleveur réputé ne reproduit pas des chiens sans papiers, cela ne protège pas l'intérgrité de l'espèce. L'inscription (papiers/pedigree) est un dossier de lignées qui documente la lignée sanguine et permet de rechercher tous les problèmes de santé possibles présents dans la lignée. Quand vous dites à un éleveur que vous ne vous souciez pas des papiers, ce que vous lui dites vraiment, c'est que vous ne vous souciez pas de la santé du chiot, vous voulez juste la 'chose' la moins chère que vous pouvez trouver !",
+        "Lorsque vous choisissez d'acheter un chiot à un éleveur réputé et de qualité, cet éleveur est responsable de la santé de chaque chiot, à la fois des chiens possédés et de chaque chiot qu'il a vendu pour la vie. Cet éleveur va sauter ses vacances, dormir peu, et la plupart de son espace personnel a été transformé en espace pour ses chiens. L'éleveur vraiment passionné qui aime ses animaux, y met tout son coeur et toute son âme. Non seulement pour les chiots qui sont vendus, mais aussi pour chaque propriétaire qui possède un morceau de son coeur et qui est maintenant un membre de sa famille élargie. L'éleveur suivra ses chiots et prendra le temps de répondre à tout question.",
+        "L'éleveur s'inquiète pour ses \"petits\" après leur départ et il restera en contact avec les nouveaux et les anciens acquéreurs.",
+        "L'éleveur se salira les mains, souvent revoucertes de tout ce qui accompagne un accouchement.",
+        "Un éleveur fera des tests, des échos, des rayons X, des analyses, des vaccins, des portées avec pedigree.",
+        "Enfin, un éleveur choisit la famille assez chanceuse d'avoir un de ses chiots. Oui, tu as bien lu. Un vrai éleveur choisit à qui il vend parce qu'il ne gagne pas d'argent sur la vente. Il n'y a aucune compensation qui puisse compenser l'investissement qu'un éleveur fait, donc il faut qu'il soit sûr que c'est la bonne famille à qui il confiera un de ses chiots.",
+        "Un bon éleveur aura des critères différents pour ceux qui veulent continuer sa lignée. Pourquoi ? parce que l'élevage n'est pas une responsabiité à prendre à la légère, c'est un choix de mode de vie mis de côté pour seulement les quelques personnes dévouées prêtes à se sacrifier.",
+        "Parce qu'un chien n'est jamais \"juste un animal de compagnie\". C'est l'héritage de l'eleveur, le meilleur ami d'un petit garçon, un protecteur de petites filles, une thérapie pour les personnes âgées, un membre de la famille, le monde entier de quelqu'un."
+      ],
+      "photo": null,
+      "source": "COMBIEN POUR UN CHIOT ?\n\n \n\nEcrit en partie par : Sr. Eduardo Loredo Mummer\n\nModifié pour les chiens par : Amber French\n\n \n\n\"Laissez-moi vous dire quelques mots, oui vous la personne qui écrit un courriel pour simplement demander le prix. La personne qui appelle et après avoir entendu un prix dit étonnamment : 'Je peux acheter un chiot moins cher ailleurs'\n\nJe m'adresse aussi à vous, la personne qui se fiche des papiers parce que je veux 'juste un animal de compagnie'.\n\nAucun chien n'est juste un animal de compagnie.\n\nDerrière chaque chiot/chien de lignée pure élevé se cache un BREEDER.\n\nJ'utilise des majuscules pour différencier un éleveur d'une usine ou d'un moulin. Un éleveur réputé ne reproduit pas des chiens sans papiers, cela ne protège pas l'intérgrité de l'espèce. L'inscription (papiers/pedigree) est un dossier de lignées qui documente la lignée sanguine et permet de rechercher tous les problèmes de santé possibles présents dans la lignée. Quand vous dites à un éleveur que vous ne vous souciez pas des papiers, ce que vous lui dites vraiment, c'est que vous ne vous souciez pas de la santé du chiot, vous voulez juste la 'chose' la moins chère que vous pouvez trouver !\n\nLorsque vous choisissez d'acheter un chiot à un éleveur réputé et de qualité, cet éleveur est responsable de la santé de chaque chiot, à la fois des chiens possédés et de chaque chiot qu'il a vendu pour la vie. Cet éleveur va sauter ses vacances, dormir peu, et la plupart de son espace personnel a été transformé en espace pour ses chiens. L'éleveur vraiment passionné qui aime ses animaux, y met tout son coeur et toute son âme. Non seulement pour les chiots qui sont vendus, mais aussi pour chaque propriétaire qui possède un morceau de son coeur et qui est maintenant un membre de sa famille élargie. L'éleveur suivra ses chiots et prendra le temps de répondre à tout question.\n\nL'éleveur s'inquiète pour ses \"petits\" après leur départ et il restera en contact avec les nouveaux et les anciens acquéreurs.\n\nL'éleveur se salira les mains, souvent revoucertes de tout ce qui accompagne un accouchement.\n\nUn éleveur fera des tests, des échos, des rayons X, des analyses, des vaccins, des portées avec pedigree.\n\nEnfin, un éleveur choisit la famille assez chanceuse d'avoir un de ses chiots. Oui, tu as bien lu. Un vrai éleveur choisit à qui il vend parce qu'il ne gagne pas d'argent sur la vente. Il n'y a aucune compensation qui puisse compenser l'investissement qu'un éleveur fait, donc il faut qu'il soit sûr que c'est la bonne famille à qui il confiera un de ses chiots.\n\nUn bon éleveur aura des critères différents pour ceux qui veulent continuer sa lignée. Pourquoi ? parce que l'élevage n'est pas une responsabiité à prendre à la légère, c'est un choix de mode de vie mis de côté pour seulement les quelques personnes dévouées prêtes à se sacrifier.\n\nParce qu'un chien n'est jamais \"juste un animal de compagnie\". C'est l'héritage de l'eleveur, le meilleur ami d'un petit garçon, un protecteur de petites filles, une thérapie pour les personnes âgées, un membre de la famille, le monde entier de quelqu'un.\n\n \n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Pour en savoir plus sur le Berger Hollandais",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [
+        "=> Le club de race : [LIEN href=http://www.abnf.fr]ABNF[/LIEN]",
+        "=> Le standard de la race : [LIEN href=http://www.fci.be/nomenclature/Standards/223g01-fr.pdf]FCI[/LIEN]",
+        "=> Un livre sur la race : : [LIEN href=http://www.belgiandogs.be/Berger-Belge-et-Berger-Hollandais?fbclid=IwAR3TzncALyr_TQYKKdH4AEqqLw13v0ZEUX5ajLP-8OALpyPw63WQDPQ0z1Y]Le berger Belge et le le Berger Hollandais 2017[/LIEN]",
+        "=> Emmission TV du 12 Mai 1998 : [LIEN href=http://www.youtube.com/watch?v=IdmQs76eMvg&t=15s]Le Jardin des Bêtes[/LIEN]",
+        "=> Les couleurs chez le Berger Hollandais :",
+        "Le Locus K : ",
+        "K qui est le noir dominant. Ce test est actuellement celui pratiqué dans le cadre du test génomique SCC",
+        "Kbr qui est responsable de la couleur de robe bringé. La couleur bringé est due à la présence de bandes d’eumélanine dans toutes les régions où il y a du feu (tan). L’intensité du bringé est influencée par le locus A.",
+        "Ky est les types sauvages et tous les autres locus peuvent être exprimés avec cet allèle.",
+        "Pourquoi des Bergers Hollandais peuvent naitre non bringés ? Oui il existe des tests ADN, mais à l'heure actuelle les tests ne sont pas encore 100% fiables. Les tests sont multi-races et il faudra quelques années pour affiner les résultats par race.",
+        "Voici un texte écrit par Louise en 2012 : [LIEN href=https://berger-hollandais.blogspot.fr/2011/08/avant-de-lire-ce-qui-suit-nhesitez-pas.html]Génétique des couleurs[/LIEN]",
+        "Et un article de Lisa traduit par Louise : [LIEN href=http://berger-hollandais.blogspot.fr/2011/08/le-bh-fauve-article-traduit-et-commente.html]Le BH Fauve ![/LIEN]",
+        "Un labo qui essaie d'affiner la recherche pour les Bergers Hollandais : [LIEN href=https://www.vetgen.com/ordertests.aspx?id=Dutch%20Shepherd]Vetgen[/LIEN]",
+        "=> Un peu d'histoire : le Blog de [LIEN href=http://berger-hollandais.blogspot.fr/search/label/Histoire]Louise[/LIEN]",
+        "=> La génétique chez le BHPL : Le site de [LIEN href=https://savajo.notion.site/savajo/H-H-D-A-S-H-B-O-A-R-D-ebbf3792594d49a69614bb21ddadfaec]Sanna[/LIEN]. Outil pour les éleveurs."
+      ],
+      "photo": null,
+      "source": "Pour en savoir plus sur le Berger Hollandais\n\n \n\n=> Le club de race : \n[LIEN href=http://www.abnf.fr]ABNF[/LIEN]\n\n \n\n=> Le standard de la race :\n[LIEN href=http://www.fci.be/nomenclature/Standards/223g01-fr.pdf]FCI[/LIEN]\n\n \n\n=> Un livre sur la race : :\n[LIEN href=http://www.belgiandogs.be/Berger-Belge-et-Berger-Hollandais?fbclid=IwAR3TzncALyr_TQYKKdH4AEqqLw13v0ZEUX5ajLP-8OALpyPw63WQDPQ0z1Y]Le berger Belge et le le Berger Hollandais 2017[/LIEN]\n\n \n\n=> Emmission TV du 12 Mai 1998 :\n[LIEN href=http://www.youtube.com/watch?v=IdmQs76eMvg&t=15s]Le Jardin des Bêtes[/LIEN]\n\n \n\n=> Les couleurs chez le Berger Hollandais :\n\nLe Locus K : \n\nK qui est le noir dominant. Ce test est actuellement celui pratiqué dans le cadre du test génomique SCC\n\nKbr qui est responsable de la couleur de robe bringé. La couleur bringé est due à la présence de bandes d’eumélanine dans toutes les régions où il y a du feu (tan). L’intensité du bringé est influencée par le locus A.\n\nKy est les types sauvages et tous les autres locus peuvent être exprimés avec cet allèle.\n\n \n\nPourquoi des Bergers Hollandais peuvent naitre non bringés ? Oui il existe des tests ADN, mais à l'heure actuelle les tests ne sont pas encore 100% fiables. Les tests sont multi-races et il faudra quelques années pour affiner les résultats par race.\n\nVoici un texte écrit par Louise en 2012 : \n[LIEN href=https://berger-hollandais.blogspot.fr/2011/08/avant-de-lire-ce-qui-suit-nhesitez-pas.html]Génétique des couleurs[/LIEN]\n\nEt un article de Lisa traduit par Louise : \n[LIEN href=http://berger-hollandais.blogspot.fr/2011/08/le-bh-fauve-article-traduit-et-commente.html]Le BH Fauve ![/LIEN]\n\nUn labo qui essaie d'affiner la recherche pour les Bergers Hollandais :\n[LIEN href=https://www.vetgen.com/ordertests.aspx?id=Dutch%20Shepherd]Vetgen[/LIEN]\n\n \n\n=> Un peu d'histoire : le Blog de\n[LIEN href=http://berger-hollandais.blogspot.fr/search/label/Histoire]Louise[/LIEN]\n\n \n\n=> La génétique chez le BHPL : Le site de \n[LIEN href=https://savajo.notion.site/savajo/H-H-D-A-S-H-B-O-A-R-D-ebbf3792594d49a69614bb21ddadfaec]Sanna[/LIEN]\n. Outil pour les éleveurs.\n"
+    },
+    {
+      "ecart": "Photo de la source, téléversement DIFFÉRÉ (contrat #21 A5, dette T-#21-a) : docs/ n'est monté dans aucun conteneur (compose.yaml:85-89) et la source ne donne aucun texte alternatif (attribut alt vide) ni aucun nom de fichier lisible. Ni le lien, ni l'image, ni la balise fermante ne sont recopiés : une chaîne contenant « [IMAGE » est refusée en prose (contrat #21 §3.4).",
+      "source": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_7128435.png?t=1496915606]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_7128435.png?t=1496915606 alt=\"\"]\n[/LIEN]\n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Santé",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [],
+      "photo": null,
+      "source": "Santé\n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Des tests existent",
+        "niveau_titre": "h3"
+      },
+      "paragraphes": [
+        "=> L'hypothyroïdie : Des recherches ont été effectué avec le Professeur Siliart de l'université de Nantes. Un protocole de recherche a été mis en place",
+        "=> La myélopathie dégénérative : La majorité des races bergères sont touchés par cette maladie, et le berger hollandais n'est pas épargné. Les tests actuels semblent fiables. ",
+        "=> L'ataxie cérébulleuse : "
+      ],
+      "photo": null,
+      "source": "Des tests existent\n\n=> L'hypothyroïdie : Des recherches ont été effectué avec le Professeur Siliart de l'université de Nantes. Un protocole de recherche a été mis en place\n\n \n\n=> La myélopathie dégénérative : La majorité des races bergères sont touchés par cette maladie, et le berger hollandais n'est pas épargné. Les tests actuels semblent fiables. \n\n \n\n=> L'ataxie cérébulleuse : \n\n "
+    }
+  ]
+}

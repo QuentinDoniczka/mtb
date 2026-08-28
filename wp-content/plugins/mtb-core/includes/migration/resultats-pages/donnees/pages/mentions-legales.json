@@ -1,0 +1,70 @@
+{
+  "reference": "mentions-legales",
+  "titre": "Mentions légales",
+  "statut": "publish",
+  "source": {
+    "capture": "docs/migration/source/pages/mentions-legales.md",
+    "html": "docs/migration/source/html/mentions-legales.html",
+    "sha256": "75f55ffea4f64f18312262b2f8c54ee00c6ebff777fb07da8a73ad368df49d4b",
+    "zone": "Contenu principal"
+  },
+  "composition": [
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Informations légales",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [],
+      "photo": null,
+      "source": "Informations légales\n"
+    },
+    {
+      "ecart": "Intertitre « Siège social » : la section est rendue par mtb/coordonnees-plan, source unique des coordonnées (#38, contrat #17 §3, contrat #21 §5). Recopier l'intertitre produirait un h2 en doublon du composant.",
+      "source": "Siège social\n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {},
+      "paragraphes": [
+        "Elevage du Mont Brabant"
+      ],
+      "photo": null,
+      "source": "Elevage du Mont Brabant"
+    },
+    {
+      "ecart": "Sections « Siège social » (adresse) et « Contact » (téléphone, courriel) : non recopiées, rendues par mtb/coordonnees-plan depuis la source unique de #38 (le contrat #17 §3 interdit un second littéral de l'adresse, du téléphone et du courriel). La source les écrit d'ailleurs autrement que la page Contact du même site : « ROUTE DE SALERNES » sans numéro de voie, « 680505619 » à neuf chiffres, « tel:-680505619 » avec un tiret parasite. Rien n'est harmonisé ni corrigé : la contradiction est constatée (contrat #21 §5 et §12.6, écart §9.14).",
+      "source": "ROUTE DE SALERNES\n83570 ENTRECASTEAUX\n\nContact\n\nTéléphone : 680505619\n[LIEN href=tel:-680505619] 680505619[/LIEN]\n\nEmail : mtbrabant@gmail.com\n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Représentant légal",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [
+        "Fabienne Gueneau"
+      ],
+      "photo": null,
+      "source": "Représentant légal\n\nFabienne Gueneau\n"
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "titre": "Immatriculation",
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [
+        "SIRET : 82237792500018"
+      ],
+      "photo": null,
+      "source": "Immatriculation\n\nSIRET : 82237792500018"
+    },
+    {
+      "bloc": "mtb/coordonnees-plan",
+      "attributs": {},
+      "photo": null,
+      "source": ""
+    }
+  ]
+}

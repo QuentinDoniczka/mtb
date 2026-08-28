@@ -1,0 +1,47 @@
+{
+  "reference": "bhpl-en-france",
+  "titre": "BHPL en France",
+  "statut": "draft",
+  "source": {
+    "capture": "docs/migration/source/pages/bhpl-en-france.md",
+    "html": "docs/migration/source/html/bhpl-en-france.html",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "zone": "Contenu principal"
+  },
+  "composition": [
+    {
+      "ecart": "Aucune zone dans le document : la source répond 302 vers /protected/?comeFrom=%2Fbhpl%2Fbhpl-en-france%2F, corps de ZÉRO octet, page protégée par mot de passe (html/RELEVE.md). Rien n'a été capturé, donc rien n'est transcrit, et rien n'est reconstitué de mémoire. Charpente seule, en brouillon (contrat #21 A7) : publier une coquille vide donnerait au public une page que la source ne lui montre pas.",
+      "source": ""
+    },
+    {
+      "bloc": "mtb/bandeau-ouverture",
+      "attributs": {},
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [],
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/fiche-information",
+      "attributs": {
+        "niveau_titre": "h2"
+      },
+      "paragraphes": [],
+      "photo": null,
+      "source": ""
+    },
+    {
+      "bloc": "mtb/galerie-photos",
+      "attributs": {},
+      "photo": null,
+      "source": ""
+    }
+  ]
+}

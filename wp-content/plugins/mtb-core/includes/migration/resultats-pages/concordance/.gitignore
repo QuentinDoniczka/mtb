@@ -1,0 +1,4 @@
+# Sous-produit d'un import Python du comparateur : jamais commité.
+# Le comparateur pose lui-même « sys.dont_write_bytecode = True », ce qui suffit quand il est
+# lancé en script ; ce fichier couvre le cas où un outil l'importe comme module.
+__pycache__/
