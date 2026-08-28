@@ -981,7 +981,7 @@ textarea[aria-invalid="true"] {
  * mais seul `anywhere` réduit la contribution min-content de la boîte. Mesuré
  * sur le paragraphe fautif, largeur min-content : `normal` 347,25 px,
  * `break-word` 347,25 px — INCHANGÉ —, `anywhere` 15,5 px. `break-word`
- * suffirait ici par accident, parce que la l. 487 pose déjà `min-inline-size: 0`
+ * suffirait ici par accident, parce que la l. 494 pose déjà `min-inline-size: 0`
  * sur les enfants du canal et qu'aucun ancêtre de cette prose ne se dimensionne
  * sur son contenu ; il cesserait de suffire dès que la même prose serait posée
  * dans une piste `auto` ou dans une boîte flex. C'est le même arbitrage, avec la
