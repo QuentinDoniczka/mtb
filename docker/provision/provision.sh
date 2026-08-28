@@ -221,7 +221,14 @@ else
 fi
 
 log "contenu structuré (portées, chiens, résultats de travail)…"
-if $WP mtb import-fixtures --help >/dev/null 2>&1; then
+# MTB_FIXTURES=0 saute le jeu de démonstration SANS RIEN SUPPRIMER (#29) : c'est ce qui
+# débloque le garde de non-mélange de "wp mtb importer-portees-chiens" (#20), qui refuse de
+# s'exécuter tant que du contenu de démonstration est présent — et qu'aucun "docker compose
+# down -v" ne peut satisfaire seul, puisque le provisionnement suivant reseme aussitôt. Nom de
+# variable gelé, déjà communiqué à la chaîne #20 : ne pas le renommer.
+if [ "${MTB_FIXTURES:-1}" = "0" ]; then
+	log "MTB_FIXTURES=0 — jeu de démonstration (4 portées, 5 chiens, 5 résultats) volontairement NON importé. Rien n'a été supprimé. Relancer avec MTB_FIXTURES=1 (ou sans la variable, c'est la valeur par défaut) pour l'importer."
+elif $WP mtb import-fixtures --help >/dev/null 2>&1; then
 	log "commande « wp mtb import-fixtures » détectée (fournie par mtb-core) — import des fixtures…"
 	$WP mtb import-fixtures \
 		--portees=/fixtures/portees.json \

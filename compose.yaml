@@ -82,13 +82,54 @@ services:
       WP_EDITOR_USER: ${WP_EDITOR_USER}
       WP_EDITOR_PASSWORD: ${WP_EDITOR_PASSWORD}
       WP_EDITOR_EMAIL: ${WP_EDITOR_EMAIL}
+      # Interrupteur du jeu de démonstration (#29) — nom gelé, communiqué à la chaîne #20 :
+      # ne pas renommer. Valeur par défaut 1 (comportement inchangé : "make up" montre un site
+      # peuplé). Voir .env.example pour l'explication destinée à l'éleveuse, et provision.sh
+      # pour le point où la variable est lue.
+      MTB_FIXTURES: ${MTB_FIXTURES:-1}
     volumes:
       - wp_data:/var/www/html
       - ./wp-content/themes/mtb:/var/www/html/wp-content/themes/mtb
       - ./wp-content/plugins/mtb-core:/var/www/html/wp-content/plugins/mtb-core
       - ./docker/provision:/provision:ro
       - ./docker/fixtures:/fixtures:ro
-    entrypoint: ["/bin/sh", "/provision/provision.sh"]
+      # Archive du site source (#19), lecture seule absolue — c'est une pièce à conviction, jamais
+      # une donnée de travail. Point de montage dicté par
+      # includes/migration/portees-chiens/chemins.php::racine_du_source() : à défaut de l'option
+      # "--source", cette fonction calcule dirname(__DIR__, 6) depuis son propre dossier, soit six
+      # niveaux au-dessus de "portees-chiens" (migration, includes, mtb-core, plugins, wp-content,
+      # racine du dépôt). Le module mtb-core n'étant bind-monté que par ses deux sous-dossiers
+      # (thème, extension) et non par "wp-content" entier, ce calcul retombe ICI sur
+      # "/var/www/html", jamais sur la racine du dépôt hôte : le montage doit donc reproduire
+      # "docs/migration/source" à cet endroit précis pour que la commande "wp mtb
+      # importer-portees-chiens" (#20) trouve son archive sans le moindre "--source" ni "--photos"
+      # (les photos vivent dans son sous-dossier "photos/", couvert par le même montage). Le
+      # comparateur hors ligne de #21 (concordance/concordance.py) n'en a besoin sous aucune forme
+      # : il tourne délibérément sur l'hôte, jamais dans un conteneur (voir son en-tête).
+      - ./docs/migration/source:/var/www/html/docs/migration/source:ro
+    # CECI EST UN CONTOURNEMENT, PAS UNE RÉPARATION — la cause n'est pas corrigée ici.
+    #
+    # "sed | sh" plutôt que "sh /provision/provision.sh" en direct : le dépôt tourne en
+    # "core.autocrlf=true" sans ".gitattributes" (fait déjà mesuré côté archive, dette T-#21-m) —
+    # un checkout Windows livre donc "provision.sh" en CRLF, et "/bin/sh" y lit "set -u" suivi
+    # d'un retour chariot, ce qui échoue immédiatement ("illegal option --").
+    #
+    # La vraie réparation serait un ".gitattributes" — mais PAS à la racine du dépôt : un
+    # ".gitattributes" racine ("* text=auto" ou "*.sh text eol=lf") s'appliquerait aussi à
+    # "docs/migration/source/html/*.html", dont la fin de ligne EST la preuve d'archive
+    # (T-#21-m) — le "git add --renormalize" qui suivrait détruirait la pièce à conviction pour
+    # réparer un script de démarrage. La bonne portée est un ".gitattributes" CIBLÉ, placé dans
+    # "docker/.gitattributes" avec un motif du type "*.sh text eol=lf" qui ne couvre que ce
+    # sous-arbre — jamais la racine.
+    #
+    # Non fait maintenant, délibérément : c'est un changement qui modifie des octets versionnés
+    # (renormalisation au prochain "git add"/checkout) et mérite sa propre vérification — que
+    # rien sous "docs/" ni "wp-content/" ne matche le motif, que le "git add --renormalize" ne
+    # touche que les fichiers de "docker/" — plutôt que d'être un effet de bord discret d'un
+    # commit dont l'objet déclaré est le montage de l'archive. On ne corrige jamais le fichier sur
+    # disque ici (le montage "/provision" est en lecture seule de toute façon) : la normalisation
+    # ne vit que dans ce tuyau d'exécution, et ne touche jamais un octet versionné.
+    entrypoint: ["/bin/sh", "-c", "sed 's/\\r$//' /provision/provision.sh | /bin/sh"]
     healthcheck:
       test: ["CMD-SHELL", "wp --path=/var/www/html core is-installed"]
       interval: 10s
