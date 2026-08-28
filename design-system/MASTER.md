@@ -6,7 +6,7 @@ Source de vérité visuelle du projet. `dev-ux-mtb` implémente **à la lettre**
 `review-mtb` audite le code livré **contre** ce document. Une décision visuelle qui n'est pas ici
 n'existe pas : c'est une question bloquante, pas une invention.
 
-- **Version** : 1.0 — 15 août 2026
+- **Version** : 1.1 — 28 août 2026 (1.0 du 15 août 2026 ; seul le §7.7 est amendé, cf. §16)
 - **Décision amont** : `docs/ETAT.md` décision 8 — direction `styles/style5` « Sauge et calcaire »
   conservée, structure entièrement refaite.
 - **Fichier de jetons attendu** : `wp-content/themes/mtb/assets/css/tokens.css`, plus le miroir
@@ -682,8 +682,125 @@ décroissante. Une discipline sans aucune ligne n'affiche **ni titre ni tableau*
 
 À 360 px : `--marge-page` = 18 px, canal texte = 324 px, corps à 17 px, galerie à deux colonnes,
 tableaux empilés, navigation en panneau, `h1` à 44 px avec `text-wrap: balance` et `hyphens: auto`.
-`overflow-wrap: break-word` sur les noms complets, les numéros LOF et les URL de pedigree.
 **Aucun élément à largeur fixe supérieure à 300 px** dans tout le système.
+
+#### 7.7.1 Renvoi à la ligne des jetons insécables — règle amendée le 28 août 2026
+
+**Ce que prescrivait la version 1.0** : « `overflow-wrap: break-word` sur les noms complets, les
+numéros LOF et les URL de pedigree ». Cette phrase est **remplacée** par la présente sous-section ;
+elle est conservée ici pour l'historique.
+
+**Pourquoi elle est amendée.** Trois emplacements livrés ont employé `anywhere` là où la règle disait
+`break-word` — `assets/css/entete-pied.css:216` (et sa reprise l. 227),
+`assets/css/blocs/mtb-coordonnees-plan.css:75`, `assets/css/base.css` §12 — chacun avec une mesure
+écrite en commentaire, et les trois mesures concordent. Trois contournements motivés par le même fait
+mesuré ne sont pas trois écarts à exempter : c'est la règle qui était fausse. **`break-word` cesse
+d'être la valeur par défaut.**
+
+**Le fait, normatif et vérifiable sans le projet.** CSS Text Level 3, définition d'`overflow-wrap` :
+les occasions de coupure introduites par `break-word` **ne sont pas prises en compte dans le calcul
+des tailles intrinsèques min-content** ; celles introduites par `anywhere` le sont. Autrement dit
+`break-word` ne change que le rendu d'une boîte **déjà dimensionnée** ; `anywhere` change en plus **la
+largeur que la boîte réclame**. Conséquence directe : dès qu'une boîte se dimensionne sur son contenu
+— élément flex, `inline-flex`, `inline-block`, flottant, `fit-content`, `position: absolute`, piste de
+grille en `auto` / `min-content` / `max-content` — `break-word` ne fait strictement **rien** contre un
+débordement horizontal. C'est le seul et même fait dans les trois cas ci-dessous.
+
+**Les mesures, à reproduire à l'identique.** Protocole : fenêtre de 360 px puis de 320 px,
+`document.documentElement.scrollWidth` pour le débordement ; largeur min-content obtenue en appliquant
+`inline-size: min-content` à la boîte dans l'inspecteur.
+
+| # | Emplacement | Contenu mesuré | `normal` | `break-word` | `anywhere` |
+|---|---|---|---|---|---|
+| 1 | `base.css` §12 — prose reprise, `/portees/c-2007/` | ancre de lien dont le libellé est une URL YouTube verbatim, **67 signes sans aucune occasion de coupure** | min-content **347,25 px** | min-content **347,25 px** — *inchangé* | min-content **15,5 px** |
+| 1bis | idem, `/portees/o-2018/` | même défaut, autre URL | 343,44 px | 343,44 px | — |
+| 2 | `blocs/mtb-coordonnees-plan.css:75` | courriel dans une boîte `inline-flex` (cible tactile de 44 px), fenêtre 360 px, zoom du texte seul à 200 % | — | document rendu à **387 px** pour 360 | document rendu à **360 px** |
+| 3 | `entete-pied.css:227` | libellé de navigation dans un `<span>` que le cœur met lui-même en `break-word` à (0,2,0), boîte flex dimensionnée sur son contenu, fenêtre de 180 px (téléphone de 360 px zoomé à 200 %) | — | débordement de **13 px** | pas de débordement |
+
+Rappel du contexte du cas 1 : le canal texte vaut **324 px** à 360 px de fenêtre ; avant correction le
+document rendait **365 px dans une fenêtre de 360** et **362 px dans une fenêtre de 320**. Échec du
+présent §7.7 et du critère AA 1.4.10, donc **bloquant (D7)**. `hyphens: auto` n'entame pas le jeton :
+une URL n'a pas de syllabe. Et le libellé **ne se réécrit pas** — c'est de la prose reprise de l'ancien
+site, où le texte du lien *est* l'URL ; lui inventer un intitulé lisible inventerait des mots que le
+site source n'a jamais écrits (exactitude du domaine, `CLAUDE.md`). La correction est donc
+typographique, et elle vise la **classe** du problème : toute URL longue reprise plus tard produit le
+même défaut.
+
+**La règle.**
+
+1. **`overflow-wrap: anywhere` est la valeur par défaut du site**, portée une seule fois par un
+   **sélecteur racine** dans `base.css` (voir §7.7.2 pour la raison décisive), donc héritée par tout
+   texte : prose reprise, prose saisie, libellés de lien, URL nues, courriels, numéros LOF, noms
+   complets avec affixe, titres, légendes.
+2. **Sur une boîte dimensionnée par son conteneur** — un paragraphe ou un titre dans le canal texte —
+   `anywhere` et `break-word` **rendent exactement la même chose** : la différence ne porte que sur la
+   taille intrinsèque, qui n'est pas consultée. Il n'y a donc **rien à déclarer localement** dans ce
+   cas, et rien à arbitrer : l'héritage suffit.
+3. **Seule exception dure : `th` et `td` restent en `break-word`** (`base.css:323`). Raison : avec
+   `table-layout: auto`, la largeur des colonnes dérive des contributions min-content ; `anywhere` les
+   effondrerait à un signe par ligne et rendrait le tableau illisible **sans rien gagner**, puisque le
+   §7.6 empile déjà les tableaux sous `--bp-tableau`. Aucun tableau n'a besoin d'`anywhere` pour tenir
+   les 360 px. La déclaration en propre bat l'héritage : c'est acquis et déjà exploité.
+4. **Toute autre déclaration locale de `break-word` doit porter sa mesure en commentaire**, sinon elle
+   est retirée au profit de l'héritage. Une déclaration de `break-word` sans mesure est présumée
+   redondante (boîte dimensionnée par son conteneur) ou fausse (boîte dimensionnée sur son contenu).
+   `review-mtb` audite sur ce critère.
+5. **Une déclaration locale d'`anywhere` ne se retire que sur mesure**, jamais par déduction :
+   l'héritage peut être intercepté dans la page comme dans la toile par une feuille du cœur. Le cas est
+   **avéré** pour `span.wp-block-navigation-item__label` — `entete-pied.css:227` reste nécessaire.
+
+**Statut des trois emplacements cités** : **conformes**, plus en écart. La règle rejoint le code, pas
+l'inverse.
+
+#### 7.7.2 Ce que la règle vaut côté éditeur
+
+**Le constat.** La règle corrective du lot 8 est posée sur des sélecteurs de classe
+(`.entry-content`, `.mtb-fiche-portee__commentaire`, `.mtb-fiche-chien__commentaire`). Or le cœur
+réécrit les feuilles passées à `add_editor_style()` : les sélecteurs racine reconnus (`html`, `body`,
+`:root`, et leurs formes `:where()`) sont **remplacés** par `.editor-styles-wrapper`, **tous les autres
+sont préfixés** par lui (vérifié dans WordPress 6.9, cf. l'en-tête d'`assets/css/editor.css`). Une
+règle de classe ne s'applique donc dans la toile que s'il existe, **à l'intérieur** de la toile, un
+élément portant cette classe. L'agent du lot 8 rapporte que la règle y est **inerte** : l'éleveuse voit
+la prose déborder pendant qu'elle compose, sur un contenu que le site public rend correctement.
+
+**Le verdict.** La règle doit valoir dans la toile **exactement ce qu'elle vaut sur le site** — sans
+exception ni atténuation. Un écran d'édition qui ment sur le renvoi à la ligne est un défaut, pas un
+détail : il pousse l'éleveuse à corriger un problème qui n'existe pas, c'est-à-dire à réécrire une
+prose qu'on a précisément recopiée pour ne pas la réécrire.
+
+**Le moyen, et pourquoi c'est celui-là.** La règle est portée par un **sélecteur racine**. C'est la
+seule construction dont le cœur garantit lui-même la transposition dans la toile : le `body` du site
+et l'enveloppe de la toile reçoivent la même déclaration, **sans nommer aucun sélecteur d'éditeur**,
+donc sans rien deviner. C'est déjà par ce mécanisme que les jetons, les fonds, les familles et les
+interlignes sont justes dans la toile. Deux conséquences à tenir : les `th`/`td` conservent leur
+`break-word` en propre, qui bat l'héritage (point 3 du §7.7.1) ; les déclarations locales d'`anywhere`
+restent jusqu'à mesure contraire (point 5).
+
+**Le résidu, nommé et non comblé.** L'héritage peut être intercepté dans la toile par une feuille de
+blocs du cœur — le cas est avéré à (0,2,0) pour le libellé de navigation. Si, **après** la pose de la
+règle racine, une mesure dans la toile montre que la prose y déborde encore, alors un crochet nommé
+dans `editor.css` devient nécessaire — et **nommer ce sélecteur suppose d'avoir inspecté le DOM de la
+toile**. C'est un **préalable à lever par la mesure**, pas une valeur à deviner : cf. §15, question D8.
+L'agent du lot 8 a eu raison de laisser ce crochet non écrit ; nommer un sélecteur qu'il n'avait pas
+vu aurait été une invention, que ce document interdit.
+
+**Ordre d'exécution imposé à la chaîne de correction**, sans étape sautée :
+
+1. déplacer la règle sur un sélecteur racine dans `base.css` et supprimer la règle de classe du §12,
+   devenue redondante ;
+2. mesurer dans la toile, sur une page libre contenant l'URL de 67 signes du cas 1, en fenêtre de
+   360 px puis de 320 px ;
+3. **seulement si** la mesure 2 échoue : inspecter le DOM de la toile, nommer le conteneur réel, écrire
+   le crochet dans `editor.css` avec la mesure en commentaire.
+
+#### 7.7.3 Ce que cet amendement ne change pas
+
+La règle de coupe du §4.5 (`hyphens: auto` sur le corps et les titres, `lang="fr"` obligatoire,
+`break-word` sur les cellules de tableau et les noms complets) **reste vraie telle qu'elle est écrite**
+et n'est pas rouverte : les cellules gardent `break-word` (point 3), et pour un nom complet posé dans
+le canal texte les deux valeurs rendent la même chose (point 2). Idem pour le §9.4 (titre très long) et
+le §10.2 (n° LOF) : aucun de leurs rendus ne bouge. Palette, typographie, espacement, photographie et
+vocabulaire sont inchangés.
 
 ### 7.8 Zoom 200 %
 
@@ -1230,6 +1347,7 @@ Aucune n'est inventée, aucune n'est comblée en silence (D11).
 | D5 | **Les photographies n'ont pas encore été importées** (`docs/migration/source/` est vide). Les ratios du §6.1 et le point d'intérêt par défaut du §6.2 sont à revérifier après reprise. | rien — les jetons sont uniques et modifiables | `contenu-mtb`, puis révision de ce document |
 | D6 | **Valeurs de `size-adjust`** des polices de repli — à mesurer sur les fichiers sous-ensemblés, pas à inventer ici. | rien | `dev-ux-mtb` |
 | D7 | **Le logo actuel du site** doit-il être repris comme image dans l'en-tête, ou l'en-tête se compose-t-il en typographie seule ? Le §7.3 prévoit le second cas par défaut, qui est plus robuste et plus léger. | l'en-tête | l'éleveuse |
+| D8 | **Le renvoi à la ligne de la prose dans la toile de l'éditeur** — le §7.7.2 impose de porter la règle par un sélecteur racine, ce qui ne demande aucune inspection. Reste le cas où le cœur intercepterait l'héritage dans la toile, comme il le fait déjà pour le libellé de navigation à (0,2,0). Il faudrait alors un crochet nommé dans `editor.css` : **le sélecteur ne se devine pas, il s'inspecte**. Mesure à faire dans la toile, sur une page libre contenant l'URL de 67 signes, en 360 px puis 320 px. | la fidélité de l'écran d'édition, pas le site public | `dev-ux-mtb`, par la mesure |
 
 ---
 
@@ -1237,4 +1355,5 @@ Aucune n'est inventée, aucune n'est comblée en silence (D11).
 
 | Date | Version | Ce qui change | Motif |
 |---|---|---|---|
+| 2026-08-28 | 1.1 | **§7.7 seul.** `overflow-wrap: anywhere` devient la valeur par défaut, portée par un sélecteur racine ; `break-word` n'est conservé que sur `th`/`td`, avec sa raison. Les trois mesures qui l'imposent sont écrites dans le document (§7.7.1), ainsi que le fait normatif qui les explique. Le §7.7.2 tranche la valeur de la règle côté éditeur et nomme le préalable d'inspection (D8). Rien d'autre n'est rouvert : palette, typographie, espacement, photographie et vocabulaire inchangés ; le §4.5 reste vrai tel quel. | Trois emplacements livrés contournaient la règle 1.0 avec la même mesure ; débordement à 360 px et 320 px sur de la prose reprise, D7 bloquante |
 | 2026-08-15 | 1.0 | Document initial. Palette et ratios repris de `styles/style5` et recalculés indépendamment ; trois jetons ajoutés (`--pin-creux`, `--calcaire-ombre`, `--oxyde`) ; filet double conservé et réinterprété (vide de 2 px) ; **médaillons ronds abandonnés** ; structure IONOS entièrement remplacée par une grille à trois canaux ; deux polices variables auto-hébergées (Newsreader, Public Sans). | `docs/ETAT.md` décision 8 |
