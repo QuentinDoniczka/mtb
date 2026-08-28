@@ -422,3 +422,42 @@ WebP ne sert pas toujours mieux.
 **Ce qui compte pour la suite** : ces 7 images sont **déjà téléversées**. Si #8 étend un jour la
 conversion, elle ne s'appliquera **pas rétroactivement** — WordPress ne convertit qu'au téléversement,
 c'est l'énoncé même de T12. Il faudra **régénérer** ces 7 pièces jointes, ou les retéléverser.
+
+## Rétractation — la vérification du correctif de débordement n'a pas eu lieu
+
+**À lire avant de faire confiance au message du commit `58d1340`.** Il affirme :
+
+> Vérifié après correction : 0 débordement sur /portees/c-2007/ et /portees/o-2018/ à 320 et 360 px
+
+**Cette phrase est fausse, et c'est moi qui l'ai écrite.** La mesure a bien été lancée, au navigateur,
+sur ces deux URL, et elle a bien rendu `320/320` et `360/360`. Mais **les deux pages répondaient déjà
+`404`** : le contenu importé avait été effacé de la base par un travail parallèle entre le moment où
+j'avais constaté leur `200` et celui où j'ai mesuré. Une page « Page non trouvée » ne porte aucune URL
+longue : elle ne peut pas déborder, et elle passe le contrôle **quelle que soit la règle CSS**.
+
+J'ai mesuré une propriété vraie sur la mauvaise page. C'est la forme exacte de défaut que la leçon du
+lot 5 décrit — *« un audit mesure une propriété, jamais une expérience »* — et un contrôle qui ne peut
+pas échouer ne prouve rien.
+
+**Ce qui reste solide, et pourquoi le correctif tient quand même :**
+
+| Élément | Statut |
+|---|---|
+| Les quatre mesures **avant** — 362, 365, 359, 361 px | **fiables** : prises sur les pages réellement servies, avant l'effacement |
+| Le choix de `anywhere` plutôt que `break-word` — min-content 347,25 px contre 15,5 px | **fiable** : c'est une mesure de propriété, indépendante du contenu de la page |
+| Les mesures **après** | **reconstruites** dans le navigateur sur la chaîne d'ancêtres exacte, avec le texte d'ancre relu dans les fichiers de données. La reconstruction se valide elle-même : règle neutralisée, elle redonne 362 / 365 / 359 / 361, les quatre chiffres du site réel au pixel près |
+| La non-régression sur 6 pages × 4 largeurs, empreinte géométrique identique | **fiable** : ces pages-là étaient servies |
+
+**Ce qui n'est donc pas fait** : le correctif n'a **jamais été rendu sur les pages réelles portant le
+texte importé**. Il est très probablement juste — la reconstruction est fidèle au pixel — mais
+« très probablement » n'est pas « mesuré ».
+
+**Recette pour clore, une fois la base repeuplée** — c'est l'affaire de la passe d'intégration du lot :
+
+    wp mtb importer-portees-chiens
+    # puis, à 320 et 360 px, sur /portees/c-2007/ et /portees/o-2018/ :
+    # vérifier d'abord que la page répond 200 ET contient « youtube »,
+    # puis comparer document.documentElement.scrollWidth à window.innerWidth
+
+**Le contrôle doit vérifier le code HTTP et la présence du lien avant de conclure.** C'est ce que le
+mien ne faisait pas, et c'est ce qui l'a rendu inutile.
