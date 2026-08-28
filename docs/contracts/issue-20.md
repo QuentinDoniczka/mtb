@@ -627,3 +627,30 @@ pour que ce ne soit pas redécouvert par un échec.
 **Garde-fou, rappelé du §9.2** : *une liste d'exceptions qui grossit est le signal que l'approche
 dérape.* Celle-ci est la **première et la seule**. Toute exemption suivante doit être discutée, pas
 ajoutée.
+
+### 17 ter — Le caractère qui joint les deux balises : espace en base, `
+` dans le fichier
+
+*Question posée par la chaîne, tranchée ici.*
+
+**Le fichier de données joint les deux balises par `
+` ; la valeur écrite en base les joint par une
+espace.** L'assainisseur de texte recopié est appelé en mode ligne unique
+(`schema-fichier.php`, `assainir_recopie( …, false )`), et il replie les retours à la ligne — exactement
+comme celui de #21, qui ne sait pas faire autrement.
+
+**Ce n'est pas une perte de fidélité, parce qu'il n'y avait pas de fidélité à perdre.** Les deux
+balises sont **à 1 716 octets l'une de l'autre** dans le `<head>` : **ni `
+` ni l'espace ne
+reproduisent le document.** Les deux sont des jointures composées, et aucune n'est plus vraie que
+l'autre. Le critère de fidélité étant hors-jeu, c'est **l'homogénéité du dépôt** qui tranche — et
+c'était le motif même de la décision du §17.
+
+**Conséquence à connaître, pour qui comparera un jour le fichier et la base** : la valeur stockée
+**n'est pas caractère pour caractère celle du fichier de données**. C'est le seul champ de cette
+reprise dans ce cas. Le contrôle aval ne s'y trompe pas — il compare la valeur stockée à la valeur
+**ré-assainie**, pas à la valeur brute du fichier.
+
+**Ce qui reste vérifiable, et qui est le vrai garde-fou** : chaque balise prise séparément figure
+littéralement dans le HTML archivé, contrôle rejoué **4 / 4**. Le repli d'un caractère de jointure ne
+touche aucune balise.
