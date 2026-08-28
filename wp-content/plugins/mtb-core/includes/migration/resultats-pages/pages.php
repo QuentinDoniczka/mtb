@@ -96,13 +96,16 @@ function importer_pages( array $pages, array $chemins, array $photos, bool $simu
 		$champs['post_content'] = $contenu;
 
 		if ( $simuler ) {
+			$robots = fait_de_robots( $page );
+
 			compter( 'pages', 'cree' );
 			noter(
 				sprintf(
-					'Page « %s » : serait créée en %s, %s de balisage.',
+					'Page « %s » : serait créée en %s, %s de balisage%s.',
 					$champs['post_name'],
 					$champs['post_status'],
-					accorder( strlen( $contenu ), array( 'octet', 'octets' ) )
+					accorder( strlen( $contenu ), array( 'octet', 'octets' ) ),
+					array() === $robots ? '' : sprintf( ', avec le fait de robots « %s »', $robots['valeur'] )
 				)
 			);
 
@@ -117,8 +120,35 @@ function importer_pages( array $pages, array $chemins, array $photos, bool $simu
 			continue;
 		}
 
+		/*
+		 * Le fait de robots est écrit APRÈS la création, comme une méta ordinaire : la clé n'est
+		 * déclarée par aucun « content/** », donc aucun sanitize_callback ne la couvrirait à
+		 * l'insertion. Elle est assainie sous-clé par sous-clé par le schéma, avec l'assainisseur du
+		 * modèle, et le contrôle aval la relit comme les autres.
+		 */
+		$robots = fait_de_robots( $page );
+
+		if ( array() !== $robots ) {
+			ecrire_metas( $post_id, array( CLE_ROBOTS => $robots ) );
+			noter(
+				sprintf(
+					'Page « %s » : fait de robots « %s » recopié de %s. Il est STOCKÉ, il n\'est pas '
+					. 'encore rendu — la page reste indexable tant que le référencement ne l\'honore pas.',
+					$champs['post_name'],
+					$robots['valeur'],
+					$robots['source']
+				)
+			);
+		}
+
 		compter( 'pages', 'cree' );
-		signaler_divergences( 'pages', $fichier, 0, $reference, controler_aval_page( $post_id, $champs ) );
+		signaler_divergences(
+			'pages',
+			$fichier,
+			0,
+			$reference,
+			controler_aval_page( $post_id, $champs, $robots )
+		);
 	}
 }
 

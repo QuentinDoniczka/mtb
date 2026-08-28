@@ -99,7 +99,7 @@ composant n'était pas là.
 **Vous pouvez donc poser la charpente aujourd'hui et remplir dans trois semaines**, sans qu'un visiteur
 voie quoi que ce soit d'inachevé.
 
-**Pendant que vous modifiez la page**, chaque section encore vide affiche un cadre gris au contour en
+**Pendant que vous modifiez la page**, chaque section encore vide affiche un cadre beige au contour en
 tirets, portant le nom du composant en majuscules et une phrase qui commence par
 « Ce bloc n'affiche rien tant que… ». **C'est normal, c'est voulu, et ce n'est pas une panne.** Ce
 cadre n'existe que pour vous. Une page fraîchement créée à partir d'un modèle en montre plusieurs d'un
@@ -110,7 +110,7 @@ Si vous publiez une page dont vous n'avez encore rempli que la première section
 section, et rien d'autre.
 
 > **Capture à prendre :** une page qui vient d'être créée avec le modèle **Page d'accueil**, rien de
-> saisi, tous les cadres gris visibles d'un coup — pour qu'elle reconnaisse cet écran sans s'inquiéter.
+> saisi, tous les cadres beiges visibles d'un coup — pour qu'elle reconnaisse cet écran sans s'inquiéter.
 
 ---
 
@@ -222,7 +222,7 @@ changement — et l'un des deux finirait par mentir.
 
 **C'est normal, vous n'avez rien à faire :**
 
-- **Des cadres gris à contour en tirets partout dans la page qui vient d'être créée.** C'est la
+- **Des cadres beiges à contour en tirets partout dans la page qui vient d'être créée.** C'est la
   charpente qui attend votre texte. Les visiteurs ne voient rien. Voir plus haut.
 - **La page Travail n'affiche qu'un ou deux tableaux, pas neuf.** Les disciplines sans aucun résultat
   n'affichent ni titre ni tableau, exprès.
@@ -280,7 +280,7 @@ chacune vient. À faire en une passe, sur des pages d'essai.
 |---|---|---|
 | `captures/modeles-choisir-une-composition.png` | **Pages** → **Ajouter une page**, à l'ouverture | La fenêtre **Choisir une composition**, les **huit** modèles et leurs noms lisibles en entier |
 | `captures/modeles-onglet-compositions.png` | Une page ouverte → bouton **+** → onglet **Compositions** | L'onglet **Compositions**, les trois catégories **Toutes**, **Contenu de départ**, **Texte**, et les huit modèles |
-| `captures/modeles-accueil-a-remplir.png` | Une page neuve créée avec **Page d'accueil**, rien de saisi | Tous les cadres gris à contour en tirets visibles d'un coup, avec les noms de composants en majuscules |
+| `captures/modeles-accueil-a-remplir.png` | Une page neuve créée avec **Page d'accueil**, rien de saisi | Tous les cadres beiges à contour en tirets visibles d'un coup, avec les noms de composants en majuscules |
 | `captures/modeles-accueil-remplie.png` | La même page, remplie et **publiée**, vue sur le site | Le bandeau avec son titre, une section de texte, la dernière portée, les reproducteurs, l'encart d'appel |
 | `captures/modeles-travail-sur-le-site.png` | Une page créée avec **Page Travail**, **publiée**, vue sur le site | Le bandeau, la première section de texte, les tableaux de résultats avec leurs titres de discipline, **puis la seconde section de texte** — pour montrer qu'elle n'a rien tapé de ces tableaux, et que son texte peut continuer en dessous |
 | `captures/modeles-mentions-legales.png` | Une page créée avec **Page Mentions légales**, **publiée** | Le titre affiché **en haut de la page**, sans bandeau, puis les coordonnées — pour montrer les deux régimes de titre |

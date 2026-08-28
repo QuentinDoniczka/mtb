@@ -36,6 +36,43 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 /**
+ * Clé de méta hors modèle gelé, portant le fait de non-indexation relevé dans la capture.
+ *
+ * ÉCART DÉCLARÉ, et aligné sur celui de la reprise des portées et des chiens, qui pose la même clé
+ * sur ses quatre fiches en « noindex ». La page Placement est la seule des sept de ce périmètre à
+ * porter le fait ; sans cette clé, l'issue de référencement n'aurait RIEN à quoi se raccrocher pour
+ * elle, et le fait disparaîtrait — c'est très exactement le silence que ce projet a déjà payé.
+ *
+ * La clé n'est déclarée par aucun « content/** » : elle n'a donc ni assainisseur de modèle, ni
+ * rappel d'autorisation, et n'est pas enregistrée par register_post_meta(). Son tiret bas initial
+ * la rend invisible du panneau « Champs personnalisés ». Ce module l'assainit lui-même avant
+ * écriture, sous-clé par sous-clé, avec l'assainisseur de texte recopié du modèle — jamais avec un
+ * assainisseur écrit ici.
+ *
+ * Deux suites nécessaires, et aucune n'appartient à cette issue :
+ *   - déclarer la clé dans un « content/** », pour qu'elle vive dans le modèle ;
+ *   - la RENDRE — filtre wp_robots, exclusion du plan du site — sans quoi la page est indexable
+ *     alors que ce dépôt affirme que la source ne le veut pas.
+ */
+const CLE_ROBOTS = '_mtb_robots_source';
+
+/**
+ * Nettoie une valeur recopiée qu'aucun assainisseur de modèle ne gouverne.
+ *
+ * Délégation stricte, sans une ligne de logique propre : « content/resultat/champs.php:21-23 »
+ * enregistre déjà cette fonction en sanitize_callback, et son commentaire dit qu'elle couvre toute
+ * écriture par update_post_meta(), « y compris celle d'un futur import ». La clé de robots, elle,
+ * n'est pas enregistrée : elle a donc besoin d'un appel explicite, et c'est le MÊME.
+ *
+ * @param mixed $valeur Valeur brute.
+ *
+ * @return string Valeur recopiée, chaîne vide si la donnée n'est pas un scalaire.
+ */
+function assainir_recopie( $valeur ): string {
+	return \MTB\Core\Content\Resultat\assainir_texte_recopie( $valeur );
+}
+
+/**
  * Table des huit champs du résultat de travail, indexée par clé de méta.
  *
  * @return array<string, array<string, string>> Table du modèle.

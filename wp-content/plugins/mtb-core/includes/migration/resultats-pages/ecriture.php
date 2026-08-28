@@ -242,12 +242,22 @@ function divergences_de_metas( int $post_id, array $metas ): array {
  *
  * @param int                  $post_id Contenu écrit.
  * @param array<string, mixed> $champs  Champ de contenu => valeur brute demandée.
+ * @param array<string, string> $robots Fait de robots demandé, tableau vide si la page n'en a pas.
  *
  * @return string[] Divergences rédigées.
  */
-function controler_aval_page( int $post_id, array $champs ): array {
+function controler_aval_page( int $post_id, array $champs, array $robots = array() ): array {
 	$divergences = controler_les_champs( $post_id, $champs );
-	$contenu     = get_post_field( 'post_content', $post_id, 'raw' );
+
+	if ( array() !== $robots ) {
+		$stocke = get_post_meta( $post_id, CLE_ROBOTS, true );
+
+		if ( ! equivalent( $robots, $stocke ) ) {
+			$divergences[] = phrase_de_divergence( CLE_ROBOTS, $robots, $stocke );
+		}
+	}
+
+	$contenu = get_post_field( 'post_content', $post_id, 'raw' );
 
 	if ( ! is_string( $contenu ) || '' === $contenu ) {
 		return $divergences;

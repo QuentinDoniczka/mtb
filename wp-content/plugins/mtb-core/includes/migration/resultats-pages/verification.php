@@ -142,6 +142,16 @@ function verifier_les_pages( array $pages, array $chemins, array $photos ): void
 			}
 		}
 
+		$robots = fait_de_robots( $page );
+
+		if ( array() !== $robots ) {
+			$stocke = get_post_meta( $post_id, CLE_ROBOTS, true );
+
+			if ( ! equivalent( $robots, $stocke ) ) {
+				$divergences[] = phrase_de_divergence( CLE_ROBOTS, $robots, $stocke );
+			}
+		}
+
 		if ( $attendu !== $contenu->post_content ) {
 			$divergences[] = sprintf(
 				'le balisage de la page diffère de celui que composerait la reprise (%s en base, %s '

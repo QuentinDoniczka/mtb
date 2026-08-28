@@ -287,9 +287,11 @@ function controler_page( $page ): array {
 		}
 	}
 
-	$composition = isset( $page['composition'] ) ? $page['composition'] : array();
+	$raisons = array_merge( $raisons, controler_le_fait_de_robots( $page ) );
 
-	if ( null === $composition ) {
+	$composition = array_key_exists( 'composition', $page ) ? $page['composition'] : null;
+
+	if ( valeur_absente( $composition ) ) {
 		$composition = array();
 	}
 
@@ -303,6 +305,69 @@ function controler_page( $page ): array {
 		foreach ( controler_entree_de_composition( $entree ) as $raison ) {
 			$raisons[] = sprintf( 'composition [%d] : %s', (int) $rang, $raison );
 		}
+	}
+
+	return $raisons;
+}
+
+/**
+ * Contrôle le fait de robots d'une page, quand elle en déclare un.
+ *
+ * Facultatif : une seule des sept pages en porte un. Mais s'il est là, il est complet — un fait de
+ * référencement sans sa provenance ni ses octets d'origine ne serait pas contestable, donc pas un
+ * fait. Aucune valeur n'est jugée : « noindex, nofollow » n'est ni vérifié contre une liste, ni
+ * comparé à l'autre balise de la même page. Trancher laquelle des deux l'emporte appartient à
+ * l'issue de référencement, et à elle seule.
+ *
+ * @param array<string, mixed> $page Fiche de page.
+ *
+ * @return string[] Raisons rédigées.
+ */
+function controler_le_fait_de_robots( array $page ): array {
+	$brut = array_key_exists( CLE_FICHIER_ROBOTS, $page ) ? $page[ CLE_FICHIER_ROBOTS ] : null;
+
+	if ( valeur_absente( $brut ) ) {
+		return array();
+	}
+
+	if ( ! is_array( $brut ) || ! est_un_objet( $brut ) ) {
+		return array( sprintf( 'la clé « %s » doit être un objet JSON.', CLE_FICHIER_ROBOTS ) );
+	}
+
+	$raisons   = array();
+	$inconnues = array();
+
+	foreach ( array_keys( $brut ) as $cle ) {
+		if ( ! in_array( (string) $cle, SOUS_CLES_ROBOTS, true ) ) {
+			$inconnues[] = (string) $cle;
+		}
+	}
+
+	if ( array() !== $inconnues ) {
+		$raisons[] = sprintf(
+			'sous-clé%s inconnue%s de « %s » : %s. Sous-clés attendues : %s.',
+			count( $inconnues ) >= 2 ? 's' : '',
+			count( $inconnues ) >= 2 ? 's' : '',
+			CLE_FICHIER_ROBOTS,
+			citer( $inconnues ),
+			implode( ', ', SOUS_CLES_ROBOTS )
+		);
+	}
+
+	$manquantes = array();
+
+	foreach ( SOUS_CLES_ROBOTS as $cle ) {
+		if ( '' === texte_de( $brut, $cle ) ) {
+			$manquantes[] = $cle;
+		}
+	}
+
+	if ( array() !== $manquantes ) {
+		$raisons[] = sprintf(
+			'le fait de robots est incomplet — %s manque. Un fait de référencement sans sa provenance '
+			. "n'est pas contestable, donc n'est pas un fait.",
+			citer( $manquantes )
+		);
 	}
 
 	return $raisons;
@@ -374,13 +439,30 @@ function controler_entree_de_composition( $entree ): array {
  * @return string[] Raisons rédigées.
  */
 function controler_les_attributs( string $bloc, array $entree ): array {
-	$attributs = isset( $entree['attributs'] ) ? $entree['attributs'] : array();
+	/*
+	 * L'ancienne écriture — isset() puis « null === $attributs » — ne pouvait pas fonctionner :
+	 * isset() rend FAUX sur null, si bien que la branche qui testait null était morte, et que les
+	 * TROIS écritures de l'absence retombaient sur array(). Or est_une_liste( array() ) rend vrai,
+	 * et le tableau vide était donc refusé comme « pas un objet ». Résultat mesuré : les 13
+	 * « "attributs": {} » des fiches de page faisaient rejeter six pages sur sept.
+	 *
+	 * Le contrat §3 promet l'équivalence de « {} », de « null » et de la clé absente. La règle
+	 * existe déjà, écrite une seule fois, dans valeur_absente() : on l'appelle, au lieu de la
+	 * réécrire de travers.
+	 */
+	$attributs = array_key_exists( 'attributs', $entree ) ? $entree['attributs'] : null;
 
-	if ( null === $attributs || '' === $attributs ) {
+	if ( valeur_absente( $attributs ) ) {
 		return array();
 	}
 
-	if ( ! is_array( $attributs ) || est_une_liste( $attributs ) ) {
+	/*
+	 * est_un_objet() et non « ! est_une_liste() » : c'est LE SEUL des onze sites d'appel où le
+	 * tableau vide est une valeur légitime du côté objet. Aux dix autres, un tableau vide est de
+	 * toute façon fautif — un résultat sans aucune clé, une provenance sans aucune sous-clé, une
+	 * page sans aucun champ — et les deux lectures rejettent ; seul le libellé du message change.
+	 */
+	if ( ! is_array( $attributs ) || ! est_un_objet( $attributs ) ) {
 		return array( 'la clé « attributs » doit être un objet JSON.' );
 	}
 
@@ -448,9 +530,12 @@ function controler_les_attributs( string $bloc, array $entree ): array {
  * @return string[] Raisons rédigées.
  */
 function controler_les_paragraphes( string $bloc, array $entree ): array {
-	$paragraphes = isset( $entree['paragraphes'] ) ? $entree['paragraphes'] : array();
+	$paragraphes = array_key_exists( 'paragraphes', $entree ) ? $entree['paragraphes'] : null;
 
-	if ( null === $paragraphes || '' === $paragraphes || array() === $paragraphes ) {
+	// Même règle qu'ailleurs, et écrite au même endroit : clé absente, null, "" et [] disent tous
+	// « aucune prose ». Ici le tableau vide reste une LISTE valide — une fiche de charpente n'en a
+	// légitimement aucune.
+	if ( valeur_absente( $paragraphes ) ) {
 		return array();
 	}
 

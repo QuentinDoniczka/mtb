@@ -237,8 +237,9 @@ une transformation morte est le signe que la source a changé.
 
 Le comparateur est en **Python 3, bibliothèque standard**, et **importe `zones()` de
 `verifier_concordance.py`** au lieu de le recopier. Mesuré et non supposé : `php` n'existe pas sur
-l'hôte, `docs/` n'est monté dans aucun conteneur (`compose.yaml:85-89`), décision 34 interdit
-`docker compose run` sur `wpcli`. **Un `.py` dans une extension WordPress est une anomalie : la raison
+l'hôte, et la décision 34 interdit `docker compose run` sur `wpcli`. **Ces deux raisons restent
+vraies. La troisième, invoquée à la rédaction — « `docs/` n'est monté dans aucun conteneur » —
+est PÉRIMÉE** : le commit `01d4489`, du même lot, monte l'archive. Corrigé plutôt que laissé. **Un `.py` dans une extension WordPress est une anomalie : la raison
 est écrite en tête du fichier pour qu'aucune passe de refacto ne le « range » en PHP et ne le rende
 inexécutable.** Il pose lui-même `PYTHONIOENCODING=utf-8` — sans quoi Python retombe sur cp1252 et
 plante en `UnicodeEncodeError` **même sans console**, `stdout` étant un tuyau.
@@ -318,6 +319,20 @@ La page Travail ne porte **aucun tableau recopié** : la prose est recopiée, **
 15. Les lignes-espaceurs à U+00A0 seule de l'éditeur IONOS ne sont pas reprises, **comptées et
     déclarées page par page**.
 
+16. **L'affixe disparaît dès qu'un résultat est rattaché à une fiche.** Ligne RING 2021 : la source
+    écrit `♂ Jango de l'Orée des Crayères`, la page rendue affiche **`Jango`** — `fields/resultat/titre.php:38`
+    fait primer le titre de la fiche sur le nom recopié. **Le fait n'est pas perdu** : `_mtb_chien_nom`
+    porte le nom complet en base, et la fiche du chien affiche son nom d'usage et son affixe séparément
+    (leçon du lot 6). Mais **le tableau de la page Travail, lui, ne montre plus l'affixe**.
+    **Ce n'est pas un cas isolé, c'est un mécanisme qui grandira** : il ne touche aujourd'hui
+    **qu'une ligne sur 61** parce qu'une seule correspondance est confirmée — il touchera **toutes**
+    celles que l'éleveuse rattachera demain. Le rendu appartient au composant de #15, fermée, donc
+    hors empreinte : **écart déclaré, dette ouverte, rien corrigé ici.**
+
+    > **Cet écart manquait au §9 alors que le §9 se déclare exhaustif.** Il a été relevé par la revue
+    > de lot, pas par cette chaîne. Une liste qui se dit complète et ne l'est pas est un défaut plus
+    > grave que l'écart qu'elle omet — c'est ce qui a justifié de rouvrir ce contrat.
+
 ## 10. Interdits
 
 Écrire hors empreinte · **mettre à jour un contenu existant** · supprimer quoi que ce soit · `$wpdb` ·
@@ -379,8 +394,8 @@ rappel « couvre toute écriture par `update_post_meta()`, **y compris celle d'u
 
 | # | Dette | Vers |
 |---|---|---|
-| T-#21-a | **Les 3 photos ne sont pas téléversées** : `docs/` n'est monté dans aucun conteneur (`compose.yaml:85-89`) et l'`alt` est une question bloquante | issue `infra` + éleveuse |
-| T-#21-b | **Un comparateur Python vit dans une extension WordPress.** Mesuré : pas de `php` sur l'hôte, `docs/` non monté, décision 34. **Ne pas « ranger » en PHP** | information, gravée en tête du fichier |
+| T-#21-a | **Les 3 photos ne sont pas téléversées.** **Motif corrigé le 2026-08-28** : le montage de `docs/` n'en est plus la cause — `01d4489`, du même lot, l'a monté. Le **seul** motif encore valable est le **texte alternatif**, question ouverte à l'éleveuse : décrire une photo suppose de savoir qui est dessus | **éleveuse** (l'issue `infra` n'est plus concernée) |
+| T-#21-b | **Un comparateur Python vit dans une extension WordPress.** Mesuré : pas de `php` sur l'hôte, décision 34. (L'argument « `docs/` non monté » est périmé depuis `01d4489` ; les deux autres tiennent.) **Ne pas « ranger » en PHP** | information, gravée en tête du fichier |
 | T-#21-c | **Deux des trois photos sont des PNG**, et `format_de_sortie()` ne mappe que JPEG→WebP, délibérément. Dont un PNG de **1 002 317 o** sur la page Travail | `perf` / utilisateur |
 | T-#21-d | `docs/migration/redirections.md` **est périmé** et le devient davantage (T38) | `/lead-mtb` |
 | T-#21-e | **`ETAT.md` et `photos/MANIFESTE.md` disent encore que T12 est un « prérequis dur »** : c'est faux depuis `admin/medias/bootstrap.php`, qui **n'a délibérément pas de garde `is_admin()`** en nommant l'import WP-CLI | `/lead-mtb` |

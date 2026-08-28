@@ -100,6 +100,24 @@ function decoder( string $chemin ) {
 	return $decode;
 }
 
+/*
+ * LE TABLEAU VIDE EST À LA FOIS UNE LISTE VALIDE ET UN OBJET VALIDE, ET CE N'EST PAS UNE ERREUR
+ *
+ * json_decode( '[]', true ) et json_decode( '{}', true ) rendent tous deux, exactement, array().
+ * PHP ne peut donc PAS distinguer une liste vide d'un objet vide après décodage : l'ambiguïté est
+ * irréductible, et elle se résout au site d'appel, jamais dans ces deux fonctions.
+ *
+ * Les deux rendent donc vrai sur array(), et c'est délibéré :
+ *
+ *   - « paragraphes » : [] est légitime — une fiche de charpente n'a aucune prose ;
+ *   - « composition » : [] est légitime — une page sans aucun bloc ;
+ *   - « attributs »   : {} est légitime — un bloc dont tous les attributs valent leur défaut.
+ *
+ * Le prochain passant sera tenté de « corriger » l'une des deux en refusant array(). Il casserait
+ * l'autre. La règle est ailleurs : une clé absente, « null », la chaîne vide et le tableau vide
+ * disent tous « écris le défaut », et c'est valeur_absente() qui porte cette règle.
+ */
+
 /**
  * Le tableau décodé est-il une liste — donc une suite d'entrées et non un objet ?
  *
@@ -109,6 +127,17 @@ function decoder( string $chemin ) {
  */
 function est_une_liste( array $valeur ): bool {
 	return array() === $valeur || array_keys( $valeur ) === range( 0, count( $valeur ) - 1 );
+}
+
+/**
+ * Le tableau décodé est-il un objet — donc un jeu de clés nommées et non une suite d'entrées ?
+ *
+ * @param array<mixed> $valeur Tableau décodé.
+ *
+ * @return bool Vrai pour un objet, y compris vide.
+ */
+function est_un_objet( array $valeur ): bool {
+	return array() === $valeur || array_keys( $valeur ) !== range( 0, count( $valeur ) - 1 );
 }
 
 /**

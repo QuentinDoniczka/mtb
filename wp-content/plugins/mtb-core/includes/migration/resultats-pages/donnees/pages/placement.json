@@ -8,6 +8,11 @@
     "sha256": "3ee1c12510350f592d1c943f7c3378abffc06d795f17fddcc262a5a2fab11486",
     "zone": "Contenu principal"
   },
+  "robots_source": {
+    "valeur": "noindex, nofollow",
+    "source": "html/placement.html",
+    "extrait": "<meta name=\"robots\" content=\"noindex, nofollow\"/>\n<meta name=\"robots\" content=\"index,follow\"/>"
+  },
   "composition": [
     {
       "bloc": "mtb/bandeau-ouverture",

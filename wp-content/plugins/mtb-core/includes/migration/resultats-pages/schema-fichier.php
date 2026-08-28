@@ -61,6 +61,24 @@ const SOUS_CLES_SOURCE_RESULTAT = array( 'famille', 'discipline_source', 'ligne'
 const STATUTS_ACCEPTES = array( 'publish', 'draft' );
 
 /**
+ * Clé de fichier portant le fait de non-indexation relevé dans la capture, hors modèle gelé.
+ *
+ * FACULTATIVE, et elle doit le rester : une seule des sept pages la porte. La nommer obligatoire
+ * ferait rejeter les six autres, et surtout ferait croire qu'un fait de robots existe là où la
+ * source n'en écrit aucun.
+ */
+const CLE_FICHIER_ROBOTS = 'robots_source';
+
+/**
+ * Sous-clés obligatoires du fait de robots, dans l'ordre où elles se lisent.
+ *
+ * « valeur » est ce que la balise dit, « source » le fichier archivé où elle a été relevée, et
+ * « extrait » les octets mêmes de la capture — c'est lui qui rend le fait contestable par un tiers
+ * une fois la base détruite.
+ */
+const SOUS_CLES_ROBOTS = array( 'valeur', 'source', 'extrait' );
+
+/**
  * Clés d'une fiche de page : clé de fichier => champ de « wp_posts ».
  *
  * Ce ne sont pas des clés de méta : ce sont les champs de contenu de WordPress, et il n'existe
@@ -175,9 +193,37 @@ function cles_acceptees_page(): array {
 	$acceptees   = array_keys( cles_de_contenu_page() );
 	$acceptees[] = CLE_SOURCE;
 	$acceptees[] = 'composition';
+	$acceptees[] = CLE_FICHIER_ROBOTS;
 	$acceptees[] = CLE_COMMENTAIRE;
 
 	return $acceptees;
+}
+
+/**
+ * Fait de robots déclaré par une fiche de page, assaini sous-clé par sous-clé.
+ *
+ * Aucun assainisseur n'est écrit ici : chaque sous-clé passe par celui du modèle, délégué par
+ * « modele.php ». Une sous-clé absente devient une chaîne vide, jamais une clé manquante — la
+ * relecture doit pouvoir comparer les trois.
+ *
+ * @param array<string, mixed> $page Fiche de page.
+ *
+ * @return array<string, string> Fait de robots, tableau vide si la page n'en déclare aucun.
+ */
+function fait_de_robots( array $page ): array {
+	$brut = array_key_exists( CLE_FICHIER_ROBOTS, $page ) ? $page[ CLE_FICHIER_ROBOTS ] : null;
+
+	if ( valeur_absente( $brut ) || ! is_array( $brut ) ) {
+		return array();
+	}
+
+	$fait = array();
+
+	foreach ( SOUS_CLES_ROBOTS as $cle ) {
+		$fait[ $cle ] = assainir_recopie( isset( $brut[ $cle ] ) ? $brut[ $cle ] : '' );
+	}
+
+	return $fait;
 }
 
 /**
