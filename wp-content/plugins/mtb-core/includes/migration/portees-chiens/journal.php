@@ -526,7 +526,7 @@ function echec_racine_invalide( string $chemin ): void {
 function echec_base_de_demonstration( array $titres ): void {
 	\WP_CLI::error(
 		sprintf(
-			'La base porte du contenu de démonstration (%s). Une base semée par « wp mtb import-fixtures » n\'est pas une base d\'accueil pour la reprise : une fois les deux jeux mêlés, le fictif ne se distingue plus du réel à l\'œil nu. Repartez d\'une base vide (« docker compose down -v »). Aucun contenu n\'a été importé.',
+			'La base porte du contenu de démonstration (%s). Une base semée par « wp mtb import-fixtures » n\'est pas une base d\'accueil pour la reprise : une fois les deux jeux mêlés, le fictif ne se distingue plus du réel à l\'œil nu. La voie à suivre est de repartir d\'une base qui n\'a jamais reçu ce jeu : la pile Docker prévoit pour cela le réglage « MTB_FIXTURES=0 », qui saute le semis du contenu de démonstration au démarrage. Vider la base ne suffit pas — sans ce réglage, le démarrage suivant resème le jeu de démonstration, et cette garde refuse à nouveau. Si votre pile ne connaît pas encore ce réglage, faites supprimer les contenus de démonstration avant de relancer. Aucun contenu n\'a été importé.',
 			citer( $titres )
 		)
 	);

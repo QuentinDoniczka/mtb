@@ -93,7 +93,7 @@ function synopsis(): array {
 		'longdesc'  => "## NOTES\n\n"
 			. "Le contenu importé est RÉEL et destiné à la base de production. La commande REFUSE de s'exécuter si la base porte déjà un contenu de démonstration : une fois le fictif et le réel mêlés, ils ne se distinguent plus à l'œil nu.\n\n"
 			. "L'import crée le contenu absent et laisse strictement intact le contenu présent. Il ne supprime jamais rien. Conséquence : corriger un fichier de données ne met PAS à jour une base existante.\n\n"
-			. "Les photographies sont lues sur le disque, dans l'archive du dépôt. Aucun appel réseau n'est fait. Une seule pièce jointe est créée par condensé SHA-256 : les 192 fichiers de l'archive donnent 150 images distinctes.\n\n"
+			. "Les photographies sont lues sur le disque, dans l'archive du dépôt. Aucun appel réseau n'est fait. Une seule pièce jointe est créée par condensé SHA-256, et seules les images RÉELLEMENT CITÉES par les 44 entités sont versées : 136 citations donnent 135 PIÈCES JOINTES, deux identifiants partageant un condensé. À ne pas confondre avec le décompte de l'archive elle-même — 192 fichiers pour 150 condensés distincts —, dont tous ne sont pas cités.\n\n"
 			. "Lancez la commande avec « --user=<administrateur> » : sans session, les textes libres traversent wp_kses(), qui échappe les chevrons.\n\n"
 			. "Chaque entrée refusée donne un avertissement nommé ; les entrées valides du même fichier sont importées, et la commande sort en 1 dès un seul rejet ou un seul défaut.\n\n"
 			. "## EXAMPLES\n\n"

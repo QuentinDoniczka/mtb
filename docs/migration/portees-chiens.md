@@ -383,3 +383,42 @@ entités. Un relecteur qui compte 136 d'un côté et 135 de l'autre a ici son ex
 un identifiant nu. Le lecteur du moteur tolère les deux formes, donc **rien n'est à corriger dans le
 code** — mais la consigne et la réalité divergent, et **un écart non écrit n'est imputable à
 personne** (décision 46).
+
+## T12 n'est payée qu'à moitié — dette, pas défaut
+
+Les photographies sont bien entrées **par la médiathèque**, donc au moment où WordPress découpe et
+convertit : la sous-taille `mtb-vignette-galerie` est présente sur **135 / 135** pièces jointes, et le
+stock produit compte **592 fichiers WebP** sur 759 fichiers, 56,8 Mo. C'était l'objet de T12, et cette
+partie-là est tenue.
+
+**Mais 7 pièces jointes sur 135 n'ont aucune sous-taille WebP, et ce sont les 7 PNG.**
+
+La cause est à une ligne, dans le module d'images de l'issue #8 —
+`includes/admin/medias/…::format_de_sortie()` :
+
+    $formats['image/jpeg'] = 'image/webp';
+
+**Seul le JPEG est mappé.** Le PNG n'est pas converti, donc un PNG téléversé garde des sous-tailles
+PNG et n'obtient jamais de candidat WebP dans son `srcset`.
+
+L'arithmétique, mesurée sur les octets de l'archive et recoupée avec les citations :
+
+| | Compte |
+|---|---|
+| Citations de photographies par les 44 entités | **136** |
+| Fichiers distincts | 136 |
+| **Condensés distincts → pièces jointes** | **135** |
+| dont JPEG (`.jpg` 126 + `.jpeg` 2) → **convertis en WebP** | **128** |
+| dont PNG → **aucun WebP** | **7** |
+
+Les 8 PNG cités se referment sur **7** pièces jointes parce que la paire au condensé partagé
+(`14834172.png` et `16372512.png`) est précisément constituée de deux PNG.
+
+**Rien n'est corrigé ici, et c'est délibéré** : `includes/admin/medias/` appartient à l'issue **#8**,
+hors de l'empreinte de cette reprise. Étendre la conversion au PNG est une décision qui lui revient —
+elle n'est d'ailleurs pas évidente, le PNG servant aussi les images à aplat et à transparence, que
+WebP ne sert pas toujours mieux.
+
+**Ce qui compte pour la suite** : ces 7 images sont **déjà téléversées**. Si #8 étend un jour la
+conversion, elle ne s'appliquera **pas rétroactivement** — WordPress ne convertit qu'au téléversement,
+c'est l'énoncé même de T12. Il faudra **régénérer** ces 7 pièces jointes, ou les retéléverser.

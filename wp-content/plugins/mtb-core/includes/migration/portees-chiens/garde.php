@@ -19,8 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * « wp mtb import-fixtures » sème un jeu FICTIF : des chiens à l'affixe « de Démonstration », des
  * numéros « LOF DEMO … ». Ce jeu ne pose aucun marqueur d'origine — un contenu importé y est
  * indiscernable d'un contenu saisi. Une fois le réel versé par-dessus le fictif, plus rien ne les
- * sépare à l'œil nu, et la seule sortie est de repartir d'une base vide, en perdant tout ce que
- * l'éleveuse aurait déjà saisi entre-temps. Ce qu'on ne peut pas défaire, on l'interdit avant.
+ * sépare à l'œil nu, et il faut alors reconstruire une base sans démonstration, en perdant tout ce
+ * que l'éleveuse aurait déjà saisi entre-temps. Ce qu'on ne peut pas défaire, on l'interdit avant.
+ *
+ * VIDER LA BASE N'EST PAS LE REMÈDE, et c'est pourquoi le message de refus n'en parle pas : le
+ * provisionnement de la pile Docker resème le jeu de démonstration à chaque démarrage, si bien
+ * qu'un « docker compose down -v » rend une base à nouveau semée, que cette garde refuse à nouveau.
+ * La voie à suivre est de démarrer SANS ce semis — réglage « MTB_FIXTURES=0 » de la pile — ou, sur une
+ * pile qui ne connaît pas encore ce réglage, de supprimer les contenus de démonstration déjà semés.
  */
 
 /**
@@ -85,9 +91,10 @@ function refuser_une_base_de_demonstration(): bool {
  *
  * PRÉREQUIS D'ORDRE, PAS UNE RECOMMANDATION. WordPress ne découpe et ne convertit une image qu'AU
  * TÉLÉVERSEMENT : une photographie versée avant que la sous-taille de galerie ne soit déclarée
- * n'aura jamais ses formats modernes ni ses sous-tailles, et les cent cinquante images seraient à
- * régénérer. La sous-taille est déclarée sur « init », donc présente au moment où une commande
- * WP-CLI s'exécute — son absence signale une extension amputée, pas un ordre d'exécution.
+ * n'aura jamais ses formats modernes ni ses sous-tailles, et les cent trente-cinq photographies
+ * versées par la reprise seraient à régénérer. La sous-taille est déclarée sur « init », donc
+ * présente au moment où une commande WP-CLI s'exécute — son absence signale une extension
+ * amputée, pas un ordre d'exécution.
  *
  * @return bool Vrai si le module d'images est en place.
  */

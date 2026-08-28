@@ -14,10 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
- * LA RÈGLE QUI COMMANDE TOUT : 192 FICHIERS, 150 IMAGES
+ * LA RÈGLE QUI COMMANDE TOUT : DANS L'ARCHIVE, 192 FICHIERS POUR 150 CONDENSÉS
  *
- * L'archive porte 192 fichiers pour 150 images distinctes. Trois groupes d'octets rigoureusement
- * identiques — 16, 16 et 12 fichiers — sont les bandeaux de rubrique que le site répétait en tête
+ * Ce décompte est celui de L'ARCHIVE, pas celui de l'import : la reprise ne verse que les images
+ * citées par les 44 entités, soit 136 citations pour 135 pièces jointes.
+ *
+ * L'archive porte donc 192 fichiers pour 150 condensés distincts. Trois groupes d'octets
+ * rigoureusement identiques — 16, 16 et 12 fichiers — sont les bandeaux de rubrique que le site répétait en tête
  * de chaque fiche de chien. La conséquence est dure et contre-intuitive :
  *
  *   JAMAIS « première image de la page = image mise en avant ».

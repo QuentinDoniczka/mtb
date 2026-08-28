@@ -960,3 +960,49 @@ textarea[aria-invalid="true"] {
 .mtb-liens-de-secours > li + li {
   margin-block-start: var(--e-2);
 }
+
+/* =====================================================================
+ * 12. La prose reprise de l'ancien site — MASTER §4.5, §7.7
+ *
+ * POURQUOI CETTE RÈGLE EXISTE : le texte migré depuis IONOS contient des liens
+ * dont le texte d'ancre est l'URL brute, recopiée verbatim (§4 du brief :
+ * « on recopie »). Ce n'est pas une coquetterie de mise en forme — c'est un
+ * jeton de 67 signes SANS AUCUNE occasion de coupure, mesuré à 347,25 px sur
+ * `/portees/c-2007/` et 343,44 px sur `/portees/o-2018/`, pour un canal texte
+ * de 324 px à 360 px de fenêtre. `hyphens: auto` (l. 109) ne l'entame pas : une
+ * URL n'a pas de syllabe. Mesuré AVANT : le document rendait 365 px dans une
+ * fenêtre de 360, et 362 px dans une fenêtre de 320 — échec du §7.7 et du
+ * critère AA 1.4.10, bloquant. Le libellé de ces liens NE SE RÉÉCRIT PAS : lui
+ * inventer un texte lisible inventerait des mots que le site source n'a jamais
+ * écrits. La correction est donc typographique, et elle vise la CLASSE du
+ * problème — toute URL longue reprise plus tard produirait le même défaut.
+ *
+ * POURQUOI `anywhere` ET NON `break-word` : les deux cassent le mot au rendu,
+ * mais seul `anywhere` réduit la contribution min-content de la boîte. Mesuré
+ * sur le paragraphe fautif, largeur min-content : `normal` 347,25 px,
+ * `break-word` 347,25 px — INCHANGÉ —, `anywhere` 15,5 px. `break-word`
+ * suffirait ici par accident, parce que la l. 487 pose déjà `min-inline-size: 0`
+ * sur les enfants du canal et qu'aucun ancêtre de cette prose ne se dimensionne
+ * sur son contenu ; il cesserait de suffire dès que la même prose serait posée
+ * dans une piste `auto` ou dans une boîte flex. C'est le même arbitrage, avec la
+ * même mesure, que `entete-pied.css:216` et `blocs/mtb-coordonnees-plan.css:75`
+ * — écart signalé à MASTER §7.7, qui prescrit `break-word` pour les URL.
+ *
+ * SUR LE CONTENEUR ET NON SUR SES LIENS : une URL reprise peut arriver en texte
+ * nu, sans `<a>` autour ; la propriété étant héritée, la poser sur la prose
+ * couvre les deux cas d'une seule règle. Les cellules de tableau ne sont pas
+ * atteintes — la l. 323 leur déclare `break-word` en propre, et une déclaration
+ * bat toujours l'héritage : la largeur min-content des colonnes est préservée,
+ * donc le rendu des tableaux ne bouge pas. `hyphens: auto` continue de couper
+ * les mots français qui, eux, ont des syllabes.
+ *
+ * LES TROIS CROCHETS, VÉRIFIÉS DANS LE BALISAGE PRODUIT :
+ * `single-mtb_portee.php:64` et `single-mtb_chien.php:76` passent leur classe à
+ * `mtb_fiche_rendre_le_commentaire()` ; `.entry-content` est émis par le bloc
+ * `post-content` de `templates/singular.html` pour la prose des pages libres.
+ * ================================================================== */
+.mtb-fiche-portee__commentaire,
+.mtb-fiche-chien__commentaire,
+.entry-content {
+  overflow-wrap: anywhere;
+}
