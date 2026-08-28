@@ -569,12 +569,10 @@ L'`extrait` porte **les octets et rien d'autre** — pour les quatre fiches conc
 balises `robots` de la page, dans l'ordre du document**, sans remplissage ni commentaire. C'est la
 contradiction interne du source, et elle se recopie entière.
 
-**Sur le caractère qui les joint, ne pas lire ce paragraphe seul** : le fichier de données porte un
-`
-`, mais **la valeur stockée en base porte une espace**, l'assainisseur repliant tout caractère de
-contrôle — `preg_replace( '/[ -]+/', ' ', … )`, où `
-` vaut `0x0A`. **Le §17 ter fait
-foi.**
+**Sur le caractère qui les joint, ne pas lire ce paragraphe seul** : le fichier de données porte
+un \n littéral, mais **la valeur stockée en base porte une espace**. L'assainisseur replie tout
+caractère de contrôle — il remplace la classe \x00 à \x1F plus \x7F par une espace — et le saut
+de ligne vaut 0x0A, donc il tombe dans cette classe. **Le §17 ter fait foi.**
 
 **Rappel de l'état réel** : la clé est **stockée**, elle n'est **pas rendue**. `wp_robots` et
 l'exclusion du plan du site appartiennent à #23 / #24 (Q-20-9).
@@ -621,34 +619,29 @@ chaînes n'implémentent pas le même contrôle :
 
 | Chaîne | Implémentation | La forme jointe y |
 |---|---|---|
-| #21, `concordance.py` (`controle_7`) | **scinde sur `
-`** et compare ligne à ligne | passe par construction |
+| #21, `concordance.py` (`controle_7`) | **scinde sur `\n`** et compare ligne à ligne | passe par construction |
 | #20, `verification.php` (`echec_dextrait`) | `strpos()` sur **la chaîne entière** | échouerait |
 
 Or `robots_source` est **hors modèle**, donc absente de `sources_json()` : elle n'entre pas
 aujourd'hui dans le contrôle de `verification.php`. **Le jour où quelqu'un l'y raccorde, il doit
-scinder sur `
-` comme #21**, faute de quoi les quatre fiches tombent d'un coup. C'est écrit ici
+scinder sur `\n` comme #21**, faute de quoi les quatre fiches tombent d'un coup. C'est écrit ici
 pour que ce ne soit pas redécouvert par un échec.
 
 **Garde-fou, rappelé du §9.2** : *une liste d'exceptions qui grossit est le signal que l'approche
 dérape.* Celle-ci est la **première et la seule**. Toute exemption suivante doit être discutée, pas
 ajoutée.
 
-### 17 ter — Le caractère qui joint les deux balises : espace en base, `
-` dans le fichier
+### 17 ter — Le caractère qui joint les deux balises : espace en base, `\n` dans le fichier
 
 *Question posée par la chaîne, tranchée ici.*
 
-**Le fichier de données joint les deux balises par `
-` ; la valeur écrite en base les joint par une
+**Le fichier de données joint les deux balises par `\n` ; la valeur écrite en base les joint par une
 espace.** L'assainisseur de texte recopié est appelé en mode ligne unique
 (`schema-fichier.php`, `assainir_recopie( …, false )`), et il replie les retours à la ligne — exactement
 comme celui de #21, qui ne sait pas faire autrement.
 
 **Ce n'est pas une perte de fidélité, parce qu'il n'y avait pas de fidélité à perdre.** Les deux
-balises sont **à 1 716 octets l'une de l'autre** dans le `<head>` : **ni `
-` ni l'espace ne
+balises sont **à 1 716 octets l'une de l'autre** dans le `<head>` : **ni `\n` ni l'espace ne
 reproduisent le document.** Les deux sont des jointures composées, et aucune n'est plus vraie que
 l'autre. Le critère de fidélité étant hors-jeu, c'est **l'homogénéité du dépôt** qui tranche — et
 c'était le motif même de la décision du §17.
