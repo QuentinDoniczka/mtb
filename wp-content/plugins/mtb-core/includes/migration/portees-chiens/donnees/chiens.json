@@ -1,0 +1,2845 @@
+[
+  {
+    "reference": "etch",
+    "nom_usage": {
+      "valeur": "Etch",
+      "source": "html/chien-etch.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Etch</title>"
+    },
+    "nom_complet": {
+      "valeur": "Etch du Mont Brabant",
+      "source": "chiens/chien-etch.md",
+      "extrait": "✞ Etch du Mont Brabant 12/09/2009 DCD"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-e-2009.md",
+      "extrait": "- ♀ Etch du Mont Brabant LOF : 2450"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "12/09/2009",
+      "source": "chiens/chien-etch.md",
+      "extrait": "✞ Etch du Mont Brabant 12/09/2009 DCD"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « DCD » sans aucune date. Écrire une date serait l'inventer."
+    },
+    "statut": {
+      "valeur": "disparu",
+      "source": "chiens/chien-etch.md",
+      "extrait": "✞ Etch du Mont Brabant 12/09/2009 DCD"
+    },
+    "taille": {
+      "valeur": "58 cm",
+      "source": "chiens/chien-etch.md",
+      "extrait": "=> Toise : 58 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/E",
+      "source": "chiens/chien-etch.md",
+      "extrait": "=> Masque : Em/E"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Ky sous réserve de fiabilité du colortest (Labo Génindexe)",
+      "source": "chiens/chien-etch.md",
+      "extrait": "=> Locus : Kbr/Ky sous réserve de fiabilité du colortest (Labo Génindexe)"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD : A/A",
+        "source": "chiens/chien-etch.md",
+        "extrait": "=> Dysplasie hanche et coude : HD : A/A"
+      },
+      "ed": {
+        "valeur": "",
+        "motif": "La ligne « => Dysplasie hanche et coude : HD : A/A » ne porte qu'un seul résultat pour les deux articulations ; aucun résultat de coude distinct."
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "MD : N/N",
+        "source": "chiens/chien-etch.md",
+        "extrait": "=> MD : N/N : Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance."
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-etch.md",
+        "extrait": "=> Identifié ADN - SCC - Labo Genindexe"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "csau": {
+        "valeur": "2011",
+        "source": "chiens/chien-etch.md",
+        "extrait": "=> CSAU : 2011"
+      },
+      "cotation_lof": {
+        "valeur": "Elite B",
+        "source": "chiens/chien-etch.md",
+        "extrait": "=> Cotation : Elite B"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "CANT : 2010\nTAN : 2010",
+      "source": "chiens/chien-etch.md",
+      "extrait": "=> CANT : 2010\n\n=> TAN : 2010"
+    },
+    "pere": {
+      "nom": {
+        "valeur": "Vandale",
+        "source": "portees/portee-e-2009.md",
+        "extrait": "♂ Vandale X ♀ Bieke dit Broussaille"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "Bieke dit Broussaille",
+        "source": "portees/portee-e-2009.md",
+        "extrait": "♂ Vandale X ♀ Bieke dit Broussaille"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "7437995.jpg",
+      "7437996.jpg"
+    ],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucun lien vers une fiche LOF Select."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6163702.jpg?t=1491158060]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6163702.jpg?t=1491158060 alt=\"\"]\n\n[/LIEN]\n\n✞ Etch du Mont Brabant 12/09/2009 DCD\n\n(Vandale X Bieke dit Broussaille)\n\nDECEDEE\n\nRésultats expositions :\n\n- 14/03/10 : Offenburg (D) - Kliebenstein - Cl. puppy : 1e Exc BOS\n\n- 14/04/10 : Colmar (F) - Keizer - Cl. puppy : 1TP\n\n- 16/05/10 : RE Hanches - Kerfriden- Cl puppy : 2 TP\n\n- 10/07/10 : Ch. de France - Pouvesle  CJ : 1e Exc BOB\n\n- 14/08/10 : NE Luxembourg - Pouvesle CJ : 1Exc BOB\n\n- 12/09/10 : NE Rülzheim (D) CJ : 2Exc\n\n- 19/09/10 : NE Chècy(45) : CJ : 1Exc BOB\n\n- 13/03/11 : Offenburg (D) - Machentanz - CI : 1Exc - RCACS- RCACIB\n\n- --/07/11 : Ch. de France - Nagler - CI : Exc - RCACS\n\n- --/07/11 : Ch. du Monde - Van Deijl - CI : 3Exc\n\n- 31/03/12 : Colmar (F) - Karcher - CO : 1Exc -CACS-CACIB-BOB\n\n- 03/06/12 : RE Besançon - Kerfriden - CO : 1Exc\n\n- 06/07/12 : Ch. de France - Chwalibog - CO : 1Exc CACS-CACIB-BOB\n\n- 20/09/15 : NE St Martin () - Voilet - CO : 1Exc CACS- BOB\n\n- 18/08/12 : NE Luxembourg (L) - Vanhoenacker - CO : 1Exc CACL-BOB\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6163707.png?t=1491158596]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6163707.png?t=1491158596 alt=\"\"]\n\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n=> Dysplasie hanche et coude : HD : A/A\n\n=> Identifié ADN - SCC - Labo Genindexe\n\n=> MD : N/N : Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance.\n\n=> Locus : Kbr/Ky sous réserve de fiabilité du colortest (Labo Génindexe)\n\n=> Masque : Em/E\n\n=> Toise : 58 cm\n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6419772.jpg?t=1491078237]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6419772.jpg?t=1491078237 alt=\"\"]\n\n[/LIEN]\n\nAutres :\n\n=> CANT : 2010\n\n=> TAN : 2010\n\n=> CSAU : 2011\n\n=> Cotation : Elite B\n\n=> [LIEN href=https://www.mtbrabant.com/bhpl/portée-m-2016/]Mère de la portée \"M\" [/LIEN]\n\n=> [LIEN href=https://www.mtbrabant.com/bhpl/portée-j-2014/]Mère de la portée \" J\"[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_7437995.jpg?t=1499960137]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_7437995.jpg?t=1499960137 alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_7437996.jpg?t=1499960137]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_7437996.jpg?t=1499960137 alt=\"\"]\n\n[/LIEN]",
+      "source": "chiens/chien-etch.md",
+      "extrait": "✞ Etch du Mont Brabant 12/09/2009 DCD"
+    }
+  },
+  {
+    "reference": "gribouille",
+    "nom_usage": {
+      "valeur": "Gribouille",
+      "source": "html/chien-gribouille.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Gribouille</title>"
+    },
+    "nom_complet": {
+      "valeur": "Gribouille Langhske v.t Noorder Erf",
+      "source": "chiens/chien-gribouille.md",
+      "extrait": "✞ Gribouille Langhske v.t Noorder Erf 20/10/1991- DCD"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-l-1995.md",
+      "extrait": "♂ Schelm v.d Snoepersburcht X ♀ Gribouille Langhske v.t Noorder Erf"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "20/10/1991",
+      "source": "chiens/chien-gribouille.md",
+      "extrait": "✞ Gribouille Langhske v.t Noorder Erf 20/10/1991- DCD"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « DCD » sans aucune date."
+    },
+    "statut": {
+      "valeur": "disparu",
+      "source": "chiens/chien-gribouille.md",
+      "extrait": "✞ Gribouille Langhske v.t Noorder Erf 20/10/1991- DCD"
+    },
+    "taille": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucune toise."
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "",
+      "motif": "La fiche ne l'énonce pas."
+    },
+    "genetique_robe": {
+      "valeur": "",
+      "motif": "La fiche ne l'énonce pas."
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ed": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "adn_identifie": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Ch-Corrin v.d Sylvester Stee X Ch- Ayla v.d. Steenen Poort) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Ch-Corrin v.d Sylvester Stee X Ch- Ayla v.d. Steenen Poort) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "14335936.jpg"
+    ],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucun lien vers une fiche LOF Select."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6427437.jpg?t=1491158405]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6427437.jpg?t=1491158405 alt=\"\"]\n[/LIEN]\n\n \n\n✞ Gribouille Langhske v.t Noorder Erf 20/10/1991- DCD\n\n(Ch-Corrin v.d Sylvester Stee X Ch- Ayla v.d. Steenen Poort)\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6427455.png?t=1491158750]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6427455.png?t=1491158750 alt=\"\"]\n[/LIEN]\n\n=>\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_14335936.jpg?t=1591795176]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_14335936.jpg?t=1591795176 alt=\"\"]\n[/LIEN]",
+      "source": "chiens/chien-gribouille.md",
+      "extrait": "✞ Gribouille Langhske v.t Noorder Erf 20/10/1991- DCD"
+    }
+  },
+  {
+    "reference": "grocky",
+    "nom_usage": {
+      "valeur": "Grocky",
+      "source": "html/chien-grocky.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Grocky</title>"
+    },
+    "nom_complet": {
+      "valeur": "Grocky",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/fgrocky-7332435]Grocky[/LIEN]"
+    },
+    "sexe": {
+      "valeur": "male",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "[LIEN href=https://www.mtbrabant.com/bhpl/portée-r-2020/]Père de la portée \"R\" du Mont Brabant.[/LIEN]"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "12/04/2010",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "12/04/2010 LOF 8176/1000 - DCD"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « DCD » sans aucune date."
+    },
+    "statut": {
+      "valeur": "disparu",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "12/04/2010 LOF 8176/1000 - DCD"
+    },
+    "taille": {
+      "valeur": "60 cm",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "=> Toise : 60 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/Em",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "=> Masque : Em/Em"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Kby (MyDogDna)",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "=> Locus : Kbr/Kby (MyDogDna)"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HDB",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "=> Hanches : HDB"
+      },
+      "ed": {
+        "valeur": "ED0",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "=> Coudes : ED0"
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "N/N : (MyDogDna)",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "=> DM : N/N : (MyDogDna)"
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "N/N (MyDogDna)",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "=> SDCA2 : N/N (MyDogDna)"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "=> Identifié ADN SCC + MyDogDna"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "Chalette/Loing 21/09/2019",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "=> TC - Chalette/Loing 21/09/2019"
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "2",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "=> Cotation : 2"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "LOF 8176/1000",
+        "source": "chiens/chien-grocky.md",
+        "extrait": "12/04/2010 LOF 8176/1000 - DCD"
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « TI (x X  x) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « TI (x X  x) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "14834170.jpg",
+      "14834171.JPG",
+      "14834172.png",
+      "14834173.JPG"
+    ],
+    "pedigree": {
+      "valeur": "https://www.centrale-canine.fr/lofselect/chien/fgrocky-7332435",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/fgrocky-7332435]Grocky[/LIEN]"
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13346847.jpg?t=1569566215]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13346847.jpg?t=1569566215 alt=\"\"]\n[/LIEN]\n\n \n\n✞ \n[LIEN href=https://www.centrale-canine.fr/lofselect/chien/fgrocky-7332435]Grocky[/LIEN]\n12/04/2010 LOF 8176/1000 - DCD\n\nTI (x X  x)\n\n \n\n \n\nRésultats expositions :\n\n \n\n- 22/09/2019 : CO : Chalette/Loing NE. Fr : 1EXC - CACS - BOB B. Pouvesle\n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13346851.png?t=1569566542]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13346851.png?t=1569566542 alt=\"\"]\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n \n\n=> Hanches : HDB\n\n=> Coudes : ED0\n\n=> Identifié ADN SCC + MyDogDna\n\n=> DM : N/N : (MyDogDna)\n\nAucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance.\n\n=> SDCA2 : N/N (MyDogDna)\n\n=> Masque : Em/Em\n\n=> Locus : Kbr/Kby (MyDogDna)\n\n=> Toise : 60 cm\n\n \n\nToutes les attestations de résultat sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13346853.jpg?t=1569566681]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13346853.jpg?t=1569566681 alt=\"\"]\n[/LIEN]\n\nAutres\n\n \n\n=> TC - Chalette/Loing 21/09/2019\n\n=> Grocky est un mâle retraité d'intervention de l'armée de l'air française.\n\nGrocky a servi sous les drapeaux, mais il a montré lors de la NE qu'il est extremement équilibré.\n\n=> Test de caractère effectué en Finlande :\n[LIEN href=https://www.youtube.com/watch?v=IRo7pSiCP-w&feature=youtu.be&fbclid=IwAR1F1dy6gaWx0Ieb7y_2Cw-itWhqBNlCCcr_PdTqpBxmy5OCo3B-ma6bj8c]vidéo[/LIEN]\n\n=> \n[LIEN href=https://www.mtbrabant.com/bhpl/portée-r-2020/]Père de la portée \"R\" du Mont Brabant.[/LIEN]\n\n=> Cotation : 2\n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_14834170.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_14834170.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_14834171.JPG]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_14834171.JPG alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_14834172.png]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_14834172.png alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_14834173.JPG]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_14834173.JPG alt=\"\"]\n[/LIEN]",
+      "source": "chiens/chien-grocky.md",
+      "extrait": "12/04/2010 LOF 8176/1000 - DCD"
+    }
+  },
+  {
+    "reference": "halan",
+    "nom_usage": {
+      "valeur": "Halan",
+      "source": "html/chien-halan.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Halan</title>"
+    },
+    "nom_complet": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "sexe": {
+      "valeur": "",
+      "motif": "La fiche est vide (voir nom_complet). Le seul « Halan » du corpus est « C'Halan von Bavaria » (portee-o-2018.md l.35, marqué ♂ l.34) : ce nom n'est pas celui de la fiche, et l'attribuer serait une ressemblance, refusée par le contrat #20 §5."
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "statut": {
+      "valeur": "",
+      "motif": "La fiche est vide : elle n'énonce ni « DCD », ni « ✞ », ni aucune forme close de statut."
+    },
+    "taille": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "masque": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "genetique_robe": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ed": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "adn_identifie": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "La page ne cite aucune image : « cc_images » apparaît 0 fois dans chien-halan.html."
+    },
+    "galerie": [],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La zone de contenu de la page est vide : chien-halan.html ne contient aucune occurrence de « cc_images » et les deux seules occurrences de « Halan » sont le <title> et le og:title. La page ne porte aucun fait sur ce chien."
+    },
+    "texte_libre": {
+      "valeur": "",
+      "motif": "La capture porte « **Zone vide dans le HTML reçu.** Aucun contenu à reprendre. » et le HTML archivé le confirme."
+    },
+    "robots_source": {
+      "valeur": "noindex, nofollow",
+      "source": "html/chien-halan.html",
+      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+    }
+  },
+  {
+    "reference": "happy",
+    "nom_usage": {
+      "valeur": "Happy",
+      "source": "html/chien-happy.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Happy</title>"
+    },
+    "nom_complet": {
+      "valeur": "Happy du Mont Brabant",
+      "source": "chiens/chien-happy.md",
+      "extrait": "Happy du Mont Brabant 18/02/2012"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-h-2012.md",
+      "extrait": "- ♀ Happy du Mont Brabant LOF : 3330/572"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "18/02/2012",
+      "source": "chiens/chien-happy.md",
+      "extrait": "Happy du Mont Brabant 18/02/2012"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "",
+      "motif": "La fiche porte « STERILISEE » — stérilisée n'est pas morte — et la prose « Happy coule à présent une retraite heureuse en Allemagne. » La prose n'est pas une forme close. Contrat #20 §4.2, question Q-20-3."
+    },
+    "taille": {
+      "valeur": "58 cm",
+      "source": "chiens/chien-happy.md",
+      "extrait": "=> Toise 58 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La fiche écrit en prose « De part sa couleur foncée, Happy n'est pas une chienne d'exposition » : extraire « foncée » d'une phrase serait une lecture, pas une recopie."
+    },
+    "masque": {
+      "valeur": "E/E : Malgré sa tête noire, Happy ne porte pas de masque",
+      "source": "chiens/chien-happy.md",
+      "extrait": "=> Masque : E/E : Malgré sa tête noire, Happy ne porte pas de masque"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Kbr",
+      "source": "chiens/chien-happy.md",
+      "extrait": "=> Locus : Kbr/Kbr"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD : A/A",
+        "source": "chiens/chien-happy.md",
+        "extrait": "=> Dysplasie : HD : A/A"
+      },
+      "ed": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "N/N",
+        "source": "chiens/chien-happy.md",
+        "extrait": "=> DM : N/N : Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance."
+      },
+      "sdca1": {
+        "valeur": "1.1",
+        "source": "chiens/chien-happy.md",
+        "extrait": "=> SDCA 1 : 1.1"
+      },
+      "sdca2": {
+        "valeur": "1.1",
+        "source": "chiens/chien-happy.md",
+        "extrait": "=> SDCA 2 : 1.1"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-happy.md",
+        "extrait": "=> Identifié ADN compatible parents"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "Test Génomique SCC ",
+      "source": "chiens/chien-happy.md",
+      "extrait": "=> Test Génomique SCC "
+    },
+    "titres": {
+      "tc": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "Vandale",
+        "source": "portees/portee-h-2012.md",
+        "extrait": "♂ Vandale X ♀ Bieke dit Broussaille"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "Bieke dit Broussaille",
+        "source": "portees/portee-h-2012.md",
+        "extrait": "♂ Vandale X ♀ Bieke dit Broussaille"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte que l'accueil generique https://www.centrale-canine.fr/lofselect, qui n'est pas la fiche LOF d'un chien."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13553829.jpg?t=1573144795]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13553829.jpg?t=1573144795 alt=\"\"]\n[/LIEN]\n\nHappy du Mont Brabant 18/02/2012\n\n(Vandale X  Bieke)\n\n \n\nSTERILISEE\n\n \n\nRésultats expositions :\n\n \n\n- 09/05/2013 : 1er Très Bon Marseille, Mme Rivière\n\n \n\nDe part sa couleur foncée, Happy n'est pas une chienne d'exposition, mais elle a produit de très beaux sujets. Les sujets foncés ne doivent pas être écartés de la production, mais marié judicieusement. Le mariage que j'ai effectué avec Jango était un mariage risqué d'un point de vue de la couleur, et en effet, les chiots sont tous très foncés dans leur ensemble.\n\n \n\nHappy coule à présent une retraite heureuse en Allemagne.\n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13553855.png?t=1573145158]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13553855.png?t=1573145158 alt=\"\"]\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n \n\n=> Dysplasie : HD : A/A\n\n=> Test Génomique SCC \n\n=> Identifié ADN compatible parents\n\n=> DM : N/N : Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance.\n\n=> SDCA 1 : 1.1\n\n=> SDCA 2 : 1.1\n\n=> Masque : E/E : Malgré sa tête noire, Happy ne porte pas de masque\n\n=> Locus : Kbr/Kbr\n\n=> Toise 58 cm\n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\nToutes les informations sont vérifiables sur les sites suivants : \n\n- club de race : \n[LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : \n[LIEN href=https://www.centrale-canine.fr/lofselect]https://www.centrale-canine.fr/lofselect[/LIEN]",
+      "source": "chiens/chien-happy.md",
+      "extrait": "Happy du Mont Brabant 18/02/2012"
+    }
+  },
+  {
+    "reference": "jango",
+    "nom_usage": {
+      "valeur": "Jango",
+      "source": "html/chien-jango.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Jango</title>"
+    },
+    "nom_complet": {
+      "valeur": "Jango de l'Orée des Crayères",
+      "source": "chiens/chien-jango.md",
+      "extrait": "✞ Ch.F. [LIEN href=https://www.centrale-canine.fr/lofselect/chien/jango-de-loree-des-crayeres-6123045]Jango de l'Orée des Crayères[/LIEN] 13/10/2014 DCD"
+    },
+    "sexe": {
+      "valeur": "male",
+      "source": "portees/portee-m-2016.md",
+      "extrait": "♂ Jango de l'Orée des Crayères (DM : N/DM - HD:A/A - ED0 - ADN - Kbr/Kbr - Em/Em)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "13/10/2014",
+      "source": "chiens/chien-jango.md",
+      "extrait": "✞ Ch.F. [LIEN href=https://www.centrale-canine.fr/lofselect/chien/jango-de-loree-des-crayeres-6123045]Jango de l'Orée des Crayères[/LIEN] 13/10/2014 DCD"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « DCD » sans aucune date."
+    },
+    "statut": {
+      "valeur": "disparu",
+      "source": "chiens/chien-jango.md",
+      "extrait": "✞ Ch.F. [LIEN href=https://www.centrale-canine.fr/lofselect/chien/jango-de-loree-des-crayeres-6123045]Jango de l'Orée des Crayères[/LIEN] 13/10/2014 DCD"
+    },
+    "taille": {
+      "valeur": "59-60 cm",
+      "source": "chiens/chien-jango.md",
+      "extrait": "=> Toise 59-60 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/Em",
+      "source": "chiens/chien-jango.md",
+      "extrait": "=> Masque : Em/Em"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Kbr",
+      "source": "chiens/chien-jango.md",
+      "extrait": "=> Locus : Kbr/Kbr"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD : A/A",
+        "source": "chiens/chien-jango.md",
+        "extrait": "=> Dysplasie : HD : A/A"
+      },
+      "ed": {
+        "valeur": "ED0",
+        "source": "chiens/chien-jango.md",
+        "extrait": "=> Coudes ED0"
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "N/DM : va transmettre le gène à 50% de sa descendance.",
+        "source": "chiens/chien-jango.md",
+        "extrait": "=> DM : N/DM : va transmettre le gène à 50% de sa descendance."
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-jango.md",
+        "extrait": "=> Identifié ADN SCC"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "Châlons en Champagne 29/05/2016",
+        "source": "chiens/chien-jango.md",
+        "extrait": "=> TC - Châlons en Champagne 29/05/2016"
+      },
+      "csau": {
+        "valeur": "Exc - Metz 01/11/2015",
+        "source": "chiens/chien-jango.md",
+        "extrait": "=> CSAU Exc - Metz 01/11/2015"
+      },
+      "cotation_lof": {
+        "valeur": "4 Sujet Recommandé",
+        "source": "chiens/chien-jango.md",
+        "extrait": "=> Cotation : 4 Sujet Recommandé"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "TAT Exc - ORCET (63) le 20 Mai 2017\nBrevet de ring réussi le 12 Janvier 2019 avec 92.3/100.\nRING 1 Exc le 23 Octobre 2021 à St Aygulf\nChampion de France de conformité au standard",
+      "source": "chiens/chien-jango.md",
+      "extrait": "=> TAT Exc - ORCET (63) le 20 Mai 2017\n\n=> Brevet de ring réussi le 12 Janvier 2019 avec 92.3/100.\n\n=> RING 1 Exc le 23 Octobre 2021 à St Aygulf\n\n=> Cotation : 4 Sujet Recommandé\n\n=> Champion de France de conformité au standard"
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Icar de l'Oree des Crayeres X Furie des Roses d'Argent) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Icar de l'Oree des Crayeres X Furie des Roses d'Argent) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "16791790.jpg",
+      "16791791.jpg",
+      "16791792.jpg",
+      "16791793.jpg",
+      "16791794.jpg",
+      "16791795.jpg",
+      "16791796.JPG"
+    ],
+    "pedigree": {
+      "valeur": "https://www.centrale-canine.fr/lofselect/chien/jango-de-loree-des-crayeres-6123045",
+      "source": "chiens/chien-jango.md",
+      "extrait": "✞ Ch.F. [LIEN href=https://www.centrale-canine.fr/lofselect/chien/jango-de-loree-des-crayeres-6123045]Jango de l'Orée des Crayères[/LIEN] 13/10/2014 DCD"
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6163665.jpg?t=1491157992]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6163665.jpg?t=1491157992 alt=\"\"]\n\n[/LIEN]\n\n✞ Ch.F. [LIEN href=https://www.centrale-canine.fr/lofselect/chien/jango-de-loree-des-crayeres-6123045]Jango de l'Orée des Crayères[/LIEN] 13/10/2014 DCD\n\n(Icar de l'Orée des Crayères X Furie des Roses d'Argent)\n\nRésultats expositions :\n\n- 25/07/15 : Dieppe CJ : 1e Exc meilleur J-BOB Bernard Pouvesle\n\n- 20/09/15 : St Marin du Tertre NE CJ : 1e Exc BOS Chagnard\n\n- 31/10/15 : Metz CJ : 1Exc BOB Christian Karcher\n\n- 01/11/15 : Metz CJ : 1Exc BOB Marie José Melchior Schlechter\n\n- 29/05/16 : Châlons-en-Ch. CO NE : 1e Exc BOS Michel Moquet\n\n- 05/06/16 : Metz Champ. Fr : 2e Exc RCACS-RCACIB Giannone Salvatore\n\n- 26/11/17 : Martigues Spéciale COM : 1 EXC CACS-RCACIB Bernard Pouvesle\n\n- 28/01/18 : Perpignan COM : 1TB G. Schaffner\n\n- 08/05/2018 : Martigues COM : 1 Exc CACS J.C Klein\n\n- 24/09/2018 : Orcet NE CChM : 2 Exc Mr Griol\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6163682.png?t=1491158553]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6163682.png?t=1491158553 alt=\"\"]\n\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n=> Dysplasie : HD : A/A\n\n=> Coudes ED0\n\n=> Identifié ADN SCC\n\n=> Locus : Kbr/Kbr\n\n=> Masque : Em/Em\n\n=> DM : N/DM : va transmettre le gène à 50% de sa descendance.\n\n=> Toise 59-60 cm\n\nReproduction acceptée avec uniquement une femelle testée DM : N/N.\n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6410246.jpg?t=1606124168]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6410246.jpg?t=1606124168 alt=\"\"]\n\n[/LIEN]\n\nAutres\n\n=> CSAU Exc - Metz 01/11/2015\n\n=> TC - Châlons en Champagne 29/05/2016\n\n=> TAT Exc - ORCET (63) le 20 Mai 2017\n\n=> Brevet de ring réussi le 12 Janvier 2019 avec 92.3/100.\n\n=> RING 1 Exc le 23 Octobre 2021 à St Aygulf\n\n=> Cotation : 4 Sujet Recommandé\n\n=> Champion de France de conformité au standard\n\n=> [LIEN href=https://www.mtbrabant.com/bhpl/portée-m-2016/]Père de la portée \"M\"[/LIEN]\n\n=> [LIEN href=http://www.mtbrabant.com/bhpl/port%C3%A9e-n-2017/]Père de la portée \"N\"[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16791790.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16791790.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16791791.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16791791.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16791792.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16791792.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16791793.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16791793.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16791794.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16791794.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16791795.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16791795.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16791796.JPG]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16791796.JPG alt=\"\"]\n\n[/LIEN]\n\nToutes les informations sont vérifiables sur les sites suivants :\n\n- club de race : [LIEN href=http://www.abnf.fr]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : [LIEN href=https://www.centrale-canine.fr/lofselect]https://www.centrale-canine.fr/lofselect[/LIEN]",
+      "source": "chiens/chien-jango.md",
+      "extrait": "✞ Ch.F. [LIEN href=https://www.centrale-canine.fr/lofselect/chien/jango-de-loree-des-crayeres-6123045]Jango de l'Orée des Crayères[/LIEN] 13/10/2014 DCD"
+    }
+  },
+  {
+    "reference": "maya",
+    "nom_usage": {
+      "valeur": "Maya",
+      "source": "html/chien-maya.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Maya</title>"
+    },
+    "nom_complet": {
+      "valeur": "Maya du Mont Brabant",
+      "source": "chiens/chien-maya.md",
+      "extrait": "✞ Maya du Mont Brabant 02/12/1996 -DCD"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-m-1996.md",
+      "extrait": "- ♀ Maya du Mont Brabant LOF : 50/17"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "02/12/1996",
+      "source": "chiens/chien-maya.md",
+      "extrait": "✞ Maya du Mont Brabant 02/12/1996 -DCD"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « DCD » sans aucune date."
+    },
+    "statut": {
+      "valeur": "disparu",
+      "source": "chiens/chien-maya.md",
+      "extrait": "✞ Maya du Mont Brabant 02/12/1996 -DCD"
+    },
+    "taille": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucune toise."
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "",
+      "motif": "La fiche ne l'énonce pas."
+    },
+    "genetique_robe": {
+      "valeur": "",
+      "motif": "La fiche ne l'énonce pas."
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ed": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "adn_identifie": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "Falco v.d Drei Eidgenossen",
+        "source": "portees/portee-m-1996.md",
+        "extrait": "♂ Falco v.d Drei Eidgenossen X ♀ Gribouille Langhske v.t Noorder Erf"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "reference": "gribouille"
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucun lien vers une fiche LOF Select."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6427427.jpg?t=1491158233]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6427427.jpg?t=1491158233 alt=\"\"]\n[/LIEN]\n\n \n\n✞ Maya du Mont Brabant 02/12/1996 -DCD\n\n(Gribouille Langhske v.t Noorder Erf X Falco v.d Drei Eidgenossen)\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6427430.png?t=1491158707]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6427430.png?t=1491158707 alt=\"\"]\n[/LIEN]\n\n=>\n\n=>",
+      "source": "chiens/chien-maya.md",
+      "extrait": "✞ Maya du Mont Brabant 02/12/1996 -DCD"
+    }
+  },
+  {
+    "reference": "opium",
+    "nom_usage": {
+      "valeur": "Opium",
+      "source": "html/chien-opium.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Opium</title>"
+    },
+    "nom_complet": {
+      "valeur": "Opium des Leus Chapellois",
+      "source": "html/chien-opium.html",
+      "extrait": ">Opium</a><a href=\"https://www.centrale-canine.fr/lofselect/chien/opium-des-leus-chapellois-6248841\" target=\"_blank\"> des Leus Chapellois</a>"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "chiens/chien-opium.md",
+      "extrait": "[LIEN href=https://www.mtbrabant.com/bhpl/portée-o-2018/]Mère de la portée \"O\"[/LIEN]"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "04/01/2015",
+      "source": "chiens/chien-opium.md",
+      "extrait": "04/01/2015"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « STERILISEE / DCD » sans aucune date."
+    },
+    "statut": {
+      "valeur": "disparu",
+      "source": "chiens/chien-opium.md",
+      "extrait": "STERILISEE / DCD"
+    },
+    "taille": {
+      "valeur": "60 cm",
+      "source": "chiens/chien-opium.md",
+      "extrait": "=> Toise : 60 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/E",
+      "source": "chiens/chien-opium.md",
+      "extrait": "=> Masque : Em/E"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Kbr (Genindexe) sous réserve de fiabilité",
+      "source": "chiens/chien-opium.md",
+      "extrait": "=> Locus : Kbr/Kbr (Genindexe) sous réserve de fiabilité"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HDA",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> Hanches : HDA"
+      },
+      "ed": {
+        "valeur": "ED0",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> Coudes : ED0"
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "N/N",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> DM : N/N : Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance."
+      },
+      "sdca1": {
+        "valeur": "N/N",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> SDCA 1 et 2 : N/N"
+      },
+      "sdca2": {
+        "valeur": "N/N",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> SDCA 1 et 2 : N/N"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> Identifié ADN SCC"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "Enregistré MyDogDna",
+      "source": "chiens/chien-opium.md",
+      "extrait": "=> Enregistré MyDogDna"
+    },
+    "titres": {
+      "tc": {
+        "valeur": "Exc ORCET (63) le 20 Mai 2017",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> TC Exc ORCET (63) le 20 Mai 2017"
+      },
+      "csau": {
+        "valeur": "Exc - La Côte Bleue 2017",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> CSAU Exc - La Côte Bleue 2017"
+      },
+      "cotation_lof": {
+        "valeur": "3",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> Cotation : 3"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "CANT 2016\nTAT Très bon - ORCET (63) le 20 Mai 2017",
+      "source": "chiens/chien-opium.md",
+      "extrait": "=> CANT 2016\n\n=> CSAU Exc - La Côte Bleue 2017\n\n=> TC Exc ORCET (63) le 20 Mai 2017\n\n=> TAT Très bon - ORCET (63) le 20 Mai 2017"
+    },
+    "pere": {
+      "nom": {
+        "valeur": "Kruijmeltje Hasse v.d Dorestee",
+        "source": "chiens/chien-opium.md",
+        "extrait": "(Kruijmeltje Hasse v.d Dorestee X  Furia)"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "Furia",
+        "source": "chiens/chien-opium.md",
+        "extrait": "=> Vidéo de Furia la mère de Opium testé au mordant à 2 mois :"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "15456230.jpg",
+      "15456231.jpg",
+      "15456232.JPG",
+      "15456233.jpg"
+    ],
+    "pedigree": {
+      "valeur": "https://www.centrale-canine.fr/lofselect/chien/opium-des-leus-chapellois-6248841",
+      "source": "chiens/chien-opium.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/opium-des-leus-chapellois-6248841]Opium[/LIEN]"
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6163654.jpg?t=1491158018]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6163654.jpg?t=1491158018 alt=\"\"]\n[/LIEN]\n\n \n\n[LIEN href=https://www.centrale-canine.fr/lofselect/chien/opium-des-leus-chapellois-6248841]Opium[/LIEN]\n\n[LIEN href=https://www.centrale-canine.fr/lofselect/chien/opium-des-leus-chapellois-6248841] des Leus Chapellois[/LIEN]\n04/01/2015\n\n(Kruijmeltje Hasse v.d Dorestee X  Furia)\n\nSTERILISEE / DCD\n\n \n\n \n\nRésultats expositions :\n\n \n\n- 26/11/2015 : Marseille CACIB. Fr : 1EXC -2ème meilleur jeune du Groupe 1\n\n- 06/05/2017 : Monaco CACIB. : 1EXC - CACM - CACIB\n\n- 22/09/2019 : Chalette/Loing (NE) : 3EXC - COF\n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6410334.png?t=1491158571]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6410334.png?t=1491158571 alt=\"\"]\n[/LIEN]\n\n \n\nRésultats tests génétiques - santé :\n\n \n\n=> Hanches : HDA\n\n=> Coudes : ED0\n\n=> Identifié ADN SCC\n\n=> DM : N/N : Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance.\n\n=> SDCA 1 et 2 : N/N\n\n=> Masque : Em/E\n\n=> Enregistré MyDogDna\n\n=> Locus : Kbr/Kbr (Genindexe) sous réserve de fiabilité\n\n=> Toise : 60 cm\n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6410368.jpg?t=1490952447]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6410368.jpg?t=1490952447 alt=\"\"]\n[/LIEN]\n\nAutres :\n\n \n\n=> CANT 2016\n\n=> CSAU Exc - La Côte Bleue 2017\n\n=> TC Exc ORCET (63) le 20 Mai 2017\n\n=> TAT Très bon - ORCET (63) le 20 Mai 2017\n\n=> Cotation : 3\n\n=>\n[LIEN href=https://www.mtbrabant.com/bhpl/portée-o-2018/]Mère de la portée \"O\"[/LIEN]\n\n=>\n[LIEN href=https://www.mtbrabant.com/bhpl/portée-p-2019/]Mère de la portée \"P\"[/LIEN]\n\n=>\n[LIEN href=https://www.mtbrabant.com/bhpl/portée-r-2020/]Mère de la portée \"R\"[/LIEN]\n\n=>\n[LIEN href=https://www.mtbrabant.com/bhpl/portée-s2-2021/]Mère de la portée \"S2\"[/LIEN]\n\n=> Vidéo du grand père de Opium :\n[LIEN href=http://maurice-et-bosko.skyrock.com/2818843966-Symba-journee-speciale-BH.html]Symba[/LIEN]\n chien de sécurité\n\n=> Vidéo de Furia la mère de Opium testé au mordant à 2 mois :\n[LIEN href=https://www.youtube.com/watch?v=ZaSj2fltQpc]Furia[/LIEN]\n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_15456230.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_15456230.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_15456231.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_15456231.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_15456232.JPG]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_15456232.JPG alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_15456233.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_15456233.jpg alt=\"\"]\n[/LIEN]\n\nToutes les informations sont vérifiables sur les sites suivants : \n\n- club de race : \n[LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : \n[LIEN href=https://www.centrale-canine.fr/lofselect]https://www.centrale-canine.fr/lofselect[/LIEN]\n\n ",
+      "source": "chiens/chien-opium.md",
+      "extrait": "STERILISEE / DCD"
+    }
+  },
+  {
+    "reference": "pegaz",
+    "nom_usage": {
+      "valeur": "Pégaz",
+      "source": "html/chien-pegaz.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Pégaz</title>"
+    },
+    "nom_complet": {
+      "valeur": "Pégaz Eenhoorn",
+      "source": "chiens/chien-pegaz.md",
+      "extrait": "Pégaz Eenhoorn 01/04/2019 LOF 9510/1269"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-s1-2021.md",
+      "extrait": "X ♀ Pegaz Eenhoorn  (DM: N/N - HD:A - ED0 - ADN - Kbr/Kby - Em/Em)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "01/04/2019",
+      "source": "chiens/chien-pegaz.md",
+      "extrait": "Pégaz Eenhoorn 01/04/2019 LOF 9510/1269"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucune forme close de statut : ni « DCD », ni « ✞ », ni « Femelle reproductrice » sur la page d'accueil."
+    },
+    "taille": {
+      "valeur": "59 cm",
+      "source": "chiens/chien-pegaz.md",
+      "extrait": "=> Toise : 59 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/Em",
+      "source": "chiens/chien-pegaz.md",
+      "extrait": "=> Masque : Em/Em"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Ky (VetGen)",
+      "source": "chiens/chien-pegaz.md",
+      "extrait": "=> Locus : Kbr/Ky (VetGen)"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HDA",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> Hanches : HDA"
+      },
+      "ed": {
+        "valeur": "ED0",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> Coudes : ED0"
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "N/N : (SCC)",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> DM : N/N : (SCC)"
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "N/N (SCC)",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> SDCA2 : N/N (SCC)"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> Identifié ADN SCC"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "St Aygulf (83) 31/01/2021",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> TC - St Aygulf (83) 31/01/2021"
+      },
+      "csau": {
+        "valeur": "Exc - Ollioules (83) 29/05/2021",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> CSAU Exc - Ollioules (83) 29/05/2021"
+      },
+      "cotation_lof": {
+        "valeur": "3",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "=> Cotation : 3"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "LOF 9510/1269",
+        "source": "chiens/chien-pegaz.md",
+        "extrait": "Pégaz Eenhoorn 01/04/2019 LOF 9510/1269"
+      }
+    },
+    "autres_titres": {
+      "valeur": "RING : brevet Ring 97/100 Mouriès 26/02/2022\nRING 1 : Pont du Chateau Oct 2021",
+      "source": "chiens/chien-pegaz.md",
+      "extrait": "=> RING : brevet Ring 97/100 Mouriès 26/02/2022\n\n=> RING 1 : Pont du Chateau Oct 2021"
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « TI (x X  x) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « TI (x X  x) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "18989138.jpg",
+      "18989139.jpg",
+      "18989140.jpg",
+      "18989141.jpg",
+      "18989142.JPG"
+    ],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La ligne 115 porte deux ancres : .../lofselect/chien/pegaz-eenhoorn-7678490, dont le texte d'ancre est une seule espace insécable (donc invisible), et .../lofselect/chien/ray-ban-7578103, qui porte le libellé visible « https://www.centrale-canine.fr/lofselect ». Choisir entre les deux est un arbitrage, pas une lecture. Question Q-20-5."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_15015993.jpg?t=1612376185]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_15015993.jpg?t=1612376185 alt=\"\"]\n\n[/LIEN]\n\nPégaz Eenhoorn 01/04/2019 LOF 9510/1269\n\nTI (x X  x)\n\nRésultats expositions :\n\n- 04/09/21 : Sorges : 1e Exc CACS-BOB B. Pouvesle\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_15016002.png?t=1612376756]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_15016002.png?t=1612376756 alt=\"\"]\n\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n=> Hanches : HDA\n\n=> Coudes : ED0\n\n=> Identifié ADN SCC\n\n=> DM : N/N : (SCC)\n\nAucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance.\n\n=> SDCA2 : N/N (SCC)\n\n=> Masque : Em/Em\n\n=> Locus : Kbr/Ky (VetGen)\n\n=> Toise : 59 cm\n\nToutes les attestations de résultat sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_15016007.jpg?t=1612376837]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_15016007.jpg?t=1612376837 alt=\"\"]\n\n[/LIEN]\n\nAutres\n\n=> TC - St Aygulf (83) 31/01/2021\n\n=> CSAU Exc - Ollioules (83) 29/05/2021\n\n=> Cotation : 3\n\n=> RING : brevet Ring 97/100 Mouriès 26/02/2022\n\n=> RING 1 : Pont du Chateau Oct 2021\n\n=> [LIEN href=https://www.mtbrabant.com/bhpl/portée-s2-2021/]Portée du 11 Août 2021[/LIEN]\n\n=> [LIEN href=https://www.mtbrabant.com/bhpl/portée-u2-2023/]Portée du 6 Mai 2023[/LIEN]\n\n=> Portée du --- Avril 2026 dernière portée de Pegaz\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18989138.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18989138.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18989139.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18989139.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18989140.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18989140.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18989141.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18989141.jpg alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18989142.JPG]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18989142.JPG alt=\"\"]\n\n[/LIEN]\n\nToutes les informations sont vérifiables sur les sites suivants :\n\n- club de race : [LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine :[LIEN href=https://www.centrale-canine.fr/lofselect/chien/pegaz-eenhoorn-7678490] [/LIEN][LIEN href=https://www.centrale-canine.fr/lofselect/chien/ray-ban-7578103]https://www.centrale-canine.fr/lofselect[/LIEN]",
+      "source": "chiens/chien-pegaz.md",
+      "extrait": "Pégaz Eenhoorn 01/04/2019 LOF 9510/1269"
+    }
+  },
+  {
+    "reference": "ray-ban",
+    "nom_usage": {
+      "valeur": "Ray-Ban",
+      "source": "html/chien-ray-ban.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Ray-Ban</title>"
+    },
+    "nom_complet": {
+      "valeur": "Ray-Ban de l'Odyssée d'Hera",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/ray-ban-7578103]Ray-Ban de l'Odyssée d'Hera[/LIEN]"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-u1-2023.md",
+      "extrait": "X ♀ Ray Ban de l'Odyssée d'Hera (DM: N/N -SDCA2 1.2- HD:A- ED0 ADN)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "22/06/2020",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "22/06/2020"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucune forme close de statut. Elle ecrit en prose « Suite à un kyste sur l'utérus, Ray Ban a été stérilisé et a trouvé une nouvelle famille. » : c'est de la prose, pas une forme close."
+    },
+    "taille": {
+      "valeur": "59 cm",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "=> Toise : 59 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/Em",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "=> Masque : Em/Em"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Kbr (VetGen)",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "=> Locus : Kbr/Kbr (VetGen)"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD A",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> Hanches : HD A"
+      },
+      "ed": {
+        "valeur": "ED 0",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> Coudes : ED 0"
+      },
+      "ltv": {
+        "valeur": "LTV0 : Indemne de vertebre de transition lombosacrée",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> LTV0 : Indemne de vertebre de transition lombosacrée"
+      },
+      "dm": {
+        "valeur": "N/N (Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance).",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> DM : N/N (Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance)."
+      },
+      "sdca1": {
+        "valeur": "free",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> SDCA 1 : free"
+      },
+      "sdca2": {
+        "valeur": "1/2 (Porteur dégénérescence spongieuse Ataxie Cérébulleuse Type 2. Ne développera pas la maladie, transmettra la maladie à la moitié de sa descendance).",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> SDCA 2 : 1/2 (Porteur dégénérescence spongieuse Ataxie Cérébulleuse Type 2. Ne développera pas la maladie, transmettra la maladie à la moitié de sa descendance)."
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> Identifié ADN SCC"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "OCD ; 0 Indemne d'Ostéochondrose de la tête humérale.\nIndemne d'anomalie vertébrale",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "=> OCD ; 0 Indemne d'Ostéochondrose de la tête humérale.\n\n=> LTV0 : Indemne de vertebre de transition lombosacrée\n\n=> Indemne d'anomalie vertébrale"
+    },
+    "titres": {
+      "tc": {
+        "valeur": "Appoigny (89) 17/07/2021",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> TC - Appoigny (89) 17/07/2021"
+      },
+      "csau": {
+        "valeur": "Exc - Brignoles (83) 21/01/2023",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> CSAU Exc - Brignoles (83) 21/01/2023"
+      },
+      "cotation_lof": {
+        "valeur": "3",
+        "source": "chiens/chien-ray-ban.md",
+        "extrait": "=> Cotation : 3"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "TAT Exc 97/100",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "=> TAT Exc 97/100"
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Mango dit Messi des Crocs d'Eben X Narnia de l'Odyssee d'Hera) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Mango dit Messi des Crocs d'Eben X Narnia de l'Odyssee d'Hera) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "16427154.jpg",
+      "16427155.jpg",
+      "16427156.JPG"
+    ],
+    "pedigree": {
+      "valeur": "https://www.centrale-canine.fr/lofselect/chien/ray-ban-7578103",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/ray-ban-7578103]Ray-Ban de l'Odyssée d'Hera[/LIEN]"
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_14893746.jpg?t=1609661446]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_14893746.jpg?t=1609661446 alt=\"\"]\n[/LIEN]\n\n \n\n[LIEN href=https://www.centrale-canine.fr/lofselect/chien/ray-ban-7578103]Ray-Ban de l'Odyssée d'Hera[/LIEN]\n22/06/2020\n\n(Mango dit Messi des Crocs d'Eben X Narnia de l'Odyssée d'Hera)\n\n \n\n \n\n                Résultats expositions :\n\n \n\n- 18/07/2021 : Chalette/Loing (CACS Spé) : 1EXC - CJF Nicolas Martin\n\n \n\n \n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_14893748.png?t=1609661465]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_14893748.png?t=1609661465 alt=\"\"]\n[/LIEN]\n\n \n\nRésultats tests génétiques - santé :\n\n \n\n=> Hanches : HD A\n\n=> Coudes : ED 0\n\n=> Identifié ADN SCC\n\n=> DM : N/N (Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance).\n\n=> SDCA 1 : free\n\n=> SDCA 2 : 1/2 (Porteur dégénérescence spongieuse Ataxie Cérébulleuse Type 2. Ne développera pas la maladie, transmettra la maladie à la moitié de sa descendance).\n\n=> Masque : Em/Em\n\n=> OCD ; 0 Indemne d'Ostéochondrose de la tête humérale.\n\n=> LTV0 : Indemne de vertebre de transition lombosacrée\n\n=> Indemne d'anomalie vertébrale\n\n=> Locus : Kbr/Kbr (VetGen)\n\n=> Toise : 59 cm\n\n \n\nToutes les informations sont vérifiables sur les sites suivants : \n\n- club de race : \n[LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : \n[LIEN href=https://www.centrale-canine.fr/lofselect]https://www.centrale-canine.fr/lofselect[/LIEN]\n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_14894211.jpg?t=1609662684]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_14894211.jpg?t=1609662684 alt=\"\"]\n[/LIEN]\n\nAutres\n\n \n\n=> TC - Appoigny (89) 17/07/2021\n\n=> CSAU Exc - Brignoles (83) 21/01/2023\n\n=> TAT Exc 97/100\n\n=> Cotation : 3\n\n=> Portée du 18/03/2023\n\n \n\nSuite à un kyste sur l'utérus, Ray Ban a été stérilisé et a trouvé une nouvelle famille.\n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16427154.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16427154.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16427155.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16427155.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_16427156.JPG]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_16427156.JPG alt=\"\"]\n[/LIEN]\n\nToutes les informations sont vérifiables sur les sites suivants : \n\n- club de race : \n[LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : \n[LIEN href=https://www.centrale-canine.fr/lofselect/chien/ray-ban-7578103]https://www.centrale-canine.fr/lofselect[/LIEN]",
+      "source": "chiens/chien-ray-ban.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/ray-ban-7578103]Ray-Ban de l'Odyssée d'Hera[/LIEN]"
+    },
+    "robots_source": {
+      "valeur": "noindex, nofollow",
+      "source": "html/chien-ray-ban.html",
+      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+    }
+  },
+  {
+    "reference": "rolex",
+    "nom_usage": {
+      "valeur": "Rolex",
+      "source": "html/chien-rolex.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Rolex</title>"
+    },
+    "nom_complet": {
+      "valeur": "Rolex New Wave du Mont Brabant",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/rolex-new-wave-7526621]Rolex New Wave du Mont Brabant[/LIEN]"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-t-2022.md",
+      "extrait": "X ♀ Rolex New Wave du Mont Brabant (DM: N/N - HD:A- ED0 ADN - Kbr/Kby - Em/E)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "17/03/2020",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "17/03/2020"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "reproducteur",
+      "source": "accueil.md",
+      "extrait": "Femelle reproductrice"
+    },
+    "taille": {
+      "valeur": "58 cm",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "=> Toise 58 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/E",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "=> Masque : Em/E"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/Kbr (Vetgen)",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "=> Locus : Kbr/Kbr (Vetgen)"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD : A/A",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> Dysplasie : HD : A/A"
+      },
+      "ed": {
+        "valeur": "ED 0",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> Coudes : ED 0"
+      },
+      "ltv": {
+        "valeur": "0",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> LTV : 0"
+      },
+      "dm": {
+        "valeur": "N/N",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> DM : N/N"
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> Identifié ADN SCC"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "Mouriès (13) 30/01/2022",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> TC - Mouriès (13) 30/01/2022"
+      },
+      "csau": {
+        "valeur": "./.",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> CSAU ./."
+      },
+      "cotation_lof": {
+        "valeur": "2",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "=> Cotation : 2"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "TAT ./.",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "=> TAT ./."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "F'Grocky",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "(F'Grocky X Opium des Leus Chapellois)"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "Opium des Leus Chapellois",
+        "source": "chiens/chien-rolex.md",
+        "extrait": "(F'Grocky X Opium des Leus Chapellois)"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "14894226.jpg"
+    ],
+    "pedigree": {
+      "valeur": "https://www.centrale-canine.fr/lofselect/chien/rolex-new-wave-7526621",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/rolex-new-wave-7526621]Rolex New Wave du Mont Brabant[/LIEN]"
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_14801494.jpg?t=1606123542]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_14801494.jpg?t=1606123542 alt=\"\"]\n\n[/LIEN]\n\n[LIEN href=https://www.centrale-canine.fr/lofselect/chien/rolex-new-wave-7526621]Rolex New Wave du Mont Brabant[/LIEN]\n17/03/2020\n\n(F'Grocky X Opium des Leus Chapellois)\n\nRésultats expositions :\n\n- 04/09/21 : Ch. F Dijon IF : 1e Exc CACS-BOB Annie Pouvesle\n\n- 28/05/23 : RE Mouriès (13) : 2 Exc Jacky Dilies\n\nRolex est une femelle de caractère. Elle le tient en grande partie de sa mère Opium. Rolex est très territoriale et défendra sa famille sans hésitation. Rolex est une femelle très énergique mais\nqui sait malgré tout se tenir très sage en intérieur.\n\nLe papa de Rolex est GROCKY, notre mâle retraité de l'armée de l'air Française. Grocky était un chien d'intervention qui a assuré de bons et loyaux services jusqu'à ses 9 ans. Nous avons eu la\nchance de pouvoir intégrer Grocky à notre programme d'élevage. En effet, le livre de la race est ouvert, ce qui nous a permis de l'inscrire à titre initiale en septembre 2019. Ce jour là, Grocky a\nfait meilleur chien de l'exposition nationale d'élevage de la race. Quelle joie !\n\nRolex est la soeur de portée de Road Trip du Mont Brabant, premier Berger Hollandais à poil long en RING 3, et premier de sa variété à se qualifier aux selectifs Ring 2025.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_14801503.png?t=1606123967]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_14801503.png?t=1606123967 alt=\"\"]\n\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n=> Dysplasie : HD : A/A\n\n=> Coudes : ED 0\n\n=> LTV : 0\n\n=> Identifié ADN SCC\n\n=> Locus : Kbr/Kbr (Vetgen)\n\n=> Masque : Em/E\n\n=> DM : N/N\n\n=> Toise 58 cm\n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_14801505.jpg?t=1606124187]\n\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_14801505.jpg?t=1606124187 alt=\"\"]\n\n[/LIEN]\n\nAutres\n\n=> CSAU ./.\n\n=> TC - Mouriès (13) 30/01/2022\n\n=> TAT ./.\n\n=> Cotation : 2\n\n=> [LIEN href=https://www.mtbrabant.com/bhpl/portée-t-2022/]Portée du 13 Juin 2022 [/LIEN]\n\n=> Portée du 15 Décembre 2023\n\n=> Portée du 18 Février 2025\n\n=> Portée 2026 ou 2027\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_14894226.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_14894226.jpg alt=\"\"]\n\n[/LIEN]\n\nToutes les informations sont vérifiables sur les sites suivants :\n\n- club de race : [LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : [LIEN href=https://www.centrale-canine.fr/lofselect/chien/rolex-new-wave-du-mont-brabant-7526621]https://www.centrale-canine.fr/lofselect[/LIEN]",
+      "source": "chiens/chien-rolex.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/rolex-new-wave-7526621]Rolex New Wave du Mont Brabant[/LIEN]"
+    }
+  },
+  {
+    "reference": "roxane",
+    "nom_usage": {
+      "valeur": "Roxane",
+      "source": "html/chien-roxane.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Roxane</title>"
+    },
+    "nom_complet": {
+      "valeur": "Roxane de l'Odyssée d'Hera",
+      "source": "chiens/chien-roxane.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/roxane-de-lodyssee-dhera-7580567]Roxane de l'Odyssée d'Hera[/LIEN]"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-u3-2023.md",
+      "extrait": "X ♀ Roxane de l'Odyssée d'Hera (DM: N/N -SDCA2 1.1- HD:A- ED0 ADN)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose. La fiche écrit en prose « Je n'ai jamais ete attiré par la variété à poil court [...] mais Roxane est la première à avoir véritablement retenu mon regard » et « Roxane est porteuse de poil long » : deux phrases de prose, pas une valeur."
+    },
+    "date_naissance": {
+      "valeur": "29/06/2020",
+      "source": "chiens/chien-roxane.md",
+      "extrait": " 29/06/2020"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucune forme close de statut : ni « DCD », ni « ✞ », ni « Femelle reproductrice » sur la page d'accueil."
+    },
+    "taille": {
+      "valeur": "55 cm",
+      "source": "chiens/chien-roxane.md",
+      "extrait": "=> Toise : 55 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/Em",
+      "source": "chiens/chien-roxane.md",
+      "extrait": "=> Masque : Em/Em"
+    },
+    "genetique_robe": {
+      "valeur": "",
+      "motif": "La fiche écrit « => Locus : » (l.83) suivi d'une espace insécable et de rien d'autre."
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD A",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> Hanches : HD A"
+      },
+      "ed": {
+        "valeur": "ED-0",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> Coudes : ED-0"
+      },
+      "ltv": {
+        "valeur": "LTV0 : Indemne de vertebre de transition lombosacrée",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> LTV0 : Indemne de vertebre de transition lombosacrée"
+      },
+      "dm": {
+        "valeur": "N/N (Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance).",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> DM : N/N (Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance)."
+      },
+      "sdca1": {
+        "valeur": "free",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> SDCA 1 : free"
+      },
+      "sdca2": {
+        "valeur": "free",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> SDCA 2 : free"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> Identifié ADN SCC"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "OCD ; 0 Indemne d'Ostéochondrose de la tête humérale.\nIndemne d'anomalie vertébrale",
+      "source": "chiens/chien-roxane.md",
+      "extrait": "=> OCD ; 0 Indemne d'Ostéochondrose de la tête humérale.\n\n=> LTV0 : Indemne de vertebre de transition lombosacrée\n\n=> Indemne d'anomalie vertébrale"
+    },
+    "titres": {
+      "tc": {
+        "valeur": "",
+        "motif": "La fiche écrit « => TC » (l.113) suivi d'une espace insécable et de rien d'autre."
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "2",
+        "source": "chiens/chien-roxane.md",
+        "extrait": "=> Cotation : 2"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Goliath 2 des Fonds de Gueule X Iris des Crocs Blancs du Vert Bois) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Goliath 2 des Fonds de Gueule X Iris des Crocs Blancs du Vert Bois) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "17365005.JPG",
+      "17422748.jpg"
+    ],
+    "pedigree": {
+      "valeur": "https://www.centrale-canine.fr/lofselect/chien/roxane-de-lodyssee-dhera-7580567",
+      "source": "chiens/chien-roxane.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/roxane-de-lodyssee-dhera-7580567]Roxane de l'Odyssée d'Hera[/LIEN]"
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17364989.jpg?t=1695110681]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17364989.jpg?t=1695110681 alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.centrale-canine.fr/lofselect/chien/roxane-de-lodyssee-dhera-7580567]Roxane de l'Odyssée d'Hera[/LIEN]\n 29/06/2020\n\n(Goliath 2 des Fonds de Gueule X Iris des Crocs Blancs du Vert Bois)\n\n \n\n \n\n \n\n                Résultats expositions :\n\n \n\n- 21/05/2022 : Lambres Les Aires (Régionale d'élevage) : 1EXC  Solange ROSER\n\n \n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17365000.png?t=1695111208]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17365000.png?t=1695111208 alt=\"\"]\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n \n\n=> Hanches : HD A\n\n=> Coudes : ED-0\n\n=> Identifié ADN SCC\n\n=> DM : N/N (Aucun risque d'avoir les symptômes de la maladie, ni de les transmettre à sa descendance).\n\n=> SDCA 1 : free\n\n=> SDCA 2 : free\n\n=> Masque : Em/Em\n\n=> OCD ; 0 Indemne d'Ostéochondrose de la tête humérale.\n\n=> LTV0 : Indemne de vertebre de transition lombosacrée\n\n=> Indemne d'anomalie vertébrale\n\n=> Locus : \n\n=> Toise : 55 cm\n\n \n\nToutes les informations sont vérifiables sur les sites suivants : \n\n- club de race : \n[LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : \n[LIEN href=https://www.centrale-canine.fr/lofselect]https://www.centrale-canine.fr/lofselect[/LIEN]\n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n \n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17364999.jpg?t=1697653019]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17364999.jpg?t=1697653019 alt=\"\"]\n[/LIEN]\n\nAutres\n\n \n\n=> TC \n\n=> Cotation : 2\n\n=> Portée du 21/11/2023\n\n=> Portée prévue en 2025\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17365005.JPG?t=1695111655]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17365005.JPG?t=1695111655 alt=\"\"]\n[/LIEN]\n\n \n\nRoxane est venue nous rejoindre en juillet 2023. Je n'ai jamais été attiré par la variété à poil court, il faut bien l'avouer, mais Roxane est la première à avoir véritablement retenu mon regard. Suite à une réduction d'élevage, son éleveuse a souhaité lui trouver une nouvelle famille. Après quelques jours de réfléxion, j'ai décidé de l'intégrer à ma meute.\n\nRoxane est une chienne très facile, très sociable humain, chien, chiot. Très joueuse, très équilibrée.\n\nRoxane est porteuse de poil long, nous espérons donc qu'elle nous apportera sa grande stabilité sur nos futus mariages ainsi que dans la variété à poil long !\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17422748.jpg?t=1697653329]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17422748.jpg?t=1697653329 alt=\"\"]\n[/LIEN]",
+      "source": "chiens/chien-roxane.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien/roxane-de-lodyssee-dhera-7580567]Roxane de l'Odyssée d'Hera[/LIEN]"
+    },
+    "robots_source": {
+      "valeur": "noindex, nofollow",
+      "source": "html/chien-roxane.html",
+      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+    }
+  },
+  {
+    "reference": "tara",
+    "nom_usage": {
+      "valeur": "Tara",
+      "source": "html/chien-tara.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Tara</title>"
+    },
+    "nom_complet": {
+      "valeur": "Tina dit Tara du H3F",
+      "source": "chiens/chien-tara.md",
+      "extrait": "Tina dit Tara du H3F 06/12/2002 DCD: 06/2018"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-d-2008.md",
+      "extrait": "♂ Vandale X ♀ Tina dit Tara du Hameau des trois Fontaines"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "06/12/2002",
+      "source": "chiens/chien-tara.md",
+      "extrait": "Tina dit Tara du H3F 06/12/2002 DCD: 06/2018"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « DCD: 06/2018 » : un mois et une année, sans jour. Le champ est une date ; écrire « 2018-06-01 » inventerait un jour. La mention survit verbatim dans le texte libre."
+    },
+    "statut": {
+      "valeur": "disparu",
+      "source": "chiens/chien-tara.md",
+      "extrait": "Tina dit Tara du H3F 06/12/2002 DCD: 06/2018"
+    },
+    "taille": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucune toise."
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "",
+      "motif": "La fiche ne l'énonce pas."
+    },
+    "genetique_robe": {
+      "valeur": "",
+      "motif": "La fiche ne l'énonce pas."
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ed": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca1": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "sdca2": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "adn_identifie": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "4",
+        "source": "chiens/chien-tara.md",
+        "extrait": "=> Cotation : 4"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche écrit « LOF » (l.36) suivi d'une espace insécable et de rien d'autre. Le numéro n'est pas donné."
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "Mac-Mahon des Hyènes de la Sensée",
+        "source": "chiens/chien-tara.md",
+        "extrait": "♂ Mac-Mahon des Hyènes de la Sensée X Loupi Pakita v.t Frouwkes Hof"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "Loupi Pakita v.t Frouwkes Hof",
+        "source": "chiens/chien-tara.md",
+        "extrait": "♂ Mac-Mahon des Hyènes de la Sensée X Loupi Pakita v.t Frouwkes Hof"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucun lien vers une fiche LOF Select."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6427420.jpg?t=1491158201]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6427420.jpg?t=1491158201 alt=\"\"]\n[/LIEN]\n\nTina dit Tara du H3F 06/12/2002 DCD: 06/2018\n\nLOF \n\n♂ Mac-Mahon des Hyènes de la Sensée X Loupi Pakita v.t Frouwkes Hof\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_6427450.png?t=1491158660]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_6427450.png?t=1491158660 alt=\"\"]\n[/LIEN]\n\n=> Cotation : 4",
+      "source": "chiens/chien-tara.md",
+      "extrait": "Tina dit Tara du H3F 06/12/2002 DCD: 06/2018"
+    }
+  },
+  {
+    "reference": "tesla",
+    "nom_usage": {
+      "valeur": "Tesla",
+      "source": "html/chien-tesla.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Tesla</title>"
+    },
+    "nom_complet": {
+      "valeur": "Tesla",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "Tesla 08/06/2022"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-a2-2025.md",
+      "extrait": "X ♀ Tesla (DM: N/N -SDCA2 1.1- HD:A- ED0 ADN)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "08/06/2022",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "Tesla 08/06/2022"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "reproducteur",
+      "source": "accueil.md",
+      "extrait": "Femelle reproductrice"
+    },
+    "taille": {
+      "valeur": "59 cm",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "=> Toise : 59 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/Em homozygote pour le masque",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "=> Masque : Em/Em homozygote pour le masque"
+    },
+    "genetique_robe": {
+      "valeur": "non effectué",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "=> Locus K : non effectué"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD -A/A",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> Hanches : HD -A/A"
+      },
+      "ed": {
+        "valeur": "ED -0",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> Coudes : ED -0"
+      },
+      "ltv": {
+        "valeur": "LTV -0 : Indemne de vertébre de transition lombonsacrée",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> LTV -0 : Indemne de vertébre de transition lombonsacrée"
+      },
+      "dm": {
+        "valeur": "DM free : Indemne myélopathie dégénérative type A",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> DM free : Indemne myélopathie dégénérative type A"
+      },
+      "sdca1": {
+        "valeur": "SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1"
+      },
+      "sdca2": {
+        "valeur": "SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> Identifié ADN "
+      },
+      "diversite_genetique": {
+        "valeur": "--%",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "Diversité génétique : --%"
+      }
+    },
+    "autres_tests": {
+      "valeur": "OCD ?\nSpnodylose ?\nEye examination - exemplts de maladies héréditaires",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "=> OCD ?\n\n=> Spnodylose ?\n\n=> Eye examination - exemplts de maladies héréditaires"
+    },
+    "titres": {
+      "tc": {
+        "valeur": "NE Cerilly (--) 27/10/2021",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> TC -  NE Cerilly (--) 27/10/2021"
+      },
+      "csau": {
+        "valeur": "Excellent",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> CSAU Excellent"
+      },
+      "cotation_lof": {
+        "valeur": "3",
+        "source": "chiens/chien-tesla.md",
+        "extrait": "=> Cotation : 3 "
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "TAT Excellent",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "=> TAT Excellent"
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (X'Zorro aka Max X Spacetime Bombardier aka Sansa) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (X'Zorro aka Max X Spacetime Bombardier aka Sansa) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "18507513.jpg",
+      "18507514.jpg",
+      "18507515.jpg",
+      "18507516.jpeg",
+      "18507517.JPG",
+      "18507518.jpeg"
+    ],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucun lien vers une fiche LOF Select. Sur la page d'accueil, le libellé « Lof Select » de la vignette de Tesla est réparti sur deux ancres qui pointent vers deux chiens tiers (ray-ban-de-lodyssee-dhera-7578103 et spacetime-freccia-8372603). Question Q-20-5."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_16458617.jpg?t=1658605545]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_16458617.jpg?t=1658605545 alt=\"\"]\n[/LIEN]\n\nTesla 08/06/2022\n\n(X'Zorro aka Max X Spacetime Bombardier aka Sansa)\n\nEnregistrée à Titre initiale pour cause de divergences politique\n\n \n\n \n\n                Résultats expositions :\n\n \n\n- 08/10/2023 : Saint Macaire (CACS) : 1EXC CACJ Pouvesle Annie\n\n- 18/05/2024 : Montrichard (RE) : 1EXC Pouvele Bernard\n\n \n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_16458622.png?t=1658605911]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_16458622.png?t=1658605911 alt=\"\"]\n[/LIEN]\n\nRésultats tests génétiques - santé\n\nDiversité génétique : --%\n\n \n\n=> Hanches : HD -A/A\n\n=> Coudes : ED -0\n\n=> LTV -0 : Indemne de vertébre de transition lombonsacrée\n\n=> Identifié ADN \n\n=> OCD ?\n\n=> Spnodylose ?\n\n=> Eye examination - exemplts de maladies héréditaires\n\n=> Identifié ADN \n\n \n\nTests Génétiques effectués par Labo SCC\n\n=> DM free : Indemne myélopathie dégénérative type A\n\n=> SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1\n\n=> SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2\n\n=> Masque : Em/Em homozygote pour le masque\n\n=> Locus K : non effectué\n\n=> Toise : 59 cm\n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_16458627.jpg?t=1658606118]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_16458627.jpg?t=1658606118 alt=\"\"]\n[/LIEN]\n\nAutres\n\n \n\n=> TC -  NE Cerilly (--) 27/10/2021\n\n=> CSAU Excellent\n\n=> TAT Excellent\n\n=> Cotation : 3 \n\n \n\n=> Portée prévue 2025\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18507513.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18507513.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18507514.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18507514.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18507515.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18507515.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18507516.jpeg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18507516.jpeg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18507517.JPG]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18507517.JPG alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18507518.jpeg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18507518.jpeg alt=\"\"]\n[/LIEN]",
+      "source": "chiens/chien-tesla.md",
+      "extrait": "Tesla 08/06/2022"
+    }
+  },
+  {
+    "reference": "very-best",
+    "nom_usage": {
+      "valeur": "Very Best",
+      "source": "html/chien-very-best.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Very Best</title>"
+    },
+    "nom_complet": {
+      "valeur": "Very Best From You2 du Mont Brabant",
+      "source": "chiens/chien-very-best.md",
+      "extrait": "Very Best From You2 du Mont Brabant 14/05/2024"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "accueil.md",
+      "extrait": "Femelle reproductrice"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "14/05/2024",
+      "source": "chiens/chien-very-best.md",
+      "extrait": "Very Best From You2 du Mont Brabant 14/05/2024"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "reproducteur",
+      "source": "accueil.md",
+      "extrait": "Femelle reproductrice"
+    },
+    "taille": {
+      "valeur": "60 cm",
+      "source": "chiens/chien-very-best.md",
+      "extrait": "=> Toise : 60 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/E homozygote pour le masque",
+      "source": "chiens/chien-very-best.md",
+      "extrait": "=> Masque : Em/E homozygote pour le masque"
+    },
+    "genetique_robe": {
+      "valeur": "D/d",
+      "source": "chiens/chien-very-best.md",
+      "extrait": "=> Locus : D/d"
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD radios effectuées, en attente du résultat",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> Hanches : HD radios effectuées, en attente du résultat"
+      },
+      "ed": {
+        "valeur": "ED radios effectuées, en attente du résultat",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> Coudes : ED radios effectuées, en attente du résultat"
+      },
+      "ltv": {
+        "valeur": "LTV -0 : radios effectuées, en attente du résultat",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> LTV -0 : radios effectuées, en attente du résultat"
+      },
+      "dm": {
+        "valeur": "DM free : Indemne myélopathie dégénérative type A",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> DM free : Indemne myélopathie dégénérative type A"
+      },
+      "sdca1": {
+        "valeur": "SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1"
+      },
+      "sdca2": {
+        "valeur": "SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> Identifié ADN "
+      },
+      "diversite_genetique": {
+        "valeur": "42%",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "Diversité génétique : 42%"
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "12/08/2025",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> TC : 12/08/2025"
+      },
+      "csau": {
+        "valeur": "./.",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> CSAU ./."
+      },
+      "cotation_lof": {
+        "valeur": "cotation 2 Sujet reconnu",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "=> Cotation : cotation 2 Sujet reconnu"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "TAT ./.",
+      "source": "chiens/chien-very-best.md",
+      "extrait": "=> TAT ./."
+    },
+    "pere": {
+      "reference": "youry"
+    },
+    "mere": {
+      "nom": {
+        "valeur": "R'U2 aka You",
+        "source": "chiens/chien-very-best.md",
+        "extrait": "(Hollandroy Youry X R'U2 aka You)"
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "18989112.png"
+    ],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucun lien vers une fiche LOF Select."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_18989099.jpg?t=1772649475]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_18989099.jpg?t=1772649475 alt=\"\"]\n[/LIEN]\n\nVery Best From You2 du Mont Brabant 14/05/2024\n\n \n\n(Hollandroy Youry X R'U2 aka You)\n\n \n\n \n\n                Résultats expositions :\n\n \n\n- \n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_18989103.png?t=1772649740]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_18989103.png?t=1772649740 alt=\"\"]\n[/LIEN]\n\nRésultats tests génétiques - santé\n\nDiversité génétique : 42%\n\n \n\n=> Hanches : HD radios effectuées, en attente du résultat\n\n=> Coudes : ED radios effectuées, en attente du résultat\n\n=> LTV -0 : radios effectuées, en attente du résultat\n\n=> Identifié ADN \n\n \n\nTests Génétiques effectués par MyDogDna\n\n=> DM free : Indemne myélopathie dégénérative type A\n\n=> SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1\n\n=> SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2\n\n=> Masque : Em/E homozygote pour le masque\n\n=> Locus : D/d\n\n=> Toise : 60 cm\n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_18989107.jpg?t=1772649998]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_18989107.jpg?t=1772649998 alt=\"\"]\n[/LIEN]\n\nAutres\n\n \n\n=> TC : 12/08/2025\n\n=> CSAU ./.\n\n=> TAT ./.\n\n=> Cotation : cotation 2 Sujet reconnu\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_18989112.png]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_18989112.png alt=\"\"]\n[/LIEN]",
+      "source": "chiens/chien-very-best.md",
+      "extrait": "Very Best From You2 du Mont Brabant 14/05/2024"
+    }
+  },
+  {
+    "reference": "you",
+    "nom_usage": {
+      "valeur": "You",
+      "source": "html/chien-you.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - You</title>"
+    },
+    "nom_complet": {
+      "valeur": "R'U2 aka You",
+      "source": "chiens/chien-you.md",
+      "extrait": "R'U2 aka You 04/10/2020 - 15/05/2024"
+    },
+    "sexe": {
+      "valeur": "femelle",
+      "source": "portees/portee-v1-2024.md",
+      "extrait": "X ♀ R'U2 dit You (DM: N/N -SDCA2 1.1- HD:A- ED0 ADN)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "04/10/2020",
+      "source": "chiens/chien-you.md",
+      "extrait": "R'U2 aka You 04/10/2020 - 15/05/2024"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche écrit « R'U2 aka You 04/10/2020 - 15/05/2024 » : la seconde date n'est étiquetée ni « DCD » ni « décès ». La lire comme une date de décès est une interprétation, même si la ligne suivante écrit « Malheureusement nous avons perdu U2 suite à sa première portée ». Les deux phrases survivent verbatim dans le texte libre. Question remontée."
+    },
+    "statut": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucune forme close de statut : ni « DCD », ni « ✞ », ni « Femelle reproductrice » sur la page d'accueil. Elle ecrit en prose « Malheureusement nous avons perdu U2 suite à sa première portée » : c'est de la prose, pas une forme close. Question remontée."
+    },
+    "taille": {
+      "valeur": "59 cm",
+      "source": "chiens/chien-you.md",
+      "extrait": "=> Toise : 59 cm"
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "Em/Em homozygote pour le masque",
+      "source": "chiens/chien-you.md",
+      "extrait": "=> Masque : Em/Em homozygote pour le masque"
+    },
+    "genetique_robe": {
+      "valeur": "Kbr/kbr",
+      "source": "chiens/chien-you.md",
+      "extrait": "=> Locus Kbr/kbr "
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD -A/A",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> Hanches : HD -A/A"
+      },
+      "ed": {
+        "valeur": "ED -0",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> Coudes : ED -0"
+      },
+      "ltv": {
+        "valeur": "LTV -0 : Indemne de vertébre de transition lombonsacrée",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> LTV -0 : Indemne de vertébre de transition lombonsacrée"
+      },
+      "dm": {
+        "valeur": "DM free : Indemne myélopathie dégénérative type A",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> DM free : Indemne myélopathie dégénérative type A"
+      },
+      "sdca1": {
+        "valeur": "SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1"
+      },
+      "sdca2": {
+        "valeur": "SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> Identifié ADN "
+      },
+      "diversite_genetique": {
+        "valeur": "40%",
+        "source": "chiens/chien-you.md",
+        "extrait": "Diversité génétique : 40%"
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "Mouriès (13) 28/05/2023",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> TC -Mouriès (13) 28/05/2023"
+      },
+      "csau": {
+        "valeur": "./.",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> CSAU ./."
+      },
+      "cotation_lof": {
+        "valeur": "cotation 2 Sujet reconnu",
+        "source": "chiens/chien-you.md",
+        "extrait": "=> Cotation : cotation 2 Sujet reconnu"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "TAT ./.",
+      "source": "chiens/chien-you.md",
+      "extrait": "=> TAT ./."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (-- X --) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (-- X --) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [
+      "17603639.jpg",
+      "17603640.jpg"
+    ],
+    "pedigree": {
+      "valeur": "",
+      "motif": "La fiche ne porte aucun lien vers une fiche LOF Select."
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17603603.jpg?t=1704485153]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17603603.jpg?t=1704485153 alt=\"\"]\n[/LIEN]\n\nR'U2 aka You 04/10/2020 - 15/05/2024\n\nMalheureusement nous avons perdu U2 suite à sa première portée\n\n(-- X --)\n\n \n\n \n\n                Résultats expositions :\n\n \n\n- 28/05/2023 : Mouriès (Régionale d'élevage) : 1EXC  Dillies Jacky\n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17603607.png?t=1704485336]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17603607.png?t=1704485336 alt=\"\"]\n[/LIEN]\n\n \n\nRésultats tests génétiques - santé\n\nDiversité génétique : 40%\n\n \n\n=> Hanches : HD -A/A\n\n=> Coudes : ED -0\n\n=> LTV -0 : Indemne de vertébre de transition lombonsacrée\n\n=> Identifié ADN \n\n \n\nTests Génétiques effectués par MyDogDna\n\n=> DM free : Indemne myélopathie dégénérative type A\n\n=> SDCA 1 free : Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 1\n\n=> SDCA 2 free: Indemne dénérescence spongieuse spongieuse ataxie cerelleuse Type 2\n\n=> Masque : Em/Em homozygote pour le masque\n\n=> Locus Kbr/kbr \n\n=> Toise : 59 cm\n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_17603625.jpg?t=1704485603]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_17603625.jpg?t=1704485603 alt=\"\"]\n[/LIEN]\n\nAutres\n\n \n\n=> TC -Mouriès (13) 28/05/2023\n\n=> CSAU ./.\n\n=> TAT ./.\n\n=> Cotation : cotation 2 Sujet reconnu\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_17603639.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_17603639.jpg alt=\"\"]\n[/LIEN]\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/cache_17603640.jpg]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_17603640.jpg alt=\"\"]\n[/LIEN]",
+      "source": "chiens/chien-you.md",
+      "extrait": "R'U2 aka You 04/10/2020 - 15/05/2024"
+    }
+  },
+  {
+    "reference": "youry",
+    "nom_usage": {
+      "valeur": "Youry",
+      "source": "html/chien-youry.html",
+      "extrait": "        <title>Berger Hollandais du Mont Brabant - Youry</title>"
+    },
+    "nom_complet": {
+      "valeur": "Hollandroy Youry",
+      "source": "chiens/chien-youry.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien-ws/7339763]Hollandroy Youry[/LIEN]"
+    },
+    "sexe": {
+      "valeur": "male",
+      "source": "portees/portee-v1-2024.md",
+      "extrait": "♂ Hollandroy Youry (DM : N/N - SDCA2 1.1 - HD:A- ED0 - ADN)"
+    },
+    "variete": {
+      "valeur": "",
+      "motif": "Aucune fiche de chien n'écrit « poil long » ni « poil court » comme caractéristique du sujet. La variété ne se déduit ni de la rubrique BHPL ni d'une phrase de prose."
+    },
+    "date_naissance": {
+      "valeur": "07/06/2019",
+      "source": "chiens/chien-youry.md",
+      "extrait": "07/06/2019"
+    },
+    "date_deces": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucun décès."
+    },
+    "statut": {
+      "valeur": "",
+      "motif": "La fiche n'énonce aucune forme close de statut : ni « DCD », ni « ✞ », ni « Femelle reproductrice » sur la page d'accueil."
+    },
+    "taille": {
+      "valeur": "",
+      "motif": "La fiche écrit « => Toise : » (l.77) suivi d'une espace insécable et de rien d'autre."
+    },
+    "couleur": {
+      "valeur": "",
+      "motif": "La source n'énonce aucune couleur de robe comme valeur."
+    },
+    "masque": {
+      "valeur": "E/E Pas de masque",
+      "source": "chiens/chien-youry.md",
+      "extrait": "=> Locus et masque : E/E Pas de masque"
+    },
+    "genetique_robe": {
+      "valeur": "",
+      "motif": "La fiche écrit « => Locus : » (l.75) suivi d'une espace insécable et de rien d'autre. La ligne 73 « => Locus et masque : E/E Pas de masque » énonce une valeur unique pour deux champs ; elle est portée sur le masque, la dédoubler serait une interprétation."
+    },
+    "tests_sante": {
+      "hd": {
+        "valeur": "HD-A",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> Hanches : HD-A"
+      },
+      "ed": {
+        "valeur": "ED-0",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> Coudes : ED-0"
+      },
+      "ltv": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      },
+      "dm": {
+        "valeur": "1.1",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> DM : 1.1"
+      },
+      "sdca1": {
+        "valeur": "1.1",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> SDCA 1 : 1.1"
+      },
+      "sdca2": {
+        "valeur": "1.1",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> SDCA 2 : 1.1"
+      },
+      "adn_identifie": {
+        "valeur": "oui",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> Identifié ADN SCC"
+      },
+      "diversite_genetique": {
+        "valeur": "",
+        "motif": "La fiche n'énonce pas ce résultat."
+      }
+    },
+    "autres_tests": {
+      "valeur": "",
+      "motif": "La rubrique de santé de la fiche ne porte aucun résultat hors des huit champs du modèle."
+    },
+    "titres": {
+      "tc": {
+        "valeur": "St Aygulf (83) 31/01/2021",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> TC - St Aygulf (83) 31/01/2021"
+      },
+      "csau": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      },
+      "cotation_lof": {
+        "valeur": "1",
+        "source": "chiens/chien-youry.md",
+        "extrait": "=> Cotation : 1"
+      },
+      "confirmation": {
+        "valeur": "",
+        "motif": "La source n'énonce ni date ni mention de confirmation."
+      },
+      "lof": {
+        "valeur": "",
+        "motif": "La fiche ne l'énonce pas."
+      }
+    },
+    "autres_titres": {
+      "valeur": "",
+      "motif": "La rubrique « Autres » de la fiche ne porte aucun titre hors des cinq champs du modèle."
+    },
+    "pere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Hollandroy Ukko X Hollandroy Xtra Special) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "mere": {
+      "nom": {
+        "valeur": "",
+        "motif": "La fiche énonce les deux parents dans une parenthèse « (Hollandroy Ukko X Hollandroy Xtra Special) » sans dire lequel est le père. L'ordre n'est pas fiable : chien-maya.md l.38 inverse l'ordre de portee-m-1996.md l.34, qui marque « ♂ Falco ... X ♀ Gribouille ... ». Ligne conservée verbatim dans le texte libre."
+      },
+      "elevage": {
+        "valeur": "",
+        "motif": "Le site ne sépare pas le nom du parent de son élevage : la chaîne est indivise."
+      }
+    },
+    "cadrage": {
+      "valeur": "",
+      "motif": "Réglage d'affichage de la photo : la source ne l'énonce pas et ne peut pas l'énoncer."
+    },
+    "photo": {
+      "valeur": "",
+      "motif": "L'image de tête de la fiche est le bandeau de rubrique SHA f920725d... (184x274, 7758 o), byte-identique sur 16 fiches de chiens : elle ne représente aucun individu. Aucune autre image de la fiche n'est désignée comme portrait."
+    },
+    "galerie": [],
+    "pedigree": {
+      "valeur": "https://www.centrale-canine.fr/lofselect/chien-ws/7339763",
+      "source": "chiens/chien-youry.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien-ws/7339763]Hollandroy Youry[/LIEN]"
+    },
+    "texte_libre": {
+      "valeur": "[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13346836.jpg?t=1569565226]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13346836.jpg?t=1569565226 alt=\"\"]\n[/LIEN]\n\n \n\n[LIEN href=https://www.centrale-canine.fr/lofselect/chien-ws/7339763]Hollandroy Youry[/LIEN]\n07/06/2019\n\n(Hollandroy Ukko X Hollandroy Xtra Special)\n\n \n\n \n\nRésultats expositions :\n\n \n\n \n\n \n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13346839.png?t=1569565345]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13346839.png?t=1569565345 alt=\"\"]\n[/LIEN]\n\nRésultats tests génétiques - santé :\n\n \n\n=> Hanches : HD-A\n\n=> Coudes : ED-0\n\n=> Identifié ADN SCC\n\n=> DM : 1.1\n\n=> SDCA 1 : 1.1\n\n=> SDCA 2 : 1.1\n\n=> Locus et masque : E/E Pas de masque\n\n=> Locus : \n\n=> Toise : \n\n \n\nToutes les attestations de résultat non enregistés à la SCC sont fournies systématiquement au départ des chiots ou sur demande avant réservation.\n\n[LIEN href=https://www.mtbrabant.com/s/cc_images/teaserbox_13346842.jpg?t=1569565628]\n[IMAGE src=https://www.mtbrabant.com/s/cc_images/cache_13346842.jpg?t=1569565628 alt=\"\"]\n[/LIEN]\n\nAutres :\n\n \n\n=> \n\n=> TC - St Aygulf (83) 31/01/2021\n\n=> \n\n=> \n\n=> Cotation : 1\n\n \n\nToutes les informations sont vérifiables sur les sites suivants : \n\n- club de race : \n[LIEN href=http://www.abnf.fr/]http://www.abnf.fr[/LIEN]\n\n- société centrale canine : \n[LIEN href=https://www.centrale-canine.fr/lofselect/chien-ws/7339763]https://www.centrale-canine.fr/lofselect[/LIEN]\n\n ",
+      "source": "chiens/chien-youry.md",
+      "extrait": "[LIEN href=https://www.centrale-canine.fr/lofselect/chien-ws/7339763]Hollandroy Youry[/LIEN]"
+    },
+    "robots_source": {
+      "valeur": "noindex, nofollow",
+      "source": "html/chien-youry.html",
+      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+    }
+  }
+]
