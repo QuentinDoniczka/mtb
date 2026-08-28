@@ -193,9 +193,10 @@ function garantir_les_photos( array $entrees, array $options ): array {
 	$citations = citations( $entrees );
 
 	/*
-	 * Un dossier absent est dit UNE FOIS. Sans cette garde, un dossier non monté produirait cent
-	 * cinquante avertissements identiques, et la seule information utile — « le dossier n'est pas
-	 * là » — se noierait dans le bruit qu'elle provoque.
+	 * Un dossier absent est dit UNE FOIS. Sans cette garde, un dossier introuvable — archive
+	 * déplacée, « --photos » qui désigne un dossier voisin — produirait cent trente-six
+	 * avertissements identiques, un par photographie citée, et la seule information utile — « le
+	 * dossier n'est pas là » — se noierait dans le bruit qu'elle provoque.
 	 */
 	if ( ! is_dir( $dossier ) ) {
 		dossier_de_photos_absent( $dossier, count( $citations ) );

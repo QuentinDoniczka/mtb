@@ -21,14 +21,20 @@ Chaque valeur transcrite porte sa **provenance** : le fichier source et l'**extr
 elle vient. C'est ce qui rend la reprise contestable par un tiers **une fois la base détruite** —
 la leçon écrite de l'issue #17, dont le contenu ne vivait que dans une base de développement.
 
-## Les quatre fiches non indexées — Q23, tranchée par l'utilisateur
+## Les quatre fiches que la source ne veut pas voir indexées — Q23, tranchée par l'utilisateur
 
 `chien-halan`, `chien-ray-ban`, `chien-roxane`, `chien-youry` portent `noindex, nofollow` **en tête
 de leur `<head>`** sur le site source, et sont **absentes des menus**, alors que le plan du site les
 déclare. Vérifié à l'octet sur les 17 fiches : **ces quatre-là et aucune autre**. Aucune des
 27 portées n'est concernée.
 
-**Traitement retenu, sur décision de l'utilisateur : importées, hors menus, non indexées.**
+**Traitement retenu, sur décision de l'utilisateur : importées, hors menus, et le fait de
+non-indexation recopié et stocké.**
+
+**Attention à l'état réel, que ce document a d'abord énoncé de travers** : ces quatre fiches **ne
+sont PAS non indexées aujourd'hui**. Le plan du site sert `/chien/halan/`, `/chien/ray-ban/`,
+`/chien/roxane/` et `/chien/youry/` comme les autres. Le fait est **écrit et stocké**, il n'est
+**pas honoré** — et il ne le sera que lorsque #24 le rendra.
 
 - Elles sont **publiées**, comme sur le source, qui les sert `200` à tout le monde. Les mettre en
   privé ou en brouillon retirerait au visiteur un contenu qu'il pouvait lire, et ferait tomber D5.
@@ -387,9 +393,13 @@ personne** (décision 46).
 ## T12 n'est payée qu'à moitié — dette, pas défaut
 
 Les photographies sont bien entrées **par la médiathèque**, donc au moment où WordPress découpe et
-convertit : la sous-taille `mtb-vignette-galerie` est présente sur **135 / 135** pièces jointes, et le
+convertit : la sous-taille `mtb-vignette-galerie` est présente sur **134 / 135** pièces jointes, et le
 stock produit compte **592 fichiers WebP** sur 759 fichiers, 56,8 Mo. C'était l'objet de T12, et cette
 partie-là est tenue.
+
+La seule pièce jointe qui n'a pas la vignette est **`15221415`**, qui mesure **233 × 396 px** :
+WordPress **n'agrandit jamais** une image plus petite que la taille demandée. **L'absence est donc
+légitime**, et ce document annonçait `135 / 135` — le chiffre était faux, pas le comportement.
 
 **Mais 7 pièces jointes sur 135 n'ont aucune sous-taille WebP, et ce sont les 7 PNG.**
 
@@ -461,3 +471,29 @@ texte importé**. Il est très probablement juste — la reconstruction est fid�
 
 **Le contrôle doit vérifier le code HTTP et la présence du lien avant de conclure.** C'est ce que le
 mien ne faisait pas, et c'est ce qui l'a rendu inutile.
+
+## Deux régimes pour le même artefact — déclaré, pas corrigé
+
+Le gabarit IONOS insérait des lignes d'espacement vides. Après reprise, **neuf pages publient un
+`<p>&nbsp;</p>`** issu du texte recopié : `chien_opium`, `chien_youry`, `portees_a2_2025`,
+`portees_d_2008`, `portees_e_2009`, `portees_g_2011`, `portees_l_1995`, `portees_m_1996`,
+`portees_s_2001`.
+
+**La chaîne sœur #21 les refuse par garde-fou ; cette chaîne-ci les publie.** Deux régimes pour le
+même artefact, dans le même lot. Ce n'est pas une incohérence oubliée : c'est un choix, et le voici.
+
+| | #20 (ici) | #21 |
+|---|---|---|
+| Nature de la matière | **prose recopiée** d'une page rédigée | **donnée structurée** recomposée en blocs |
+| Régime | l'espacement **survit** | l'espacement est **écarté** |
+
+La raison tient à ce que chaque chaîne recopie. Ici, le texte libre est **la prose de l'éleveuse**,
+reprise telle qu'elle l'a écrite ; une ligne vide y est une respiration qu'elle a posée, et rien ne
+permet de distinguer à coup sûr son intention d'un résidu de gabarit. Là-bas, la matière est
+recomposée en blocs depuis des champs : aucune ligne vide n'y est intentionnelle, et un garde-fou est
+donc sans risque.
+
+**Le coût, dit franchement** : neuf pages portent un paragraphe vide qui ne sert à rien. Il ne casse
+rien, il ne se voit presque pas, et **l'éleveuse peut le supprimer d'un clic** dans l'éditeur. Le
+retirer automatiquement supposerait de décider à sa place qu'une ligne vide de son texte est une
+erreur.

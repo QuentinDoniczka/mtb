@@ -89,6 +89,7 @@ function &registre(): array {
 		'jeux'        => array(),
 		'photos'      => array(),
 		'liaisons'    => array(),
+		'robots'      => array(),
 		'conversions' => array(),
 		'controles'   => array(),
 		'rejets'      => 0,
@@ -109,6 +110,7 @@ function demarrer( array $jeux ): void {
 	$registre['jeux']        = array();
 	$registre['photos']      = array();
 	$registre['liaisons']    = array();
+	$registre['robots']      = array();
 	$registre['controles']   = array();
 	$registre['conversions'] = array(
 		'lignes'    => array(),
@@ -381,6 +383,27 @@ function noter_liaison( string $titre, string $role, string $reference, int $pos
 }
 
 /**
+ * Note un fait de non-indexation stocké, et dit dans la même phrase qu'il n'est pas rendu.
+ *
+ * La seconde moitié de la phrase n'est pas une précaution de style : le fait est écrit en base,
+ * personne ne l'honore encore, et la fiche reste donc indexable. Un fait stocké et non rendu que le
+ * rapport annoncerait comme acquis serait pire qu'un fait absent (Q-20-9).
+ *
+ * @param string                $titre  Libellé de la fiche, telle qu'elle s'affichera.
+ * @param array<string, string> $robots Fait stocké, à trois sous-clés.
+ */
+function noter_fait_de_robots( string $titre, array $robots ): void {
+	$registre = &registre();
+
+	$registre['robots'][] = sprintf(
+		'Fiche « %s » : fait de non-indexation %s recopié de « %s », stocké avec sa provenance. Il n\'est PAS ENCORE RENDU — la fiche reste indexable tant que le référencement ne l\'honore pas.',
+		$titre,
+		rendre_valeur( isset( $robots['valeur'] ) ? $robots['valeur'] : '' ),
+		isset( $robots['source'] ) ? $robots['source'] : ''
+	);
+}
+
+/**
  * Note qu'une photo a été versée à la médiathèque.
  *
  * @param string   $identifiant  Identifiant IONOS retenu pour la pièce jointe.
@@ -459,8 +482,11 @@ function photo_absente( string $identifiant, string $dossier ): void {
 /**
  * Signale que le dossier des photographies n'existe pas — un défaut, et un seul.
  *
- * Cas réel et non théorique : « docs/ » n'est monté dans aucun conteneur de la pile, alors que
- * l'archive des photographies y vit. Sans montage, ou sans « --photos », rien n'est versé.
+ * La pile monte désormais l'archive du source en lecture seule, et le dossier attendu existe donc
+ * sans rien indiquer : « /var/www/html/docs/migration/source/photos ». Quand il manque quand même,
+ * la cause n'est plus l'absence de montage mais l'une de celles-ci — une pile antérieure à ce
+ * montage, une archive déplacée, ou un « --photos » qui désigne un dossier voisin. Le message ne
+ * doit donc pas envoyer l'opérateur refaire un geste déjà fait.
  *
  * @param string $dossier Dossier cherché.
  * @param int    $citees  Nombre de photographies citées par les fichiers de données.
@@ -472,7 +498,7 @@ function dossier_de_photos_absent( string $dossier, int $citees ): void {
 
 	\WP_CLI::warning(
 		sprintf(
-			'Dossier des photographies introuvable : %s. %s ne %s versée%s ; les entités sont créées sans galerie ni portrait. Montez « docs/migration/source » dans le conteneur, ou indiquez « --photos=<dossier> ».',
+			'Dossier des photographies introuvable : %s. %s ne %s versée%s ; les entités sont créées sans galerie ni portrait. La pile monte l\'archive en « /var/www/html/docs/migration/source/photos » : vérifiez que ce dossier est bien là, ou indiquez « --photos=<dossier> ».',
 			$dossier,
 			accorder( $citees, array( 'photographie citée', 'photographies citées' ) ),
 			$citees >= 2 ? 'seront' : 'sera',
@@ -650,6 +676,10 @@ function conclure(): void {
 			}
 
 			foreach ( $registre['liaisons'] as $ligne ) {
+				\WP_CLI::log( $ligne );
+			}
+
+			foreach ( $registre['robots'] as $ligne ) {
 				\WP_CLI::log( $ligne );
 			}
 

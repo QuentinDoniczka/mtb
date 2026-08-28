@@ -130,7 +130,7 @@ d'autre mot pour la mort. C'est un arbitrage, il est écrit, il se ratifie (Q-20
   année, **sans jour**. Le champ est une date : écrire `2018-06-01` inventerait un jour. La mention
   survit **verbatim dans le texte libre**, où le site l'a mise.
 - **La légende « Tara - Etch - Ipad - Opium » n'est pas une liste de statuts.** C'est la légende
-  d'**une** photographie sous le titre « Nos retraités et disparus » ; `ECART-PASSE-16.md` ligne 216
+  d'**une** photographie sous le titre « Nos retraités et disparus » ; `ECART-PASSE-16.md` ligne 220
   avertit que lire ce fichier comme l'index de la meute est un piège. Preuve interne : **Jango porte
   `DCD` et n'y figure pas.** Les trois noms qui ont une fiche y sont **déjà** marqués sur leur propre
   fiche : l'intitulé à double sens (« retraités **et** disparus ») **n'oblige donc à choisir pour
@@ -336,6 +336,31 @@ La re-dérivation se fait par `source/outils/reduire.py` (rejouable **sans rése
 est déposé dans **`donnees/recaptures/`**, jamais dans `source/`. Le contrat #19 §9 est respecté au
 mot : aucun fichier de `source/` n'est réécrit, renommé ni supprimé.
 
+### 7 bis — Écart au §7 : `donnees/recaptures/` n'existe pas
+
+*Constaté à la revue de lot, et nommé ici parce qu'un écart non écrit n'est imputable à personne.*
+
+**Le dossier prescrit ci-dessus n'a jamais été créé.** `donnees/` ne porte que `chiens.json` et
+`portees.json`.
+
+**Le résultat visé est pourtant atteint, et il est vérifiable** : la seule valeur qu'affectait la
+coupure fantôme — la santé de la mère de `u2-2023` — est transcrite
+`DM: N/N -SDCA2 1.1- HD:A- ED0 ADN`, avec `ED0` et `ADN` **réunis** comme le visiteur les lit, et sa
+`source` déclarée est **`html/portee-u2-2023.html`**, le HTML brut qui tranche. La transcription est
+donc allée chercher l'octet au bon endroit.
+
+**Ce qui a changé, c'est le moyen** : le contrat prévoyait de matérialiser une capture re-dérivée sur
+le disque ; la chaîne a lu directement le HTML archivé pour la valeur concernée et a cité cette
+source. Aucun fichier de `source/` n'a été touché, l'interdit du §9 du contrat #19 est tenu.
+
+**Ce que le raccourci coûte, et il faut le dire** : le §7 voulait une capture re-dérivée **complète**,
+relisible d'un bloc et comparable ligne à ligne à la version défectueuse. On a à la place **une
+valeur** correctement sourcée. Le contrôle §9.2 la vérifie comme les autres — l'extrait doit
+apparaître littéralement dans le `.html` — donc rien n'est cru sur parole. Mais si une **autre**
+divergence dormait dans cette page, rien dans ce dispositif ne l'aurait révélée : c'est
+`ECART-PASSE-16.md` qui affirme qu'il n'y en a qu'une, et cette affirmation n'a pas été recontrôlée
+ici.
+
 **Piège CRLF, mesuré, à traiter avant tout condensé** : `core.autocrlf = true`, aucun
 `.gitattributes`. `html/portee-u2-2023.html` fait **38 887 o** sur disque, porte **525 CR**, et
 38 887 − 525 = **38 362** = la taille déclarée par `RELEVE.md`. **Aucun SHA de `RELEVE.md` ne se
@@ -513,8 +538,92 @@ Trois points remontés par la chaîne, tranchés ici pour que le dépôt soit ho
 
 | Point | Décision | Raison |
 |---|---|---|
-| **`_mtb_robots_source`**, clé non déclarée par `content/chien/champs.php` | **Ratifiée** — écrite, protégée, non enregistrée | C'est la **seule** façon de porter le fait `noindex` des 4 fiches sans sortir de l'empreinte. `content/` est interdit à cette chaîne. **Deux suites dues, et elles ne m'appartiennent pas** : déclarer la clé dans `content/chien/`, et la rendre (#23 / #24). |
+| **`_mtb_robots_source`**, clé non déclarée par `content/chien/champs.php` | **Ratifiée** — écrite, protégée, non enregistrée, **au format à provenance `{valeur, source, extrait}`** | C'est la **seule** façon de porter le fait `noindex` des 4 fiches sans sortir de l'empreinte. `content/` est interdit à cette chaîne. **Deux suites dues, et elles ne m'appartiennent pas** : déclarer la clé dans `content/chien/`, et la rendre (#23 / #24). |
 | **`reference`, `identifiant`, `slug_source`, `pere.type` / `mere.type`** et la `reference` d'un parent : chaîne nue ou objet à provenance ? | **Les deux acceptées, sur ces clés techniques uniquement** | Ce ne sont pas des faits recopiés, ce sont des **identifiants**. Le §9.2 les exempte déjà du contrôle d'extrait. Imposer une forme obligerait à réécrire deux fichiers de 3 000 et 6 000 lignes **sans gagner un seul fait**. Toute autre clé exige la forme complète. |
 | **Empreinte : deux fichiers hors du dossier du module** (`docs/migration/portees-chiens.md`, `docs/guide/contenu-repris-de-l-ancien-site.md`) | **Ratifiée**, §0 amendé | La chaîne doit produire sa déclaration de reprise et sa fiche d'aide (**D3**) : les laisser dans le module les rendrait introuvables. Les deux sont **neufs et nommés sur le domaine de l'issue** — aucune collision avec #21, qui se réserve `page-ce-qui-a-ete-repris-de-l-ancien-site.md`. Le commit est **scopé fichier par fichier**, l'index étant partagé. |
 | **`pere.type` / `mere.type` en chaîne nue faisaient rejeter les 27 portées** | **Corrigé côté code**, jamais côté données | `type` n'est **pas un fait recopié** : `fiche` / `exterieur` est **notre décision de modélisation**, que le site source n'énonce jamais. Lui exiger un `extrait` verbatim est **impossible par construction**. Réécrire 54 clés pour inventer une provenance à une valeur que la source ne dit pas serait une **fausse provenance** — exactement ce que ce dispositif existe pour empêcher. Le contrôle de **valeur** (liste fermée) reste, seul celui de **forme** est levé. |
-| **`docs/migration/source` n'est monté dans aucun conteneur** (`compose.yaml` ne monte que `themes/mtb`, `plugins/mtb-core`, `docker/provision`, `docker/fixtures`) | **Hors empreinte — remonté au lot** | Sans ce montage, ni le versement des 192 photographies ni le contrôle des extraits ne peuvent s'exécuter dans Docker. Les options `--source` et `--photos` existent pour ça. **Prérequis dur de la passe d'intégration**, à traiter par `docker-mtb`. |
+| **`docs/migration/source` n'était monté dans aucun conteneur** | **LEVÉ dans ce lot**, par le commit `01d4489` | Sans ce montage, ni le versement des photographies ni le contrôle des extraits ne pouvaient s'exécuter dans Docker. `01d4489` monte l'archive **en lecture seule** et livre l'interrupteur `MTB_FIXTURES`. **Ce n'est donc plus un prérequis, et plus une excuse** : tout message ou commentaire du module qui affirme encore que « `docs/` n'est monté nulle part » énonce un fait périmé et doit être réécrit. Les options `--source` et `--photos` restent, comme porte de sortie sur une pile ancienne ou un dossier déplacé. |
+
+## 17. La forme de `_mtb_robots_source` — tranchée au niveau du lot
+
+*Ajouté après la revue de lot, qui a mesuré la divergence.*
+
+Cette clé est **partagée avec la chaîne #21**, et les deux chaînes l'ont d'abord écrite sous deux
+formes incompatibles :
+
+| Module | Forme écrite d'abord |
+|---|---|
+| `portees-chiens/` (#20) | une **chaîne** : `'noindex, nofollow'` |
+| `resultats-pages/` (#21) | un **tableau à provenance** : `valeur`, `source`, `extrait` |
+
+**Aggravant, et c'est le vrai défaut** : les deux documentations affirmaient l'alignement, **sans
+qu'aucune ne dise que la forme différait**. Deux chaînes parallèles peuvent diverger — c'est le prix
+assumé du parallélisme — mais elles ne peuvent pas *affirmer* converger sans l'avoir vérifié. C'est
+la classe d'erreur de la décision 46 : pas un fait inventé, un fait tu.
+
+**Décision du lot : la forme à provenance l'emporte**, et #20 s'aligne. Raison : *une valeur recopiée
+sans sa source est une affirmation.* Cette clé existe précisément pour porter un fait du site source
+que #24 devra honorer ; la dépouiller de sa provenance la réduirait à une assertion invérifiable.
+
+L'`extrait` porte **les octets et rien d'autre** — pour les quatre fiches concernées, **les deux
+balises `robots` de la page, dans l'ordre du document**, jointes par un saut de ligne, sans
+remplissage ni commentaire. C'est la contradiction interne du source, et elle se recopie entière.
+
+**Rappel de l'état réel** : la clé est **stockée**, elle n'est **pas rendue**. `wp_robots` et
+l'exclusion du plan du site appartiennent à #23 / #24 (Q-20-9).
+
+### 17 bis — La seule exemption au contrôle de sous-chaîne du §9.2, et pourquoi elle est inévitable
+
+La consigne « l'`extrait` porte les deux balises » et la règle du §9.2 « l'`extrait` doit apparaître
+**littéralement** dans sa source » **ne peuvent pas être vraies en même temps**, et il fallait le
+mesurer pour le voir.
+
+**Mesuré** : sur ces pages, les deux balises `robots` sont **à 1 716 octets l'une de l'autre**
+(positions 266 et 1982). Une chaîne qui les réunit **n'apparaît nulle part** dans le fichier. Vérifié
+aussi sur l'`extrait` de la chaîne #21, qui **n'est pas** une sous-chaîne littérale de
+`html/placement.html` — la divergence n'est donc pas propre à #20.
+
+**Ce qui cède est le contrôle, pas le fait.** La donnée à recopier est précisément la **coexistence**
+d'un `noindex, nofollow` en tête de `<head>` et d'un `index,follow` bien plus loin. **Aucune
+sous-chaîne contiguë ne peut l'exprimer.** Ne garder qu'une balise donnerait à lire une page
+franchement non indexée — ce que la source ne dit pas, et ce serait un fait faux.
+
+**Exemption gelée, et elle est unique** : le chemin **`robots_source.extrait`**, et lui seul, échappe
+au contrôle de **contiguïté**. Pas la clé entière — `valeur` et `source` y restent soumises.
+
+**Ce qui la remplace, pour ne pas troquer un contrôle contre rien** : *chacune des deux balises,
+prise séparément, doit être présente dans le fichier source*, fins de ligne normalisées. On perd la
+**contiguïté**, on ne perd pas la **vérifiabilité**. Mesuré sur les quatre fiches : **4 / 4**.
+
+**Mesuré, pour que le coût soit chiffré et non supposé** : le balayage complet des deux fichiers de
+données donne **1 115 valeurs non vides, 272 exemptées, 839 contiguës, et exactement 4 échecs** —
+les quatre `robots_source.extrait`, aucun autre. L'exemption est donc étroite **au sens propre** :
+elle ne couvre rien d'autre que ce qu'elle nomme.
+
+### Deux précisions, sur des affirmations d'abord fausses
+
+**1. Les espaces retirés n'étaient pas du remplissage.** La première rédaction disait qu'ils
+n'étaient pas dans le document. **Ils y sont** : le `<head>` IONOS porte littéralement quatre espaces
+d'indentation avant la balise et quatre après. L'ancienne valeur était donc **une sous-chaîne
+contiguë parfaitement valide**. Ce qui a été fait n'est pas *retirer un remplissage inventé*, c'est
+**écarter des octets réels d'indentation** pour adopter la forme de #21. L'écart est assumé, et il
+doit être nommé pour ce qu'il est.
+
+**2. Le contrôle de contiguïté ne rejetait rien aujourd'hui — le défaut est latent.** Les deux
+chaînes n'implémentent pas le même contrôle :
+
+| Chaîne | Implémentation | La forme jointe y |
+|---|---|---|
+| #21, `concordance.py` (`controle_7`) | **scinde sur `
+`** et compare ligne à ligne | passe par construction |
+| #20, `verification.php` (`echec_dextrait`) | `strpos()` sur **la chaîne entière** | échouerait |
+
+Or `robots_source` est **hors modèle**, donc absente de `sources_json()` : elle n'entre pas
+aujourd'hui dans le contrôle de `verification.php`. **Le jour où quelqu'un l'y raccorde, il doit
+scinder sur `
+` comme #21**, faute de quoi les quatre fiches tombent d'un coup. C'est écrit ici
+pour que ce ne soit pas redécouvert par un échec.
+
+**Garde-fou, rappelé du §9.2** : *une liste d'exceptions qui grossit est le signal que l'approche
+dérape.* Celle-ci est la **première et la seule**. Toute exemption suivante doit être discutée, pas
+ajoutée.

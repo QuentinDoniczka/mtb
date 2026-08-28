@@ -217,7 +217,7 @@ function controle_des_extraits( array $entrees, array $chemins, array $options )
 			'Extraits',
 			array(
 				sprintf(
-					'Archive du source introuvable : %s. Aucun extrait n\'est confrontable, le contrôle ne s\'est pas exécuté. Montez « docs/migration/source » dans le conteneur, ou indiquez « --source=<dossier> ».',
+					'Archive du source introuvable : %s. Aucun extrait n\'est confrontable, le contrôle ne s\'est pas exécuté. La pile monte l\'archive en « /var/www/html/docs/migration/source » : vérifiez que ce dossier est bien là, ou indiquez « --source=<dossier> ».',
 					$racine
 				),
 			),
@@ -274,6 +274,10 @@ function controle_des_extraits( array $entrees, array $chemins, array $options )
 /**
  * Confronte un extrait à son fichier source.
  *
+ * UN SEUL CHEMIN échappe à la confrontation contiguë, et il est nommé ici :
+ * « robots_source.extrait », pour la raison mesurée qu'écrit echec_des_balises_de_robots(). Il
+ * n'échappe pas au contrôle : il en reçoit un autre, balise par balise.
+ *
  * @param mixed                $brut    Valeur transcrite.
  * @param string               $prefixe Préfixe de message identifiant l'entrée.
  * @param string               $chemin  Chemin de la clé dans le fichier.
@@ -282,6 +286,10 @@ function controle_des_extraits( array $entrees, array $chemins, array $options )
  * @return string Échec rédigé, chaîne vide si la confrontation réussit.
  */
 function echec_dextrait( $brut, string $prefixe, string $chemin, array $options ): string {
+	if ( CLE_FICHIER_ROBOTS === $chemin ) {
+		return echec_des_balises_de_robots( $brut, $prefixe, $options );
+	}
+
 	$declare = source( $brut );
 	$fichier = fichier_de_source( $declare, $options );
 
@@ -317,6 +325,104 @@ function echec_dextrait( $brut, string $prefixe, string $chemin, array $options 
 		rendre_valeur( extrait( $brut ) ),
 		rendre_valeur( valeur( $brut ) )
 	);
+}
+
+/**
+ * Confronte l'extrait du fait de non-indexation à sa source, BALISE PAR BALISE.
+ *
+ * EXEMPTION DE CONTIGUÏTÉ, ET ELLE NE PORTE QUE SUR « robots_source.extrait ».
+ *
+ * Le fait à recopier n'est pas une balise, c'est la COEXISTENCE CONTRADICTOIRE de deux balises
+ * « robots » dans un même « <head> » : un « noindex, nofollow » en tête, un « index,follow » bien
+ * plus loin. Mesuré sur les fichiers archivés : les deux balises sont distantes d'environ
+ * 1 700 octets. Aucune sous-chaîne contiguë du fichier ne peut donc les porter toutes les deux, et
+ * n'en citer qu'une ferait lire une page franchement non indexée — ce que la source ne dit pas.
+ *
+ * Le contrôle n'est pas remplacé par rien : on perd la contiguïté, jamais la vérifiabilité. Chaque
+ * ligne de l'extrait doit figurer LITTÉRALEMENT dans le fichier source, fins de ligne normalisées.
+ * Une balise inventée reste donc impossible à faire passer.
+ *
+ * @param mixed                $brut    Valeur transcrite.
+ * @param string               $prefixe Préfixe de message identifiant l'entrée.
+ * @param array<string, mixed> $options Options de la commande.
+ *
+ * @return string Échec rédigé, chaîne vide si chaque balise citée figure dans la source.
+ */
+function echec_des_balises_de_robots( $brut, string $prefixe, array $options ): string {
+	$chemin  = CLE_FICHIER_ROBOTS . '.' . CLE_EXTRAIT;
+	$declare = source( $brut );
+	$fichier = fichier_de_source( $declare, $options );
+
+	if ( '' === $fichier['chemin'] ) {
+		return sprintf(
+			'%s, clé « %s » : le fichier source déclaré « %s » est introuvable. L\'extrait n\'est confrontable à rien.',
+			$prefixe,
+			$chemin,
+			$declare
+		);
+	}
+
+	$texte = texte_de_source( (string) $fichier['chemin'] );
+
+	if ( null === $texte ) {
+		return sprintf(
+			'%s, clé « %s » : le fichier source « %s » est illisible.',
+			$prefixe,
+			$chemin,
+			$declare
+		);
+	}
+
+	$balises = balises_de_lextrait( $brut );
+
+	if ( array() === $balises ) {
+		return sprintf(
+			'%s, clé « %s » : aucun extrait n\'est cité. Le fait de non-indexation n\'est justifié par rien.',
+			$prefixe,
+			$chemin
+		);
+	}
+
+	$absentes = array();
+
+	foreach ( $balises as $balise ) {
+		if ( false === strpos( $texte, $balise ) ) {
+			$absentes[] = $balise;
+		}
+	}
+
+	if ( array() === $absentes ) {
+		return '';
+	}
+
+	return sprintf(
+		'%s, clé « %s » : %s ne figure pas dans « %s » : %s. La coexistence des deux balises n\'est donc justifiée par rien.',
+		$prefixe,
+		$chemin,
+		accorder( count( $absentes ), array( 'balise citée', 'balises citées' ) ),
+		$declare,
+		citer( $absentes )
+	);
+}
+
+/**
+ * Balises citées par l'extrait du fait de non-indexation, une par ligne.
+ *
+ * @param mixed $brut Valeur transcrite.
+ *
+ * @return string[] Lignes non blanches de l'extrait, fins de ligne normalisées.
+ */
+function balises_de_lextrait( $brut ): array {
+	$lignes  = explode( "\n", normaliser_fins_de_ligne( extrait( $brut ) ) );
+	$balises = array();
+
+	foreach ( $lignes as $ligne ) {
+		if ( '' !== trim( $ligne ) ) {
+			$balises[] = $ligne;
+		}
+	}
+
+	return $balises;
 }
 
 /**
@@ -464,7 +570,15 @@ function controle_aval_en_base( array $entrees, array $chemins, array $options, 
 
 			++$controles;
 
-			foreach ( controler_aval( $jeu, $post_id, metas_attendues( $jeu, $entree, $index, $photos ), champs_de_contenu( $jeu, $entree ) ) as $divergence ) {
+			$divergences = controler_aval(
+				$jeu,
+				$post_id,
+				metas_attendues( $jeu, $entree, $index, $photos ),
+				champs_de_contenu( $jeu, $entree ),
+				fait_de_robots( $entree )
+			);
+
+			foreach ( $divergences as $divergence ) {
 				$echecs[] = $prefixe . ' — ' . $divergence;
 			}
 		}

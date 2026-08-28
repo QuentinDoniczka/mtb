@@ -645,7 +645,7 @@
     "robots_source": {
       "valeur": "noindex, nofollow",
       "source": "html/chien-halan.html",
-      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+      "extrait": "<meta name=\"robots\" content=\"noindex, nofollow\"/>\n<meta name=\"robots\" content=\"index,follow\"/>"
     }
   },
   {
@@ -1657,7 +1657,7 @@
     "robots_source": {
       "valeur": "noindex, nofollow",
       "source": "html/chien-ray-ban.html",
-      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+      "extrait": "<meta name=\"robots\" content=\"noindex, nofollow\"/>\n<meta name=\"robots\" content=\"index,follow\"/>"
     }
   },
   {
@@ -2001,7 +2001,7 @@
     "robots_source": {
       "valeur": "noindex, nofollow",
       "source": "html/chien-roxane.html",
-      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+      "extrait": "<meta name=\"robots\" content=\"noindex, nofollow\"/>\n<meta name=\"robots\" content=\"index,follow\"/>"
     }
   },
   {
@@ -2839,7 +2839,7 @@
     "robots_source": {
       "valeur": "noindex, nofollow",
       "source": "html/chien-youry.html",
-      "extrait": "    <meta name=\"robots\" content=\"noindex, nofollow\"/>    "
+      "extrait": "<meta name=\"robots\" content=\"noindex, nofollow\"/>\n<meta name=\"robots\" content=\"index,follow\"/>"
     }
   }
 ]

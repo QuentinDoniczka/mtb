@@ -201,16 +201,15 @@ LOF, un identifiant comme « N_2 2017 » : tout a été recopié **tel quel**, v
 numéro LOF ou une date sans vous serait risqué. **Corrigez-les vous-même** dès que vous en repérez
 un : ouvrez la fiche, changez le texte, **Mettre à jour**.
 
-**Des lignes entre crochets dans le texte repris.** Dans le **Commentaire de l'éleveuse** de
-plusieurs portées et fiches, vous verrez des lignes de ce genre :
+**Les photos ne sont plus dans le texte, elles sont dans la galerie.** Sur l'ancien site, les
+photographies étaient posées au milieu du texte. Dans le **Commentaire de l'éleveuse**, vous ne les y
+trouverez plus : elles ont été rangées dans la **Galerie photos** de la portée ou de la fiche, au bon
+format et en bonne qualité. **Rien n'est perdu** — c'est seulement mieux rangé, et c'est la galerie
+qui les affiche désormais sur le site.
 
-    [IMAGE src=https://www.mtbrabant.com/s/cc_images/thumb_19031597.jpg alt=""]
-
-C'est la trace laissée par l'ancien site à l'endroit où il posait une photo ou un lien. **Les photos
-ne sont pas perdues pour autant** : elles sont dans la **Galerie photos** de la portée ou de la fiche,
-au bon format. **Ne vous lancez pas dans un grand nettoyage** : dites-le-nous, nous les retirerons en
-une seule fois. Et si vous en effacez par mégarde, votre texte se récupère — le site en garde les
-versions précédentes.
+**Les liens, eux, sont restés**, et ils sont cliquables. Deux d'entre eux affichent leur adresse
+complète au lieu d'un titre : ce sont les deux vidéos dont parle le paragraphe suivant. Nous n'avons
+pas inventé de titre à leur place — ce serait écrire des mots que vous n'avez jamais écrits.
 
 **Deux vidéos ne se rejouent pas.** Deux pages de portées, **C 2007** et **O 2018**, contenaient une
 vidéo qui se jouait directement dans la page. Le nouveau site refuse tout contenu venu d'un autre

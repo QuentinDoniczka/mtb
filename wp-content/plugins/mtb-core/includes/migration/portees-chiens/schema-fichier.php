@@ -55,6 +55,17 @@ const CLE_GALERIE = 'galerie';
 const CLE_FICHIER_ROBOTS = 'robots_source';
 
 /**
+ * Sous-clés du fait de non-indexation, dans l'ordre où elles se lisent.
+ *
+ * Il se stocke comme il s'écrit au fichier : « valeur » dit ce que la balise énonce, « source » le
+ * fichier archivé où elle a été relevée, « extrait » les octets mêmes de la capture. Stocker la
+ * seule chaîne « noindex, nofollow » ferait entrer en base une affirmation sans provenance, sur la
+ * clé même que le référencement devra honorer — et la reprise des pages, qui écrit la même clé,
+ * l'écrit déjà sous cette forme complète.
+ */
+const SOUS_CLES_ROBOTS = array( 'valeur', 'source', 'extrait' );
+
+/**
  * Clé de fichier portant la liste nominative des chiots d'une portée.
  */
 const CLE_CHIOTS = 'chiots';
@@ -152,8 +163,9 @@ function cles_de_contenu( string $jeu ): array {
  *
  * Une clé relationnelle porte un slug ou un identifiant IONOS là où le modèle stocke un
  * identifiant de contenu, qui n'existe pas avant l'import. La liste des chiots, elle, n'est pas
- * une valeur mais une suite de rangées. Les unes comme l'autre sont écrites par le fichier de leur
- * type, hors de la passe ordinaire.
+ * une valeur mais une suite de rangées. Le fait de non-indexation, enfin, n'est pas davantage une
+ * valeur : il se stocke avec sa provenance entière, là où valeur() le réduirait à sa seule
+ * « valeur ». Toutes sont écrites par le fichier de leur type, hors de la passe ordinaire.
  *
  * @param string $jeu « chiens » ou « portees ».
  *
@@ -161,7 +173,7 @@ function cles_de_contenu( string $jeu ): array {
  */
 function cles_hors_passe_ordinaire( string $jeu ): array {
 	$cles = array(
-		'chiens'  => array( '_mtb_pere_fiche', '_mtb_mere_fiche', '_mtb_galerie' ),
+		'chiens'  => array( '_mtb_pere_fiche', '_mtb_mere_fiche', '_mtb_galerie', CLE_ROBOTS ),
 		'portees' => array( '_mtb_pere_fiche', '_mtb_mere_fiche', '_mtb_galerie', '_mtb_chiots' ),
 	);
 
@@ -388,6 +400,37 @@ function valeurs_brutes( string $jeu, array $entree ): array {
 	}
 
 	return $valeurs;
+}
+
+/**
+ * Fait de non-indexation déclaré par une entrée, assaini sous-clé par sous-clé.
+ *
+ * Aucun assainisseur n'est écrit ici : chaque sous-clé passe par celui du module, la copie la plus
+ * stricte du dépôt. Jamais sanitize_text_field() ni wp_kses() — toutes deux passent par
+ * strip_tags(), qui viderait EN SILENCE un extrait fait de balises « <meta … /> », c'est-à-dire
+ * très exactement ce que cet extrait est là pour prouver.
+ *
+ * Une sous-clé absente devient une chaîne vide, jamais une clé manquante : la relecture doit
+ * pouvoir comparer les trois.
+ *
+ * @param array<string, mixed> $entree Entrée du fichier.
+ *
+ * @return array<string, string> Fait de non-indexation, tableau vide si l'entrée n'en déclare aucun.
+ */
+function fait_de_robots( array $entree ): array {
+	$brut = isset( $entree[ CLE_FICHIER_ROBOTS ] ) ? $entree[ CLE_FICHIER_ROBOTS ] : null;
+
+	if ( ! is_array( $brut ) || est_une_liste( $brut ) ) {
+		return array();
+	}
+
+	$fait = array();
+
+	foreach ( SOUS_CLES_ROBOTS as $cle ) {
+		$fait[ $cle ] = assainir_recopie( isset( $brut[ $cle ] ) ? $brut[ $cle ] : '', false );
+	}
+
+	return $fait;
 }
 
 /**

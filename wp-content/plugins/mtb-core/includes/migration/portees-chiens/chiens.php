@@ -79,17 +79,31 @@ function creer_chiens( array $entrees, string $chemin, array &$index ): array {
 
 		ecrire_metas( $post_id, $metas );
 
+		/*
+		 * Le fait de non-indexation est écrit APRÈS la création, hors de la passe ordinaire : la
+		 * clé n'est déclarée par aucun « content/** », donc aucun sanitize_callback ne la couvrirait
+		 * à l'insertion. Le schéma l'a assainie sous-clé par sous-clé, et le contrôle aval la relit
+		 * comme le tableau qu'elle est.
+		 */
+		$robots = fait_de_robots( $entree );
+		$sujet  = '' === $champs['post_title'] ? $identifiant : (string) $champs['post_title'];
+
+		if ( array() !== $robots ) {
+			ecrire_metas( $post_id, array( CLE_ROBOTS => $robots ) );
+			noter_fait_de_robots( $sujet, $robots );
+		}
+
 		$index[ $identifiant ] = $post_id;
 		$creees[ $rang ]       = $post_id;
 
 		compter( 'chiens', 'cree' );
-		noter_conversion( '' === $champs['post_title'] ? $identifiant : (string) $champs['post_title'], $conversion );
+		noter_conversion( $sujet, $conversion );
 
 		if ( 0 < (int) $conversion['residus'] ) {
 			signaler_residus( $identifiant, (int) $conversion['residus'] );
 		}
 
-		signaler_divergences( 'chiens', $fichier, $rang, $identifiant, controler_aval( 'chiens', $post_id, $metas, $champs ) );
+		signaler_divergences( 'chiens', $fichier, $rang, $identifiant, controler_aval( 'chiens', $post_id, $metas, $champs, $robots ) );
 	}
 
 	return $creees;

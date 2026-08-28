@@ -97,14 +97,20 @@ function definir_photo( int $post_id, int $piece_jointe ): void {
  * Il porte sur les 44 entités, jamais sur un échantillon : c'est lui, et lui seul, qui attrape
  * « N/N » devenu « N\N », une valeur vidée, une espace insécable perdue.
  *
- * @param string               $jeu     « chiens » ou « portees ».
- * @param int                  $post_id Contenu écrit.
- * @param array<string, mixed> $metas   Clé de méta => valeur brute demandée.
- * @param array<string, mixed> $champs  Champ de contenu => valeur brute demandée.
+ * Le fait de non-indexation, lui, arrive à part et jamais dans « $metas » : il est stocké en
+ * TABLEAU à trois sous-clés, déjà assaini sous-clé par sous-clé par le schéma, et le ré-assainir
+ * ici le viderait — nettoyer_recopie() ne rend qu'une chaîne, et rien d'un tableau. Il est comparé
+ * tel quel, sous-clé pour sous-clé.
+ *
+ * @param string                $jeu     « chiens » ou « portees ».
+ * @param int                   $post_id Contenu écrit.
+ * @param array<string, mixed>  $metas   Clé de méta => valeur brute demandée.
+ * @param array<string, mixed>  $champs  Champ de contenu => valeur brute demandée.
+ * @param array<string, string> $robots  Fait de non-indexation demandé, vide si l'entrée n'en a pas.
  *
  * @return string[] Divergences rédigées ; liste vide si tout est conforme.
  */
-function controler_aval( string $jeu, int $post_id, array $metas, array $champs ): array {
+function controler_aval( string $jeu, int $post_id, array $metas, array $champs, array $robots = array() ): array {
 	$divergences = array();
 
 	foreach ( $metas as $cle => $brut ) {
@@ -113,6 +119,14 @@ function controler_aval( string $jeu, int $post_id, array $metas, array $champs 
 
 		if ( ! equivalent( $attendu, $stocke ) ) {
 			$divergences[] = phrase_de_divergence( (string) $cle, $attendu, $stocke );
+		}
+	}
+
+	if ( array() !== $robots ) {
+		$stocke = get_post_meta( $post_id, CLE_ROBOTS, true );
+
+		if ( ! equivalent( $robots, $stocke ) ) {
+			$divergences[] = phrase_de_divergence( CLE_ROBOTS, $robots, $stocke );
 		}
 	}
 
