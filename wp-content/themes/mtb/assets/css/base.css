@@ -986,7 +986,12 @@ textarea[aria-invalid="true"] {
  * sur son contenu ; il cesserait de suffire dès que la même prose serait posée
  * dans une piste `auto` ou dans une boîte flex. C'est le même arbitrage, avec la
  * même mesure, que `entete-pied.css:216` et `blocs/mtb-coordonnees-plan.css:75`
- * — écart signalé à MASTER §7.7, qui prescrit `break-word` pour les URL.
+ * — et ce n'est plus un écart : MASTER §7.7.1, amendée le 28 août 2026,
+ * prescrit désormais `anywhere` pour les jetons insécables et nomme ces trois
+ * emplacements comme conformes. Les trois mesures concordantes n'ont pas
+ * exempté trois contournements : elles ont corrigé la règle. `break-word` ne
+ * modifie pas la taille min-content, il ne pouvait donc rien contre ce
+ * débordement.
  *
  * SUR LE CONTENEUR ET NON SUR SES LIENS : une URL reprise peut arriver en texte
  * nu, sans `<a>` autour ; la propriété étant héritée, la poser sur la prose

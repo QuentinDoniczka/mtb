@@ -566,8 +566,15 @@ sans sa source est une affirmation.* Cette clé existe précisément pour porter
 que #24 devra honorer ; la dépouiller de sa provenance la réduirait à une assertion invérifiable.
 
 L'`extrait` porte **les octets et rien d'autre** — pour les quatre fiches concernées, **les deux
-balises `robots` de la page, dans l'ordre du document**, jointes par un saut de ligne, sans
-remplissage ni commentaire. C'est la contradiction interne du source, et elle se recopie entière.
+balises `robots` de la page, dans l'ordre du document**, sans remplissage ni commentaire. C'est la
+contradiction interne du source, et elle se recopie entière.
+
+**Sur le caractère qui les joint, ne pas lire ce paragraphe seul** : le fichier de données porte un
+`
+`, mais **la valeur stockée en base porte une espace**, l'assainisseur repliant tout caractère de
+contrôle — `preg_replace( '/[ -]+/', ' ', … )`, où `
+` vaut `0x0A`. **Le §17 ter fait
+foi.**
 
 **Rappel de l'état réel** : la clé est **stockée**, elle n'est **pas rendue**. `wp_robots` et
 l'exclusion du plan du site appartiennent à #23 / #24 (Q-20-9).
