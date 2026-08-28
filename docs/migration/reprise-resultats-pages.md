@@ -24,6 +24,7 @@ dans une base n'est pas repris. Ici, tout est en fichiers versionnés, et **rejo
 | Entrées de composition (blocs + écarts) | **48** — 28 blocs, 20 écarts |
 | Paragraphes de prose recopiés | **59** |
 | Correspondances chien confirmées | **1** sur 61 lignes |
+| Faits de non-indexation recopiés | **1** — la page Placement, voir la section Q23 |
 | Photographies téléversées | **0** — téléversement différé, voir plus bas |
 
 ### Les 61 résultats
@@ -48,7 +49,7 @@ La neuvième discipline de la liste gelée, `truffe`, **n'a aucune ligne** : ell
 titre, ni en tableau, ni en légende. C'est l'état `discipline_vide`, et c'est le comportement voulu.
 
 **L'ordre du fichier est l'ordre de la source, et ce n'est pas cosmétique.**
-`includes/query/resultat/interne.php:503` départage deux lignes de même année **par identifiant de
+`includes/query/resultat/interne.php:505` départage deux lignes de même année **par identifiant de
 contenu**, donc par ordre de création. L'import crée dans l'ordre du fichier : l'ordre du site source
 est reproduit sans qu'aucun champ de tri n'ait été inventé.
 
@@ -86,7 +87,7 @@ Trois de ces pages ne portent aucune prose reprise, et **chacune pour une raison
 | **La meute** | Domaine `chiens` : elle appartient à l'issue **#20**, pas à celle-ci. |
 
 Vérifié ligne à ligne : `provision.sh` **ne nomme, ne crée, ne met à jour et ne supprime aucune** des
-sept pages ci-dessus. Sa ligne 258 (`search-replace` sur `wp_posts`) les balaie mais ne substitue
+sept pages ci-dessus. Sa ligne 265 (`search-replace` sur `wp_posts`) les balaie mais ne substitue
 qu'un littéral absent de toute capture : **elle les touche sans rien y changer.**
 
 ---
@@ -123,7 +124,8 @@ après les données, un comparateur est calibré pour valider ce qui existe.
 
 Le comparateur **n'écrit rien**, ne touche à aucun fichier, n'ouvre aucune connexion et n'a besoin
 d'aucune pile démarrée. Il se lance **depuis l'arbre de travail du dépôt**, jamais depuis un
-conteneur : `docs/` n'est monté dans aucun d'eux (`compose.yaml:85-89`).
+conteneur — non pas que l'archive y manque, `compose.yaml:109` l'y monte désormais en lecture seule,
+mais parce que le conteneur `wpcli` **n'a ni `python` ni `python3`**.
 
 ```
 cd wp-content/plugins/mtb-core/includes/migration/resultats-pages
@@ -141,8 +143,13 @@ propres flux ; la poser aussi au lancement met à l'abri d'un environnement exot
 > **Pourquoi un fichier Python dans une extension WordPress.** C'est une anomalie assumée, et la
 > raison est gravée en tête du fichier pour qu'aucune passe de refactorisation ne le « range » en PHP
 > et ne le rende inexécutable : il n'y a **pas de binaire `php` sur la machine de développement**,
-> `docs/` **n'est monté dans aucun conteneur**, et la **décision 34** interdit `docker compose run`
-> sur `wpcli`. Un comparateur en PHP n'aurait aucun endroit où tourner. Dette **T-#21-b**.
+> il n'y a **ni `python` ni `python3` dans le conteneur `wpcli`** — les deux environnements sont
+> exactement complémentaires —, et la **décision 34** interdit `docker compose run` sur `wpcli`. Un
+> comparateur en PHP n'aurait aucun endroit où tourner. Dette **T-#21-b**.
+>
+> Un quatrième argument figurait ici, tiré de l'inaccessibilité de l'archive depuis les conteneurs.
+> Il est **caduc** : `compose.yaml:109` l'y monte en lecture seule. Il est retiré ; la conclusion
+> tenait déjà sans lui.
 
 ### Importer
 
@@ -171,7 +178,7 @@ et affiche la commande exacte à relancer.
 
 ### Séquence de recette
 
-1. `python concordance/concordance.py` → **0**.
+1. `python concordance/concordance.py` → **0** (sept contrôles).
 2. `wp mtb reprise-resultats-pages --simuler`.
 3. `wp mtb reprise-resultats-pages --user=admin`.
 4. `wp mtb reprise-resultats-pages --verifier` immédiatement derrière → **0**.
@@ -192,11 +199,17 @@ et affiche la commande exacte à relancer.
 
 ### Un avertissement attendu au premier import sur une base provisionnée
 
-`docker/provision/provision.sh:226-230` sème **5 résultats de démonstration** (affixe « de
+`docker/provision/provision.sh:229-238` sème **5 résultats de démonstration** (affixe « de
 Démonstration », références `demo-…`) dans le **même type de contenu** que les 61 réels. La page
 `/travail/` **mélangera les deux jeux**, et l'ordre à année égale en dépend. La commande **les
 détecte et les nomme ; elle ne supprime jamais rien** — supprimer du contenu qui n'est pas le sien
-est hors de tout mandat. Le geste correct est `docker compose down -v`.
+est hors de tout mandat.
+
+**Le geste correct est `MTB_FIXTURES=0` dans `.env`, puis un redémarrage à froid** : le
+provisionnement saute alors le jeu de démonstration, sans rien supprimer (`.env.example:37-42`).
+**Un `docker compose down -v` seul ne suffit pas** — le provisionnement suivant resème aussitôt, et
+`provision.sh:224-228` le dit noir sur blanc. Ce document a d'abord recommandé `down -v` seul :
+c'était l'état de la pile à l'écriture, l'interrupteur n'existait pas encore.
 
 ---
 
@@ -229,6 +242,7 @@ Concordance : aucune divergence inexpliquée.        (code de retour 0)
 | **4 — espaces insécables** | Le compte d'U+00A0 du corps réduit est confronté au relevé de capture | **7 / 7** : 38 · 0 · 1 · 136 · 3 · 1 · 1 |
 | **5 — condensés** | Le `sha256` déclaré par chaque page est le condensé **stable** du HTML archivé qu'elle cite | **7 / 7** |
 | **6 — périmètre** | 61 résultats, la répartition du contrat §2, et la correspondance chien justifiée | conforme |
+| **7 — fait de robots** | Les balises `robots` déclarées par une page figurent **au caractère près** dans son HTML archivé | **1 page concernée**, ses 2 balises retrouvées |
 
 **Un écart délibéré n'est jamais une exemption.** C'est une entrée de composition qui **réclame des
 lignes exactement comme un bloc**, sans rien produire, et porte sa raison à côté des lignes qu'elle
@@ -284,35 +298,75 @@ exige donc que le **délimiteur déclaré de la famille** (`|` en tableau, `:` h
 **entre** deux champs et **jamais à l'intérieur** de l'un d'eux. Il a effectivement attrapé trois
 erreurs de ce type pendant la mise au point.
 
+### L'import a été exécuté, et voici ses comptes
+
+Mesuré, pas supposé. Base **fraîchement provisionnée** — `docker compose down -v` puis
+provisionnement complet — donc aucune des sept pages ni aucun des 61 résultats n'existait avant.
+
+| Étape | Résultat |
+|---|---|
+| `python concordance/concordance.py` | **0** — aucune divergence inexpliquée |
+| `wp mtb reprise-resultats-pages --simuler` | **61 résultats et 7 pages seraient créés, 0 rejet**, code 0 |
+| `wp mtb reprise-resultats-pages --user=admin` | **61 résultats créés · 7 pages créées · 0 déjà présent · 0 rejet**, code **0** |
+| `wp mtb reprise-resultats-pages --verifier` | **61 résultats et 7 pages conformes, 0 rejet**, code **0** |
+| `wp mtb reprise-resultats-pages --raccrocher --user=admin` | **0 lien posé, 1 fiche introuvable**, code **0** |
+
+**Deux avertissements attendus se sont produits, et aucun n'a fait sortir la commande en erreur** —
+c'est précisément le comportement voulu :
+
+- **les 5 résultats de démonstration** semés par le provisionnement ont été **détectés et nommés** ;
+  rien n'a été supprimé. La base contient donc 66 résultats : 61 repris et 5 fictifs, et la page
+  `/travail/` mélange bel et bien les deux jeux ;
+- **la fiche du chien `jango` est introuvable** — la reprise des chiens n'avait pas encore retourné
+  sur cette base. Le nom est écrit verbatim, aucun lien n'est posé, **et le code de sortie reste 0**.
+  C'est l'inversion délibérée du piège des fixtures : appliquer leur règle ferait disparaître les 61.
+
+**Ce que la base contient après coup, vérifié en la relisant :**
+
+| Constat | Mesure |
+|---|---|
+| Résultats repris | **61** (plus 5 de démonstration) |
+| Résultats avec un `pays` non vide | **0** — état `pays_vide` sur les 61, la colonne n'apparaît nulle part |
+| Résultats avec un `conducteur` | **0** — état `conducteur_vide` sur les 61 |
+| Résultats liés à une fiche chien | **0** — état `chien_sans_fiche` sur les 61 |
+| Répartition, démonstration déduite | ring 22 · igp_rci 4 · mondioring 4 · obeissance 19 · pistage 3 · recherche_utilitaire 4 · sauvetage 1 · autres_disciplines 4 · **truffe 0** |
+| Pages, statuts | 5 en `publish`, 2 en `draft`, conformes au contrat |
+| Balisage stocké | **identique à l'octet** à celui composé hors ligne : 9 661 · 357 · 34 · 4 619 · 310 · 741 · 433 octets. Le filtrage kses n'a **rien** altéré, les `--` des commentaires de blocs sont intacts |
+
+Trois valeurs relues au hasard, qui exercent chacune un arbitrage : `IGP 3 (Finland)` est stocké
+verbatim **avec sa parenthèse et un pays vide** ; `Cavage Classe B ChF - Prop. Ferrari` est stocké
+entier dans le niveau **avec un conducteur vide** ; `Brevet` a bien perdu l'espace insécable de bord
+que la source lui donne.
+
 ---
 
 ## Ce qui n'a PAS été vérifié
 
-Trois choses, et elles sont écrites ici plutôt que dans un rapport que personne ne relira.
+Deux choses, et elles sont écrites ici plutôt que dans un rapport que personne ne relira.
 
-1. **La commande d'import n'a jamais tourné.** La pile n'était pas démarrée au moment de
-   l'implémentation, et la décision 34 interdit `docker compose run` sur `wpcli`. Ne sont donc **pas**
-   éprouvés en conditions réelles : l'enregistrement `WP_CLI::add_command`, la lecture du registre des
-   types de blocs, `get_page_by_path`, les `meta_query` du tuple d'identité, et `media_handle_sideload`.
-   Ce qui **a** été éprouvé : les 14 fichiers PHP passent `php -l` sans une erreur (PHP 8.1, la cible
-   de l'extension), et le sérialiseur de blocs a été confronté au **vrai** parseur et au **vrai**
-   sérialiseur du cœur de WordPress 6.5 — les sept pages composées vérifient
-   `serialize_blocks( parse_blocks( $c ) ) === $c`, ne contiennent entre les délimiteurs d'une fiche
-   **rien d'autre que des commentaires de blocs et des `<p>`**, n'émettent ni `core/list` ni
-   `core/heading`, ne laissent survivre ni `mtbrabant.com`, ni `[IMAGE`, ni `[IFRAME`, ni `[LIEN`, et
-   **chaque `<a>` ne porte que son `href`**.
+**L'import, lui, A tourné** — voir la section précédente : 61 résultats et 7 pages créés sur une
+base fraîchement provisionnée, 0 rejet, code de sortie 0, `--verifier` à 0 immédiatement derrière.
+Sont donc éprouvés en conditions réelles, et ne figurent plus ici : l'enregistrement
+`WP_CLI::add_command`, la lecture du registre des types de blocs, `get_page_by_path`, les
+`meta_query` du tuple d'identité, l'écriture des métas, et le contrôle aval sur le contenu relu en
+base. **`media_handle_sideload` reste le seul chemin de code jamais exécuté** : aucune photo n'est
+citée, donc rien n'est versé (voir la dette T-#21-a).
 
-2. **Le validateur de blocs est CLIENT. Aucun contrôle serveur ne le remplace.** Trois contrôles
+1. **Le validateur de blocs est CLIENT. Aucun contrôle serveur ne le remplace.** Trois contrôles
    existent, et aucun ne subsume les autres : avant écriture, l'aller-retour sur le balisage composé ;
    après écriture, le même sur le contenu **relu en base** (il attrape un `wp_slash()` manquant et un
-   filtrage kses) ; **à l'écran**, l'ouverture des sept pages dans l'éditeur. **La troisième reste à
-   faire**, et on le dit plutôt que de faire semblant.
+   filtrage kses) ; **à l'écran**, l'ouverture des sept pages dans l'éditeur. Les deux premiers ont
+   tourné et sont passés — le balisage relu en base est **identique à l'octet** à celui composé hors
+   ligne, sur les sept pages. **La troisième reste à faire**, et on le dit plutôt que de faire
+   semblant : aucun contrôle serveur ne remplace le validateur du navigateur.
 
-3. **L'échappement des nœuds de texte est la source d'invalidation la plus plausible s'il en reste
+2. **L'échappement des nœuds de texte est la source d'invalidation la plus plausible s'il en reste
    une.** Il est calqué sur `escapeHTML` de `@wordpress/escape-html` : l'esperluette non déjà écrite
    en entité et le chevron ouvrant sont échappés, **le chevron fermant ne l'est pas** — pour que les
    nombreux `=>` de la source survivent tels quels. Ce choix n'est vérifiable qu'à l'étape 2
-   ci-dessus. Trois autres points de rendu qui n'ont pas de contrôle automatique : la position exacte
+   ci-dessus, et le fait que les octets stockés soient exactement ceux composés ne dit rien de ce
+   qu'en pensera le validateur. Trois autres points de rendu qui n'ont pas de contrôle automatique :
+   la position exacte
    des espaces insécables de fin de paragraphe, les apostrophes typographiques, et le repli mobile du
    tableau sous 48 rem.
 
@@ -372,7 +426,36 @@ des cinq seuls fichiers de l'archive dans ce cas ; les quatre autres sont des fi
 appartiennent à l'issue #20.
 
 **Ce que cette issue a fait :** elle a importé la page comme une **page ordinaire**, en `publish`,
-**indexable**, et elle consigne le fait ici.
+**indexable** — et elle a **stocké le fait en base**, sur la page elle-même, pour que l'issue de
+référencement ait quelque chose à quoi se raccrocher plutôt qu'une phrase dans un document.
+
+La méta s'appelle **`_mtb_robots_source`**, exactement comme celle que la reprise des chiens pose sur
+ses quatre fiches : une seule clé pour un seul fait, dans tout le dépôt. Elle porte trois sous-clés —
+`valeur`, `source`, `extrait` — et la voici, relue en base après l'import :
+
+```
+valeur  : noindex, nofollow
+source  : html/placement.html
+extrait : <meta name="robots" content="noindex, nofollow"/> <meta name="robots" content="index,follow"/>
+```
+
+**L'extrait porte les DEUX balises, et c'est délibéré.** La page source les écrit toutes les deux
+dans le **même `<head>`** — la première à la ligne 5, la seconde à la ligne 29, le `<head>` se
+fermant à l'octet 6807. **Le site source se contredit à l'intérieur d'un seul document.** Effacer la
+seconde pour ne garder que celle qui arrange rendrait le fait plus net et le rendrait **faux** :
+c'est très exactement le silence que ce projet a déjà payé deux fois. `valeur` retient la première,
+comme la reprise des chiens, **et ne tranche pas** : laquelle l'emporte est une décision de
+référencement, elle appartient à #24.
+
+Le comparateur hors ligne vérifie ce fait comme tous les autres : ses deux balises doivent figurer
+**au caractère près** dans le HTML archivé. Éprouvé en falsifiant une seule espace — il échoue.
+
+La clé n'est déclarée par aucun `content/**` : elle n'a donc ni assainisseur de modèle, ni rappel
+d'autorisation, et n'est **pas** enregistrée par `register_post_meta`. Son tiret bas initial la rend
+invisible du panneau « Champs personnalisés ». La reprise l'assainit elle-même, sous-clé par
+sous-clé, avec l'assainisseur de texte recopié du modèle — jamais avec un assainisseur écrit pour
+l'occasion. **La déclarer dans un `content/**` est une suite nécessaire, et elle n'appartient pas à
+cette issue.**
 
 **Ce qu'elle n'a pas fait, et ne pouvait pas faire :** le `noindex` **n'est pas implémentable depuis
 cette empreinte**. WordPress n'a aucun réglage natif pour retirer une page seule de l'indexation ; il
@@ -380,7 +463,7 @@ faut un filtre `wp_robots`, plus l'exclusion du plan du site. C'est du **comport
 permanent de référencement**, et cela appartient à l'issue **#24**.
 
 > **Un lot qui se clôturerait en déclarant Q23 tenue se clôturerait sur un silence.**
-> Le fait est **stocké et écrit** ; il n'est **pas honoré**. Tant que #24 n'a pas tourné, la page
+> Le fait est désormais **stocké en base, et écrit ici** ; il n'est **toujours pas honoré**. Tant que #24 n'a pas tourné, la page
 > Placement est indexable alors que ce dépôt affirme que la source ne le veut pas. **Un fait consigné
 > et non honoré est pire qu'un fait absent**, parce qu'il donne l'impression que la question est
 > réglée.
@@ -541,12 +624,17 @@ photo n'a été copié dans l'extension** — dupliquer une archive créerait un
 pour une photographie, et l'engagerait dans git pour toujours. Les trois pages sont composées **sans
 emplacement de photo** : l'emplacement n'existe pas, aucun trou ni réserve n'est rendu.
 
-**Deux causes, et il faut les deux pour lever la dette :**
+**Une seule cause subsiste, et elle suffit : le texte alternatif.** Aucune des trois images n'en
+porte dans la capture, et **un `alt` inventé est un fait inventé**. C'est une question à l'éleveuse,
+et personne d'autre ne peut y répondre.
 
-1. `docs/` n'est monté dans **aucun** conteneur (`compose.yaml:85-89`) — une ligne à ajouter, hors de
-   cette empreinte ;
-2. **le texte alternatif est une question ouverte à l'éleveuse.** Même le montage fait, les photos ne
-   pourraient pas être reprises *correctement* : un `alt` inventé est un fait inventé.
+**La seconde cause est tombée pendant ce lot, et c'est écrit plutôt qu'effacé.** Ce document a
+d'abord annoncé qu'il fallait *deux* choses, la seconde étant l'inaccessibilité de l'archive depuis
+les conteneurs. Ce motif est **caduc** : **`compose.yaml:109` monte `docs/migration/source` en
+lecture seule sur `wpcli`**, photos comprises. Les trois images y sont **atteignables**, vérifié
+dans le conteneur — `16497476.png` y pèse bien 1 002 317 octets — et
+`--photos=/var/www/html/docs/migration/source/photos` les trouverait. **La dette reste ouverte, mais
+pour la seule bonne raison.**
 
 **Précision honnête sur l'outillage.** La commande sait chercher des photos dans un dossier fourni
 par `--photos` et avertir bruyamment si elles manquent. Mais **aucune des sept fiches de page ne cite
@@ -567,7 +655,7 @@ ici. Rappel de leur objet et de leur destinataire, pour qu'aucune ne se perde :
 
 | # | Objet | Vers |
 |---|---|---|
-| **T-#21-a** | Les 3 photos ne sont pas téléversées : `docs/` non monté, et l'`alt` est une question à l'éleveuse | `infra` + éleveuse |
+| **T-#21-a** | Les 3 photos ne sont pas téléversées : leur **texte alternatif** est une question ouverte à l'éleveuse, et il n'en reste aucune autre. *Le motif d'infrastructure invoqué à l'origine est caduc depuis `compose.yaml:109` ; l'issue `infra` n'est plus concernée.* | **éleveuse** |
 | **T-#21-b** | Un comparateur Python vit dans une extension WordPress. **Ne pas le « ranger » en PHP** | information, gravée en tête du fichier |
 | **T-#21-c** | Deux des trois photos sont des PNG, non converties en WebP ; dont un de 1 002 317 o | `perf` / utilisateur |
 | **T-#21-d** | `docs/migration/redirections.md` est **périmé**, et le devient davantage | `/lead-mtb` |

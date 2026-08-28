@@ -281,19 +281,28 @@ function lien_non_resolu( string $nom, string $reference ): void {
  * Manque déclaré, pas case cochée : le téléversement est DIFFÉRÉ (arbitrage A5). Les pages sont
  * créées sans photo, l'emplacement n'existe pas dans le rendu, et le code de sortie reste 0.
  *
+ * LA CAUSE A CHANGÉ, ET CE MESSAGE AVEC ELLE. Il invoquait d'abord l'inaccessibilité de l'archive
+ * depuis les conteneurs ; ce motif est **caduc** depuis « compose.yaml:109 », qui la monte en
+ * lecture seule sur « wpcli », photos comprises. Un avertissement qui ment sur sa cause envoie
+ * l'opérateur chercher au mauvais endroit, ce qui est pire qu'un commentaire périmé. Il ne reste
+ * donc que la cause qui tient encore : personne ne sait quel texte alternatif écrire, et c'est une
+ * question à l'éleveuse.
+ *
  * @param string[] $noms    Noms de fichiers attendus.
  * @param string   $dossier Dossier réellement cherché.
  */
 function photos_differees( array $noms, string $dossier ): void {
 	\WP_CLI::warning(
 		sprintf(
-			'Photos non téléversées : %s. Cherchées dans %s, qui ne les contient pas. Cause mesurée : '
-			. '« docs/ » n\'est monté dans aucun conteneur (compose.yaml:85-89), et l\'extension ne '
-			. 'duplique pas les octets d\'une archive — ce serait une seconde source de vérité pour '
-			. 'une photographie. Les pages sont créées SANS photo : l\'emplacement n\'existe pas, '
-			. 'aucun trou n\'est rendu. Pour les verser plus tard, monter le dossier des photos puis '
-			. 'relancer avec « --photos=<dossier> ». Le texte alternatif reste par ailleurs une '
-			. 'question ouverte à l\'éleveuse : dette T-#21-a.',
+			'Photos non téléversées : %s. Cherchées dans %s, qui ne les contient pas. Le dossier des '
+			. 'photos n\'est plus hors d\'atteinte : l\'archive du site source est montée en lecture '
+			. 'seule sur le conteneur « wpcli », et « --photos=/var/www/html/docs/migration/source/photos » '
+			. 'les trouverait. L\'extension, elle, ne duplique pas les octets d\'une archive : ce serait '
+			. 'une seconde source de vérité pour une photographie. Ce qui manque est ailleurs, et '
+			. 'personne ici ne peut l\'inventer — AUCUNE de ces images ne porte de texte alternatif '
+			. 'dans la capture, et en écrire un serait écrire un fait. C\'est une question ouverte à '
+			. 'l\'éleveuse, dette T-#21-a. Les pages sont créées SANS photo : l\'emplacement n\'existe '
+			. 'pas, aucun trou n\'est rendu.',
 			implode( ', ', $noms ),
 			$dossier
 		)
@@ -351,11 +360,13 @@ function fixtures_de_demonstration( int $combien ): void {
 	\WP_CLI::warning(
 		sprintf(
 			'%s de démonstration %s dans la base, semé%s par le provisionnement '
-			. '(docker/provision/provision.sh:226-230, affixe « de Démonstration »). La page '
+			. '(docker/provision/provision.sh:229-238, affixe « de Démonstration »). La page '
 			. '/travail/ mélangera les deux jeux, et l\'ordre à année égale en dépend. Rien n\'est '
-			. 'supprimé : ce contenu n\'appartient pas à cette commande. Le geste correct est '
-			. '« docker compose down -v », qui détruit la base de développement, puis un nouveau '
-			. 'provisionnement.',
+			. 'supprimé : ce contenu n\'appartient pas à cette commande. Le geste correct est de '
+			. 'poser MTB_FIXTURES=0 dans « .env », puis de redémarrer la pile à froid : le '
+			. 'provisionnement saute alors le jeu de démonstration sans rien supprimer. Un '
+			. '« docker compose down -v » seul NE SUFFIT PAS — le provisionnement suivant resème '
+			. 'aussitôt.',
 			accorder( $combien, array( 'résultat', 'résultats' ) ),
 			$combien >= 2 ? 'sont présents' : 'est présent',
 			$combien >= 2 ? 's' : ''

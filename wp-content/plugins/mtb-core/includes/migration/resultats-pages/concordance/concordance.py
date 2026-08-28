@@ -10,16 +10,22 @@ refactorisation ne le réécrive en PHP : réécrit en PHP, il deviendrait inex�
 
 Trois faits mesurés, pas supposés (dette T-#21-b du contrat `docs/contracts/issue-21.md`) :
 
-  1. il n'y a pas de binaire `php` sur la machine de développement — le PHP du projet ne vit que
-     dans les conteneurs ;
-  2. `docs/` n'est monté dans AUCUN conteneur (`compose.yaml:85-89` ne monte que
-     `wp-content/themes/mtb`, `wp-content/plugins/mtb-core`, `docker/provision` et
-     `docker/fixtures`) : un comparateur exécuté dans le conteneur ne verrait donc jamais le HTML
-     archivé, qui est sa seule source de vérité ;
+  1. il n'y a **pas** de binaire `php` sur la machine de développement — le PHP du projet ne vit
+     que dans les conteneurs ;
+  2. il n'y a **ni `python` ni `python3`** dans le conteneur `wpcli` — les deux environnements sont
+     exactement complémentaires, et aucun des deux langages n'est disponible des deux côtés ;
   3. la décision 34 du projet interdit `docker compose run` sur le service `wpcli`.
 
 Un comparateur en PHP n'aurait donc aucun endroit où tourner. Celui-ci tourne sur l'hôte, en
 Python 3 de la bibliothèque standard, sans réseau, sans base de données, sans dépendance.
+
+UN QUATRIÈME ARGUMENT A ÉTÉ RETIRÉ D'ICI, ET C'EST DÉCLARÉ PLUTÔT QU'EFFACÉ
+
+Ce fichier s'appuyait aussi, à l'écriture, sur l'inaccessibilité de l'archive depuis les
+conteneurs. Cet argument est **caduc** : `compose.yaml:109` monte `./docs/migration/source` en
+lecture seule sur `wpcli`, pour l'import des portées et des chiens. Il est donc retiré. La
+conclusion, elle, ne bouge pas — elle tenait déjà sans lui, et tient sur le point 2, qui est le
+bon.
 
 CE QU'IL FAIT, ET CE QU'IL NE FAIT PAS
 ======================================
@@ -479,7 +485,7 @@ def controle_1b(rapport, resultats, lignes_travail):
     """Chaque `source.ligne` existe dans la zone re-dérivée, et l'ordre du fichier est celui de la
     source.
 
-    L'ordre n'est pas cosmétique : `interne.php:503` départage deux lignes de même année par
+    L'ordre n'est pas cosmétique : `interne.php:505` départage deux lignes de même année par
     identifiant de contenu, donc par ordre de création, et l'importeur crée dans l'ordre du
     fichier.
     """
@@ -997,6 +1003,101 @@ def controle_5(rapport, pages_lues, dossier_html, mesures):
 
 
 # ---------------------------------------------------------------------------------------------
+# Contrôle 7 — le fait de robots
+# ---------------------------------------------------------------------------------------------
+
+
+def controle_7(rapport, pages_lues, dossier_html):
+    """Le fait de non-indexation déclaré est-il dans le HTML archivé, au caractère près ?
+
+    Une seule page en porte un. C'est un fait de référencement que le nouveau site ne rend pas
+    encore : il n'existe donc, pour l'instant, QUE sous forme recopiée. Un fait recopié qui n'est
+    confronté à rien n'est pas un fait, c'est une affirmation — d'où ce contrôle.
+    """
+    rapport.titre("Contrôle 7 — le fait de robots est celui du HTML archivé")
+
+    portees = 0
+
+    for slug, _statut, fichier_html in PAGES:
+        page = pages_lues.get(slug)
+
+        if page is None:
+            continue
+
+        fait = page.get("robots_source")
+
+        if fait is None:
+            continue
+
+        portees += 1
+
+        if not isinstance(fait, dict):
+            rapport.echec("%s : « robots_source » n'est pas un objet JSON." % slug)
+            continue
+
+        manquantes = [c for c in ("valeur", "source", "extrait") if not str(fait.get(c) or "").strip()]
+
+        if manquantes:
+            rapport.echec(
+                "%s : « robots_source » incomplet, sous-clés manquantes : %s."
+                % (slug, ", ".join("« %s »" % c for c in manquantes))
+            )
+            continue
+
+        if os.path.basename(str(fait["source"])) != fichier_html:
+            rapport.echec(
+                "%s : « robots_source.source » cite « %s », attendu « %s »."
+                % (slug, fait["source"], fichier_html)
+            )
+            continue
+
+        chemin = os.path.join(dossier_html, fichier_html)
+
+        if not os.path.isfile(chemin):
+            rapport.echec("%s : HTML archivé absent (%s)." % (slug, chemin))
+            continue
+
+        with open(chemin, "rb") as fichier:
+            html = fichier.read().replace(b"\r\n", b"\n").decode("utf-8", "replace")
+
+        absentes = [
+            l for l in str(fait["extrait"]).split("\n") if l.strip() and l.strip() not in html
+        ]
+
+        if absentes:
+            rapport.echec(
+                "%s : ces lignes de « robots_source.extrait » ne figurent pas dans %s : %s."
+                % (slug, fichier_html, " | ".join(absentes))
+            )
+            continue
+
+        lignes = [l.strip() for l in str(fait["extrait"]).split("\n") if l.strip()]
+
+        if str(fait["valeur"]) not in lignes[0]:
+            rapport.echec(
+                "%s : « robots_source.valeur » vaut « %s », absente de la première balise déclarée "
+                "« %s »." % (slug, fait["valeur"], lignes[0])
+            )
+            continue
+
+        rapport.ok(
+            "%s : %s balise%s de robots retrouvée%s au caractère près dans %s ; valeur retenue "
+            "« %s », la première du document."
+            % (
+                slug,
+                len(lignes),
+                "s" if len(lignes) > 1 else "",
+                "s" if len(lignes) > 1 else "",
+                fichier_html,
+                fait["valeur"],
+            )
+        )
+
+    if portees == 0:
+        rapport.note("aucune page ne déclare de fait de robots.")
+
+
+# ---------------------------------------------------------------------------------------------
 # Contrôle 6 — périmètre et correspondances
 # ---------------------------------------------------------------------------------------------
 
@@ -1123,7 +1224,7 @@ def main(argv):
         print(
             "  [ECHEC] `docs/migration/source/outils/reduire.py` est introuvable au-dessus de %s. "
             "Ce comparateur se lance depuis l'arbre de travail du dépôt, jamais depuis un "
-            "conteneur : `docs/` n'y est pas monté (compose.yaml:85-89)." % MODULE
+            "conteneur : `wpcli` n'a ni `python` ni `python3`." % MODULE
         )
         return 1
 
@@ -1194,6 +1295,7 @@ def main(argv):
     controle_4(rapport, outil, dossier_html, mesures, zones_par_slug)
     controle_5(rapport, pages_lues, dossier_html, mesures)
     controle_6(rapport, resultats, correspondances)
+    controle_7(rapport, pages_lues, dossier_html)
 
     rapport.titre("Transformations déclarées et comptées")
 

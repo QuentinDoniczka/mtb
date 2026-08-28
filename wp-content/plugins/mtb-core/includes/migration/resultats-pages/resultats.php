@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * L'ORDRE DU FICHIER EST L'ORDRE DE LA SOURCE, ET CE N'EST PAS COSMÉTIQUE
  *
- * « query/resultat/interne.php:503 » départage deux lignes de même année par identifiant de
+ * « query/resultat/interne.php:505 » départage deux lignes de même année par identifiant de
  * contenu, donc par ordre de création. Créer dans l'ordre du fichier reproduit l'ordre du site
  * source SANS qu'aucun champ de tri ne soit inventé.
  */

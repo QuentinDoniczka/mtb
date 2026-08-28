@@ -16,12 +16,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 /*
  * LE TÉLÉVERSEMENT EST DIFFÉRÉ, ET C'EST UN MANQUE DÉCLARÉ, PAS UNE CASE COCHÉE (arbitrage A5).
  *
- * Les trois photos des pages Travail et BHPL vivent dans « docs/migration/source/photos/ », qui
- * n'est monté dans AUCUN conteneur (compose.yaml:85-89). Deux issues s'offraient : recopier
- * 1 125 604 octets dans l'extension, ou déclarer le manque. La recopie a été refusée — dupliquer
- * une archive crée une seconde source de vérité pour une photographie, et l'engage dans git pour
- * toujours. S'ajoute que le texte alternatif de ces trois images est une question ouverte à
- * l'éleveuse : aucune d'elles ne peut de toute façon être reprise CORRECTEMENT aujourd'hui.
+ * Les trois photos des pages Travail et BHPL vivent dans « docs/migration/source/photos/ », que
+ * « compose.yaml:109 » monte désormais en lecture seule sur le conteneur « wpcli » : elles y sont
+ * ATTEIGNABLES. Ce n'est donc plus le montage qui les retient — cet argument-là, invoqué à
+ * l'écriture de ce module, est tombé dans le même lot, et il est retiré plutôt qu'entretenu.
+ *
+ * Deux raisons tiennent encore, et elles suffisent. La première : l'extension ne recopie pas les
+ * 1 125 604 octets de ces images chez elle — dupliquer une archive crée une seconde source de
+ * vérité pour une photographie, et l'engage dans git pour toujours. La seconde, et c'est elle qui
+ * bloque vraiment : AUCUNE des trois ne porte de texte alternatif dans la capture, et personne ici
+ * ne peut en inventer un. Aucune ne peut donc être reprise CORRECTEMENT aujourd'hui, montage ou
+ * pas — c'est une question ouverte à l'éleveuse, dette T-#21-a.
  *
  * Conséquence tenue : les pages sont créées sans photo, l'état « photo_absente » est déjà géré par
  * les composants — l'emplacement n'existe pas, aucun trou ni réserve n'est rendu — et le code de
