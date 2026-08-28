@@ -236,9 +236,9 @@ function resserrer_les_lignes_vides( string $texte ): string {
  * @return int Nombre de résidus.
  */
 function compter_les_residus( string $texte ): int {
-	$traces  = array( '<img', '<iframe', '<script', '<embed', '<object', '<video', '<audio', '<source', '<link', '[LIEN', '[IMAGE', '[IFRAME', '[/LIEN' );
+	$traces    = array( '<img', '<iframe', '<script', '<embed', '<object', '<video', '<audio', '<source', '<link', '[LIEN', '[IMAGE', '[IFRAME', '[/LIEN' );
 	$minuscule = strtolower( $texte );
-	$residus = 0;
+	$residus   = 0;
 
 	foreach ( $traces as $trace ) {
 		$residus += substr_count( $minuscule, strtolower( $trace ) );

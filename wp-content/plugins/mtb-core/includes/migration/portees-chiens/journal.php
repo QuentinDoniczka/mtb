@@ -86,13 +86,13 @@ function libelle_de_role( string $role ): string {
  */
 function &registre(): array {
 	static $registre = array(
-		'jeux'      => array(),
-		'photos'    => array(),
-		'liaisons'  => array(),
+		'jeux'        => array(),
+		'photos'      => array(),
+		'liaisons'    => array(),
 		'conversions' => array(),
-		'controles' => array(),
-		'rejets'    => 0,
-		'defauts'   => 0,
+		'controles'   => array(),
+		'rejets'      => 0,
+		'defauts'     => 0,
 	);
 
 	return $registre;
@@ -106,10 +106,10 @@ function &registre(): array {
 function demarrer( array $jeux ): void {
 	$registre = &registre();
 
-	$registre['jeux']      = array();
-	$registre['photos']    = array();
-	$registre['liaisons']  = array();
-	$registre['controles'] = array();
+	$registre['jeux']        = array();
+	$registre['photos']      = array();
+	$registre['liaisons']    = array();
+	$registre['controles']   = array();
 	$registre['conversions'] = array(
 		'lignes'    => array(),
 		'galerie'   => 0,
@@ -120,8 +120,8 @@ function demarrer( array $jeux ): void {
 		'orphelins' => 0,
 		'entites'   => 0,
 	);
-	$registre['rejets']    = 0;
-	$registre['defauts']   = 0;
+	$registre['rejets']      = 0;
+	$registre['defauts']     = 0;
 
 	foreach ( $jeux as $jeu ) {
 		$registre['jeux'][ $jeu ] = array(

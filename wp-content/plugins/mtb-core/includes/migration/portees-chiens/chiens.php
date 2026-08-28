@@ -60,8 +60,8 @@ function creer_chiens( array $entrees, string $chemin, array &$index ): array {
 			continue;
 		}
 
-		$champs  = champs_de_contenu( 'chiens', $entree );
-		$metas   = valeurs_brutes( 'chiens', $entree );
+		$champs = champs_de_contenu( 'chiens', $entree );
+		$metas  = valeurs_brutes( 'chiens', $entree );
 
 		/*
 		 * La conversion des marqueurs est recomptée ici pour être journalisée.

@@ -108,6 +108,7 @@ function controler( string $jeu, $entree ): array {
 		'rejets'  => array_merge(
 			$provenances['rejets'],
 			controler_les_valeurs( $jeu, $entree ),
+			controler_le_mode_de_saisie( $jeu, $entree ),
 			controler_les_chiots( $jeu, $entree )
 		),
 		'defauts' => $provenances['defauts'],
@@ -355,6 +356,53 @@ function controler_les_valeurs( string $jeu, array $entree ): array {
 			rendre_valeur( $brut ),
 			chemin_json( $jeu, (string) $meta ),
 			nom_de_lassainisseur( $jeu, (string) $meta )
+		);
+	}
+
+	return $raisons;
+}
+
+/**
+ * Exige un mode de saisie déclaré et connu pour chacun des deux parents d'une portée.
+ *
+ * CONTREPARTIE EXACTE DE L'EXEMPTION DE FORME accordée à « pere.type » et « mere.type ». La forme
+ * n'est plus contrôlée sur ces deux clés ; leur valeur, elle, l'est deux fois plutôt qu'une.
+ *
+ * La règle de valeur ordinaire se tait sur un vide, et elle a raison partout ailleurs : sur presque
+ * toutes les clés, un vide est un fait — le site ne l'énonce pas. Ici, non. « fiche » et
+ * « exterieur » ne sont pas deux nuances d'un même champ, ce sont les deux seules façons dont une
+ * portée peut désigner un parent, et le vide n'en est pas une troisième. Une portée écrite sans
+ * mode de saisie n'aurait ni parent lié ni parent nommé : une généalogie muette, obtenue en
+ * silence, sur une clé que le fichier a simplement oublié d'écrire.
+ *
+ * La liste acceptée est lue vivante dans le modèle, jamais recopiée ici.
+ *
+ * @param string               $jeu    « chiens » ou « portees ».
+ * @param array<string, mixed> $entree Entrée.
+ *
+ * @return string[] Raisons rédigées.
+ */
+function controler_le_mode_de_saisie( string $jeu, array $entree ): array {
+	if ( 'portees' !== $jeu ) {
+		return array();
+	}
+
+	$raisons = array();
+	$fermees = listes_fermees( $jeu );
+
+	foreach ( roles() as $role ) {
+		$meta = '_mtb_' . $role . '_type';
+
+		// Un mode non vide mais inconnu est déjà rejeté par la règle de valeur : ne pas le dire deux fois.
+		if ( '' !== type_de_parent( $jeu, $entree, $role ) ) {
+			continue;
+		}
+
+		$raisons[] = sprintf(
+			'le mode de saisie du %s n\'est pas déclaré : la clé « %s » est absente ou vide, et la portée n\'aurait ni parent lié ni parent nommé. Valeurs attendues : %s.',
+			libelle_de_role( $role ),
+			chemin_json( $jeu, $meta ),
+			implode( ', ', $fermees[ $meta ] )
 		);
 	}
 
