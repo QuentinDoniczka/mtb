@@ -650,8 +650,12 @@ est **0**. C'est la leçon du lot 5 rejouée : un audit mesure une propriété, 
 
 **0 violation, toutes gravités confondues, sur les six pages** (26 à 40 règles par page).
 
-> **Corrigé le 2026-08-29 : l'`incomplete` de `color-contrast` n'est pas propre à Travail — il court
-> sur les SIX pages, et c'est un silence, pas un détail.** J'avais écrit « un seul `incomplete` sur
+> ⚠️ **PÉRIMÉ — conservé par convention (on corrige par ajout daté, on ne retire rien), mais ce
+> paragraphe s'énonce comme une alarme et la suite l'infirme. Lis d'abord le paragraphe suivant, qui
+> fait foi. Ce qui reste vrai ici : les comptes de nœuds. Ce qui est faux : « c'est un silence ».**
+>
+> ~~**Corrigé le 2026-08-29 : l'`incomplete` de `color-contrast` n'est pas propre à Travail — il court
+> sur les SIX pages, et c'est un silence, pas un détail.**~~ J'avais écrit « un seul `incomplete` sur
 > Travail ». La passe d'intégration a compté les nœuds non jugés : **6 / 7 / 3 / 6 / 6 / 12** sur
 > Accueil, BHPL, Littérature, Mentions légales, Placement, Travail — message identique partout
 > (**« background gradient »**), et **le `h1` ainsi que le lien de titre de site de l'en-tête en font
@@ -682,8 +686,12 @@ est **0**. C'est la leçon du lot 5 rejouée : un audit mesure une propriété, 
 > est précisément ce qu'on corrige ici.
 >
 > **Ce qui suit de là** : les deux nœuds que cette section nommait — le `h1` et le lien de titre de
-> site de l'en-tête — sont **sur fond plat**, donc couverts par les onze contrastes relus sur pixels
-> rendus (**décision 36**). `axe` rend `incomplete` parce qu'il voit un `linear-gradient` sur un
+> site de l'en-tête — sont **sur fond plat**. C'est le fait qui compte, et il est vérifié dans les
+> feuilles. **Il ne faut rien en inférer de plus** : la formulation précédente ajoutait « donc
+> couverts par les onze contrastes relus sur pixels rendus (décision 36) », ce qui est une
+> **inférence et non une mesure** — `ETAT.md` n'énumère pas les onze paires, donc rien n'établit que
+> celles-ci en font partie. La conclusion ne repose pas sur ce raccourci : elle repose sur le fait
+> qu'**aucun dégradé ne passe sous ces textes**. `axe` rend `incomplete` parce qu'il voit un `linear-gradient` sur un
 > ancêtre et **refuse de raisonner sur `background-size` et `background-position`** : le message est
 > mécanique, ce n'est pas un signal. Et le seul vrai dégradé sous du texte de tout le projet,
 > `--voile-photo` (`tokens.css:126`), est **déjà borné par la décision 35** — plancher absolu de
@@ -749,6 +757,7 @@ texte du paragraphe.
 - **Le contraste des anneaux de focus** sur chaque fond : `color-contrast` d'axe ne les juge pas.
 - **Les libellés de l'éditeur du §12** n'ont pas été relevés à nouveau à l'écran cette passe ; ils
   sont repris de la mesure du 2026-08-20.
+
 *(La ligne « le volet `INPUT#pwbox` de T42 : sans objet sur cette installation » figurait ici. **Elle
 est retirée le 2026-08-29** : le §13.2 établit que ce volet **est** mesurable — `/espace-prive/`
 répond 200 et déborde à 263/180. La laisser dans une liste de « non mesuré » tout en renvoyant à la
