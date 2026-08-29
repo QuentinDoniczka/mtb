@@ -24,13 +24,12 @@ d'ailleurs pas de bouton **+**.
    page à modifier.
 
 2. Placez le curseur à l'endroit où vous voulez la nouvelle section, puis cliquez sur le bouton **+**,
-   en haut à gauche de l'écran.
+   en haut à gauche de l'écran. Ce bouton s'appelle **Outil d'insertion de bloc**.
 
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Fiche d'information**.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant** en tête, avec
-   > **Fiche d'information** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant en première position, avec Fiche d'information et sa phrase de présentation](captures/fiche-information-inserteur.png)
 
 4. La fiche apparaît, avec un titre en attente qui affiche **Titre de la section** en gris : tapez
    votre titre par-dessus.
@@ -39,18 +38,20 @@ d'ailleurs pas de bouton **+**.
    listes à puces.
 
 6. *Facultatif* — pour une photo : dans la colonne de droite, panneau **Photo**, cliquez sur
-   **Choisir une photo**, choisissez-la dans la fenêtre qui s'ouvre, puis validez avec le bouton en bas
-   à droite de cette fenêtre.
+   **Choisir une photo**. La fenêtre s'ouvre sur l'onglet **Téléverser des fichiers** : cliquez sur
+   l'onglet **Médiathèque**, juste à côté, pour voir les photos déjà présentes. Cliquez sur la vôtre,
+   puis sur **Sélectionner**, en bas à droite de la fenêtre.
 
    *Si la colonne de droite n'est pas affichée, ouvrez-la avec le bouton en forme de roue dentée, en
    haut à droite de l'écran.*
 
-   > **Capture à prendre :** la colonne de droite, panneau **Photo** ouvert **avec une photo choisie**,
-   > les quatre réglages visibles et leurs lignes d'aide lisibles en entier.
+   ![La colonne de droite, panneau Photo ouvert avec une photo choisie : les boutons Remplacer la photo et Retirer la photo, puis les réglages Description de la photo, Légende de la photo, Position de la photo et Cadrage de la photo, chacun avec sa ligne d'aide](captures/fiche-information-reglages-photo.png)
 
 7. Cliquez sur **Mettre à jour**, en haut à droite. C'est en ligne.
 
 8. Ouvrez la page sur le site, ou cliquez sur **Aperçu** : c'est là que la fiche est à sa vraie allure.
+
+![Deux fiches à la suite sur la page publiée : la première porte un titre de section souligné d'un double trait, avec sa photo ; la seconde porte un sous-titre, sans double trait](captures/fiche-information-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -68,6 +69,8 @@ l'essentiel :
 |---|---|
 | **Titre de section** *(le choix par défaut)* | Un titre principal, **avec le double trait** au-dessus |
 | **Sous-titre** | Un titre plus discret, **sans double trait**, pour une subdivision |
+
+![Le réglage Niveau du titre en haut de la colonne de droite, avec ses deux choix Titre de section et Sous-titre, et la ligne d'aide qui les explique](captures/fiche-information-niveau-titre.png)
 
 **Il n'y a pas d'autre niveau, et c'est voulu** : le grand titre tout en haut de la page est le titre de
 la page, et il reste le seul de son rang. Vous n'avez donc rien à chercher au-delà de ces deux choix.
@@ -120,6 +123,8 @@ tableau, ni photo posée au milieu des mots.
 panneau **Photo** ne montre que le bouton **Choisir une photo** : ce n'est pas un manque, c'est pour ne
 pas vous proposer des réglages qui n'ont rien à régler.
 
+![Le panneau Photo de la colonne de droite quand aucune photo n'est choisie : il ne contient que le bouton Choisir une photo, sans aucun des quatre réglages](captures/fiche-information-panneau-sans-photo.png)
+
 Une fois la photo choisie, le bouton s'intitule **Remplacer la photo**, et un second bouton,
 **Retirer la photo**, apparaît dans le même panneau.
 
@@ -162,8 +167,12 @@ photo est agrandie et paraît floue.
 
 ## Enlever une fiche d'information
 
-Cliquez sur la fiche dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de la supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur la fiche dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Il n'y a rien à craindre :**
 
@@ -177,9 +186,7 @@ menu qui s'ouvre propose de la supprimer. Cliquez ensuite sur **Mettre à jour**
 Pour n'enlever que la photo et garder le texte, n'enlevez pas la fiche : cliquez sur
 **Retirer la photo**.
 
-> **Capture à prendre :** la barre d'outils de la fiche sélectionnée, avec le menu à trois points
-> ouvert. **Le libellé exact de l'entrée qui supprime le composant doit être relevé sur cette capture et
-> recopié ici mot pour mot** : il vient de WordPress et nous ne pouvons pas le renommer.
+![La barre d'outils de la fiche sélectionnée, le menu à trois points ouvert, avec l'entrée Supprimer tout en bas de la liste](captures/fiche-information-menu-composant.png)
 
 ---
 
@@ -189,7 +196,7 @@ Pour n'enlever que la photo et garder le texte, n'enlevez pas la fiche : cliquez
 la présentation de la race. **Autant de fiches que la page a de sections.**
 
 **Ne vous en servez jamais pour décrire une portée ou un chien.** Une portée se remplit une seule fois,
-par **Portées** → **Ajouter**, et son nom, sa date, sa disponibilité, ses photos et ses liens de parents
+par **Portées** → **Ajouter une portée**, et son nom, sa date, sa disponibilité, ses photos et ses liens de parents
 s'affichent ensuite tout seuls partout sur le site. Une portée recomposée à la main dans une page serait
 à corriger à la main à chaque changement — c'est exactement le travail que ce site supprime.
 
@@ -204,6 +211,9 @@ s'affichent ensuite tout seuls partout sur le site. Une portée recomposée à l
   **Tapez un titre, ou du texte, ou choisissez une photo — une seule des trois suffit** et le cadre
   disparaît. Aux visiteurs, une fiche dans cet état **n'affiche rien du tout** : ni cadre, ni trou, ni
   message, et la page reste normale. Ce cadre n'existe que pour vous, pendant que vous modifiez.
+
+  ![Une fiche fraîchement insérée et encore vide : un cadre portant FICHE D'INFORMATION puis la phrase expliquant que rien ne s'affiche tant qu'aucun texte ni aucune photo n'est renseigné](captures/fiche-information-etat-vide.png)
+
 - **Une fiche insérée puis laissée telle quelle n'apparaît pas sur le site.** C'est voulu : rien n'y a
   été saisi.
 - **Vous n'avez mis qu'un titre, ou qu'une photo, ou que du texte.** La fiche s'affiche quand même, avec
@@ -252,31 +262,3 @@ s'affichent ensuite tout seuls partout sur le site. Une portée recomposée à l
 **Si quelque chose vous inquiète** : ne supprimez rien, ne cliquez pas sur **Mettre à jour**, notez le
 titre de la page et l'heure, et appelez-nous. Une page en cours de modification n'a jamais cassé un
 site.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur une page d'essai contenant deux **Fiche d'information** — l'une avec
-titre, texte et photo, l'autre réglée sur **Sous-titre** — plus une fiche fraîchement insérée et laissée
-vide.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/fiche-information-inserteur.png` | **Pages** → une page → bouton **+** | La liste des composants, la rubrique **Mont Brabant** en tête, **Fiche d'information** et sa phrase de présentation lisibles |
-| `captures/fiche-information-niveau-titre.png` | Colonne de droite, fiche sélectionnée | Le réglage **Niveau du titre** en haut de la colonne, les deux choix **Titre de section** et **Sous-titre**, et sa ligne d'aide en entier |
-| `captures/fiche-information-reglages-photo.png` | Colonne de droite, panneau **Photo**, **une photo choisie** | Les boutons **Remplacer la photo** et **Retirer la photo**, puis les quatre réglages — **Description de la photo (pour les personnes aveugles)**, **Légende de la photo**, **Position de la photo**, **Cadrage de la photo** — **avec leurs quatre lignes d'aide lisibles en entier** |
-| `captures/fiche-information-panneau-sans-photo.png` | Colonne de droite, panneau **Photo**, **aucune photo choisie** | Le seul bouton **Choisir une photo**, pour montrer que les quatre réglages n'existent pas encore |
-| `captures/fiche-information-etat-vide.png` | Fiche fraîchement insérée, rien de saisi | Le cadre et ses deux lignes : **FICHE D'INFORMATION**, puis « Ce bloc n'affiche rien tant qu'aucun texte ni aucune photo n'est renseigné. », phrase entière lisible |
-| `captures/fiche-information-menu-composant.png` | Fiche sélectionnée | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** |
-| `captures/fiche-information-sur-le-site.png` | La page **publiée**, vue sur le site | Deux fiches à la suite : la première en **Titre de section** avec son double trait et sa photo, la seconde en **Sous-titre** sans double trait — pour qu'elle reconnaisse le résultat auquel se fier |
-
-**Deux libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** :
-l'entrée du menu à trois points qui supprime le composant, et le bouton qui valide le choix d'une photo
-dans la fenêtre des photos. Tous deux sont décrits par leur place, jamais nommés. **Les recopier mot
-pour mot** depuis `fiche-information-menu-composant.png` et
-`fiche-information-reglages-photo.png` est le seul geste qui manque à cette fiche.
-
-**Aucune capture ne doit montrer de nom de chien, de date de naissance ni de photo non validée** :
-utilisez une page d'essai et un texte neutre.

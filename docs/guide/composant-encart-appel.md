@@ -20,15 +20,17 @@ fonctionne. Les trois réglages sont facultatifs.
    page à modifier.
 
 2. Placez le curseur à l'endroit où vous voulez l'encart — le plus souvent en fin de page — puis cliquez
-   sur le bouton **+**, en haut à gauche de l'écran.
+   sur le bouton **+**, en haut à gauche de l'écran. Ce bouton s'appelle
+   **Outil d'insertion de bloc**.
 
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur **Encart d’appel**.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant**, avec
-   > **Encart d’appel** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant, avec Encart d’appel et sa phrase de présentation](captures/encart-appel-inserteur.png)
 
 4. **L'encart apparaît déjà rempli**, avec **Nous contacter** et le numéro enregistré dans
    **Coordonnées**. **Vous pouvez vous arrêter là** : il est publiable tel quel.
+
+   ![L'encart à peine posé dans la page, déjà rempli : le titre Nous contacter et le numéro de l'élevage, sans bouton, sans qu'un seul caractère ait été tapé](captures/encart-appel-arrive-rempli.png)
 
 5. *Facultatif* — dans la colonne de droite, le panneau **Réglages de l’encart** est déjà ouvert : c'est
    là que vous ajoutez une phrase, un autre numéro, ou une page pour le bouton.
@@ -40,6 +42,8 @@ fonctionne. Les trois réglages sont facultatifs.
 
 7. Ouvrez la page sur le site, ou cliquez sur **Aperçu** : c'est là que l'encart est à sa vraie allure.
 
+![L'encart publié sur le site : le titre Nous contacter, la phrase d'accroche en dessous, le numéro de téléphone puis le bouton, l'ensemble marqué d'un trait sur son côté gauche](captures/encart-appel-sur-le-site.png)
+
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
 
@@ -48,6 +52,8 @@ sans enregistrer : elle reste comme elle était.
 ## Les trois réglages, tous facultatifs
 
 Ils sont tous les trois dans le panneau **Réglages de l’encart**, dans cet ordre.
+
+![La colonne de droite, panneau Réglages de l’encart ouvert : les champs Phrase d’accroche, Téléphone affiché et Page vers laquelle mène le bouton, chacun avec sa ligne d'aide, la liste des pages posée sur Aucune (pas de bouton)](captures/encart-appel-reglages.png)
 
 ### **Phrase d’accroche**
 
@@ -132,8 +138,12 @@ largeur. Au pire, un mauvais réglage donne un encart sans bouton — jamais une
 
 ## Enlever l'encart
 
-Cliquez sur l'encart dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur l'encart dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Il n'y a rien à craindre :**
 
@@ -169,6 +179,9 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
   supprimée, remise en brouillon, ou protégée par un mot de passe. C'est ce que voient aussi les
   visiteurs — l'encart s'affiche sans bouton. **Choisissez-en une autre**, ou republiez la page : le
   bouton revient alors tout seul, sans que vous rouvriez cet encart.
+
+  ![Le réglage de la page revenu sur Aucune (pas de bouton), avec juste en dessous la phrase « La page choisie n’est plus disponible. Choisissez-en une autre. »](captures/encart-appel-page-perdue.png)
+
 - **Le numéro ne s'appelle pas d'un clic sur téléphone.** Le champ contient autre chose qu'un seul
   numéro. Ne gardez qu'un numéro dans **Téléphone affiché**.
 - **Dans la page en cours de modification, l'encart est plus étroit que sur le site.** C'est normal :
@@ -198,25 +211,3 @@ site.
 ---
 
 Pour donner l'adresse et le plan d'accès, employez plutôt *Coordonnées et plan d'accès*.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur une page d'essai portant deux **Encart d’appel** — l'un laissé tel
-quel, l'autre avec une phrase d'accroche et une page choisie.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/encart-appel-inserteur.png` | **Pages** → une page → bouton **+** | La rubrique **Mont Brabant**, **Encart d’appel** et sa phrase de présentation lisibles |
-| `captures/encart-appel-arrive-rempli.png` | L'encart fraîchement posé, rien de réglé | **Nous contacter** et le numéro enregistré dans **Coordonnées** déjà affichés, sans bouton — pour montrer qu'il n'y a rien à taper |
-| `captures/encart-appel-reglages.png` | Colonne de droite, encart sélectionné | Le panneau **Réglages de l’encart** ouvert, les trois réglages — **Phrase d’accroche**, **Téléphone affiché**, **Page vers laquelle mène le bouton** — **avec leurs trois lignes d'aide lisibles en entier**, et l'option **Aucune (pas de bouton)** en tête de la liste |
-| `captures/encart-appel-page-perdue.png` | Colonne de droite, après suppression de la page choisie | Le réglage revenu sur **Aucune (pas de bouton)** et la phrase « **La page choisie n’est plus disponible. Choisissez-en une autre.** » lisible en entier |
-| `captures/encart-appel-sur-le-site.png` | La page **publiée**, vue sur le site | L'encart à sa vraie allure : titre, phrase d'accroche, numéro et bouton, avec le trait sur son côté |
-
-**Un libellé de cette fiche vient de WordPress et n'a pas encore été relevé à l'écran** : l'entrée du
-menu à trois points qui supprime le composant. Elle est décrite par sa place, jamais nommée.
-
-**Aucune capture ne doit montrer de nom de chien, de date de naissance ni de photo non validée** :
-utilisez une page d'essai et un texte neutre.

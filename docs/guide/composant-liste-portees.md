@@ -10,7 +10,7 @@ Le composant s'appelle **Liste de portées**. Vous le posez dans la page, et c'e
 publiée y apparaît d'elle-même, de la plus récemment née à la plus ancienne, avec un lien vers sa page.
 
 **Vous n'avez rien à recopier et rien à écrire dedans.** À chaque nouvelle portée publiée, la liste
-s'allonge de lui-même — vous ne revenez pas sur la page.
+s'allonge d'elle-même — vous ne revenez pas sur la page.
 
 Ce composant se pose dans une **page**, jamais dans une fiche de portée, de chien ou de résultat : **les
 pages se composent, les fiches se remplissent.** Sur l'écran d'une portée, il n'y a d'ailleurs pas de
@@ -24,9 +24,9 @@ bouton **+**.
    page à modifier.
 
 2. Placez le curseur à l'endroit où vous voulez la liste, puis cliquez sur le bouton **+**, en haut à
-   gauche de l'écran.
+   gauche de l'écran. Ce bouton s'appelle **Outil d'insertion de bloc**.
 
-3. Tapez **portées** dans la case de recherche, en haut de la liste qui s'ouvre, puis cliquez sur
+3. Tapez **portées** dans le champ **Rechercher**, en haut de la liste qui s'ouvre, puis cliquez sur
    **Liste de portées**.
 
    *C'est le chemin qui marche à coup sûr. Le composant est aussi rangé dans la rubrique
@@ -34,8 +34,7 @@ bouton **+**.
    sa phrase de présentation, « Affiche les portées publiées, de la plus récente à la plus ancienne. »
    C'est voulu — un aperçu ne vous apprendrait rien de plus sur une liste de texte.*
 
-   > **Capture à prendre :** la liste des composants ouverte avec **portées** tapé dans la case de
-   > recherche, **Liste de portées**, son icône et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte avec le mot portées tapé dans le champ Rechercher, et le seul résultat Liste de portées : son icône de liste, son nom et sa phrase de présentation, sans aucun aperçu](captures/liste-portees-inserteur.png)
 
 4. La liste apparaît aussitôt, **déjà remplie avec vos portées**. Il n'y a aucune portée à cocher.
 
@@ -52,6 +51,8 @@ bouton **+**.
 7. Cliquez sur **Mettre à jour**, en haut à droite. C'est en ligne.
 
 8. Ouvrez la page sur le site, ou cliquez sur **Aperçu** : c'est là que la liste est à sa vraie allure.
+
+![La liste publiée sur le site : plusieurs portées les unes sous les autres, chacune avec son nom cliquable, sa date précédée de Née le, son nombre de chiots et sa mention de disponibilité ; certaines lignes portent une petite photo, d'autres non, et le lien Toutes les portées ferme la liste](captures/liste-portees-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -105,6 +106,8 @@ Ils sont dans la colonne de droite, panneau **Réglages**.
 
 Sa ligne d'aide dit : « Laissez vide pour afficher toutes les portées. »
 
+![La colonne de droite, panneau Réglages ouvert : le champ Nombre de portées à afficher, vide, avec sa ligne d'aide, et en dessous le réglage Année posé sur Toutes les années, avec la sienne](captures/liste-portees-reglages.png)
+
 | Ce que vous mettez | Ce que la page montre |
 |---|---|
 | **Vide** *(le réglage de départ)* | **Toutes** les portées |
@@ -119,6 +122,11 @@ Sa ligne d'aide dit : « Laissez vide pour afficher toutes les portées. »
 ### **Année**
 
 Sa ligne d'aide dit : « La liste n'affiche que les portées nées cette année-là. »
+
+**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
+propose, dans cet ordre : **Toutes les années** en premier, puis **une ligne par année où une portée
+est née**, de la plus récente à la plus ancienne. Il n'y a rien d'autre dedans, et vous n'avez aucune
+année à y écrire.
 
 - Le premier choix, **Toutes les années**, est celui de départ : aucune année n'est écartée.
 - Les autres choix sont les années de vos portées, de la plus récente à la plus ancienne.
@@ -163,8 +171,12 @@ Vous pouvez mettre **plusieurs Liste de portées dans une même page**, réglée
 
 ## Enlever la liste d'une page
 
-Cliquez sur le composant dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur le composant dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Il n'y a rien à craindre :**
 
@@ -175,9 +187,7 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 - Rien n'est définitif avant **Mettre à jour** : si vous vous êtes trompée, quittez la page sans
   enregistrer.
 
-> **Capture à prendre :** la barre d'outils du composant sélectionné, avec le menu à trois points ouvert.
-> **Le libellé exact de l'entrée qui supprime le composant doit être relevé sur cette capture et recopié
-> ici mot pour mot** : il vient de WordPress et nous ne pouvons pas le renommer.
+![La barre d'outils de la liste sélectionnée, le menu à trois points ouvert, avec l'entrée Supprimer tout en bas de la liste](captures/liste-portees-menu-composant.png)
 
 ---
 
@@ -187,18 +197,20 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 
 - **La liste affiche deux lignes**, **Liste de portées** puis « Ce bloc n'affiche rien tant qu'aucune
   portée n'est publiée. » : aucune portée n'est encore en ligne. Publiez-en une par **Portées** →
-  **Ajouter**, et la liste se remplit d'elle-même. Aux visiteurs, une liste dans cet état **n'affiche
+  **Ajouter une portée**, et la liste se remplit d'elle-même. Aux visiteurs, une liste dans cet état **n'affiche
   rien du tout** : ni cadre, ni trou, ni message, et la page reste normale. Ces deux lignes n'existent
   que pour vous, pendant que vous modifiez.
 
-  > **Capture à prendre :** le composant fraîchement inséré dans une page, aucune portée publiée,
-  > affichant les deux lignes **Liste de portées** et « Ce bloc n'affiche rien tant qu'aucune portée
-  > n'est publiée. », phrase entière lisible.
+  **Cet écran n'est pas illustré**, parce qu'il aurait fallu retirer du site toutes vos portées pour
+  l'obtenir. Vous y verriez simplement un cadre gris portant ces deux lignes, à la place de la liste.
 
 - **La page affiche « Aucune portée pour cette année. » suivi du lien Toutes les portées.** Vous avez
   choisi une **Année** qui n'a aucune portée, alors que d'autres années en ont. **C'est une réponse, pas
   une panne** : le visiteur lit une phrase claire et a de quoi continuer. Pour montrer des portées tout
   de suite, repassez **Année** sur **Toutes les années**.
+
+  ![La page publiée avec une année sans portée : la phrase « Aucune portée pour cette année. » et, juste en dessous, le lien Toutes les portées](captures/liste-portees-annee-sans-portee.png)
+
 - **Une ligne affiche Non renseigné à la place de la date.** Le champ
   **Date de naissance (obligatoire)** de cette portée est vide. Il est obligatoire pour publier une
   portée : c'est donc qu'il a été effacé après coup.
@@ -239,31 +251,3 @@ Et même si la liste disparaissait d'une page, **aucune portée ne serait perdue
 leur fiche, sous **Portées** → **Toutes les portées**.
 
 Pour remplir ou corriger une portée, voir [Ajouter une portée](portee-ajouter-une-portee.md).
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur une page d'essai contenant une **Liste de portées**, avec au moins trois
-portées publiées de deux années différentes, dont **une sans photo principale** et **une avec**, plus une
-installation où aucune portée n'est publiée.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/liste-portees-inserteur.png` | **Pages** → une page → bouton **+**, **portées** tapé dans la case de recherche | **Liste de portées**, son icône de liste et sa phrase « Affiche les portées publiées, de la plus récente à la plus ancienne. » — et **l'absence d'aperçu**, pour qu'elle la reconnaisse |
-| `captures/liste-portees-reglages.png` | Colonne de droite, composant sélectionné | Le panneau **Réglages** ouvert, le champ **Nombre de portées à afficher** vide avec sa ligne d'aide entière, et le réglage **Année** sur **Toutes les années** avec sa ligne d'aide entière |
-| `captures/liste-portees-annee-ouverte.png` | Colonne de droite, réglage **Année** déroulé | **Toutes les années** en premier choix, puis les années des portées, de la plus récente à la plus ancienne |
-| `captures/liste-portees-etat-vide.png` | Composant fraîchement inséré, aucune portée publiée | Les deux lignes : **Liste de portées**, puis « Ce bloc n'affiche rien tant qu'aucune portée n'est publiée. » |
-| `captures/liste-portees-sur-le-site.png` | La page **publiée**, vue sur le site, avec **Nombre de portées à afficher** réglé plus bas que le nombre de portées | Plusieurs lignes, **une avec petite photo et une sans**, une date **Née le**, un nombre de chiots, une mention de disponibilité, et le lien **Toutes les portées** à la fin |
-| `captures/liste-portees-annee-sans-portee.png` | La page **publiée**, **Année** réglée sur une année sans portée | La phrase « Aucune portée pour cette année. » et le lien **Toutes les portées** dessous |
-| `captures/liste-portees-menu-composant.png` | Composant sélectionné | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** |
-
-**Deux libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** :
-l'entrée du menu à trois points qui supprime le composant, et le libellé exact de la case de recherche de
-la liste des composants. Tous deux sont décrits par leur place, jamais nommés. **Les recopier mot pour
-mot** depuis `liste-portees-menu-composant.png` et `liste-portees-inserteur.png` est le seul geste qui
-manque à cette fiche.
-
-**Aucune capture ne doit montrer un nom de portée ni une photo non validés** : utilisez des fiches
-d'essai.

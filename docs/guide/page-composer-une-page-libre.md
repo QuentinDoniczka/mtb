@@ -25,8 +25,11 @@ la fenêtre **Choisir une composition** et sur l'onglet **Compositions**. C'est 
 3. La fenêtre **Choisir une composition** s'ouvre toute seule. Cliquez sur le modèle qui correspond à
    votre page — les huit sont listés juste en dessous.
 
-   > **Capture à prendre :** la fenêtre **Choisir une composition** ouverte, les huit modèles visibles
-   > avec leurs noms lisibles.
+   *Si vous préférez partir d'une page entièrement vide, refermez cette fenêtre avec la croix en haut à
+   droite : elle s'appelle **Fermer**, mais n'affiche pas ce mot à l'écran. Rien n'est perdu — vous
+   pourrez toujours poser un modèle ensuite par le bouton **+**, onglet **Compositions**.*
+
+   ![La fenêtre Choisir une composition ouverte, les huit modèles présentés côte à côte avec leurs noms sous chacun](captures/modeles-choisir-une-composition.png)
 
 4. Dans le champ du titre, en haut, tapez le titre de votre page. **Si la page commence par un bandeau,
    votre titre apparaît aussitôt dedans**, sur la photo.
@@ -82,12 +85,12 @@ Vous pouvez poser un modèle à tout moment, dans une page neuve comme dans une 
 
 1. Placez le curseur à l'endroit voulu, puis cliquez sur le bouton **+**, en haut à gauche de l'écran.
 2. En haut de la liste qui s'ouvre, cliquez sur l'onglet **Compositions**.
-3. Les huit modèles sont dans **Toutes**, dans **Contenu de départ** et dans **Texte** — vous les
-   trouverez dans n'importe laquelle des trois.
+3. **Aucun modèle ne s'affiche encore : c'est normal.** L'onglet ne montre d'abord que **trois noms de
+   catégories** — **Toutes**, **Contenu de départ**, **Texte**. **Cliquez sur l'une des trois** pour
+   voir les modèles. Les huit sont dans chacune : prenez **Toutes**, c'est le plus simple.
 4. Cliquez sur le modèle : ses composants s'ajoutent à la suite, à l'endroit du curseur.
 
-> **Capture à prendre :** l'onglet **Compositions** ouvert, avec les huit modèles et les trois
-> catégories **Toutes**, **Contenu de départ**, **Texte** visibles.
+![L'onglet Compositions ouvert, ne montrant que les trois noms de catégories Toutes, Contenu de départ et Texte, sans aucun modèle tant qu'aucune n'est cliquée](captures/modeles-onglet-compositions.png)
 
 **Attention** : dans une page qui commence déjà par un bandeau, poser un modèle qui en porte un aussi
 donne **deux bandeaux**. **Ce qu'il faut faire** : enlevez le second bandeau (voir plus bas), ou
@@ -114,8 +117,11 @@ coup, parfois beaucoup : c'est simplement la charpente qui attend vos mots.
 Si vous publiez une page dont vous n'avez encore rempli que la première section, le site montre cette
 section, et rien d'autre.
 
-> **Capture à prendre :** une page qui vient d'être créée avec le modèle **Page d'accueil**, rien de
-> saisi, tous les cadres beiges visibles d'un coup — pour qu'elle reconnaisse cet écran sans s'inquiéter.
+![Une page qui vient d'être créée avec le modèle Page d'accueil, rien de saisi : les cadres beiges à contour en tirets les uns sous les autres, chacun portant le nom de son composant en majuscules](captures/modeles-accueil-a-remplir.png)
+
+Une fois remplie et publiée, la même page se lit ainsi sur le site :
+
+![La page d'accueil remplie et publiée : le bandeau avec son titre sur la photo, une section de texte, la dernière portée, les reproducteurs et l'encart d'appel, les uns sous les autres](captures/modeles-accueil-remplie.png)
 
 ---
 
@@ -129,6 +135,9 @@ avez déjà saisi ailleurs.
   ajoutez un résultat, **vous n'avez rien à faire sur cette page** : il y apparaît sans que vous la
   rouvriez. Les deux sections de texte, elles, sont à vous : celle qui précède les tableaux, et celle
   qui les suit.
+
+  ![Une page Travail publiée : le bandeau, la première section de texte, puis les tableaux de résultats sous leurs titres de discipline, et enfin la seconde section de texte en dessous](captures/modeles-travail-sur-le-site.png)
+
 - **La dernière portée** de l'accueil et **la liste des portées** de la page Placement se mettent à
   jour à chaque portée publiée.
 - **Les reproducteurs** de l'accueil suivent vos fiches de chien.
@@ -153,6 +162,8 @@ disciplines qui ont des résultats.
 enregistrez — il rejoint aussitôt le bon tableau, et le titre **Non renseigné** disparaît de lui-même
 quand plus aucun résultat n'est dans ce cas. Voir *Ajouter un résultat de travail*.
 
+![Le bas d'une page Travail publiée : un dernier tableau intitulé Non renseigné, qui rassemble les résultats dont la discipline n'a pas été choisie](captures/modeles-travail-non-renseigne.png)
+
 ---
 
 ## Le grand titre de la page, et pourquoi il change de place
@@ -167,6 +178,8 @@ vous avez tapé en haut de la page.
 comme sur n'importe quelle page.
 
 Dans les deux cas, **le titre est écrit une fois et une seule**. Vous n'avez rien à régler.
+
+![Une page Mentions légales publiée : le titre s'affiche en haut de la page, sans bandeau ni photo, suivi du texte puis des coordonnées de l'élevage](captures/modeles-mentions-legales.png)
 
 ### Si vous déplacez le bandeau, le titre revient en haut
 
@@ -184,8 +197,7 @@ Déplacez-le tout en haut.* »
 **Ce qu'il faut faire** : remontez le bandeau tout en haut avec la petite flèche de sa barre d'outils,
 jusqu'à ce que le message jaune disparaisse. Le titre redevient unique aussitôt.
 
-> **Capture à prendre :** un bandeau descendu en deuxième position, le message jaune visible en entier
-> au-dessus de lui.
+![Un bandeau descendu en deuxième position dans la page, coiffé du message jaune annonçant qu'il n'est pas le premier bloc et que le titre s'affichera deux fois](captures/modeles-bandeau-plus-premier.png)
 
 Le bandeau est décrit en entier dans *Mettre une photo en haut d'une page*.
 
@@ -195,10 +207,13 @@ Le bandeau est décrit en entier dans *Mettre une photo en haut d'une page*.
 
 **Rien n'est verrouillé.** Une fois le modèle posé, la page est à vous :
 
-- **Ajouter une section** : placez le curseur, cliquez sur **+**, puis, dans la rubrique
-  **Mont Brabant**, sur **Fiche d'information**.
+- **Ajouter une section** : placez le curseur, cliquez sur **+** — le bouton
+  **Outil d'insertion de bloc** — puis, dans la rubrique **Mont Brabant**, la première de la liste, sur
+  **Fiche d'information**.
 - **Enlever un composant** : cliquez dessus, puis sur le bouton à trois points de sa petite barre
-  d'outils. Le menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+  d'outils. Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+  **Mettre à jour**. *Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est
+  toujours la dernière entrée : descendez jusqu'au bout, c'est là.*
 - **Déplacer un composant** : servez-vous des deux petites flèches de sa barre d'outils.
 
 **Enlever un composant ne supprime jamais vos données.** Vos portées, vos chiens, vos résultats et vos
@@ -275,30 +290,3 @@ page*, *Afficher un message temporaire sur une page*, *Afficher la dernière por
 *Inviter les visiteurs à vous appeler*, *Ajouter des photos dans une page*,
 *Afficher la liste des portées dans une page*, *Afficher les résultats de travail sur une page*,
 *Afficher vos coordonnées et un plan d'accès*.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où
-chacune vient. À faire en une passe, sur des pages d'essai.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/modeles-choisir-une-composition.png` | **Pages** → **Ajouter une page**, à l'ouverture | La fenêtre **Choisir une composition**, les **huit** modèles et leurs noms lisibles en entier |
-| `captures/modeles-onglet-compositions.png` | Une page ouverte → bouton **+** → onglet **Compositions** | L'onglet **Compositions**, les trois catégories **Toutes**, **Contenu de départ**, **Texte**, et les huit modèles |
-| `captures/modeles-accueil-a-remplir.png` | Une page neuve créée avec **Page d'accueil**, rien de saisi | Tous les cadres beiges à contour en tirets visibles d'un coup, avec les noms de composants en majuscules |
-| `captures/modeles-accueil-remplie.png` | La même page, remplie et **publiée**, vue sur le site | Le bandeau avec son titre, une section de texte, la dernière portée, les reproducteurs, l'encart d'appel |
-| `captures/modeles-travail-sur-le-site.png` | Une page créée avec **Page Travail**, **publiée**, vue sur le site | Le bandeau, la première section de texte, les tableaux de résultats avec leurs titres de discipline, **puis la seconde section de texte** — pour montrer qu'elle n'a rien tapé de ces tableaux, et que son texte peut continuer en dessous |
-| `captures/modeles-mentions-legales.png` | Une page créée avec **Page Mentions légales**, **publiée** | Le titre affiché **en haut de la page**, sans bandeau, puis les coordonnées — pour montrer les deux régimes de titre |
-| `captures/modeles-bandeau-plus-premier.png` | Une page d'essai où le **Bandeau d'ouverture** a été descendu en deuxième position | Le message jaune sur le bandeau, lisible en entier : « Ce bandeau n'est pas le premier bloc de la page : le titre s'affichera deux fois. Déplacez-le tout en haut. » |
-| `captures/modeles-travail-non-renseigne.png` | Une page **Page Travail** publiée, sur le site, avec au moins un résultat dont la **Discipline** n'a pas été choisie | Le dernier tableau, intitulé **Non renseigné** — pour qu'elle reconnaisse ce titre et sache quoi en faire. Texte et noms neutres |
-
-**Quatre libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** :
-l'entrée du menu à trois points qui supprime un composant, le bouton qui ferme la fenêtre
-**Choisir une composition**, l'entrée de menu **Toutes les pages** et le bouton **Ajouter une page**.
-Les deux premiers sont décrits par leur place, jamais nommés ; les deux derniers sont à confirmer lors
-de la passe de captures, en même temps que la première image.
-
-**Aucune capture ne doit montrer un nom de chien, une date de naissance, un résultat ou une photo non
-validés** : utilisez des pages d'essai et un texte neutre.

@@ -12,10 +12,9 @@ jamais un blanc, et jamais une valeur inventée à votre place.
 
 ## Les étapes
 
-1. Dans le menu de gauche, cliquez sur **Chiens**, puis sur **Ajouter**.
+1. Dans le menu de gauche, cliquez sur **Chiens**, puis sur **Ajouter un chien**.
 
-   > **Capture à prendre :** le menu de gauche de l'administration, l'entrée **Chiens** ouverte,
-   > avec le sous-menu **Ajouter** mis en évidence.
+   ![Le menu de gauche de l'administration, l'entrée Chiens dépliée, avec ses sous-menus Tous les chiens et Ajouter un chien](captures/chien-menu-ajouter.png)
 
 2. Tout en haut de la page, dans le grand champ, tapez le **Nom d'usage** du chien : son nom court,
    celui qui deviendra le titre de sa fiche.
@@ -23,8 +22,7 @@ jamais un blanc, et jamais une valeur inventée à votre place.
 3. Descendez dans la section **Identité** et remplissez ce que vous connaissez. Choisissez le
    **Statut** : c'est lui qui fait apparaître le chien sur la page **La meute**.
 
-   > **Capture à prendre :** le champ **Nom d'usage** en haut, puis la section **Identité** en
-   > entier, avec les choix de **Statut** et la ligne d'aide qui les suit.
+   ![Le champ Nom d'usage en haut de l'écran, puis la section Identité en entier : Nom complet, Sexe, Variété, Date de naissance, Date de décès et Statut, avec la ligne d'aide qui suit le statut](captures/chien-identite.png)
 
 4. Continuez dans les sections suivantes — **Parents**, **Taille et robe**, **Santé**,
    **Titres et brevets**, **Photos et pedigree** — en remplissant seulement ce que vous avez sous la
@@ -32,6 +30,8 @@ jamais un blanc, et jamais une valeur inventée à votre place.
 
 5. Dans la colonne de droite, encadré **Photo principale**, cliquez sur
    **Choisir la photo principale** et prenez la photo qui représente le chien.
+
+   ![L'encadré Photo principale dans la colonne de droite, avec le seul lien Choisir la photo principale](captures/chien-photo-principale.png)
 
 6. Cliquez sur **Publier**, en haut à droite.
 
@@ -78,6 +78,8 @@ le deviner : après l'enregistrement, un message vous prévient —
 « Ce chien est enregistré sans statut : il n'apparaîtra pas sur la page « La meute ». Vous pouvez
 renseigner le champ Statut quand vous le souhaitez. » Rouvrez la fiche, choisissez un statut,
 cliquez sur **Mettre à jour**, c'est réglé.
+
+![Le bandeau d'avertissement en haut de l'écran après un enregistrement sans statut, prévenant que le chien n'apparaîtra pas sur la page La meute et que le champ Statut peut être rempli plus tard](captures/chien-avis-statut.png)
 
 Pour une femelle, le site écrit *Reproductrice*, *Retraitée*, *Disparue*. Vous choisissez le statut,
 le site accorde.
@@ -131,8 +133,7 @@ par le premier.
 **Autres tests de santé** — une ligne par test : son nom, puis son résultat. C'est là que va tout test
 qui n'a pas son champ nommé ci-dessus.
 
-> **Capture à prendre :** la section **Santé** en entier — les huit champs nommés, les trois choix
-> d'**ADN identifié**, et la zone **Autres tests de santé**.
+![La section Santé en entier : les huit champs nommés de HD à Diversité génétique, les trois choix d'ADN identifié, et la zone Autres tests de santé en dessous](captures/chien-sante.png)
 
 ---
 
@@ -155,8 +156,10 @@ correction automatique.
   **Bas**, **Centre** par défaut. Il sert à choisir quelle partie de la photo reste visible quand elle
   est recadrée. Si le chien est dans le haut de l'image, choisissez **Haut** ; sinon, ne touchez à
   rien.
-- **Galerie photos** — cliquez sur **Ajouter des photos**, choisissez vos photos, puis
-  **Ajouter à la galerie**. Elles s'affichent sur la fiche dans l'ordre de la liste. Sous chaque
+- **Galerie photos** — cliquez sur **Ajouter des photos**. La fenêtre **Photos de la galerie** s'ouvre
+  sur l'onglet **Téléverser des fichiers** : cliquez sur l'onglet **Médiathèque**, juste à côté, pour
+  voir les photos déjà présentes sur le site. Choisissez vos photos, puis cliquez sur
+  **Ajouter à la galerie**, en bas à droite. Elles s'affichent sur la fiche dans l'ordre de la liste. Sous chaque
   photo, trois boutons : **Retirer la photo 1**, **Monter la photo 1**, **Descendre la photo 1**. Le
   numéro suit le rang de la photo : montez celle que vous voulez voir en premier.
 - **Lien pedigree (LOF Select)** — collez l'adresse de la page du chien sur LOF Select, copiée depuis
@@ -165,17 +168,16 @@ correction automatique.
 
 ### Décrire chaque photo
 
-Dans la fenêtre des photos, prenez trente secondes pour écrire ce que montre la photo — le chien de
-profil dans l'herbe, la portée dans son parc. Ce texte n'est pas affiché à l'écran : il est **lu à
+Dans la fenêtre des photos, cliquez sur une photo : la colonne de droite s'ouvre. Le premier champ
+s'appelle **Texte alternatif** — il vient avant **Titre**, **Légende** et **Description**. C'est là,
+et nulle part ailleurs, que vous prenez trente secondes pour écrire ce que montre la photo — le chien
+de profil dans l'herbe, la portée dans son parc. Ce texte n'est pas affiché à l'écran : il est **lu à
 voix haute** aux personnes aveugles qui visitent le site, et il s'affiche à la place de la photo
 quand celle-ci ne se charge pas. Une photo sans description est une photo qui n'existe pas pour elles.
 
-*(Cette zone porte aujourd'hui à l'écran le titre « Texte alternatif », qui n'est pas le nom prévu
-pour le site. Voir « En cas de doute ».)*
+**N'écrivez pas dans le champ Description**, plus bas dans la même colonne : il ne sert à rien ici.
 
-> **Capture à prendre :** la section **Photos et pedigree** — la liste **Galerie photos** avec deux
-> photos et leurs boutons, le bouton **Ajouter des photos**, et le champ
-> **Lien pedigree (LOF Select)**.
+![La section Photos et pedigree : la liste Galerie photos avec ses photos et, sous chacune, les boutons Retirer la photo, Monter la photo et Descendre la photo, puis le bouton Ajouter des photos et le champ Lien pedigree (LOF Select)](captures/chien-photos.png)
 
 ---
 
@@ -212,10 +214,10 @@ italique si vous voulez, et laissez faire le reste.
   chien → **Mettre à jour**.
 - Changer le statut, le sexe, le cadrage : rien n'est perdu, l'affichage suit.
 - Supprimer une fiche. Pour supprimer un chien, ouvrez sa fiche et cliquez sur
-  **Mettre à la corbeille**. Elle disparaît aussitôt de la page **La meute**, et le lien vers elle
-  disparaît des fiches où vous l'aviez choisie comme père ou comme mère. Elle reste récupérable
+  **Déplacer dans la corbeille**. Elle disparaît aussitôt de la page **La meute**, et le lien vers
+  elle disparaît des fiches où vous l'aviez choisie comme père ou comme mère. Elle reste récupérable
   depuis la corbeille : ouvrez **Chiens**, cliquez sur **Corbeille** en haut de la liste, puis sur
-  **Rétablir**. Tout ce que vous aviez saisi revient avec elle.
+  **Restaurer**. Tout ce que vous aviez saisi revient avec elle.
 
   **Une fiche rétablie revient en brouillon**, c'est-à-dire hors du site : ouvrez-la et cliquez sur
   **Publier** pour qu'elle réapparaisse sur **La meute**. Tant que vous ne l'avez pas fait, vous la
@@ -240,39 +242,10 @@ italique si vous voulez, et laissez faire le reste.
 - **Ne créez pas une deuxième fiche pour le même chien.** Si vous ne retrouvez pas une fiche, cherchez
   son nom dans **Tous les chiens** avant d'en ajouter une.
 
-**Une chose à savoir, en attendant qu'elle soit corrigée :**
-
-- Dans la fenêtre des photos, la zone de description porte encore le titre « Texte alternatif ». C'est
-  bien la bonne zone.
-
 **Si quelque chose vous inquiète** : ne supprimez rien, notez le nom du chien et l'heure, et
 appelez-nous. Une fiche mal remplie n'a jamais cassé un site.
 
 ---
-
-## Captures d'écran à prendre
-
-À faire en une passe, sur une installation contenant au moins deux fiches Chien publiées et une fiche
-en cours de saisie avec deux photos de galerie. Les quatre premières correspondent, dans l'ordre, aux
-quatre mentions **Capture à prendre** du corps de la fiche.
-
-| Fichier | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/chien-menu-ajouter.png` | N'importe quel écran d'administration | Le menu de gauche, l'entrée **Chiens** ouverte, le sous-menu **Ajouter** mis en évidence |
-| `captures/chien-identite.png` | **Chiens** → **Ajouter** | Le champ **Nom d'usage** en haut, puis la section **Identité** en entier, choix **Statut** compris, avec la ligne d'aide sous le statut |
-| `captures/chien-sante.png` | Même écran, section **Santé** | Les huit champs nommés, les trois choix d'**ADN identifié**, et la zone **Autres tests de santé** |
-| `captures/chien-photos.png` | Même écran, section **Photos et pedigree** | La liste **Galerie photos** avec deux photos et leurs boutons **Retirer la photo 1** / **Monter la photo 1** / **Descendre la photo 1**, le bouton **Ajouter des photos**, et le champ **Lien pedigree (LOF Select)** |
-
-Deux captures utiles en complément, si le temps le permet :
-
-| Fichier | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/chien-photo-principale.png` | Colonne de droite de l'écran de saisie | L'encadré **Photo principale** et le lien **Choisir la photo principale** |
-| `captures/chien-avis-statut.png` | Après un enregistrement sans statut | Le bandeau d'avertissement en haut de page, texte lisible en entier |
-
-**Aucune capture ne doit montrer de nom de chien, de numéro LOF ou de résultat de test réel** tant que
-le contenu n'a pas été validé : utilisez une fiche d'essai.
-
 
 ## Des fiches que vous n'avez pas saisies, dans « Tous les chiens »
 

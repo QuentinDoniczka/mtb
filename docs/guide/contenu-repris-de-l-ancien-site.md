@@ -56,8 +56,7 @@ famille, une retraite en Allemagne) n'est pas un statut : le recopier aurait ét
    femelle, le libellé s'accorde tout seul : **Reproductrice**, **Retraitée**, **Disparue**.
 5. Cliquez sur **Mettre à jour**.
 
-   > **Capture à prendre :** l'encadré **Identité** d'une fiche reprise, le groupe **Statut** visible
-   > en entier, coché sur **Non renseigné**, avec la ligne d'aide en dessous.
+   ![L'encadré Identité d'une fiche reprise : le groupe Statut en entier, encore coché sur Non renseigné, avec sa ligne d'aide en dessous](captures/repris-statut-vide.png)
 
 Comptez quelques secondes par chien.
 
@@ -88,6 +87,10 @@ réservés sur vingt-sept portées à la fois.
 3. Dans l'encadré **La portée**, ouvrez la liste **Disponibilité** et choisissez
    **Chiots disponibles**, **Tous réservés** ou **Portée passée**.
 4. Cliquez sur **Mettre à jour**.
+
+**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
+propose quatre lignes, dans cet ordre : **Non renseigné** — c'est celle où sont vos 27 portées
+aujourd'hui —, puis **Chiots disponibles**, **Tous réservés** et **Portée passée**.
 
 **Ce qui se met à jour tout seul** : la page de la portée, la liste de toutes les portées, l'encart de
 la dernière portée, et les fiches du père et de la mère quand ils ont la leur sur le site.
@@ -138,13 +141,15 @@ Les vraies photos de vos chiens, elles, sont bien là, dans la **Galerie photos*
 1. Ouvrez la fiche : **Chiens** → **Tous les chiens** → le nom du chien.
 2. Dans la **colonne de droite**, encadré **Photo principale**, cliquez sur
    **Choisir la photo principale**.
-3. Dans la fenêtre qui s'ouvre, tapez le nom du chien dans le champ de recherche : ses photos portent
-   son nom, par exemple « Photo de la fiche de Tesla (2 sur 6) ».
-4. Choisissez la photo qui le représente le mieux, puis validez.
+3. La fenêtre s'ouvre sur l'onglet **Téléverser des fichiers** : cliquez sur l'onglet **Médiathèque**,
+   juste à côté, pour voir les photos déjà présentes. Tapez ensuite le nom du chien dans le champ de
+   recherche, en haut à droite : ses photos portent son nom, par exemple
+   « Photo de la fiche de Tesla (2 sur 6) ».
+4. Cliquez sur la photo qui le représente le mieux, puis sur **Utiliser comme photo principale**, en
+   bas à droite de la fenêtre.
 5. Cliquez sur **Mettre à jour**.
 
-   > **Capture à prendre :** la colonne de droite d'une fiche reprise, encadré **Photo principale**,
-   > avec le lien **Choisir la photo principale**.
+   ![La colonne de droite d'une fiche reprise : l'encadré Photo principale encore vide, avec le seul lien Choisir la photo principale](captures/repris-photo-principale.png)
 
 Si la photo est cadrée trop bas ou trop haut une fois posée, l'encadré **Photos et pedigree** contient
 **Cadrage de la photo** : choisissez **Haut** si le chien est dans le haut de l'image. Sinon, ne
@@ -181,11 +186,12 @@ la fiche de Tesla. » — et non **ce qu'elle montre**, parce que personne d'aut
 chien est sur quelle photo.
 
 **Ce n'est pas urgent, et ce n'est pas une panne.** C'est perfectible, un jour de pluie : ouvrez une
-photo depuis la fenêtre des photos et remplacez la description par ce que l'on voit — le chien de
-profil dans l'herbe, la portée dans son parc. Une photo à la fois, quand le cœur vous en dit.
+photo depuis la fenêtre des photos et, dans la colonne de droite, remplacez le contenu du champ
+**Texte alternatif** par ce que l'on voit — le chien de profil dans l'herbe, la portée dans son parc.
+Une photo à la fois, quand le cœur vous en dit.
 
-*(Cette zone porte aujourd'hui à l'écran le titre « Texte alternatif », qui n'est pas le nom prévu
-pour le site. C'est bien la bonne zone.)*
+*(**Texte alternatif** est le premier des quatre champs de cette colonne, avant **Titre**, **Légende**
+et **Description**.)*
 
 ---
 
@@ -252,19 +258,3 @@ n'est pas encore appliquée aux moteurs de recherche. Nous vous préviendrons qu
 
 **Si quelque chose vous inquiète** : ne supprimez rien, notez le nom du chien ou l'identifiant de la
 portée et l'heure, et appelez-nous. Rien de ce qui a été repris n'a été effacé de nulle part.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les deux mentions « Capture à prendre » ci-dessus disent où elles
-viennent. À faire en une passe, sur une installation où le contenu repris est en place.
-
-| Fichier attendu | Écran | Ce qui doit être visible / mis en évidence |
-|---|---|---|
-| `captures/repris-statut-vide.png` | **Chiens** → **Tous les chiens** → une fiche reprise sans statut | L'encadré **Identité**, le groupe **Statut** en entier, coché sur **Non renseigné**, avec la ligne d'aide en dessous |
-| `captures/repris-photo-principale.png` | Colonne de droite de la même fiche | L'encadré **Photo principale**, vide, et le lien **Choisir la photo principale** |
-| `captures/repris-disponibilite.png` | **Portées** → **Toutes les portées** → une portée reprise | L'encadré **La portée**, la liste **Disponibilité** ouverte, les quatre lignes visibles, **Non renseigné** sélectionné |
-
-**Ces captures peuvent montrer du contenu réel** : elles servent précisément à faire reconnaître à
-l'éleveuse ses propres fiches.

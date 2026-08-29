@@ -72,9 +72,8 @@ l'ordre des portées, se calculent sur la date de naissance.
 - **Une portée protégée par un mot de passe affiche « Protégé : » devant son identifiant** — et le
   mot **Portée** disparaît alors du titre : « ESSAI protégée » devient « Protégé : ESSAI protégée »,
   et non « Portée ESSAI protégée ». Sa page ne montre qu'un encadré **Page protégée** avec la case
-  du mot de passe. C'est WordPress qui écrit ce
-  mot, nous ne le retirons pas. **Si cette mention vous gêne**, retirez le mot de passe de la portée :
-  le titre redevient normal aussitôt.
+  du mot de passe. C'est WordPress qui écrit ce mot, nous ne le retirons pas. **Si cette mention vous
+  gêne**, retirez le mot de passe de la portée : le titre redevient normal aussitôt.
 
 ---
 

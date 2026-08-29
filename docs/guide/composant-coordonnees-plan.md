@@ -18,19 +18,18 @@ tout seuls : **il n'y a rien à taper.** Vous ne les corrigerez que le jour où 
    **Contact** en premier lieu.
 
 2. Placez le curseur à l'endroit voulu, puis cliquez sur le bouton **+**, en haut à gauche de l'écran.
+   Ce bouton s'appelle **Outil d'insertion de bloc**.
 
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Coordonnées et plan d'accès**.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant**, avec
-   > **Coordonnées et plan d'accès** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant, avec Coordonnées et plan d'accès et sa phrase de présentation](captures/coordonnees-inserteur.png)
 
 4. **C'est fini.** Les trois lignes — **Adresse**, **Téléphone**, **Courriel** — sont déjà remplies,
    dans la page comme dans la colonne de droite, avec les coordonnées de l'élevage enregistrées dans
    l'écran **Coordonnées**.
 
-   > **Capture à prendre :** le composant fraîchement posé, sans rien avoir réglé, les trois lignes
-   > déjà remplies dans la page.
+   ![Le composant à peine posé, sans rien avoir réglé : les lignes Adresse, Téléphone et Courriel déjà remplies dans la page, et rien en dessous du courriel](captures/coordonnees-arrive-rempli.png)
 
 5. Cliquez sur **Mettre à jour**, en haut à droite (**Publier**, s'il s'agit d'une page toute neuve).
    C'est en ligne.
@@ -56,6 +55,8 @@ affichée, ouvrez-la avec le bouton en forme de roue dentée, en haut à droite 
 | **Téléphone** | Son aide dit : « Le numéro s'affiche tel que vous l'écrivez. Le lien d'appel retire les espaces tout seul. » |
 | **Courriel** | Son aide dit : « Si l'adresse n'est pas reconnue, elle s'affiche telle quelle, sans lien cliquable. » |
 
+![La colonne de droite, panneau Coordonnées ouvert : les champs Adresse, Téléphone et Courriel déjà remplis, chacun suivi de sa ligne d'aide](captures/coordonnees-panneau-coordonnees.png)
+
 **Le numéro s'affiche exactement tel qu'il est enregistré dans l'écran Coordonnées.** C'est là — et non
 dans ce panneau — que se décide son écriture **pour tout le site** : si vous le préférez en paires,
 tapez-le ainsi dans **Coordonnées**, et toutes vos pages suivront. Il restera appelable d'un doigt sur
@@ -75,13 +76,13 @@ valeur, la ligne revient.
 
 Ce panneau est fermé au départ. Ouvrez-le pour y trouver :
 
-- **Choisir un plan** — ouvre la bibliothèque de photos. Une fois un plan choisi, le bouton devient
-  **Remplacer le plan**, et **Retirer le plan** apparaît en dessous.
+- **Choisir un plan** — ouvre la bibliothèque de photos. La fenêtre s'ouvre sur l'onglet
+  **Téléverser des fichiers** : cliquez sur l'onglet **Médiathèque**, à côté, pour voir les images déjà
+  présentes. Cliquez sur l'image voulue, puis sur le bouton **Sélectionner**, en bas à droite. Une fois
+  un plan choisi, le bouton devient **Remplacer le plan**, et **Retirer le plan** apparaît en dessous.
 - **Description de la photo (pour les personnes aveugles)** — voir juste en dessous.
 
-  > **Capture à prendre :** la colonne de droite, panneau **Plan d'accès** ouvert : le bouton
-  > **Choisir un plan**, la zone **Description de la photo (pour les personnes aveugles)** avec sa
-  > ligne d'aide lisible en entier, et le paragraphe sur la **Légende** en dessous.
+  ![La colonne de droite, panneau Plan d'accès ouvert : le bouton Choisir un plan, la zone Description de la photo (pour les personnes aveugles) avec sa ligne d'aide, et en dessous le paragraphe expliquant que la mention se saisit dans le champ Légende](captures/coordonnees-panneau-plan.png)
 
 **La description de l'image**, en une règle :
 
@@ -110,8 +111,10 @@ l'ancienne image au lieu de rester à mentir sous la nouvelle.
 
 **Ne l'effacez pas.** Quand une carte vient d'une source extérieure, cette mention est obligatoire.
 
-> **Capture à prendre :** la fenêtre de choix d'image, une image sélectionnée, la colonne de droite avec
-> le champ **Légende** mis en évidence.
+**Cet écran n'est pas illustré, et voici pourquoi** : il faudrait une image de plan à l'écran, et le
+plan d'accès n'a pas encore été choisi — voir la section suivante. Le champ **Légende** se trouve dans
+la colonne de droite de la fenêtre où vous choisissez l'image, **en troisième position** : d'abord
+**Texte alternatif**, puis **Titre**, puis **Légende**, puis **Description**.
 
 ---
 
@@ -169,15 +172,18 @@ page longue.
 essayer : **les pages se composent, les fiches se remplissent.** Ces fiches sont des cases à remplir de
 haut en bas ; on n'y ajoute rien.
 
-> **Capture à prendre :** la page publiée, vue sur le site, le composant à sa vraie allure — les trois
-> lignes, sans plan.
+![Le composant publié sur le site : l'adresse sur plusieurs lignes, puis le téléphone et le courriel soulignés parce qu'ils sont cliquables, et plus rien après le courriel](captures/coordonnees-sur-le-site.png)
 
 ---
 
 ## Enlever le composant
 
-Cliquez sur le composant dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur le composant dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Il n'y a rien à craindre :**
 
@@ -211,6 +217,9 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
   site. Choisissez-en un autre, ou retirez-le. »** L'image a été supprimée de la bibliothèque de photos.
   Le reste du composant s'affiche normalement, et il n'y a **aucun trou** sur le site. Cliquez sur
   **Choisir un plan** pour en prendre une autre, ou sur **Retirer le plan**.
+
+  ![L'avertissement affiché au-dessus des coordonnées, disant que le plan choisi n'est plus dans la médiathèque et qu'il faut en choisir un autre ou le retirer ; l'adresse, le téléphone et le courriel restent intacts en dessous](captures/coordonnees-plan-introuvable.png)
+
 - **Un avertissement dit : « Le fichier choisi n'est pas une image. Choisissez une image de plan. »**
   Vous avez choisi un document — un PDF, par exemple. Cliquez sur **Remplacer le plan** et prenez une
   image.
@@ -246,27 +255,3 @@ site.
 
 Pour proposer aux visiteurs de vous appeler en fin de page, employez plutôt le composant
 **Encart d’appel**.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur une page d'essai portant un composant **Coordonnées et plan d'accès**
-laissé tel quel.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/coordonnees-inserteur.png` | **Pages** → une page → bouton **+** | La rubrique **Mont Brabant**, **Coordonnées et plan d'accès** et sa phrase de présentation lisibles |
-| `captures/coordonnees-arrive-rempli.png` | Le composant fraîchement posé, rien de réglé | Les trois lignes **Adresse**, **Téléphone**, **Courriel** déjà remplies dans la page — pour montrer qu'il n'y a rien à taper — et **aucun emplacement de plan en dessous** |
-| `captures/coordonnees-panneau-coordonnees.png` | Colonne de droite, composant sélectionné | Le panneau **Coordonnées** ouvert, les trois champs pré-remplis, **avec leurs trois lignes d'aide lisibles en entier** |
-| `captures/coordonnees-panneau-plan.png` | Colonne de droite, panneau **Plan d'accès** ouvert | Le bouton **Choisir un plan**, la zone **Description de la photo (pour les personnes aveugles)** avec son aide, et le paragraphe sur la **Légende** en dessous, lisible en entier |
-| `captures/coordonnees-legende-image.png` | Fenêtre de choix d'image, une image sélectionnée | La colonne de droite de la fenêtre, le champ **Légende** mis en évidence |
-| `captures/coordonnees-plan-introuvable.png` | Composant dont l'image de plan a été supprimée | L'avertissement « Le plan choisi n'est plus dans la médiathèque : il ne s'affiche pas sur le site. Choisissez-en un autre, ou retirez-le. » lisible en entier, au-dessus des coordonnées intactes |
-| `captures/coordonnees-sur-le-site.png` | La page **publiée**, vue sur le site | Le composant à sa vraie allure : les trois lignes, le téléphone et le courriel soulignés, et **rien après le courriel** |
-
-**Un libellé de cette fiche vient de WordPress et n'a pas encore été relevé à l'écran** : l'entrée du
-menu à trois points qui supprime le composant. Elle est décrite par sa place, jamais nommée.
-
-**Aucune capture ne doit montrer de nom de chien, de date de naissance ni de photo non validée** :
-utilisez une page d'essai et un texte neutre.

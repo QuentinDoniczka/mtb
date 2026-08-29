@@ -22,18 +22,20 @@ il apparaît tout seul dans le bon tableau — vous n'avez pas à rouvrir la pag
    la page où le tableau doit apparaître.
 
 2. Placez le curseur à l'endroit voulu dans la page, puis cliquez sur le bouton **+**, en haut à gauche
-   de l'écran.
+   de l'écran. Ce bouton s'appelle **Outil d'insertion de bloc**.
 
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Tableau de résultats**. Si vous préférez chercher, tapez « résultats », « travail »,
-   « discipline », « concours », « palmarès » ou « tableau » : il sort avec chacun de ces mots.
+   « discipline », « concours », « palmarès » ou « tableau » dans le champ **Rechercher**, en haut de
+   la liste : il sort avec chacun de ces mots.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant**, avec
-   > **Tableau de résultats** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant, avec Tableau de résultats et sa phrase de présentation](captures/tableau-resultats-inserteur.png)
 
 4. **Le tableau apparaît déjà rempli**, avec vos résultats publiés. **Vous pouvez vous arrêter là** :
    il est publiable tel quel, et il affiche alors **toutes les disciplines**, un titre et un tableau
    pour chacune.
+
+   ![Le tableau à peine posé dans la page, déjà rempli : les titres de discipline et leurs lignes de résultats, sans qu'une seule ait été tapée](captures/tableau-resultats-arrive-rempli.png)
 
 5. *Facultatif* — pour n'afficher qu'une seule discipline, ouvrez la colonne de droite et servez-vous
    du réglage **Discipline à afficher**, décrit juste en dessous.
@@ -42,6 +44,8 @@ il apparaît tout seul dans le bon tableau — vous n'avez pas à rouvrir la pag
 
 7. Ouvrez la page sur le site, ou cliquez sur **Aperçu** : c'est là que le tableau est à sa vraie
    allure.
+
+![Le tableau publié sur le site : un titre de discipline, puis les colonnes avec leurs en-têtes séparées par des filets, dont un nom de chien souligné parce qu'il mène à sa fiche](captures/tableau-resultats-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -65,8 +69,7 @@ Dans la colonne de droite, le panneau **Discipline à afficher** est déjà ouve
 **Une discipline sans aucun résultat n'affiche rien** : ni titre, ni tableau vide. Vous n'avez pas à
 faire le tri, il se fait tout seul.
 
-> **Capture à prendre :** la colonne de droite, le panneau **Discipline à afficher** ouvert, les dix
-> choix visibles d'un coup et la phrase d'aide lisible en entier.
+![La colonne de droite, panneau Discipline à afficher ouvert : les dix choix les uns sous les autres, Toutes les disciplines coché en premier, et la phrase d'aide en dessous](captures/tableau-resultats-reglage.png)
 
 ---
 
@@ -131,8 +134,12 @@ est un tableau qui n'affiche rien.
 
 ## Enlever le tableau
 
-Cliquez sur le tableau dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur le tableau dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Il n'y a rien à craindre :**
 
@@ -159,6 +166,8 @@ ne dit rien qu'une page qui annonce du vide.
 - « Ce bloc n'affiche rien tant qu'aucun résultat de travail n'est publié dans la discipline
   « RING ». » — la discipline cochée n'a aucun résultat. La discipline citée est celle que vous avez
   cochée.
+
+![Un cadre gris à contour en tirets à la place du tableau, portant TABLEAU DE RÉSULTATS puis la phrase citant entre guillemets la discipline qui n'a aucun résultat publié](captures/tableau-resultats-cadre-vide.png)
 
 **C'est normal, c'est voulu, et ce n'est pas une panne.** Ce cadre n'existe que pour vous, pendant que
 vous modifiez la page. **Ce qu'il faut faire** : publiez le résultat manquant, ou cochez
@@ -187,6 +196,9 @@ vous modifiez la page. **Ce qu'il faut faire** : publiez le résultat manquant, 
   que la zone de modification devient étroite — colonne de droite ouverte, ou fenêtre réduite. **C'est
   le vrai affichage, pas un défaut.** Pour retrouver les colonnes, refermez la colonne de droite,
   cliquez sur **Aperçu**, ou ouvrez la page sur le site.
+
+  ![Le même tableau sur un écran de téléphone : chaque résultat occupe un bloc de lignes, chaque valeur précédée de son étiquette, et rien ne dépasse sur le côté](captures/tableau-resultats-telephone.png)
+
 - **Un nom de chien n'est pas cliquable.** Ce chien n'a pas de fiche sur le site, ou sa fiche n'est pas
   publiée, ou elle est protégée par un mot de passe. Le nom s'affiche quand même, à l'identique : le
   visiteur ne voit pas qu'un lien manque, et rien ne trahit l'existence d'une page réservée.
@@ -227,25 +239,3 @@ n'a jamais cassé un site — et vos résultats, eux, ne sont pas rangés dans l
 ---
 
 Pour saisir ou corriger un résultat, voyez *Ajouter un résultat de travail*.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur une page d'essai.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/tableau-resultats-inserteur.png` | **Pages** → une page → bouton **+** | La rubrique **Mont Brabant**, **Tableau de résultats** et sa phrase de présentation lisibles en entier |
-| `captures/tableau-resultats-arrive-rempli.png` | Le tableau fraîchement posé, rien de réglé | Les tableaux déjà remplis, avec leurs titres de discipline — pour montrer qu'il n'y a rien à taper |
-| `captures/tableau-resultats-reglage.png` | Colonne de droite, tableau sélectionné | Le panneau **Discipline à afficher** ouvert, les **dix** choix visibles d'un coup, **Toutes les disciplines** coché, et la phrase d'aide lisible en entier |
-| `captures/tableau-resultats-cadre-vide.png` | Un tableau réglé sur une discipline sans résultat | Le cadre gris à contour en tirets, **TABLEAU DE RÉSULTATS**, et la phrase citant la discipline entre guillemets, lisible en entier |
-| `captures/tableau-resultats-sur-le-site.png` | La page **publiée**, vue sur le site | Un titre de discipline et son tableau : en-têtes de colonnes, filets de séparation, un nom de chien cliquable |
-| `captures/tableau-resultats-telephone.png` | La même page, sur un téléphone | Une ligne dépliée, chaque valeur précédée de son étiquette, **aucun défilement de côté** |
-
-**Deux libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** :
-l'entrée du menu à trois points qui supprime le composant, décrite ici par sa place et jamais nommée, et
-le bouton **+**.
-
-**Aucune capture ne doit montrer un résultat que vous n'avez pas validé** : utilisez une page d'essai.

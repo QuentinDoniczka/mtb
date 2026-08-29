@@ -24,7 +24,7 @@ bouton **+**.
    page — l'accueil, ou **Placement**.
 
 2. Placez le curseur à l'endroit où vous voulez l'encart, puis cliquez sur le bouton **+**, en haut à
-   gauche de l'écran.
+   gauche de l'écran. Ce bouton s'appelle **Outil d'insertion de bloc**.
 
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Encart dernière portée**. Sa phrase de présentation dit déjà l'essentiel :
@@ -140,8 +140,12 @@ encarts afficheraient deux fois la même portée.
 
 ## Enlever l'encart
 
-Cliquez sur l'encart dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur l'encart dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Il n'y a rien à craindre :**
 
@@ -175,7 +179,7 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 
 - **L'encart affiche deux lignes**, **Encart dernière portée** puis « Ce bloc n'affiche rien tant
   qu'aucune portée n'est publiée. » : aucune portée n'est encore en ligne. Publiez une portée par
-  **Portées** → **Ajouter**, et l'encart se remplit de lui-même. Aux visiteurs, un encart dans cet état
+  **Portées** → **Ajouter une portée**, et l'encart se remplit de lui-même. Aux visiteurs, un encart dans cet état
   **n'affiche rien du tout** : ni cadre, ni trou, ni message, et la page reste normale. Ces deux lignes
   n'existent que pour vous, pendant que vous modifiez.
 - **L'encart n'a pas de photo.** La portée n'a pas de **Photo principale** — voir plus haut, c'est le
@@ -186,7 +190,7 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
   deux vides sur la portée. Le site n'écrit jamais « 0 mâle » à votre place.
 - **L'encart affiche une portée en Portée passée.** C'est le bon fonctionnement entre deux portées :
   l'encart montre toujours la plus récente, avec sa mention exacte. Si vous préférez ne rien annoncer
-  pendant cette période, dites-le nous : c'est un choix qui vous appartient, pas une panne.
+  pendant cette période, dites-le-nous : c'est un choix qui vous appartient, pas une panne.
 - **Une portée protégée par mot de passe n'apparaît jamais dans l'encart.** C'est voulu.
 - **Dans la page en cours de modification, l'encart est plus étroit que sur le site.** C'est normal :
   la page en cours de modification s'affiche dans une fenêtre plus étroite que celle du site. Le

@@ -34,19 +34,26 @@ volontairement vide ou volontairement de travers** — pour que vous ne croyiez 
 la liste, mais elle n'est pas sur le site. C'est exactement ce qu'il fallait pour ces deux-là : publier
 une page vide n'aurait servi personne.
 
+Voici la page **BHPL** telle qu'elle s'affiche sur le nouveau site, avec votre propre texte :
+
+![La page BHPL sur le site : le bandeau avec son titre, puis le début de la section Infos chiots, reprise mot pour mot de l'ancien site](captures/repris-bhpl-sur-le-site.png)
+
 ---
 
 ## Retrouver une de ces pages
 
 1. Dans le menu de gauche, cliquez sur **Pages**, puis sur **Toutes les pages**.
-2. Vos sept pages sont dans la liste, avec leur titre.
+2. **La liste compte douze pages, pas sept — ne cherchez pas une liste de sept lignes.** Au-dessus
+   d'elle, trois liens font le compte : **Tous (12)** · **Publiés (9)** · **Brouillons (3)**.
+   **Vos sept pages reprises sont bien là**, mêlées à cinq autres qui ne viennent pas de l'ancien
+   site : **Accueil**, **Contact**, **Espace privé (démonstration)**, **Sample Page** et
+   **Privacy Policy**. Repérez les vôtres par leur titre.
 3. Cliquez sur le titre de celle que vous voulez ouvrir.
 
-Les pages en brouillon portent la mention **Brouillon** à côté de leur titre. En haut de la liste,
-WordPress propose aussi des liens pour n'afficher que les pages publiées, ou que les brouillons.
+Les pages en brouillon portent la mention **Brouillon** à côté de leur titre. Les trois liens du haut
+servent à n'afficher que les pages publiées, ou que les brouillons.
 
-> **Capture à prendre :** la liste **Toutes les pages**, les sept pages visibles, avec la mention
-> **Brouillon** lisible sur **BHPL en France** et sur **Politique de confidentialité**.
+![La liste Toutes les pages : les liens Tous, Publiés et Brouillons avec leurs comptes au-dessus, puis les douze pages avec leurs titres, dont BHPL en France et Politique de confidentialité qui portent la mention Brouillon](captures/repris-toutes-les-pages.png)
 
 ---
 
@@ -81,9 +88,14 @@ Le jour où vous aurez de quoi remplir **BHPL en France** ou **Politique de conf
    photo n'est renseigné. » Cliquez dedans et écrivez.
 4. Cliquez sur **Publier**, en haut à droite, puis confirmez.
 
+![La page BHPL en France ouverte pour modification : les cadres beiges à contour en tirets de la charpente vide, chacun avec son nom et sa phrase, et le bouton Publier en haut à droite](captures/repris-brouillon-charpente.png)
+
 **Ces cadres n'existent que pour vous** ; les visiteurs n'en voient aucun. Ils sont décrits en
 détail dans *Créer une page à partir d'un modèle* (`page-composer-une-page-libre.md`), qui explique
 aussi comment ajouter ou enlever une section.
+
+*Les autres composants affichent une phrase du même genre, adaptée à ce qui leur manque : ne vous
+étonnez pas de lire une variante de « Ce bloc n'affiche rien tant que… ».*
 
 **Rien ne vous presse.** Une page en brouillon peut le rester des mois sans que le site s'en porte
 plus mal.
@@ -94,6 +106,8 @@ plus mal.
 
 1. Dans le menu de gauche, cliquez sur **Résultats de travail**, puis sur
    **Tous les résultats de travail**.
+
+![Le haut de la liste Tous les résultats de travail : le nombre total de résultats affiché au-dessus, puis les lignes reprises de l'ancien site, une par résultat](captures/repris-tous-les-resultats.png)
 
 Ils y sont tous, un par ligne. Vous les ouvrez et les corrigez comme n'importe quel résultat que vous
 saisiriez vous-même — mêmes cases, mêmes boutons. Voir *Ajouter un résultat de travail*
@@ -136,6 +150,8 @@ Voir *Ajouter un résultat de travail* (`resultat-ajouter-un-resultat.md`).
 
 **Huit disciplines seulement apparaissent sur la page Travail**, parce que vos 61 résultats couvrent
 huit disciplines. Une discipline sans aucun résultat n'affiche ni titre ni tableau : c'est voulu.
+
+![La page Travail sur le site : la fin du texte d'introduction, puis deux titres de discipline suivis chacun de son tableau de résultats, remplis sans qu'une ligne ait été tapée](captures/repris-travail-tableaux.png)
 
 ---
 
@@ -248,6 +264,8 @@ votre place.
 - **Votre nom, lui, est recopié tel quel** : la section **Représentant légal** affiche
   « Fabienne Gueneau », sans accent, comme sur l'ancien site.
 
+![La page Mentions légales sur le site : la section Représentant légal affichant Fabienne Gueneau sans accent, et juste en dessous l'adresse, le téléphone et le courriel corrects, venus de l'écran Coordonnées](captures/repris-mentions-representant.png)
+
 **Ce qu'il faut faire** : ouvrez **Pages** → **Toutes les pages** → **Mentions légales**, cliquez dans
 « Fabienne Gueneau », mettez l'accent, **Mettre à jour**. Trois secondes. Ou dites-le-nous et nous le
 ferons.
@@ -308,6 +326,8 @@ Ce n'est pas un oubli et ce n'est pas cassé : le menu est **à vous**, et il se
 l'administration, sans code. C'est même le geste qui rendra tout le reste visible d'un coup.
 La marche à suivre est dans **« Modifier le menu »** (`menu-modifier-le-menu.md`).
 
+---
+
 ## Ce que nous attendons de vous
 
 Cinq réponses, quand vous aurez un moment. Aucune n'est urgente.
@@ -324,35 +344,3 @@ Cinq réponses, quand vous aurez un moment. Aucune n'est urgente.
    page. Laquelle est la bonne ? Nous n'en avons aligné aucune.
 5. **La page Placement** : la voulez-vous trouvable par les moteurs de recherche, ou discrète comme sur
    l'ancien site ?
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise.** À faire en une passe, sur une installation où la reprise est en place.
-
-| Fichier attendu | Écran | Ce qui doit être visible / mis en évidence |
-|---|---|---|
-| `captures/repris-toutes-les-pages.png` | **Pages** → **Toutes les pages** | Les sept pages avec leurs titres, et la mention **Brouillon** lisible sur **BHPL en France** et **Politique de confidentialité** |
-| `captures/repris-bhpl-sur-le-site.png` | La page **BHPL**, vue sur le site | Le bandeau avec le titre, puis la section **Infos chiots** — pour qu'elle reconnaisse son propre texte |
-| `captures/repris-travail-tableaux.png` | La page **Travail**, vue sur le site | La fin du texte d'introduction, puis **deux titres de discipline avec leurs tableaux** — pour montrer qu'elle n'a rien tapé de ces tableaux |
-| `captures/repris-mentions-representant.png` | La page **Mentions légales**, vue sur le site | La section **Représentant légal** affichant « Fabienne Gueneau » **sans accent**, et juste en dessous les coordonnées **correctes** venues de l'écran **Coordonnées** — les deux dans la même image |
-| `captures/repris-brouillon-charpente.png` | **BHPL en France** ouverte dans l'écran de modification | Les cadres beiges à contour en tirets de la charpente vide, avec leur nom et leur phrase lisibles, et le bouton **Publier** en haut à droite |
-| `captures/repris-tous-les-resultats.png` | **Résultats de travail** → **Tous les résultats de travail** | Le haut de la liste, plusieurs lignes de résultats réels, et le nombre total affiché par WordPress au-dessus de la liste |
-
-**Ces captures peuvent montrer du contenu réel** : elles servent précisément à lui faire reconnaître
-ses propres pages.
-
-**Trois libellés de cette fiche viennent de WordPress lui-même et n'ont pas encore été relevés à
-l'écran** : l'entrée de menu **Toutes les pages**, la mention **Brouillon** affichée à côté du titre
-d'une page dans la liste, et les liens de filtrage en haut de cette liste — ces derniers sont décrits
-par leur place, jamais nommés. Les trois sont à confirmer lors de la passe de captures, en même temps
-que la première image. **Tous les autres libellés en gras de cette page ont été relevés dans le code du
-site**, caractère pour caractère.
-
-**Une phrase est citée entre guillemets et vient du code** : « Ce bloc n'affiche rien tant qu'aucun
-texte ni aucune photo n'est renseigné. » C'est celle des sections vides. Les autres composants
-affichent la même phrase adaptée à ce qui leur manque : ne vous étonnez pas de lire une variante.
-
-**La couleur des cadres de sections vides a été relevée dans le code, pas à l'écran** : fond beige,
-contour en tirets ocre. À confirmer sur la capture, et à corriger ici si l'œil dit autre chose.

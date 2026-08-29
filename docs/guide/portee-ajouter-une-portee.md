@@ -16,11 +16,10 @@ juste des cases à remplir de haut en bas. **Les pages se composent, les fiches 
 
 ## Les étapes
 
-1. Dans le menu de gauche, cliquez sur **Portées**, puis sur **Ajouter**. La page qui s'ouvre
-   s'intitule **Ajouter une portée**.
+1. Dans le menu de gauche, cliquez sur **Portées**, puis sur **Ajouter une portée**. La page qui
+   s'ouvre porte ce même titre.
 
-   > **Capture à prendre :** le menu de gauche de l'administration, l'entrée **Portées** ouverte, le
-   > sous-menu **Ajouter** mis en évidence.
+   ![Le menu de gauche de l'administration, l'entrée Portées dépliée, avec ses sous-menus Toutes les portées et Ajouter une portée](captures/portee-menu-ajouter.png)
 
 2. Tout en haut, dans le grand champ, tapez l'identifiant de la portée. Le texte gris vous rappelle ce
    qu'on y attend : « Identifiant de la portée — exemple : A3 2025 ». Ce que vous tapez là devient le
@@ -29,17 +28,20 @@ juste des cases à remplir de haut en bas. **Les pages se composent, les fiches 
 3. Sous ce champ, écrivez votre **Commentaire de l'éleveuse** : votre texte, tel que vous souhaitez le
    lire sur la page de la portée. Vous pouvez le laisser vide et y revenir plus tard.
 
+   ![Le titre Commentaire de l'éleveuse sous le champ de l'identifiant, sa ligne d'aide, et la barre d'outils complète avec ses boutons de gras et d'italique](captures/portee-commentaire.png)
+
 4. Dans l'encadré **La portée**, remplissez **Date de naissance (obligatoire)**. Les trois autres
    champs de l'encadré peuvent attendre.
 
-   > **Capture à prendre :** l'encadré **La portée** en entier, les quatre champs et leurs lignes
-   > d'aide visibles.
+   ![L'encadré La portée en entier : les champs Date de naissance (obligatoire), Disponibilité, Nombre de mâles et Nombre de femelles, chacun suivi de sa ligne d'aide](captures/portee-la-portee.png)
 
 5. Descendez dans les encadrés suivants — **Père et mère**, **Les chiots**, **Galerie photos** — et
    remplissez seulement ce que vous avez sous la main.
 
 6. Dans la colonne de droite, encadré **Photo principale**, cliquez sur
    **Choisir la photo principale** et prenez la photo qui représente la portée.
+
+   ![L'encadré Photo principale dans la colonne de droite, avec le seul lien Choisir la photo principale](captures/portee-photo-principale.png)
 
 7. Cliquez sur **Publier**, en haut à droite. Le bandeau **Portée publiée.** s'affiche.
 
@@ -74,8 +76,7 @@ Rien n'est perdu, jamais.
 
 Une portée déjà en ligne n'est jamais retirée du site à cause d'un champ vide.
 
-> **Capture à prendre :** le bandeau d'avertissement en haut de l'écran d'une portée, après un
-> enregistrement sans date de naissance, texte lisible en entier.
+![Le bandeau d'avertissement en haut de l'écran, après un enregistrement sans date de naissance, annonçant que la portée est en brouillon et énumérant les champs à remplir](captures/portee-avis-brouillon.png)
 
 ---
 
@@ -104,8 +105,9 @@ C'est la modification que vous ferez le plus souvent. Elle prend trente secondes
 Pour retirer toute mention de disponibilité, choisissez **Non renseigné** : le site n'affiche alors
 plus rien à cette place.
 
-> **Capture à prendre :** la liste **Disponibilité** ouverte, les quatre lignes visibles, la ligne
-> d'aide en dessous.
+**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle propose
+quatre lignes, dans cet ordre : **Non renseigné**, **Chiots disponibles**, **Tous réservés**,
+**Portée passée**. Il n'y a rien d'autre dedans, et rien à y taper.
 
 ---
 
@@ -137,16 +139,15 @@ sans dommage.
 Vous pouvez passer d'un chemin à l'autre autant de fois que vous voulez : ce que vous aviez saisi dans
 l'autre chemin reste enregistré.
 
-> **Capture à prendre :** l'encadré **Père et mère** en entier — le père sur **Étalon extérieur**, avec
-> **Nom**, **Élevage** et **Tests de santé du père** visibles ; la mère sur
-> **Elle a une fiche sur le site**, avec sa liste **Fiche de la mère**.
+![L'encadré Père et mère en entier : le père coché sur Étalon extérieur avec ses champs Nom, Élevage et Tests de santé du père ; la mère cochée sur Elle a une fiche sur le site, avec sa liste Fiche de la mère](captures/portee-parents.png)
 
 ---
 
 ## L'encadré **Les chiots**
 
-Un tableau à quatre colonnes : **Nom** · **Sexe** · **N° LOF** · **Devenir**. Trois lignes vides sont
-toujours prêtes ; le bouton **Ajouter un chiot** en ajoute une de plus.
+Un tableau à cinq colonnes : **Nom** · **Sexe** · **N° LOF** · **Devenir**, et **Retirer ce chiot**
+en dernier. **Le tableau compte trois lignes**, remplies ou non ; le bouton **Ajouter un chiot** en
+ajoute une de plus, autant de fois que vous voulez.
 
 **Les noms et les numéros arrivent souvent plusieurs semaines après la naissance : ce tableau se
 remplit en plusieurs fois.** Vous pouvez enregistrer une portée sans aucun chiot, puis ajouter les
@@ -165,9 +166,7 @@ Le site ne signalera jamais un écart entre les deux.
 - Pour retirer une ligne, cochez sa case dans la colonne **Retirer ce chiot**, puis cliquez sur
   **Mettre à jour**. Retirer une ligne du milieu ne décale rien.
 
-> **Capture à prendre :** l'encadré **Les chiots** — les cinq en-têtes **Nom**, **Sexe**, **N° LOF**,
-> **Devenir**, **Retirer ce chiot**, deux lignes remplies, trois lignes vides, et le bouton
-> **Ajouter un chiot**.
+![L'encadré Les chiots : les cinq en-têtes Nom, Sexe, N° LOF, Devenir et Retirer ce chiot, deux lignes déjà remplies, une ligne encore vide, et le bouton Ajouter un chiot en dessous](captures/portee-chiots.png)
 
 ---
 
@@ -176,19 +175,24 @@ Le site ne signalera jamais un écart entre les deux.
 Deux endroits, et deux seulement.
 
 **Photo principale**, dans la colonne de droite : la photo qui représente la portée. Cliquez sur
-**Choisir la photo principale**, choisissez-la, c'est fait. **Retirer la photo principale** l'enlève.
+**Choisir la photo principale** ; la fenêtre s'ouvre sur l'onglet **Téléverser des fichiers**, passez
+sur l'onglet **Médiathèque** pour voir les photos déjà présentes ; cliquez sur la vôtre, puis sur
+**Utiliser comme photo principale**, en bas à droite. **Retirer la photo principale** l'enlève.
 
 **Galerie photos**, dans un encadré à part : toutes les autres photos de la portée.
 
 1. Cliquez sur **Ajouter des photos**.
-2. Choisissez une ou plusieurs photos dans la fenêtre qui s'ouvre.
-3. Prenez trente secondes pour décrire chaque photo dans la fenêtre : ce texte est **lu à voix haute**
-   aux personnes aveugles qui visitent le site, et il s'affiche à la place de la photo quand celle-ci
-   ne se charge pas.
-
-   *(Cette zone porte aujourd'hui à l'écran le titre « Texte alternatif », qui n'est pas le nom prévu
-   pour le site. Voir « En cas de doute ».)*
-4. Validez : les photos s'ajoutent en bas de la liste, sous les mentions **Photo 1**, **Photo 2**…
+2. La fenêtre s'ouvre sur l'onglet **Téléverser des fichiers**. Si vos photos sont déjà sur le site,
+   cliquez sur l'onglet **Médiathèque**, juste à côté, pour les voir. Cliquez ensuite sur une ou
+   plusieurs photos.
+3. Prenez trente secondes pour décrire chaque photo, dans la colonne de droite de cette fenêtre, dans
+   le champ **Texte alternatif** — c'est le premier des quatre, avant **Titre**, **Légende** et
+   **Description**. Ce texte est **lu à voix haute** aux personnes aveugles qui visitent le site, et il
+   s'affiche à la place de la photo quand celle-ci ne se charge pas. Écrivez ce que l'on voit : le
+   chien de profil dans l'herbe, la portée dans son parc.
+4. Cliquez sur **Ajouter des photos**, en bas à droite de la fenêtre — le bouton y porte le même nom
+   que celui qui l'a ouverte. Les photos s'ajoutent en bas de la liste, sous les mentions **Photo 1**,
+   **Photo 2**…
 5. Rangez-les avec les boutons **Monter la photo 1** et **Descendre la photo 1**. Le chiffre suit la
    position de la photo dans la liste et se recalcule tout seul. Elles s'affichent sur le site dans
    l'ordre de cette liste.
@@ -201,9 +205,7 @@ de cette portée et reste disponible pour la remettre ou pour l'employer ailleur
 Si une ligne affiche **Photo introuvable**, la photo n'est plus disponible : cochez la case
 **Retirer la photo 1** de cette ligne — le chiffre est celui de son rang —, puis ajoutez-en une autre.
 
-> **Capture à prendre :** l'encadré **Galerie photos** avec trois photos, leurs mentions **Photo 1** à
-> **Photo 3**, les cases **Retirer la photo 1** à **Retirer la photo 3**, les boutons
-> **Monter la photo 1** et **Descendre la photo 1**, et le bouton **Ajouter des photos**.
+![L'encadré Galerie photos avec ses photos numérotées Photo 1, Photo 2, Photo 3, chacune avec sa case Retirer la photo et ses boutons Monter la photo et Descendre la photo, puis le bouton Ajouter des photos en bas](captures/portee-galerie.png)
 
 ### Les photos s'ajoutent dans **Galerie photos**
 
@@ -234,10 +236,10 @@ réécrit toute seule au prochain enregistrement.
 - Revenir sur une portée autant de fois que vous voulez : **Portées** → **Toutes les portées** → son
   identifiant → **Mettre à jour**.
 - Changer la disponibilité, les compteurs, le père, la mère, l'ordre des photos : rien n'est perdu.
-- Retirer une portée du site : ouvrez-la et cliquez sur **Mettre à la corbeille**, dans l'encadré
+- Retirer une portée du site : ouvrez-la et cliquez sur **Déplacer dans la corbeille**, dans l'encadré
   **Publier**. Elle disparaît aussitôt du site, et elle reste récupérable : vous la retrouvez dans
   **Corbeille**, en haut de la liste **Toutes les portées**.
-- Ressortir une portée de la corbeille : cliquez sur **Rétablir**, tout revient — les champs, les
+- Ressortir une portée de la corbeille : cliquez sur **Restaurer**, tout revient — les champs, les
   chiots, les photos. La portée revient **en brouillon** : ouvrez-la et cliquez sur **Publier** pour
   qu'elle réapparaisse sur le site.
 - Corriger l'identifiant après publication, puis corriger l'adresse dans **Adresse de la page** si
@@ -251,7 +253,8 @@ réécrit toute seule au prochain enregistrement.
 
 **Ce qu'il vaut mieux ne pas faire :**
 
-- **Ne recopiez jamais une portée précédente.** Chaque portée s'ajoute par **Portées** → **Ajouter**.
+- **Ne recopiez jamais une portée précédente.** Chaque portée s'ajoute par **Portées** →
+  **Ajouter une portée**.
 - **N'inventez jamais une date, un numéro ni un résultat** pour ne pas laisser un vide. Un vide honnête
   vaut mieux qu'une valeur fausse, qui finira recopiée ailleurs.
 - **Ne videz pas une ligne de chiot déjà remplie pour « faire de la place ».** Corrigez-la, ou ajoutez
@@ -265,8 +268,6 @@ réécrit toute seule au prochain enregistrement.
 - Une ligne de la liste affiche **Fiche introuvable** : la fiche choisie n'est plus là. Le site vous le
   dit et ne l'efface pas tout seul. Choisissez une autre fiche, ou saisissez le parent avec **Nom** et
   **Élevage**.
-- Dans la fenêtre des photos, la zone de description porte encore le titre « Texte alternatif ». C'est
-  bien la bonne zone.
 
 **Pour retrouver une portée.** La liste **Toutes les portées** affiche une colonne **Date de
 naissance** et une colonne **Disponibilité**, elle se range de la portée la plus récente à la plus
@@ -279,33 +280,6 @@ pratique pour un identifiant précis. Voir
 appelez-nous. Une portée mal remplie n'a jamais cassé un site.
 
 ---
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où
-chacune vient. À faire en une passe, sur une portée d'essai contenant deux lignes de chiots remplies,
-trois photos de galerie et au moins une fiche de chien publiée sur le site.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `portee-menu-ajouter.png` | N'importe quel écran d'administration | Le menu de gauche, l'entrée **Portées** ouverte, le sous-menu **Ajouter** mis en évidence |
-| `portee-la-portee.png` | **Portées** → **Ajouter** | L'encadré **La portée** en entier : **Date de naissance (obligatoire)**, **Disponibilité**, **Nombre de mâles**, **Nombre de femelles**, avec les lignes d'aide sous chaque champ |
-| `portee-disponibilite.png` | Même écran | La liste **Disponibilité** ouverte, les quatre lignes visibles (**Non renseigné**, **Chiots disponibles**, **Tous réservés**, **Portée passée**) |
-| `portee-parents.png` | Même écran | L'encadré **Père et mère** en entier : le père sur **Étalon extérieur** avec **Nom**, **Élevage**, **Tests de santé du père** ; la mère sur **Elle a une fiche sur le site** avec sa liste **Fiche de la mère** |
-| `portee-chiots.png` | Même écran | L'encadré **Les chiots** : les cinq en-têtes, deux lignes remplies, trois lignes vides, le bouton **Ajouter un chiot** |
-| `portee-galerie.png` | Même écran | L'encadré **Galerie photos** : trois photos, les mentions **Photo 1** à **Photo 3**, les cases **Retirer la photo 1** à **Retirer la photo 3**, les boutons **Monter la photo 1** et **Descendre la photo 1**, le bouton **Ajouter des photos** |
-| `portee-avis-brouillon.png` | Après un **Publier** sans date de naissance | Le bandeau d'avertissement en haut de page, texte lisible en entier |
-
-Deux captures utiles en complément, si le temps le permet :
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `portee-photo-principale.png` | Colonne de droite de l'écran de saisie | L'encadré **Photo principale** et le lien **Choisir la photo principale** |
-| `portee-commentaire.png` | Haut de l'écran de saisie, sous le champ de l'identifiant | Le titre **Commentaire de l'éleveuse**, sa ligne d'aide, et la barre d'outils entière — les boutons de gras et d'italique doivent être lisibles |
-
-**Aucune capture ne doit montrer de nom de chien, de numéro LOF ou de date réelle** tant que le contenu
-n'a pas été validé : utilisez une portée d'essai.
-
 
 ## Des portées que vous n'avez pas saisies, dans « Toutes les portées »
 

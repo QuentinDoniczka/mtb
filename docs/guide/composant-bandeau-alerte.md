@@ -38,32 +38,36 @@ une annonce qui n'existe nulle part ailleurs dans vos saisies.
    la page où le message doit apparaître.
 
 2. Cliquez à l'endroit de la page où vous voulez le message — en général juste sous le haut de page —
-   puis sur le bouton **+**, en haut à gauche de l'écran. *(Vous pouvez aussi taper `/` sur une ligne
-   vide : la même liste s'ouvre.)*
+   puis sur le bouton **+**, en haut à gauche de l'écran — il s'appelle
+   **Outil d'insertion de bloc**. *(Vous pouvez aussi taper `/` sur une ligne vide : la même liste
+   s'ouvre.)*
 
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Bandeau d'alerte**. Si vous préférez chercher, tapez « alerte », « message », « annonce »,
-   « temporaire » ou « bandeau » : il sort avec chacun de ces mots.
+   « temporaire » ou « bandeau » dans le champ **Rechercher**, en haut de la liste : il sort avec
+   chacun de ces mots.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant** en tête,
-   > avec **Bandeau d'alerte** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant en première position, avec Bandeau d'alerte et sa phrase de présentation](captures/alerte-inserteur.png)
 
 4. **Tapez votre phrase directement** : le composant s'insère avec le curseur déjà dedans, vous n'avez
    rien à cliquer. Tant que vous n'avez rien tapé, le champ affiche en gris
    « Le message à afficher… » : c'est une invitation, pas un texte, et elle disparaît au premier
    caractère.
 
-   > **Capture à prendre :** le composant fraîchement inséré dans une page, avant toute frappe :
-   > l'encart avec son invite **Le message à afficher…**, et l'encadré gris juste en dessous.
+   ![Le composant fraîchement inséré, avant toute frappe : l'encart portant l'invite grise « Le message à afficher… », et juste en dessous l'encadré à contour en tirets BANDEAU D'ALERTE avec sa phrase](captures/alerte-champ-vide.png)
 
 5. *Facultatif* — pour renvoyer vers une page du site : sélectionnez un ou plusieurs mots de votre
-   phrase, cliquez sur le bouton en forme de maillon de chaîne dans la petite barre d'outils qui
-   apparaît au-dessus, puis choisissez la page voulue (par exemple **Placement**). C'est le **seul**
-   enrichissement du message.
+   phrase, cliquez sur le bouton **Lien** — en forme de maillon de chaîne — dans la petite barre
+   d'outils qui apparaît au-dessus, puis choisissez la page voulue (par exemple **Placement**).
+   Le raccourci clavier est **Ctrl+K**. C'est le **seul** enrichissement du message.
+
+   ![Quelques mots du message sélectionnés, la petite barre d'outils au-dessus avec le bouton Lien en forme de maillon, et la fenêtre de choix d'une page du site ouverte en dessous](captures/alerte-lien.png)
 
 6. Cliquez sur **Publier**, ou sur **Mettre à jour** si la page existait déjà, en haut à droite.
 
 Ouvrez ensuite la page sur le site, ou cliquez sur **Aperçu**, pour voir le résultat.
+
+![Le message publié sur le site : un encadré au fond légèrement creusé, barré d'un double filet vertical sur son bord gauche, avec la phrase à l'intérieur](captures/alerte-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Publier ou Mettre à jour, rien n'est publié.** Vous pouvez
 quitter la page sans enregistrer : elle reste comme elle était.
@@ -114,15 +118,17 @@ s'affiche, et **les visiteurs ne voient rien du tout**. C'est le bon geste quand
 bientôt : l'emplacement est prêt, il n'attend qu'une phrase.
 
 **Le supprimer pour de bon** : cliquez sur l'encadré dans la page, puis sur le bouton à trois points de
-sa petite barre d'outils, et choisissez **Supprimer**. Cliquez ensuite sur **Mettre à jour**.
+sa petite barre d'outils, et, **tout en bas du menu**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 Dans les deux cas, rien d'autre n'est touché : ni le texte de la page, ni les photos, ni les portées.
 Et rien n'est définitif avant **Mettre à jour** : si vous vous êtes trompée, quittez la page sans
 enregistrer.
 
-> **Capture à prendre :** la barre d'outils du composant sélectionné, avec le menu à trois points
-> ouvert. **Le libellé exact de l'entrée qui supprime le composant doit être relevé sur cette capture
-> et recopié ici mot pour mot** : il vient de WordPress et nous ne pouvons pas le renommer.
+![La barre d'outils du message sélectionné, le menu à trois points ouvert, avec l'entrée Supprimer tout en bas de la liste](captures/alerte-menu-composant.png)
 
 ---
 
@@ -184,29 +190,3 @@ site.
 **Si quelque chose vous inquiète** : ne cliquez pas sur **Mettre à jour**, quittez la page sans
 enregistrer, notez le titre de la page et l'heure, et appelez-nous. Une page en cours de modification
 n'a jamais cassé un site.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où
-chacune vient. À faire en une passe, sur une page d'essai portant un titre.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/alerte-inserteur.png` | **Pages** → une page → bouton **+** | La liste des composants, la rubrique **Mont Brabant** en tête, **Bandeau d'alerte** et sa phrase de présentation lisibles en entier |
-| `captures/alerte-champ-vide.png` | Composant fraîchement inséré, avant toute frappe | L'encart avec son invite **Le message à afficher…**, **et** l'encadré gris en dessous : contour en tirets, **BANDEAU D'ALERTE**, puis « Ce bloc n'affiche rien tant qu'aucun texte n'est renseigné. », phrase entière lisible |
-| `captures/alerte-menu-composant.png` | Composant sélectionné | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** — c'est de là que se relève le libellé exact de la suppression |
-
-Deux captures utiles en complément, si le temps le permet :
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/alerte-lien.png` | Quelques mots du message sélectionnés | La petite barre d'outils au-dessus du message, **le bouton qui pose un lien mis en évidence**, et la fenêtre de choix d'une page du site. **Le libellé exact de ce bouton doit être relevé ici et recopié dans l'étape 5** |
-| `captures/alerte-sur-le-site.png` | La page **publiée**, vue sur le site | L'encadré du message en entier : son fond légèrement creusé, son **double filet vertical à gauche**, et la phrase — pour qu'elle reconnaisse le résultat auquel se fier |
-
-**Un libellé de cette fiche n'a pas encore été relevé à l'écran** : le bouton qui pose un lien, décrit
-ici par sa forme. Il vient de WordPress et se recopie depuis `alerte-lien.png`.
-
-**Aucune capture ne doit montrer de nom de chien, de date de portée ni de photo non validée** :
-utilisez une page d'essai et un message manifestement fictif.

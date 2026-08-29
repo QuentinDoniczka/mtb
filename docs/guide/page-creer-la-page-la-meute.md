@@ -22,9 +22,14 @@ jamais un nom ni ne poserez plus jamais une photo.**
 
 1. Dans le menu de gauche, cliquez sur **Pages**, puis sur **Toutes les pages**.
 2. En haut de l'écran, à côté du titre **Pages**, cliquez sur le bouton **Ajouter une page**.
+
+   *La fenêtre **Choisir une composition** s'ouvre toute seule. Pour cette page-ci, vous n'en avez pas
+   besoin : refermez-la avec la croix en haut à droite — ce bouton s'appelle **Fermer**, mais n'affiche
+   pas ce mot à l'écran.*
 3. Dans le champ du titre, tapez exactement **La meute**. L'adresse de la page se compose toute seule à
    partir de ce titre.
-4. Placez le curseur sous le titre, puis cliquez sur le bouton **+**, en haut à gauche de l'écran.
+4. Placez le curseur sous le titre, puis cliquez sur le bouton **+**, en haut à gauche de l'écran. Ce
+   bouton s'appelle **Outil d'insertion de bloc**.
 5. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Grille de chiens**.
 6. **Ne touchez à aucun réglage.** Le bon réglage est déjà choisi.

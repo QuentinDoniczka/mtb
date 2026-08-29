@@ -24,6 +24,12 @@ se trouve **sous Commentaires**, deux crans sous **Coordonnées**. C'est le seul
 **Une modification enregistrée est visible tout de suite** sur le site. Il n'y a rien à publier
 ensuite, rien à vider, rien à attendre.
 
+> **Les menus montrés en image dans cette page sont un exemple.** **Aucun menu n'est livré avec le
+> site** : les entrées **Travail**, **Placement**, **BHPL** et **Contact** que vous verrez sur les
+> images ont été composées pour vous montrer les écrans. **C'est à vous de composer le vôtre**, et
+> vous choisissez librement les pages qui y entrent — commencez par « Créer un menu », juste en
+> dessous.
+
 ---
 
 ## Créer un menu
@@ -45,8 +51,7 @@ aucun menu tout fait, c'est vous qui les composez.
 
 4. Cliquez sur **Créer le menu**.
 
-   > **Capture à prendre :** l'écran **Menus** en création, le champ **Nom du menu** rempli et le
-   > bouton **Créer le menu** visible.
+   ![L'écran Menus en cours de création : le champ Nom du menu rempli, sa ligne d'aide en dessous, et le bouton Créer le menu](captures/menu-creation.png)
 
 5. **Le menu est créé, et vide.** Deux choses restent à faire, dans cet ordre : lui ajouter ses
    entrées — « Les étapes », ci-dessous — puis dire à quel endroit il s'affiche — « Choisir où un
@@ -62,34 +67,39 @@ de liens. Rien n'est cassé pour autant.
 
 1. Dans le menu de gauche, cliquez sur **Menus**.
 
-   > **Capture à prendre :** le menu de gauche de l'administration, l'entrée **Menus** mise en
-   > évidence, sous **Commentaires**.
+   ![Le menu de gauche de l'administration, avec l'entrée Menus placée sous Commentaires](captures/menu-entree-laterale.png)
 
 2. En haut de l'écran, la ligne **Sélectionnez le menu à modifier :** propose les menus déjà
    composés. Choisissez celui que vous voulez modifier, puis cliquez sur **Sélectionner**.
    **S'il n'y en a aucun, ou s'il vous en manque un**, voir « Créer un menu », ci-dessus.
 
-   > **Capture à prendre :** le haut de l'écran, la ligne **Sélectionnez le menu à modifier :** avec
-   > sa liste ouverte sur les menus composés, et le bouton **Sélectionner**.
+   *Cette liste déroulante n'est pas illustrée. Elle s'ouvre quand vous cliquez dessus, et elle ne
+   contient que **les menus que vous avez composés**, par leur nom.*
 
-3. Dans la colonne de gauche de l'écran, ouvrez la liste de vos pages et **cochez la case** de la page
-   à ajouter — **Contact**, par exemple.
+3. Dans la colonne de gauche de l'écran, l'encadré **Pages** propose **trois onglets** :
+   **Les plus récentes**, **Tout voir** et **Rechercher**. **Cliquez sur Tout voir.**
 
-   > **Capture à prendre :** la colonne de gauche, la liste des pages, la case de **Contact** cochée,
-   > et le bouton **Ajouter au menu** visible juste en dessous.
+   **C'est l'étape qui fait perdre dix minutes.** L'onglet **Les plus récentes**, ouvert par défaut,
+   ne montre que vos pages les plus récemment créées — **vos pages anciennes n'y sont pas**, la page
+   **Contact** comprise. Si vous ne trouvez pas la vôtre, ce n'est pas qu'elle a disparu : **c'est
+   qu'il faut cliquer Tout voir.**
 
-4. Cliquez sur **Ajouter au menu**, sous cette liste.
+4. Dans la liste qui s'affiche, **cochez la case** de la page à ajouter — **Contact**, par exemple —
+   puis cliquez sur **Ajouter au menu**, sous cette liste.
+
+   ![La colonne de gauche, l'encadré Pages avec ses trois onglets Les plus récentes, Tout voir et Rechercher, la case de Contact cochée dans la liste, et le bouton Ajouter au menu juste en dessous](captures/menu-ajouter-une-page.png)
 
 5. L'entrée se pose **en bas** de la liste centrale, intitulée **Structure du menu**.
 
 6. Attrapez l'entrée avec la souris et **faites-la glisser** à la place que vous voulez, plus haut ou
    plus bas dans la liste.
 
-   > **Capture à prendre :** la liste **Structure du menu** avec ses entrées, l'une d'elles en cours
-   > de déplacement.
+   ![La liste Structure du menu avec ses entrées les unes sous les autres, l'une d'elles attrapée et en cours de déplacement](captures/menu-structure.png)
 
 7. Cliquez sur **Enregistrer le menu**, en bas à droite de la liste. Ouvrez le site dans un autre
    onglet : l'entrée y est déjà.
+
+![Le haut d'une page du site avec le menu à sa vraie allure, ses entrées les unes à côté des autres, celle de la page en cours de lecture signalée](captures/menu-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Enregistrer le menu, rien n'a changé sur le site.** Vous pouvez
 quitter cet écran sans enregistrer : le menu reste comme il était.
@@ -128,8 +138,7 @@ L'ordre de la liste est exactement l'ordre affiché sur le site, de gauche à dr
 **Seule l'entrée du menu change de nom.** Le titre de la page, lui, ne bouge pas : elle garde son
 titre sur le site et dans **Pages**.
 
-> **Capture à prendre :** une entrée de la liste **Structure du menu** ouverte, le champ
-> **Titre de la navigation** mis en évidence, et le lien **Retirer** visible en bas de l'encadré.
+![Une entrée de la liste Structure du menu dépliée : le champ Titre de la navigation en haut de l'encadré, et le lien Retirer tout en bas](captures/menu-entree-ouverte.png)
 
 ---
 
@@ -152,11 +161,15 @@ Un menu ne s'affiche sur le site que si vous avez dit **à quel endroit** il ser
 1. Dans le menu de gauche, cliquez sur **Menus**, et vérifiez le menu ouvert sur la ligne
    **Sélectionnez le menu à modifier :**.
 2. Descendez tout en bas de l'écran, sous la liste **Structure du menu** : l'encadré
-   **Réglages du menu** propose deux cases, **Menu principal** et **Plan du site**.
-3. Cochez celle qui convient :
+   **Réglages du menu** propose **trois cases**, dans cet ordre.
+3. **La première ne concerne pas les emplacements : laissez-la décochée.** Elle s'intitule
+   **Ajouter automatiquement les pages de premier niveau à ce menu**, et elle ferait entrer dans le
+   menu, toute seule, chaque nouvelle page que vous créez. Vous perdriez la maîtrise de vos entrées,
+   et de leur ordre. **Si elle est cochée, décochez-la et cliquez sur Enregistrer le menu.**
+4. Cochez ensuite celle des deux suivantes qui convient :
    - **Menu principal** — le menu s'affiche **en haut de chaque page**.
    - **Plan du site** — le menu s'affiche **en bas de chaque page**.
-4. Cliquez sur **Enregistrer le menu**, en bas à droite.
+5. Cliquez sur **Enregistrer le menu**, en bas à droite.
 
 **Une case ne se coche jamais toute seule** : un menu fraîchement créé n'en a aucune, et c'est ici,
 une fois, que vous lui donnez sa place. Si vous avez nommé vos menus d'après les endroits qu'ils
@@ -167,8 +180,7 @@ haut, le menu **Plan du site** en bas — et vous n'avez plus à y revenir.
 second menu, c'est lui qui s'affichera en haut, et le premier ne s'affichera plus — sans être perdu
 pour autant : il reste composé, prêt à resservir.
 
-> **Capture à prendre :** le bas de l'écran des menus, l'encadré **Réglages du menu**, les deux cases
-> **Menu principal** et **Plan du site** lisibles.
+![Le bas de l'écran des menus, encadré Réglages du menu : la case Ajouter automatiquement les pages de premier niveau à ce menu en premier, puis les deux cases d'emplacement Menu principal et Plan du site](captures/menu-emplacements.png)
 
 ---
 
@@ -222,6 +234,9 @@ pas — et il suffit de revenir la corriger.
 
 **C'est normal, vous n'avez rien à faire :**
 
+- **Vous ne trouvez pas une page dans la colonne de gauche.** L'onglet **Les plus récentes** ne
+  montre qu'une poignée de pages. **Cliquez sur Tout voir**, à côté : toutes vos pages publiées y
+  sont, dans l'ordre alphabétique.
 - **Une page toute neuve n'apparaît pas dans la liste des pages à ajouter.** Rien n'est cassé : cet
   écran ne propose que les pages **publiées**, et l'onglet **Rechercher** n'atteint pas non plus un
   brouillon. **L'ordre est donc : publier la page d'abord, la poser dans le menu ensuite** — les
@@ -255,29 +270,3 @@ pas — et il suffit de revenir la corriger.
 
 **Si quelque chose vous inquiète** : ne cliquez pas sur **Enregistrer le menu**, quittez l'écran,
 notez l'heure et appelez-nous. Un menu en cours de modification n'a jamais cassé un site.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où
-chacune vient. À faire en une passe, sur l'écran **Menus**, en session de l'éleveuse — jamais en
-session d'administration, la barre latérale n'y est pas la même.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/menu-entree-laterale.png` | N'importe quel écran d'administration | Le menu de gauche entier, l'entrée **Menus** mise en évidence, **sous Commentaires** |
-| `captures/menu-creation.png` | **Menus**, en création | Le champ **Nom du menu** rempli, sa ligne d'aide lisible, et le bouton **Créer le menu** |
-| `captures/menu-selection.png` | **Menus**, haut de l'écran | La ligne **Sélectionnez le menu à modifier :**, sa liste ouverte sur les menus composés, le bouton **Sélectionner** |
-| `captures/menu-ajouter-une-page.png` | **Menus** | La colonne de gauche, la liste des pages, la case de **Contact** cochée, et le bouton **Ajouter au menu** juste en dessous |
-| `captures/menu-structure.png` | **Menus** | La liste **Structure du menu** avec au moins trois entrées, l'une en cours de déplacement |
-| `captures/menu-entree-ouverte.png` | **Menus** | Une entrée ouverte : le champ **Titre de la navigation** mis en évidence, et le lien **Retirer** visible en bas de l'encadré |
-| `captures/menu-emplacements.png` | **Menus**, bas de l'écran | L'encadré **Réglages du menu**, les deux cases **Menu principal** et **Plan du site** lisibles, l'une cochée |
-| `captures/menu-sur-le-site.png` | Le site public | Le haut d'une page avec le menu à sa vraie allure, l'entrée de la page en cours signalée |
-
-**Un point de cette fiche reste à confirmer pendant la passe de captures** : à l'étape 5, une entrée
-qui vient d'être ajoutée se pose en bas de la liste **Structure du menu**. C'est ce qui est écrit ici,
-et cela n'a pas encore été observé à l'écran.
-
-**Aucune capture ne doit montrer de nom de chien, de date de naissance ni de photo non validée** :
-utilisez un menu d'essai et des pages neutres.

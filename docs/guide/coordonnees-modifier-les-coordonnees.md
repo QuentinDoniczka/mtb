@@ -18,8 +18,7 @@ l'entrée se trouve juste sous **Résultats de travail**. C'est le seul chemin �
 
 1. Dans le menu de gauche, cliquez sur **Coordonnées**.
 
-   > **Capture à prendre :** le menu de gauche de l'administration, l'entrée **Coordonnées** mise en
-   > évidence, entre **Résultats de travail** et **Commentaires**.
+   ![La barre de gauche de l'administration en entier, avec l'entrée Coordonnées placée entre Résultats de travail et Commentaires](captures/coordonnees-ecran-entree-laterale.png)
 
 2. L'écran **Coordonnées de l'élevage** s'ouvre. Il tient tout entier à l'écran : quatre champs, et un
    bouton. En haut, cette phrase vous rappelle sa portée :
@@ -30,13 +29,14 @@ l'entrée se trouve juste sous **Résultats de travail**. C'est le seul chemin �
 3. Corrigez le champ qui a changé. Les autres, n'y touchez pas : ce que vous ne modifiez pas reste
    exactement comme il était.
 
-   > **Capture à prendre :** l'écran **Coordonnées de l'élevage** en entier, les quatre champs remplis,
-   > leurs quatre lignes d'aide lisibles.
+   ![L'écran Coordonnées de l'élevage en entier : son titre, la phrase d'introduction, les champs Adresse, Téléphone, Courriel et Page de contact déjà remplis avec leurs lignes d'aide, et le bouton Enregistrer en bas](captures/coordonnees-ecran-formulaire.png)
 
 4. Cliquez sur **Enregistrer**, sous les quatre champs.
 
 5. L'avis **Coordonnées enregistrées.** apparaît en haut de l'écran. **C'est fait** : le site affiche
    déjà la nouvelle valeur. Ouvrez n'importe quelle page dans un autre onglet pour le vérifier.
+
+   ![L'écran Coordonnées juste après l'enregistrement : l'avis Coordonnées enregistrées. affiché en haut, au-dessus des champs restés remplis](captures/coordonnees-ecran-enregistre.png)
 
 **Tant que vous n'avez pas cliqué sur Enregistrer, rien n'a changé sur le site.** Vous pouvez quitter
 cet écran sans enregistrer : vos coordonnées restent comme elles étaient.
@@ -151,7 +151,9 @@ alphabétique.
 - **Une page choisie** — les boutons du site qui n'ont pas de page à eux mènent à celle-là, et ils
   **portent son nom**. Vous renommez la page, les boutons se renomment tout seuls.
 
-> **Capture à prendre :** la liste **Page de contact** ouverte, **Aucune** en tête.
+**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
+propose **Aucune** en première ligne, puis **une ligne par page publiée de votre site**, par ordre
+alphabétique. Il n'y a rien d'autre dedans, et rien à y taper.
 
 **Une page que vous avez choisie puis remise en brouillon reste dans cette liste**, sous son vrai titre.
 C'est voulu : votre choix n'est jamais effacé dans votre dos. Sur le site, en revanche, **aucun bouton
@@ -234,24 +236,3 @@ Pour poser vos coordonnées dans une page, voir *Afficher vos coordonnées et un
 inviter les visiteurs à vous appeler en fin de page, voir *Inviter les visiteurs à vous appeler*. Pour
 le formulaire qui reçoit les messages à l'adresse écrite ici, voir *Recevoir les messages des visiteurs
 par courriel*.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur l'écran **Coordonnées de l'élevage**.
-
-**Toutes se prennent en session de l'éleveuse — le compte `fabienne` —, jamais en session
-d'administration** : la barre de gauche n'y est pas la même, et la capture montrerait un écran que
-l'éleveuse ne voit pas.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/coordonnees-ecran-entree-laterale.png` | N'importe quel écran d'administration | La barre de gauche entière, de **Tableau de bord** à **Outils**, l'entrée **Coordonnées** mise en évidence, entre **Résultats de travail** et **Commentaires** |
-| `captures/coordonnees-ecran-formulaire.png` | **Coordonnées** | L'écran entier : le titre **Coordonnées de l'élevage**, la phrase d'introduction, les quatre champs remplis, **leurs quatre lignes d'aide lisibles en entier**, et le bouton **Enregistrer** |
-| `captures/coordonnees-ecran-page-de-contact.png` | **Coordonnées** | La liste **Page de contact** ouverte, **Aucune** en tête |
-| `captures/coordonnees-ecran-enregistre.png` | **Coordonnées**, juste après **Enregistrer** | L'avis **Coordonnées enregistrées.** lisible, au-dessus des champs |
-
-**Aucune capture ne doit montrer de nom de chien, de date de naissance ni de photo non validée** :
-cet écran ne porte que les coordonnées de l'élevage, et elles sont déjà publiques.

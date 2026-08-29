@@ -18,12 +18,11 @@ chien que vous avez déjà remplies.
 1. Dans le menu de gauche, cliquez sur **Pages**, puis sur le titre de la page à modifier — par exemple
    **La meute**.
 2. Placez le curseur à l'endroit où vous voulez les chiens, puis cliquez sur le bouton **+**, en haut à
-   gauche de l'écran.
+   gauche de l'écran. Ce bouton s'appelle **Outil d'insertion de bloc**.
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Grille de chiens**.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant** en tête, avec
-   > **Grille de chiens** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant en première position, avec Grille de chiens et sa phrase de présentation](captures/grille-chiens-inserteur.png)
 
 4. Les chiens apparaissent aussitôt dans la page. Le composant reste sélectionné : dans la colonne de
    droite, le panneau **Statut à afficher** est déjà ouvert.
@@ -34,11 +33,12 @@ chien que vous avez déjà remplies.
 5. **Ne touchez à rien** : **Tous les statuts, groupés** est le bon réglage dans presque tous les cas
    (voir plus bas pourquoi).
 
-   > **Capture à prendre :** la colonne de droite, panneau **Statut à afficher** ouvert, les cinq choix
-   > visibles, **Tous les statuts, groupés** sélectionné, et la ligne d'aide sous les choix.
+   ![La colonne de droite, panneau Statut à afficher ouvert : les cinq choix Tous les statuts groupés, Reproducteurs, En cours de confirmation, Retraités et Disparus, le premier sélectionné, avec sa ligne d'aide en dessous](captures/grille-chiens-reglage.png)
 
 6. Cliquez sur **Mettre à jour**, en haut à droite. C'est en ligne.
 7. Ouvrez la page sur le site pour voir le résultat.
+
+![La grille publiée sur le site : les groupes avec leur titre, les vignettes rangées en colonnes de même taille, dont plusieurs sans photo qui gardent un emplacement gris de même dimension](captures/grille-chiens-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -122,8 +122,12 @@ Vous pouvez mettre **plusieurs grilles dans une même page**, si vous voulez sé
 
 ## Enlever la grille d'une page
 
-Cliquez sur le composant dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur le composant dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Aucune fiche de chien n'est touchée**, aucune photo n'est perdue : vous n'enlevez que l'affichage sur
 cette page, et vous pouvez reposer une **Grille de chiens** plus tard, au même endroit, en trois clics.
@@ -131,9 +135,7 @@ cette page, et vous pouvez reposer une **Grille de chiens** plus tard, au même 
 Rien n'est définitif avant **Mettre à jour** : si vous vous êtes trompée, quittez la page sans
 enregistrer.
 
-> **Capture à prendre :** la barre d'outils du composant sélectionné, avec le menu à trois points
-> ouvert. **Le libellé exact de l'entrée qui supprime le composant doit être relevé sur cette capture et
-> recopié ici mot pour mot** : il vient de WordPress et nous ne pouvons pas le renommer.
+![La barre d'outils de la grille sélectionnée, le menu à trois points ouvert, avec l'entrée Supprimer tout en bas de la liste](captures/grille-chiens-menu-composant.png)
 
 ---
 
@@ -145,6 +147,9 @@ enregistrer.
   « Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut. » : **aucune fiche de
   chien publiée n'a encore de statut.** Ouvrez **Chiens** → **Tous les chiens**, ouvrez une fiche,
   choisissez son **Statut**, cliquez sur **Mettre à jour** — la grille se remplit d'elle-même.
+
+  ![Le composant fraîchement inséré dans une page, affichant les deux lignes Grille de chiens et « Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut. »](captures/grille-chiens-etat-vide.png)
+
 - La phrase qui **nomme un statut**, par exemple
   « Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée ne porte le statut « Reproducteur ». »,
   n'arrive que dans un seul cas : d'autres chiens ont bien un statut, mais aucun n'a celui que vous avez
@@ -166,10 +171,6 @@ enregistrer.
 - Le composant **Grille de chiens** ne se propose pas dans une fiche de portée, de chien ou de résultat.
   C'est voulu : ces fiches se remplissent, elles ne se composent pas.
 
-> **Capture à prendre :** le composant fraîchement inséré dans une page, affichant les deux lignes
-> **Grille de chiens** et « Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de
-> statut. », phrase entière lisible.
-
 **Ce n'est pas normal, signalez-le :**
 
 - Un chien publié, avec un statut, n'apparaît pas sur le site après **Mettre à jour**.
@@ -188,28 +189,3 @@ enregistrer.
 **Si quelque chose vous inquiète** : ne supprimez rien, ne cliquez pas sur **Mettre à jour**, notez le
 titre de la page et l'heure, et appelez-nous. Une page en cours de modification n'a jamais cassé un
 site.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur une page d'essai contenant une **Grille de chiens**, avec au moins deux
-fiches de chien publiées portant deux statuts différents, dont une **sans photo principale**, plus une
-installation où aucune fiche publiée n'a de statut.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/grille-chiens-inserteur.png` | **Pages** → une page → bouton **+** | La liste des composants, la rubrique **Mont Brabant** en tête, **Grille de chiens** et sa phrase de présentation lisibles |
-| `captures/grille-chiens-reglage.png` | Colonne de droite, composant sélectionné | Le panneau **Statut à afficher** ouvert, les cinq choix (**Tous les statuts, groupés** · **Reproducteurs** · **En cours de confirmation** · **Retraités** · **Disparus**), le premier sélectionné, et la ligne d'aide en entier |
-| `captures/grille-chiens-etat-vide.png` | Composant fraîchement inséré, aucune fiche publiée n'ayant de statut | Les deux lignes : **Grille de chiens**, puis « Ce bloc n'affiche rien tant qu'aucune fiche de chien publiée n'a de statut. » |
-| `captures/grille-chiens-sur-le-site.png` | La page **publiée**, vue sur le site | Deux groupes avec leurs titres, les vignettes en colonnes, **et au moins une vignette sans photo** pour montrer l'emplacement vide de même taille |
-| `captures/grille-chiens-menu-composant.png` | Composant sélectionné | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** |
-
-**Un libellé de cette fiche vient de WordPress et n'a pas encore été relevé à l'écran** : l'entrée du
-menu à trois points qui supprime le composant. Elle est décrite par sa place, jamais nommée. **La
-recopier mot pour mot depuis `grille-chiens-menu-composant.png`** est le seul geste qui manque à cette
-fiche.
-
-**Aucune capture ne doit montrer de nom de chien ni de photo non validée** : utilisez des fiches
-d'essai.

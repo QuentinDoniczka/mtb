@@ -38,35 +38,31 @@ nouveau à apprendre.
 
 1. Dans le menu de gauche, cliquez sur **Pages**, puis sur le titre de la page à modifier.
 2. Placez le curseur à l'endroit où vous voulez les photos, puis cliquez sur le bouton **+**, en haut à
-   gauche de l'écran.
+   gauche de l'écran. Ce bouton s'appelle **Outil d'insertion de bloc**.
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Galerie photos**.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant** en tête, avec
-   > **Galerie photos** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant en première position, avec Galerie photos et sa phrase de présentation](captures/galerie-inserteur.png)
 
 4. Un cadre apparaît dans la page, avec la mention **GALERIE PHOTOS** et la phrase
    « Ce bloc n'affiche rien tant qu'aucune photo n'est choisie. » Cliquez sur **Ajouter des photos**.
 
-   > **Capture à prendre :** le cadre vide du composant dans la page, avec l'étiquette
-   > **GALERIE PHOTOS**, la phrase entière et le bouton **Ajouter des photos**.
+   ![Le cadre vide du composant dans la page : l'étiquette GALERIE PHOTOS, la phrase disant que rien ne s'affiche tant qu'aucune photo n'est choisie, et le bouton Ajouter des photos](captures/galerie-etat-vide.png)
 
-5. La fenêtre **Photos de la galerie** s'ouvre. Cochez les photos que vous voulez, dans n'importe quel
-   ordre.
-6. Cliquez sur le bouton d'insertion, en bas à droite de la fenêtre. Les photos s'ajoutent, et l'aperçu
+5. La fenêtre **Photos de la galerie** s'ouvre sur l'onglet **Téléverser des fichiers**. Cliquez sur
+   l'onglet **Médiathèque**, juste à côté, pour voir les photos déjà présentes sur le site, puis cochez
+   celles que vous voulez, dans n'importe quel ordre.
+6. Cliquez sur **Sélectionner**, en bas à droite de la fenêtre. Les photos s'ajoutent, et l'aperçu
    se dessine dans la page.
 
-   > **Capture à prendre :** la fenêtre **Photos de la galerie** avec trois photos cochées et le bouton
-   > d'insertion en bas à droite. **Le libellé exact de ce bouton doit être relevé sur cette capture et
-   > recopié ici mot pour mot** : il vient de WordPress et nous ne pouvons pas le renommer.
+   ![La fenêtre Photos de la galerie, l'onglet Médiathèque actif, trois photos cochées, et le bouton Sélectionner en bas à droite](captures/galerie-fenetre-photos.png)
 
 7. Cliquez sur **Mettre à jour**, en haut à droite. C'est en ligne.
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
 
-> **Capture à prendre :** le composant dans la page en cours de modification, avec cinq photos
-> affichées en vignettes.
+![Le composant dans la page en cours de modification : les photos rangées en vignettes de même taille, les unes à côté des autres](captures/galerie-apercu.png)
 
 ---
 
@@ -83,9 +79,7 @@ L'ordre des vignettes sur le site est l'ordre de la liste, et vous le réglez da
 Sur la première photo, **Monter la photo 1** est grisé ; sur la dernière, **Descendre** l'est aussi.
 C'est normal : il n'y a rien au-dessus de la première ni en dessous de la dernière.
 
-> **Capture à prendre :** la colonne de droite, panneau **Photos de la galerie** ouvert avec trois
-> photos, les boutons **Retirer la photo 1** / **Monter la photo 1** / **Descendre la photo 1** de la
-> première ligne — **Monter la photo 1** grisé —, et le bouton **Ajouter des photos** en dessous.
+![La colonne de droite, panneau Photos de la galerie ouvert : sous la première photo les boutons Retirer la photo 1, Monter la photo 1 grisé et Descendre la photo 1, puis le bouton Ajouter des photos en dessous de la liste](captures/galerie-panneau-ordre.png)
 
 ---
 
@@ -112,21 +106,24 @@ pages qui montrent cette photo suivent. Vous n'avez jamais à repasser page par 
 Pour l'écrire ou la corriger :
 
 1. Cliquez sur **Ajouter des photos**.
-2. Dans la fenêtre **Photos de la galerie**, cliquez sur la photo concernée.
-3. Écrivez sa description dans la colonne de droite de la fenêtre. Le champ s'appelle
-   **Description de la photo (pour les personnes aveugles)**.
-4. Fermez la fenêtre. Si vous ne voulez rien ajouter à la galerie, fermez-la sans insérer : votre
-   correction est enregistrée quand même.
+2. La fenêtre **Photos de la galerie** s'ouvre sur l'onglet **Téléverser des fichiers** : cliquez sur
+   l'onglet **Médiathèque**, juste à côté, puis sur la photo concernée.
+3. Écrivez sa description dans la colonne de droite de la fenêtre, dans le champ **Texte alternatif** —
+   c'est le premier des quatre, avant **Titre**, **Légende** et **Description**.
+4. Refermez la fenêtre avec la croix en haut à droite : ce bouton s'appelle **Fermer**, mais n'affiche
+   pas ce mot à l'écran. Si vous ne voulez rien ajouter à la galerie, refermez sans cliquer sur
+   **Sélectionner** : votre correction est enregistrée quand même.
 
-*(Cette zone porte aujourd'hui à l'écran le titre « Texte alternatif », qui n'est pas le nom prévu pour
-le site. C'est bien la bonne zone. Voir « En cas de doute ».)*
+**Fiez-vous à ce nom : Texte alternatif est bien celui du champ aujourd'hui, et bien la bonne zone.**
+Ce n'est pas le nom que nous aurions choisi, et nous le renommerons un jour ; le champ, lui, restera au
+même endroit et servira à la même chose. **N'écrivez pas dans le champ Description**, plus bas : il ne
+sert à rien ici.
 
 **Une photo sans description ne casse rien.** Le site annonce alors la vignette comme
 « Photo 3 sur 12 » : la galerie reste utilisable au clavier et à la voix. Mais le nom du chien, lui, est
 perdu pour quelqu'un qui ne voit pas l'image. Trente secondes par photo, et ce n'est plus le cas.
 
-> **Capture à prendre :** la colonne de droite de la fenêtre **Photos de la galerie**, une photo
-> sélectionnée, la zone de description visible avec le titre qu'elle porte réellement à l'écran.
+![La colonne de droite de la fenêtre Photos de la galerie, une photo sélectionnée, avec le champ Texte alternatif en premier, suivi de Titre, Légende et Description](captures/galerie-description-photo.png)
 
 ---
 
@@ -167,15 +164,17 @@ sur **Retirer la photo 2**, puis sur **Mettre à jour**. La photo sort de cette 
 disponible pour la remettre ou pour l'employer ailleurs. Les numéros se resserrent tout seuls.
 
 **Pour enlever le composant en entier** : cliquez sur le composant, puis sur le bouton à trois points de
-sa petite barre d'outils. Le menu qui s'ouvre propose de le supprimer. **Aucune photo n'est perdue** :
-elles restent toutes dans la bibliothèque de photos, et vous pouvez reposer une galerie plus tard.
+sa petite barre d'outils. Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**.
+**Aucune photo n'est perdue** : elles restent toutes dans la bibliothèque de photos, et vous pouvez
+reposer une galerie plus tard.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 Rien n'est définitif avant **Mettre à jour** : si vous vous êtes trompée, quittez la page sans
 enregistrer.
 
-> **Capture à prendre :** la barre d'outils du composant sélectionné, avec le menu à trois points
-> ouvert. **Le libellé exact de l'entrée qui supprime le composant doit être relevé sur cette capture et
-> recopié ici mot pour mot** : il vient de WordPress.
+![La barre d'outils de la galerie sélectionnée, le menu à trois points ouvert, avec l'entrée Supprimer tout en bas de la liste](captures/galerie-menu-composant.png)
 
 ---
 
@@ -189,24 +188,21 @@ enregistrer.
   photos **avaient bien été choisies**, mais les fichiers ne sont plus dans la bibliothèque. Ce n'est
   pas la même chose que la phrase précédente. Ajoutez d'autres photos, ou remettez celles qui
   manquaient.
+
+  ![Le cadre du composant sur une page dont les photos ont été supprimées, affichant la phrase « Ce bloc n'affiche rien tant qu'aucune photo choisie n'est disponible. »](captures/galerie-photos-disparues.png)
+
 - Une galerie sans photo **n'affiche rien du tout** aux visiteurs : ni cadre, ni trou, ni message. La
   page reste normale. Le cadre gris n'existe que pour vous, pendant que vous modifiez.
 - Une vignette a disparu de la galerie : la photo a été supprimée de la bibliothèque. La numérotation se
   resserre, et **il n'y a rien à réparer**. Si vous remettez la photo, la galerie se rétablit d'elle-même.
 - **Monter la photo 1** est grisé sur la première photo, **Descendre** sur la dernière.
 - Une photo verticale est rognée en haut et en bas dans sa vignette.
-- Dans la fenêtre des photos, la zone de description porte encore le titre « Texte alternatif ». C'est
-  bien la bonne zone.
 - **Dans la page en cours de modification, la galerie est plus étroite que sur le site, et montre donc
   moins de colonnes.** C'est normal : la page en cours de modification s'affiche dans une fenêtre plus
   étroite que celle du site. Les photos et leur ordre sont les bons. Cliquez sur **Aperçu**, ou ouvrez
   la page sur le site : c'est le rendu qui compte.
 - Le composant **Galerie photos** ne se propose pas dans une fiche de portée, de chien ou de résultat.
   C'est voulu : ces fiches ont déjà leur champ **Galerie photos**.
-
-> **Capture à prendre :** le cadre du composant affichant la phrase
-> « Ce bloc n'affiche rien tant qu'aucune photo choisie n'est disponible. », sur une page dont les
-> photos ont été supprimées.
 
 **Ce n'est pas normal, signalez-le :**
 
@@ -227,30 +223,3 @@ enregistrer.
 **Si quelque chose vous inquiète** : ne supprimez rien, ne cliquez pas sur **Mettre à jour**, notez le
 titre de la page et l'heure, et appelez-nous. Une page en cours de modification n'a jamais cassé un
 site.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où chacune
-vient. À faire en une passe, sur une page d'essai contenant un composant **Galerie photos** avec cinq
-photos, plus une page d'essai dont les photos ont été supprimées.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/galerie-inserteur.png` | **Pages** → une page → bouton **+** | La liste des composants, la rubrique **Mont Brabant** en tête, **Galerie photos** et sa phrase de présentation lisibles |
-| `captures/galerie-etat-vide.png` | Composant fraîchement inséré | Le cadre vide : étiquette **GALERIE PHOTOS**, phrase « Ce bloc n'affiche rien tant qu'aucune photo n'est choisie. », bouton **Ajouter des photos** |
-| `captures/galerie-fenetre-photos.png` | Fenêtre **Photos de la galerie** | Le titre de la fenêtre, trois photos cochées, et **le bouton d'insertion en bas à droite avec son libellé parfaitement lisible** |
-| `captures/galerie-panneau-ordre.png` | Colonne de droite | Panneau **Photos de la galerie** ouvert, trois photos, **Retirer la photo 1** / **Monter la photo 1** / **Descendre la photo 1** (le **Monter** grisé), bouton **Ajouter des photos** en dessous |
-| `captures/galerie-description-photo.png` | Fenêtre **Photos de la galerie**, une photo sélectionnée | La colonne de droite de la fenêtre, la zone de description avec **le titre qu'elle porte réellement à l'écran** |
-| `captures/galerie-apercu.png` | Page en cours de modification | Le composant avec cinq photos en vignettes, dans la page |
-| `captures/galerie-menu-composant.png` | Composant sélectionné | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** |
-| `captures/galerie-photos-disparues.png` | Page dont les photos ont été supprimées | Le cadre affichant « Ce bloc n'affiche rien tant qu'aucune photo choisie n'est disponible. » |
-
-**Deux libellés de cette fiche viennent de WordPress et n'ont pas encore été relevés à l'écran** : le
-bouton d'insertion de la fenêtre des photos, et l'entrée du menu à trois points qui supprime le
-composant. Ils sont décrits par leur place, jamais nommés. **Les recopier mot pour mot depuis
-`galerie-fenetre-photos.png` et `galerie-menu-composant.png`** est le seul geste qui manque à cette
-fiche.
-
-**Aucune capture ne doit montrer de nom de chien ni de photo non validée** : utilisez une page d'essai.

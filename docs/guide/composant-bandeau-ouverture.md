@@ -20,13 +20,13 @@ d'ailleurs pas de bouton **+** — ces écrans sont des cases à remplir de haut
    la page à modifier.
 
 2. Placez le curseur **tout en haut du contenu de la page**, avant le premier paragraphe, puis cliquez
-   sur le bouton **+**, en haut à gauche de l'écran.
+   sur le bouton **+**, en haut à gauche de l'écran. Ce bouton s'appelle
+   **Outil d'insertion de bloc**.
 
 3. Dans la liste qui s'ouvre, **Mont Brabant** est la première rubrique : cliquez sur
    **Bandeau d'ouverture**.
 
-   > **Capture à prendre :** la liste des composants ouverte, la rubrique **Mont Brabant** en tête,
-   > avec **Bandeau d'ouverture** et sa phrase de présentation lisibles.
+   ![La liste des composants ouverte, la rubrique Mont Brabant en première position, avec Bandeau d'ouverture et sa phrase de présentation](captures/bandeau-inserteur.png)
 
    *Ce qui apparaît alors dépend de la page. Si la page a déjà un titre, le bandeau se montre
    aussitôt, **avec le titre de la page déjà écrit dedans**, sur fond vert foncé : il ne lui manque que
@@ -42,19 +42,22 @@ d'ailleurs pas de bouton **+** — ces écrans sont des cases à remplir de haut
    **C'est le seul endroit d'où la photo se choisit.** Il n'y a pas de bouton sur le bandeau
    lui-même, et c'est voulu : un seul chemin, jamais deux.
 
-5. Dans la fenêtre qui s'ouvre, cliquez sur votre photo, puis sur **Sélectionner**. Le bandeau prend
-   aussitôt son allure définitive, photo comprise.
+5. La fenêtre des photos s'ouvre sur l'onglet **Téléverser des fichiers**. Si votre photo est déjà sur
+   le site, cliquez d'abord sur l'onglet **Médiathèque**, juste à côté : c'est là que sont les photos
+   déjà présentes. Cliquez ensuite sur votre photo, puis sur **Sélectionner**, en bas à droite. Le
+   bandeau prend aussitôt son allure définitive, photo comprise.
 
 6. Juste en dessous, dans le panneau **Titre et accroche**, écrivez votre phrase de présentation dans
    **Accroche**. **Laissez le champ Titre du bandeau vide** (pourquoi, deux sections plus bas).
 
-   > **Capture à prendre :** la colonne de droite, les deux panneaux **Photo** et
-   > **Titre et accroche** ouverts, avec les trois lignes d'aide lisibles en entier.
+   ![La colonne de droite avec les panneaux Photo et Titre et accroche ouverts : le bouton Remplacer la photo, le lien Retirer la photo, les champs Titre du bandeau et Accroche, et leurs lignes d'aide](captures/bandeau-reglages.png)
 
 7. Cliquez sur **Mettre à jour**, en haut à droite.
 
 Ouvrez ensuite la page sur le site, ou cliquez sur **Aperçu**, pour voir le bandeau dans la page
 entière.
+
+![Le bandeau publié sur le site : la photo occupe toute la largeur de la fenêtre, d'un bord à l'autre, avec le titre par-dessus et l'accroche juste en dessous](captures/bandeau-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -119,6 +122,8 @@ au-dessus du bandeau :
 > « Ce bandeau n'est pas le premier bloc de la page : le titre s'affichera deux fois. Déplacez-le tout
 > en haut. »
 
+![Un bandeau posé après un paragraphe, coiffé d'un avertissement sur fond jaune annonçant que le titre s'affichera deux fois et qu'il faut déplacer le bandeau tout en haut](captures/bandeau-avertissement-position.png)
+
 Et c'est vrai : le titre apparaîtra deux fois sur le site, une fois à sa place habituelle et une fois
 dans le bandeau. **Ce qu'il faut faire** : attrapez le bandeau et faites-le glisser tout en haut de la
 page. L'avertissement disparaît de lui-même. Rien n'est perdu — ni la photo, ni l'accroche.
@@ -132,8 +137,12 @@ utilisez **Remplacer la photo** dans celui qui est déjà là.
 
 ## Enlever le bandeau
 
-Cliquez sur le bandeau dans la page, puis sur le bouton à trois points de sa petite barre d'outils. Le
-menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Cliquez sur le bandeau dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
 
 **Il n'y a rien à craindre :**
 
@@ -146,9 +155,7 @@ menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**
 Et rien n'est définitif avant **Mettre à jour** : si vous vous êtes trompée, quittez la page sans
 enregistrer.
 
-> **Capture à prendre :** la barre d'outils du bandeau sélectionné, avec le menu à trois points
-> ouvert. **Le libellé exact de l'entrée qui supprime le composant doit être relevé sur cette capture
-> et recopié ici mot pour mot** : il vient de WordPress et nous ne pouvons pas le renommer.
+![La barre d'outils du bandeau sélectionné, le menu à trois points ouvert, avec l'entrée Supprimer tout en bas de la liste](captures/bandeau-menu-composant.png)
 
 ---
 
@@ -184,6 +191,9 @@ enregistrer.
   faut faire** : donnez un titre à la page, ou choisissez une photo dans la colonne de droite, panneau
   **Photo**, bouton **Choisir une photo**. L'encadré est remplacé par le bandeau dès que l'un des deux
   est fait. C'est un emplacement en attente : il ne casse rien et ne demande rien d'urgent.
+
+  ![Un encadré au contour en tirets à la place du bandeau, portant BANDEAU D'OUVERTURE puis la phrase expliquant que rien ne s'affiche tant qu'aucune photo n'est choisie et que la page n'a pas de titre](captures/bandeau-etat-vide.png)
+
 - **Cet encadré n'est jamais visible par les visiteurs.** Une page dont le bandeau est encore vide
   n'affiche **pas de bandeau du tout** : ni cadre, ni trou, ni message — la page reste normale.
   L'encadré n'existe que pour vous, pendant que vous modifiez. **Vous ne pouvez pas casser la page
@@ -193,9 +203,8 @@ enregistrer.
   même chose — « il manque quelque chose ici, rien de grave ». Le détail change d'un composant à
   l'autre : certains ajoutent un bouton pour compléter tout de suite, comme **Ajouter des photos**
   dans la **Galerie photos**. Fiez-vous à la phrase, c'est elle qui vous dit quoi faire.
-- **Dans la fenêtre des photos, la zone où se décrit la photo porte encore le titre
-  « Texte alternatif ».** C'est bien la bonne zone : c'est là qu'on écrit ce que montre la photo, pour
-  les personnes aveugles. Ce nom-là n'est pas celui prévu pour le site, il sera corrigé.
+- **La photo se décrit dans le champ Texte alternatif**, dans la colonne de droite de la fenêtre des
+  photos. C'est là qu'on écrit ce que montre la photo, pour les personnes aveugles.
 - **Bandeau d'ouverture** est en gris dans la liste du bouton **+** : la page en a déjà un.
 - **Bandeau d'ouverture** ne se propose pas dans une fiche de portée, de chien ou de résultat : ces
   fiches se remplissent, elles ne se composent pas.
@@ -225,34 +234,3 @@ enregistrer.
 **Si quelque chose vous inquiète** : ne cliquez pas sur **Mettre à jour**, quittez la page sans
 enregistrer, notez le titre de la page et l'heure, et appelez-nous. Une page en cours de modification
 n'a jamais cassé un site.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où
-chacune vient. À faire en une passe, sur une page d'essai portant un titre, contenant un
-**Bandeau d'ouverture** avec photo et accroche, plus une page d'essai **sans titre** pour l'encadré
-d'attente.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/bandeau-inserteur.png` | **Pages** → une page → bouton **+** | La liste des composants, la rubrique **Mont Brabant** en tête, **Bandeau d'ouverture** et sa phrase de présentation lisibles |
-| `captures/bandeau-reglages.png` | Colonne de droite, bandeau sélectionné | Les deux panneaux **Photo** et **Titre et accroche** ouverts : le bouton **Remplacer la photo**, le lien **Retirer la photo**, les champs **Titre du bandeau** et **Accroche**, et **les trois lignes d'aide lisibles en entier** |
-| `captures/bandeau-menu-composant.png` | Bandeau sélectionné | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** |
-
-Trois captures utiles en complément, si le temps le permet :
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/bandeau-avertissement-position.png` | Une page où le bandeau est placé **après** un paragraphe | L'avertissement jaune au-dessus du bandeau, phrase entière lisible : « Ce bandeau n'est pas le premier bloc de la page : le titre s'affichera deux fois. Déplacez-le tout en haut. » |
-| `captures/bandeau-etat-vide.png` | Bandeau fraîchement inséré dans une page **sans titre**, sans photo | L'encadré d'attente en entier : son **contour en tirets**, et ses deux lignes **BANDEAU D'OUVERTURE** puis « Ce bloc n'affiche rien tant qu'aucune photo n'est choisie et que la page n'a pas de titre. », phrase entière lisible |
-| `captures/bandeau-sur-le-site.png` | La page **publiée**, vue sur le site, **fenêtre large** | Le bandeau complet : la photo, le titre dessus, l'accroche en dessous, et **les deux bords de la fenêtre visibles** pour montrer qu'il va d'un bord à l'autre — pour qu'elle reconnaisse le résultat auquel se fier |
-
-**Un libellé de cette fiche vient de WordPress et n'a pas encore été relevé à l'écran** : l'entrée du
-menu à trois points qui supprime le composant. Elle est décrite par sa place, jamais nommée. **La
-recopier mot pour mot depuis `bandeau-menu-composant.png`** est le seul geste qui manque à cette
-fiche.
-
-**Aucune capture ne doit montrer de nom de chien ni de photo non validée** : utilisez une page
-d'essai.

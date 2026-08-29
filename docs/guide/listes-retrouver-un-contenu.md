@@ -31,6 +31,8 @@ Deux ou trois colonnes ont été ajoutées, entre **Titre** et **Date** :
 **Une case qui n'a rien à montrer n'est jamais vide** : elle écrit **Non renseigné**. Jamais un tiret,
 jamais un blanc, et jamais une valeur devinée à votre place.
 
+![La liste Toutes les portées : entre les colonnes Titre et Date, une colonne Date de naissance et une colonne Disponibilité, où plusieurs lignes affichent Non renseigné et d'autres Chiots disponibles ou Tous réservés](captures/listes-portees-colonnes.png)
+
 Trois précisions qui évitent une surprise :
 
 - **Statut** s'écrit au féminin pour une chienne : la colonne affiche **Retraitée** là où le filtre
@@ -41,9 +43,7 @@ Trois précisions qui évitent une surprise :
   au lieu de faire disparaître la ligne. Si la fiche existe mais n'a pas de nom, elle dit
   **Fiche n° …** suivi d'un numéro. Dans les deux cas, ouvrez le résultat et choisissez une fiche.
 
-> **Capture à prendre :** la liste **Toutes les portées**, les colonnes **Titre**, **Date de
-> naissance**, **Disponibilité** et **Date** visibles, avec au moins une ligne affichant
-> **Non renseigné** en **Disponibilité**.
+![Le bas de la liste Tous les résultats de travail : les colonnes Discipline, Année et Chien, et en toute fin de liste un résultat sans discipline qui affiche Non renseigné dans les trois colonnes](captures/listes-resultats-colonnes.png)
 
 ---
 
@@ -83,8 +83,10 @@ statuts**, **Toutes les disciplines** — puis cliquez de nouveau sur **Filtrer*
 **La recherche en haut de la liste fonctionne toujours**, et elle reste pratique pour retrouver un nom
 précis. Le filtre ne la remplace pas : il sert à voir **un groupe entier**.
 
-> **Capture à prendre :** le haut de la liste **Tous les chiens**, la liste déroulante **Tous les
-> statuts** ouverte sur ses cinq lignes, et le bouton **Filtrer** à côté.
+![La liste Tous les chiens : au-dessus du tableau, la liste déroulante Tous les statuts et le bouton Filtrer juste à droite ; dans le tableau, les colonnes Statut et Variété, où l'on lit Disparu, Disparue, Poil court et Non renseigné](captures/listes-chiens-filtre.png)
+
+**Une fois ouverte, la liste déroulante ne contient rien d'autre que les lignes du tableau ci-dessus** :
+la première ligne, puis les valeurs.
 
 ---
 
@@ -95,15 +97,17 @@ C'est le geste qui vous fera gagner le plus de temps : **aucune fiche à ouvrir*
 1. Dans le menu de gauche, cliquez sur **Portées**, puis sur **Toutes les portées**.
 2. Cochez la case de chaque portée à changer, dans la colonne de gauche du tableau.
 3. Au-dessus du tableau, ouvrez la liste **Actions groupées** et choisissez **Modifier**.
-4. Cliquez sur **Appliquer**. Un panneau s'ouvre au-dessus de la liste, avec les portées cochées en
-   haut.
+4. Cliquez sur **Appliquer**. Un panneau s'ouvre au-dessus de la liste, avec les portées cochées dans
+   un encadré, à gauche.
 5. Dans ce panneau, ouvrez la liste **Disponibilité** et choisissez **Chiots disponibles**,
    **Tous réservés** ou **Portée passée**.
-6. Cliquez sur **Mettre à jour**, en bas à droite du panneau.
+6. Cliquez sur **Mettre à jour**, en bas à gauche du panneau.
 
-*(Les mots **Actions groupées**, **Modifier** et **Appliquer** sont ceux de WordPress lui-même et non
-les nôtres : nous ne les avons pas relevés à l'écran. Si vous lisez autre chose, c'est le même endroit
-et le même bouton. La liste **Disponibilité**, elle, est bien la nôtre.)*
+![Le panneau de modification groupée ouvert au-dessus de la liste des portées : à gauche l'encadré des trois portées cochées, à droite la liste Disponibilité posée sur — Pas de changement —, et en bas les boutons Mettre à jour et Annuler](captures/listes-portees-groupee.png)
+
+*(Le mot **Modifier**, dans la liste **Actions groupées**, est celui de WordPress lui-même et non le
+nôtre : nous ne l'avons pas relevé à l'écran. Si vous lisez autre chose à cet endroit, c'est la même
+ligne. La liste **Disponibilité**, elle, est bien la nôtre.)*
 
 **La liste Disponibilité s'ouvre sur « — Pas de changement — », et c'est votre filet de sécurité.**
 Tant que vous ne touchez pas à cette ligne, **aucune disponibilité n'est modifiée**, quoi que vous
@@ -118,9 +122,9 @@ plusieurs portées d'un coup est trop facile à faire par erreur. Pour retirer l
 portée, ouvrez-la et choisissez **Non renseigné** dans son encadré **La portée** — voir
 [Ajouter une portée](portee-ajouter-une-portee.md), section « Changer une disponibilité ».
 
-> **Capture à prendre :** le panneau de modification groupée ouvert sur la liste **Toutes les
-> portées**, la liste **Disponibilité** déroulée, la ligne **— Pas de changement —** en tête et mise
-> en évidence.
+**Une fois ouverte, cette liste propose quatre lignes**, dans cet ordre : **— Pas de changement —** en
+tête, puis **Chiots disponibles**, **Tous réservés** et **Portée passée**. **Non renseigné** n'y est
+pas, comme expliqué juste au-dessus.
 
 ---
 
@@ -178,6 +182,11 @@ compte :
 > **Portée sortie de la corbeille.** Elle revient en brouillon, c'est-à-dire hors du site :
 > ouvrez-la et cliquez sur « Publier » pour qu'elle réapparaisse.
 
+![Le bandeau affiché après une sortie de corbeille, en haut de la liste : Portée sortie de la corbeille, puis la phrase expliquant qu'elle revient en brouillon et qu'il faut cliquer sur Publier, et un lien Modifier la portée en fin de ligne](captures/listes-bandeau-corbeille.png)
+
+**Le lien Modifier la portée, en fin de bandeau, vous emmène directement à la fiche** : c'est le chemin
+le plus court pour la republier.
+
 La même chose est écrite pour une fiche de chien (**Fiche sortie de la corbeille.**) et pour un
 résultat (**Résultat de travail sorti de la corbeille.**), accordée au contenu. Quand vous en sortez
 plusieurs d'un coup, le bandeau se met au pluriel tout seul.
@@ -217,24 +226,3 @@ visiteurs : ouvrez-le et cliquez sur **Publier**.
 
 **Si quelque chose vous inquiète** : ne supprimez rien, notez l'heure et le nom de la liste, et
 appelez-nous. Regarder, filtrer et classer n'a jamais rien changé au site.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise** : les mentions « Capture à prendre » du corps de la page disent où
-chacune vient. À faire en une passe, sur les trois listes d'administration.
-
-**Toutes se prennent en session de l'éleveuse — le compte `fabienne` —, jamais en session
-d'administration** : la barre de gauche n'y est pas la même.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/listes-portees-colonnes.png` | **Portées** → **Toutes les portées** | Le tableau en entier : les colonnes **Titre**, **Date de naissance**, **Disponibilité**, **Date**, et au moins une ligne affichant **Non renseigné** en **Disponibilité** |
-| `captures/listes-chiens-filtre.png` | **Chiens** → **Tous les chiens** | Le haut de la liste : la liste déroulante ouverte sur ses cinq lignes (**Tous les statuts**, **Reproducteurs**, **En cours de confirmation**, **Retraités**, **Disparus**) et le bouton **Filtrer** à côté |
-| `captures/listes-resultats-colonnes.png` | **Résultats de travail** → **Tous les résultats de travail** | Les colonnes **Discipline**, **Année**, **Chien**, avec au moins une ligne **Non renseigné** en **Discipline** en fin de liste |
-| `captures/listes-portees-groupee.png` | **Portées** → **Toutes les portées**, panneau de modification groupée ouvert | Le panneau entier, les portées cochées en haut, la liste **Disponibilité** déroulée, la ligne **— Pas de changement —** en tête et mise en évidence |
-| `captures/listes-bandeau-corbeille.png` | **Portées** → **Toutes les portées**, juste après un **Rétablir** | Le bandeau entier, **ses deux phrases lisibles**, de « Portée sortie de la corbeille. » jusqu'à « … pour qu'elle réapparaisse. » |
-
-**Aucune capture ne doit montrer de nom de chien, de numéro LOF ni de date réelle** tant que le
-contenu n'a pas été validé : utilisez des contenus d'essai.

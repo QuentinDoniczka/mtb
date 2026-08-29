@@ -10,17 +10,16 @@ remplissent ensuite tout seuls à partir de ce que vous avez saisi.
 
 ## Ajouter un résultat
 
-> **Capture à prendre :** la colonne de gauche de l'administration, le menu **Résultats de travail**
-> déployé, avec **Tous les résultats de travail** et **Ajouter**.
+![La colonne de gauche de l'administration, l'entrée Résultats de travail dépliée, avec ses sous-menus Tous les résultats de travail et Ajouter un résultat de travail](captures/resultat-menu-ajouter.png)
 
-1. Dans la colonne de gauche, cliquez sur **Résultats de travail**, puis sur **Ajouter**.
+1. Dans la colonne de gauche, cliquez sur **Résultats de travail**, puis sur
+   **Ajouter un résultat de travail**.
 2. L'écran de saisie s'ouvre. Il s'appelle **Résultat de travail** et tient en un seul écran.
 3. Remplissez les champs, de haut en bas. Le détail de chacun est plus bas dans cette page.
 4. Cliquez sur **Publier**, en haut à droite.
 5. Le bandeau **Résultat de travail publié.** s'affiche. C'est terminé.
 
-> **Capture à prendre :** l'écran d'ajout d'un résultat, champs vides, avec le bouton **Publier**
-> visible à droite.
+![L'écran d'ajout d'un résultat, tous les champs encore vides, avec l'encadré Publier et son bouton Publier dans la colonne de droite](captures/resultat-le-resultat.png)
 
 **Il n'y a pas de champ de titre, et c'est voulu.** Le titre s'écrit tout seul à partir de ce que vous
 remplissez, sous la forme discipline — chien — niveau — année. Si vous corrigez l'année plus tard, le
@@ -43,7 +42,10 @@ Une liste à dérouler. Elle s'ouvre sur **Non renseigné**, puis propose neuf c
 
 Laissé vide : le tableau affiche **Non renseigné** à cette place.
 
-> **Capture à prendre :** la liste **Discipline** ouverte, les neuf choix visibles.
+**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
+propose, dans cet ordre : **Non renseigné**, **RING**, **IGP / RCI**, **Mondioring**, **Obéissance**,
+**Pistage**, **Recherche utilitaire**, **Sauvetage**, **Truffe**, **Autres disciplines**. Il n'y a
+rien d'autre dedans, et rien à y taper.
 
 ### Chien concerné
 
@@ -56,8 +58,7 @@ chien si elle existe déjà sur le site.
 affixe. **C'est le cas le plus fréquent** : la plupart des chiens cités sur la page Travail
 n'appartiennent pas à l'élevage.
 
-> **Capture à prendre :** les deux champs du chien affichés ensemble — **Chien concerné** et
-> **Nom du chien (si le chien n'a pas de fiche)** — avec la phrase d'aide en dessous.
+![Les deux champs du chien l'un sous l'autre : la liste Chien concerné posée sur — Aucune fiche —, puis le champ Nom du chien (si le chien n'a pas de fiche) avec sa phrase d'aide](captures/resultat-chien.png)
 
 ### Sexe
 
@@ -76,8 +77,10 @@ L'année seule, en quatre chiffres, par exemple `2019`. Laissée vide, elle affi
 Recopiez-le tel qu'il est écrit sur le document officiel : `Brevet`, `Ring 1`, `Classe 3 EXC`, `IGP1`.
 Ce que vous avez déjà saisi vous est proposé dès les premières lettres. Laissé vide : **Non renseigné**.
 
-> **Capture à prendre :** le champ **Niveau ou titre obtenu** avec la liste des suggestions ouverte
-> après les premières lettres.
+**Cette liste de suggestions n'est pas illustrée.** Elle s'ouvre sous le champ dès que vous tapez les
+premières lettres, et elle ne propose **que ce que vous avez déjà saisi vous-même** dans d'autres
+résultats : rien n'y est prévu d'avance. Vous pouvez cliquer une suggestion, ou l'ignorer et taper ce
+que vous voulez.
 
 ### Conducteur
 
@@ -120,15 +123,18 @@ tout.
 3. Changez ce qu'il faut changer.
 4. Cliquez sur **Mettre à jour**. Le bandeau **Résultat de travail mis à jour.** s'affiche.
 
-Pour supprimer un résultat, ouvrez-le et cliquez sur **Mettre à la corbeille**. Il disparaît aussitôt
-du tableau de la page Travail et du palmarès du chien. Il reste récupérable depuis la corbeille.
+Pour supprimer un résultat, ouvrez-le et cliquez sur **Déplacer dans la corbeille**. Il disparaît
+aussitôt du tableau de la page Travail et du palmarès du chien. Il reste récupérable depuis la
+corbeille.
 
 **Rien n'est perdu, et vous pouvez le remettre.** Cela demande deux gestes, pas un seul :
 
 1. Dans la colonne de gauche, cliquez sur **Résultats de travail**, puis sur
    **Tous les résultats de travail**.
 2. En haut de la liste, cliquez sur **Corbeille**.
-3. Sur la ligne voulue, cliquez sur **Rétablir**. Le lien apparaît quand la souris passe sur la ligne.
+3. Sur la ligne voulue, cliquez sur **Restaurer**. Le lien apparaît quand la souris passe sur la
+   ligne. **Attention à celui d'à côté** : **Supprimer définitivement** efface le résultat pour de
+   bon, sans retour possible. Le lien à cliquer est bien **Restaurer**, le premier des deux.
    Le bandeau s'affiche. Il commence par **Résultat de travail sorti de la corbeille.** et vous
    avertit ensuite qu'il revient en brouillon, hors du site, et qu'il faut le publier.
 4. **Le résultat revient en Brouillon, c'est-à-dire hors du site.** Vous le voyez de nouveau dans la
@@ -139,8 +145,7 @@ du tableau de la page Travail et du palmarès du chien. Il reste récupérable d
 **Ne vous arrêtez pas à l'étape 3.** Un résultat rétabli et non republié reste invisible pour les
 visiteurs, sans que rien ne vous le signale.
 
-> **Capture à prendre :** la liste **Tous les résultats de travail** sur l'onglet **Corbeille**, avec
-> le lien **Rétablir** visible sur une ligne.
+![La liste Tous les résultats de travail ouverte sur la Corbeille, avec sur une ligne les deux liens Restaurer et Supprimer définitivement](captures/resultat-corbeille.png)
 
 ---
 
@@ -182,5 +187,4 @@ discipline se rassemblent en fin de liste. La recherche en haut de la liste rest
 pour un nom de chien précis. Voir
 [Retrouver un contenu dans vos listes](listes-retrouver-un-contenu.md).
 
-> **Capture à prendre :** la liste **Tous les résultats de travail**, avec au moins une ligne
-> **Résultat de travail (à compléter)** visible.
+![La liste Tous les résultats de travail, où une ligne s'intitule Résultat de travail (à compléter) parce qu'aucun de ses champs n'est rempli](captures/resultat-liste-a-completer.png)

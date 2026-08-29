@@ -44,23 +44,25 @@ formulaire, retirez aussi ce titre.
 1. Dans le menu de gauche, cliquez sur **Pages**, puis sur la page **Contact**, puis sur **Modifier**.
 
 2. Cliquez à l'endroit de la page où vous voulez le formulaire — le plus souvent après votre texte
-   d'accueil — puis sur le bouton **+**.
+   d'accueil — puis sur le bouton **+**. Ce bouton s'appelle **Outil d'insertion de bloc**.
 
-3. Tapez **contact** dans la zone de recherche, puis cliquez sur **Formulaire de contact**.
+3. Le composant est rangé dans la rubrique **Mont Brabant**, la première de la liste. Vous pouvez aussi
+   taper **contact** dans le champ **Rechercher**, en haut de la liste. Cliquez ensuite sur
+   **Formulaire de contact**.
 
-   > **Capture à prendre :** la liste des composants ouverte après avoir tapé « contact », avec
-   > **Formulaire de contact** et sa phrase de présentation lisibles en entier.
+   ![La liste des composants ouverte après avoir tapé contact dans le champ Rechercher, avec Formulaire de contact et sa phrase de présentation](captures/contact-inserteur.png)
 
 4. **Le formulaire apparaît complet**, avec sa phrase d'information déjà écrite. **Vous pouvez vous
    arrêter là.** Si vous voulez la réécrire, cliquez dans cette phrase et tapez la vôtre.
 
-   > **Capture à prendre :** le composant fraîchement posé dans la page **Contact**, rien de modifié :
-   > les trois champs, la phrase d'information et le bouton **Envoyer le message** visibles.
+   ![Le formulaire à peine posé dans la page Contact : les champs Votre nom, Votre adresse de courriel et Votre message, tous marqués obligatoire, la phrase d'information déjà écrite, et le bouton Envoyer le message](captures/contact-pose-complet.png)
 
 5. Cliquez sur **Mettre à jour**. C'est en ligne.
 
 Ouvrez ensuite la page sur le site : c'est là que le formulaire est à sa vraie allure, et le seul
 endroit où il fonctionne vraiment.
+
+![Le formulaire publié sur le site, du premier champ au bouton : les trois cases à remplir les unes sous les autres, la phrase d'information, puis le bouton Envoyer le message](captures/contact-sur-le-site.png)
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -79,11 +81,46 @@ Trois champs, tous les trois obligatoires, et un bouton :
 | Bouton **Envoyer le message** | |
 
 Quand c'est parti, il lit **Message envoyé.** suivi de « Votre message a été envoyé par courriel à
-l'élevage. », et un lien **Écrire un autre message**.
+l'élevage. », et un lien **Écrire un autre message**. **Cet écran dit que le site a bien confié le
+message au courrier** — il ne peut pas savoir, lui, s'il est arrivé dans votre boîte. C'est à vous de
+le constater une fois, le jour de la mise en ligne.
 
-**Le courriel que vous recevez** porte pour sujet « Message de », le nom du visiteur, puis « — site de
-l'élevage ». Vous le reconnaissez d'un coup d'œil dans votre boîte, même sur un téléphone. Son adresse
-est recopiée dans le message : vous pouvez lui répondre directement.
+![L'écran affiché après un envoi réussi : le titre Message envoyé., la phrase disant que le message est parti par courriel à l'élevage, et le lien Écrire un autre message](captures/contact-confirmation.png)
+
+**Le courriel que vous recevez** est fait pour se reconnaître d'un coup d'œil dans votre boîte, même
+sur un téléphone : son sujet doit se lire « Message de », le nom du visiteur, puis « — site de
+l'élevage ». L'adresse du visiteur doit se retrouver dans le corps du message, pour que vous puissiez
+lui répondre directement.
+
+**Vérifiez ces deux points sur votre premier message d'essai** — voir « Votre envoi d'essai, le jour de
+la mise en ligne », plus bas. C'est un envoi d'une minute, et c'est le seul moyen de le savoir : si le
+sujet ou l'adresse ne sont pas là, dites-le-nous, cela se corrige.
+
+---
+
+## Votre envoi d'essai, le jour de la mise en ligne
+
+**Faites-le une fois, et une seule** : c'est le geste qui vous garantit que les familles vous
+joindront.
+
+1. Ouvrez la page **Contact** **sur le site**, pas dans l'écran de modification : le formulaire ne
+   fonctionne que sur le site.
+2. Remplissez les trois champs avec votre propre nom et **votre propre adresse de courriel**, et un
+   message quelconque — « essai » suffit.
+3. Cliquez sur **Envoyer le message**. S'il vous répond que le message est parti trop vite, recliquez
+   sur **Envoyer le message** : c'est normal, voir « Vous tomberez dessus en essayant votre propre
+   formulaire », plus bas.
+4. Vous devez lire **Message envoyé.**
+5. Ouvrez votre boîte de courriel. **Regardez aussi le dossier « indésirables » (ou « spam ») :** c'est
+   là qu'un tout premier message arrive souvent.
+
+**Ce que vous devez y trouver** : un message dont le sujet commence par « Message de » et se termine
+par « — site de l'élevage », et dans lequel figure l'adresse que vous venez de taper. S'il est dans les
+indésirables, marquez-le comme légitime : les suivants arriveront directement.
+
+**S'il n'arrive rien au bout de dix minutes, indésirables compris** : ne touchez à rien sur le site et
+appelez-nous. Le formulaire, lui, n'est pas en cause — c'est la remise du courriel qu'il faut
+regarder, et cela se règle sans rien modifier dans vos pages.
 
 ---
 
@@ -120,7 +157,9 @@ ne l'envoie — c'est sa raison d'être, et c'est pour cela qu'elle est là plut
 > message, ni votre nom, ni votre adresse ne sont enregistrés ici.
 
 **Vous pouvez la réécrire**, c'est prévu : cliquez dedans et tapez. Vous pouvez aussi poser un lien sur
-quelques mots. **Rien d'autre ne se règle** : ni gras, ni couleur, ni taille.
+quelques mots : sélectionnez-les, puis cliquez sur le bouton **Lien** — en forme de maillon de chaîne —
+dans la petite barre d'outils qui apparaît au-dessus. Le raccourci clavier est **Ctrl+K**.
+**Rien d'autre ne se règle** : ni gras, ni couleur, ni taille.
 
 **Ces trois phrases décrivent ce que le site fait réellement.** Si vous les réécrivez, **elles doivent
 rester vraies** :
@@ -157,9 +196,10 @@ phrase et il revient.
 **Un seul formulaire par page.** Une fois posé, WordPress ne vous laisse pas en poser un second sur la
 même page. Ce n'est pas une panne : une page n'a qu'un formulaire.
 
-**Ne le posez pas ailleurs que dans une page.** Posé dans un haut de page ou un bas de page, **il
-s'afficherait sans jamais rien envoyer** : les visiteurs rempliraient les champs pour rien, et vous ne
-recevriez aucun message sans jamais le savoir. **Il n'a sa place que dans le contenu d'une page.**
+**Ne le posez pas ailleurs que dans une page.** Il est conçu pour le contenu d'une page, et c'est le
+seul endroit où nous l'avons vu fonctionner. Posé dans un haut de page ou dans un bas de page, **rien
+ne garantit qu'il envoie quoi que ce soit** : les visiteurs rempliraient les champs pour rien, et vous
+ne recevriez aucun message sans jamais le savoir. **Il n'a sa place que dans le contenu d'une page.**
 
 **Ne le posez pas dans une fiche de portée, de chien ou de résultat.** Ces fiches se remplissent, elles
 ne se composent pas.
@@ -171,6 +211,9 @@ ne se composent pas.
 - **La colonne de droite ne propose aucun réglage** pour ce composant. Ce n'est pas un oubli : il n'y a
   rien à régler. Le seul texte modifiable est la phrase d'information, et elle se tape dans le
   formulaire lui-même.
+
+  ![Le formulaire sélectionné dans la page et la colonne de droite ouverte à côté, entièrement dépourvue de réglage pour ce composant](captures/contact-aucun-reglage.png)
+
 - **Les trois champs sont les trois champs** : nom, courriel, message. On n'en ajoute ni n'en enlève.
 - **Le libellé du bouton est toujours Envoyer le message.** Le même sur tout le site.
 - **L'adresse de destination ne se tape pas ici** : c'est celle du menu **Coordonnées**.
@@ -192,6 +235,10 @@ n'existe que pour vous ; les visiteurs, eux, ne voient rien du tout à la place 
 | « Ce bloc n'affiche rien tant que l'adresse enregistrée dans le menu Coordonnées n'est pas une adresse de courriel valide. » | Le champ **Courriel** contient bien quelque chose, mais ce n'est pas une adresse. Corrigez-la dans le menu **Coordonnées** |
 | « Ce bloc n'affiche rien tant que la mention d'information n'est pas écrite. » | Cliquez à la place de la phrase d'information et retapez une phrase |
 
+![La case grise au-dessus du formulaire annonçant que rien ne s'affiche tant qu'aucun courriel n'est enregistré dans le menu Coordonnées](captures/contact-etat-vide-courriel.png)
+
+![La case grise annonçant que rien ne s'affiche tant que la mention d'information n'est pas écrite, avec le champ de la phrase resté visible en dessous, prêt à recevoir votre texte](captures/contact-etat-vide-mention.png)
+
 **Cette case grise est calculée à l'ouverture de l'écran.** Si vous corrigez vos coordonnées dans un
 autre onglet, elle ne bouge pas toute seule : **rechargez l'écran de modification** pour la voir
 disparaître. Ce n'est pas une panne, et le site, lui, est déjà à jour.
@@ -209,17 +256,42 @@ service extérieur. Deux situations peuvent toucher une vraie personne :
 Dans les deux cas, le site lui demande de recliquer sur **Envoyer le message**, et **son texte est
 conservé** : elle ne retape rien. Ce n'est pas une panne, et cela ne vous demande rien.
 
+### Vous tomberez dessus en essayant votre propre formulaire
+
+**C'est presque certain, et il vaut mieux le savoir avant.** Quand vous testez votre formulaire, vous
+savez déjà quoi taper : vous remplissez les trois champs et vous cliquez en deux secondes. **Le site
+refuse alors l'envoi**, et affiche en tête du formulaire :
+
+> **Votre message n'a pas été envoyé.**
+>
+> Erreur : le message est parti moins de trois secondes après l'ouverture de la page. Cliquez de
+> nouveau sur le bouton **Envoyer le message** : vos réponses sont conservées.
+
+**Ce n'est pas une panne, et votre formulaire n'est pas cassé.** C'est la protection contre les robots,
+qui remplissent un formulaire en un instant. **Ce qu'il faut faire** : recliquez simplement sur
+**Envoyer le message**. Tout ce que vous aviez tapé est toujours là, et le message part cette fois-ci.
+
+**Aucun message n'est parti la première fois.** Vous n'en recevrez donc pas deux.
+
 **Si l'envoi échoue vraiment**, le visiteur n'est jamais laissé sans solution : le site **réaffiche son
 message** — il ne perd pas ce qu'il a tapé — et lui donne **votre adresse de courriel et votre
 téléphone** pour vous écrire directement. Ces deux lignes viennent du menu **Coordonnées** ; si un des
 deux champs y est vide, la ligne correspondante n'apparaît pas.
+
+![Un envoi refusé sur le site : le résumé des erreurs en tête du formulaire, et en dessous les cases toujours remplies de ce que le visiteur avait tapé](captures/contact-erreur.png)
 
 ---
 
 ## Enlever le formulaire
 
 Cliquez sur le formulaire dans la page, puis sur le bouton à trois points de sa petite barre d'outils.
-Le menu qui s'ouvre propose de le supprimer. Cliquez ensuite sur **Mettre à jour**.
+Dans le menu qui s'ouvre, **tout en bas**, cliquez sur **Supprimer**. Cliquez ensuite sur
+**Mettre à jour**.
+
+*Le menu n'a pas la même longueur selon le composant, mais **Supprimer** en est toujours la dernière
+entrée : descendez jusqu'au bout, c'est là.*
+
+![La barre d'outils du formulaire sélectionné, le menu à trois points ouvert, avec l'entrée Supprimer tout en bas de la liste](captures/contact-menu-composant.png)
 
 **Il n'y a rien à craindre :**
 
@@ -279,60 +351,3 @@ Pour changer l'adresse qui reçoit les messages, voir *Modifier vos coordonnées
 site*. Pour afficher votre adresse et un plan d'accès sur la page, voir *Afficher vos coordonnées et
 un plan d'accès*.
 
----
-
-## Ce qui reste à vérifier à l'écran
-
-Cette fiche a été écrite en lisant le code du composant et le compte rendu des essais faits en session
-de l'éleveuse. **Les points ci-dessous n'ont pas été constatés à l'écran** et doivent l'être avant que
-la fiche ne soit considérée comme sûre.
-
-**Libellés de WordPress que nous n'avons pas relevés — ils sont décrits par leur place, jamais
-nommés :**
-
-1. **L'entrée du menu à trois points qui supprime le composant.** Écrite ici « le menu qui s'ouvre
-   propose de le supprimer ». À relever sur `captures/contact-menu-composant.png` et à recopier mot
-   pour mot.
-2. **Le libellé de la zone de recherche du bouton +.** L'étape 3 dit « tapez **contact** » sans nommer
-   la zone.
-3. **Le nom de la rubrique sous laquelle le composant apparaît dans la liste.** Les autres fiches
-   parlent d'une rubrique **Mont Brabant** ; l'essai qui a servi ici est passé par la recherche, pas
-   par la rubrique. À confirmer sur la capture de l'insérteur.
-4. **Le libellé du bouton qui pose un lien** dans la phrase d'information — non nommé ici.
-
-**Affirmations tirées du code, non vues à l'écran :**
-
-5. **Le composant se trouve aussi en tapant « formulaire », « écrire », « courriel », « message » ou
-   « mail ».** Lu dans le code ; seul « contact » a été essayé.
-6. **La touche Entrée dans la phrase d'information va à la ligne** et ne crée pas un second composant.
-   Lu dans le code, non essayé.
-7. **Le sujet du courriel reçu** — « Message de <nom> — site de l'élevage » — et la recopie de
-   l'adresse du visiteur dans le corps. Lus dans le code ; à confirmer sur un vrai courriel reçu.
-8. **Le formulaire posé dans un haut ou un bas de page s'afficherait sans rien envoyer.** Le mécanisme
-   est mesuré, le parcours complet ne l'est pas. Le contrat de l'issue le note aussi (§18.3, V18).
-9. **L'écran de confirmation** — **Message envoyé.** et le lien **Écrire un autre message** — a été
-   vérifié dans le code et sur la pile d'essai, **pas** avec un courriel réellement remis à votre
-   boîte. Un envoi d'essai vers votre adresse réelle reste à faire à la mise en ligne.
-
----
-
-## Captures d'écran à prendre
-
-**Aucune n'est encore prise.** À faire en une passe, **en session de l'éleveuse — le compte
-`fabienne`**, jamais en session d'administration : la barre de gauche n'y est pas la même, et la
-capture montrerait un écran qu'elle ne voit pas.
-
-| Nom de fichier attendu | Écran | Ce qui doit être visible |
-|---|---|---|
-| `captures/contact-inserteur.png` | **Pages** → **Contact** → **Modifier** → bouton **+**, « contact » tapé | **Formulaire de contact** et sa phrase de présentation lisibles en entier, **et le nom de la rubrique s'il y en a une** |
-| `captures/contact-pose-complet.png` | Le composant fraîchement posé, rien de modifié | Les trois champs avec leurs étiquettes **(obligatoire)**, la note « Pour que l'élevage puisse vous répondre. », la phrase d'information et le bouton **Envoyer le message** |
-| `captures/contact-aucun-reglage.png` | Composant sélectionné, colonne de droite ouverte | **La colonne de droite sans aucun réglage pour ce composant** — c'est la preuve qu'il n'y a rien à chercher |
-| `captures/contact-etat-vide-courriel.png` | Le champ **Courriel** du menu **Coordonnées** vidé, puis l'écran **Contact** **rechargé** | La case grise au-dessus du formulaire, avec « Ce bloc n'affiche rien tant qu'aucun courriel n'est enregistré dans le menu Coordonnées. » **lisible en entier** |
-| `captures/contact-etat-vide-mention.png` | La phrase d'information effacée | La case grise avec « Ce bloc n'affiche rien tant que la mention d'information n'est pas écrite. » lisible en entier, **et le champ de la phrase toujours visible en dessous** |
-| `captures/contact-menu-composant.png` | Composant sélectionné | Sa barre d'outils, le menu à trois points ouvert, **toutes les entrées lisibles** — c'est de là que se relève le libellé exact de la suppression |
-| `captures/contact-sur-le-site.png` | La page **Contact** **publiée**, vue sur le site | Le formulaire à sa vraie allure, du premier champ au bouton |
-| `captures/contact-confirmation.png` | Le site, après un envoi d'essai | **Message envoyé.**, la phrase qui suit, et le lien **Écrire un autre message** |
-| `captures/contact-erreur.png` | Le site, envoi tenté avec un courriel mal formé | Le résumé en tête du formulaire, **et les valeurs déjà tapées toujours présentes dans les champs** |
-
-**Aucune capture ne doit montrer un vrai nom de visiteur, une vraie adresse de courriel de tiers, ni un
-message reçu.** Utilisez une page d'essai et des valeurs manifestement fictives.
