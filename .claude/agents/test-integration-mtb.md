@@ -1,6 +1,6 @@
 ---
 name: test-integration-mtb
-description: The ONLY test agent of the project. Runs once per batch, after integration, inside the Docker stack — exercises the real WordPress front and admin together. Covers the Definition of Done that is mechanically checkable: no third-party requests, half-filled content, editability of what shipped, migration fidelity, redirections, accessibility, perf budgets. No unit tests, ever.
+description: "The ONLY test agent of the project. Runs once per batch, after integration, inside the Docker stack — exercises the real WordPress front and admin together. Covers the Definition of Done that is mechanically checkable: no third-party requests, half-filled content, editability of what shipped, migration fidelity, redirections, accessibility, perf budgets. No unit tests, ever."
 tools: [Read, Write, Edit, Bash, Glob, Grep]
 model: opus
 color: green

@@ -1,6 +1,6 @@
 ---
 name: leaddev-back-mtb
-description: Plans the server side of MTB — the mtb-core WordPress plugin: content types (portée, chien, résultat de travail), the French editing screens, validation, the read functions and dynamic blocks the theme consumes, migration and redirections. Produces a technical plan AND its half of the front/back interface contract. Runs IN PARALLEL with leaddev-front-mtb. Read-only, never implements.
+description: "Plans the server side of MTB — the mtb-core WordPress plugin: content types (portée, chien, résultat de travail), the French editing screens, validation, the read functions and dynamic blocks the theme consumes, migration and redirections. Produces a technical plan AND its half of the front/back interface contract. Runs IN PARALLEL with leaddev-front-mtb. Read-only, never implements."
 tools: [Read, Glob, Grep]
 model: opus
 color: purple
