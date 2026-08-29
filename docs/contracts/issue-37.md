@@ -30,12 +30,31 @@ Douze fiches ont été livrées depuis. **Le décompte réel au 2026-08-29 est d
 sur 18 fiches** : **109 noms de fichiers distincts** sur 17 fiches, plus **7 promesses sans nom de
 fichier** dans `resultat-ajouter-un-resultat.md`.
 
+Précision de vocabulaire, parce qu'elle a déjà induit un contresens : **18 fiches** désigne les fiches
+**porteuses de promesses**. `docs/guide/` en compte **23** — les 5 autres ne promettaient rien.
+
+**La méthode de comptage, écrite pour qu'on ne recompte pas une quatrième fois :**
+
+```
+grep -roh "[A-Za-z0-9._-]*\.png" docs/guide/ | sed 's|.*/||' | sort -u | wc -l
+```
+
+On extrait les jetons `*.png` **sans exiger le préfixe `captures/`**, on retire le chemin, on
+dédoublonne. Résultats reproductibles à la commande près : **109** à `4049269`, **114** à `ad80f45`
+(la fiche neuve de #28 en apporte 5), **119** à la clôture. Aucune autre extension d'image
+(`.jpg`, `.svg`, `.webp`) n'apparaît dans le guide.
+
 **Deux pièges de comptage, à écrire pour que personne ne les repose :**
 
 1. `portee-ajouter-une-portee.md` nomme ses **9** fichiers **sans le préfixe `captures/`**. Un
-   `grep 'captures/'` — le réflexe naturel — les rate tous les neuf.
+   `grep 'captures/'` — le réflexe naturel — les rate tous les neuf, et rend 100 au lieu de 109.
 2. `resultat-ajouter-un-resultat.md` porte **7 encarts « Capture à prendre » sans aucun nom de fichier
    ni tableau récapitulatif**. C'est la promesse qu'aucun inventaire ne retrouve.
+
+**Et un piège de contrôle, qui est le mien.** Ma première vérification cherchait « une fiche contenant
+un `.png` mais aucun `captures/` ». Elle ne pouvait pas trouver une fiche **mêlant les deux formes** :
+le résultat était juste, le contrôle ne valait rien. Il se trouve qu'aucune fiche ne mêle les deux —
+mais c'est de la chance, pas de la méthode.
 
 Erreur de l'issue elle-même, consignée : sa tâche 1 range `encart-derniere-portee` parmi les six
 fiches à traiter, alors que cette fiche **ne promet aucune capture**.
@@ -168,9 +187,43 @@ fiches**, et la prendre pour un portrait aurait posé **la même fausse photo su
 a délibérément refusé de le faire. Le faire ici, pour la photogénie d'une capture, serait exactement
 l'invention que le lot 8 a refusée — avec l'aggravation que l'image deviendrait une **pièce du guide**.
 
-**Les cadres gris sont donc l'état vrai d'un site fraîchement repris, et ils sont capturés tels quels.**
+**Cet état est donc l'état vrai d'un site fraîchement repris, et il est capturé tel quel.**
 Conséquence assumée et à ne pas redécouvrir comme un défaut : les captures « sur le site » de la grille
 de chiens et de l'index des portées ne montrent pas un site fini.
+
+### Correction — « les grilles rendent des cadres gris » était imprécis, et des deux côtés
+
+Ce contrat a d'abord écrit que **les grilles rendent des cadres gris**, chiens et portées confondus.
+Une passe de rédaction est allée lire le code au lieu de me croire, et **les deux moitiés de la phrase
+étaient fausses** :
+
+| Contenu | Ce qui est réellement rendu sans photo | Source |
+|---|---|---|
+| **Chien** | Le cadre **est** rendu, **vide** — « ni pictogramme, ni silhouette, ni image de remplacement ». L'emplacement se réserve pour que toutes les cartes gardent la même silhouette. Le gris est une affaire de CSS, pas de balisage | `blocks/grille-chiens/balisage.php:160-176` |
+| **Portée** | **Rien du tout.** « Sans photo, l'emplacement n'existe pas — aucun trou, aucune réserve » | `blocks/derniere-portee/render.php:123` ; `blocks/liste-portees/rendu.php` renvoie `''` |
+
+**Pourquoi ça compte au-delà du mot juste** : sur la foi de ma formulation, on allait écrire à
+l'éleveuse qu'elle verrait des cadres gris à la place de ses portées. Elle n'en verra aucun — elle
+aurait cherché à l'écran quelque chose qui n'y est pas. **Une consigne imprécise fabrique une fiche
+fausse**, et c'est la troisième fois dans ce seul contrat (voir aussi le libellé n° 4 et l'interdit sur
+le plan d'accès). Le fait mesuré tient — 0 portée sur 31 et 1 chien sur 22 ont une photo principale —
+c'est la **conséquence visible** que j'avais devinée au lieu de la lire.
+
+Et la raison, elle, ne se transpose pas non plus : la garde contre les bannières de rubrique
+**ne concerne que les chiens** (`migration/portees-chiens/photos.php:141-146`) ; l'import de portées
+n'appelle jamais `portrait_possible()` et **ne pose aucune photo principale par construction**.
+
+### Deux décomptes qui semblent se contredire et ne se contredisent pas
+
+`contenu-repris-de-l-ancien-site.md` annonce **27 portées** et **17 fiches de chiens** ; la stack en
+mesure **31** et **22**. **Les deux sont justes** : la fiche parle du **contenu repris de l'ancien
+site**, la stack ajoute par-dessus le **jeu de démonstration** (4 portées, 5 chiens, 5 résultats,
+`MTB_FIXTURES=1`). 27 + 4 = 31, 17 + 5 = 22, 61 + 5 = 66.
+
+Même chose pour le titre « **Aucune** fiche de chien n'a de portrait » : l'unique chien porteur d'une
+photo principale est **Rex, chien de démonstration**, et sa photo est l'image de test. **Aucune fiche
+reprise n'a de portrait — le titre est exact.** Ces deux écarts ont été signalés comme des défauts
+possibles ; ils n'en sont pas, et c'est écrit ici pour qu'on ne « corrige » pas une fiche juste.
 
 ## 7. Ordonnancement imposé par le lot
 
@@ -221,27 +274,67 @@ nommément à reprendre** — jamais livrées en silence alors que le lot lui-m�
 
 | Mesure | Valeur |
 |---|---|
-| Fichiers PNG dans `docs/guide/captures/` | **112** |
-| Références d'image dans les fiches | **112** |
+| Fichiers PNG dans `docs/guide/captures/` | **119** |
+| Références d'image dans les fiches | **119** |
 | Références mortes · fichiers orphelins | **0** · **0** |
 | Textes alternatifs vides | **0** (minimum mesuré : 85 caractères) |
-| Restes de chantier (« Aucune n'est encore prise », « reste à relever ») | **0** |
-| Poids ajouté | **7,1 Mio** |
-| Fiches modifiées | **21** |
-| Volume de prose | **464 insertions, 733 suppressions** — le guide a *rétréci* |
+| Restes de chantier (« Aucune n'est encore prise », « Capture à prendre ») | **0** |
+| Fiches modifiées | **22** |
 
-Le décompte de départ était de **116 promesses sur 18 fiches**. La cible a bougé en cours de route, et
-c'est normal : #28 a livré pendant cette chaîne une fiche neuve
-(`listes-retrouver-un-contenu.md`) qui promettait **5 captures de plus**, et
-`resultat-ajouter-un-resultat.md` a reçu les **7 noms** qui lui manquaient.
+### Le compte se ferme exactement
 
-**9 captures sont déclarées manquantes, nommément, dans les fiches** — jamais effacées en silence :
+| | |
+|---|---|
+| Noms promis au départ (`4049269`) | **109** |
+| Apportés par la fiche neuve de #28 (`ad80f45`) | **+5** |
+| Noms créés pour `resultat-ajouter-un-resultat.md`, qui n'en avait aucun | **+7** |
+| **Total des promesses nommées** | **121** |
+| Prises | **119** |
+| **Non prises** | **2** |
+
+### Les deux seules captures non prises, nommées
 
 | Capture | Raison |
 |---|---|
-| `portee-disponibilite` · `repris-disponibilite` · `liste-portees-annee-ouverte` · `coordonnees-ecran-page-de-contact` · `menu-selection` · `resultat-discipline` · `resultat-niveau-suggestions` | **Liste déroulante native.** Le navigateur les dessine hors de la page ; aucun outil de capture automatique ne les voit. Remplacées dans les fiches par **l'énumération des choix réels** — plus utile à l'éleveuse qu'une image, et lisible au lecteur d'écran. |
-| `coordonnees-legende-image` | **Fait de domaine.** Exige une image de plan d'accès à l'écran ; aucune n'existe (Q18-Q20). |
-| `liste-portees-etat-vide` | Aurait exigé de **dépublier les 31 portées** de démonstration. L'écran est décrit en une phrase. |
+| `coordonnees-legende-image.png` | **Fait de domaine.** Exige une image de plan d'accès à l'écran ; aucune n'existe et aucune ne peut être inventée — l'ancien site porte deux points GPS distants de 2 km et personne ne sait lequel est l'élevage (Q18-Q20). #11 a délibérément refusé de livrer une carte plausible. |
+| `liste-portees-etat-vide.png` | Aurait exigé de **dépublier les 31 portées** de démonstration, dont le `post_modified` ne se restaure pas. L'écran est décrit en une phrase à l'éleveuse. |
+
+Les deux sont **déclarées dans leur fiche, en français, adressées à l'éleveuse** — jamais effacées en
+silence.
+
+### Les sept listes déroulantes : un arbitrage renversé en cours de chaîne
+
+Sept captures avaient d'abord été déclarées impossibles : elles visaient une **liste déroulante
+ouverte**, et le navigateur dessine ces menus **hors de la page** — aucun outil piloté ne les
+photographie. C'était vrai, et la conclusion était fausse.
+
+**Ce qui l'a renversée est le plancher du brief.** `BRIEF.md` §13.1 n'exige pas une capture par
+composant : il exige des captures pour **huit parcours nommés**. Or « **modifier une disponibilité** »
+en fait partie, et c'était **la seule section du plancher sans aucune image** — précisément à cause de
+ce mur. Les ~116 promesses des fiches sont des promesses que le guide s'est faites à lui-même ; **ces
+huit-là viennent du brief**, et ne se négocient pas.
+
+Les sept écrans ont donc été capturés **liste fermée**, dans leur encadré, et les choix restent
+**énumérés en toutes lettres** dans la fiche. Un écran qu'elle reconnaît plus une liste de choix écrite
+vaut mieux qu'un trou — et c'est **plus accessible** qu'une image de menu déroulé, qu'aucun lecteur
+d'écran ne restitue.
+
+Dette de nommage assumée : `liste-portees-annee-ouverte.png` dit « ouverte » et montre une liste
+**fermée**. Le nom est conservé — les fiches le référencent, le renommage coûterait plus qu'il ne
+rapporte — et le texte alternatif, lui, dit « fermée ».
+
+### Le plancher §13.1, vérifié parcours par parcours
+
+| Parcours du brief | Fiche | Images |
+|---|---|---|
+| ajouter une portée | `portee-ajouter-une-portee.md` | 9 |
+| **modifier une disponibilité** | section de la même fiche | **1** — le trou, fermé en fin de chaîne |
+| ajouter un chien | `chien-ajouter-un-chien.md` | 6 |
+| ajouter un résultat de concours | `resultat-ajouter-un-resultat.md` | 7 |
+| ajouter/supprimer un composant | `page-composer-une-page-libre.md` | 8 |
+| ajouter des photos | `composant-galerie-photos.md` | 8 |
+| modifier le menu | `menu-modifier-le-menu.md` | 8 |
+| protéger une page par mot de passe | **aucune fiche** | **reporté à #23**, bloquée par Q1 |
 
 ## 12. Affirmations non vérifiées, sorties du guide et conservées ici
 

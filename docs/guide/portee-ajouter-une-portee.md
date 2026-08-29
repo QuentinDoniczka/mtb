@@ -105,9 +105,11 @@ C'est la modification que vous ferez le plus souvent. Elle prend trente secondes
 Pour retirer toute mention de disponibilité, choisissez **Non renseigné** : le site n'affiche alors
 plus rien à cette place.
 
-**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle propose
-quatre lignes, dans cet ordre : **Non renseigné**, **Chiots disponibles**, **Tous réservés**,
-**Portée passée**. Il n'y a rien d'autre dedans, et rien à y taper.
+![Le haut de l'encadré La portée : le champ Date de naissance (obligatoire) rempli avec 14/03/2025, et en dessous la liste Disponibilité fermée, posée sur Chiots disponibles, suivie de sa ligne d'aide](captures/portee-disponibilite.png)
+
+**L'image ci-dessus montre la liste fermée, telle que vous la trouverez.** Quand vous cliquez dessus,
+elle s'ouvre et propose quatre lignes, dans cet ordre : **Non renseigné**, **Chiots disponibles**,
+**Tous réservés**, **Portée passée**. Il n'y a rien d'autre dedans, et rien à y taper.
 
 ---
 

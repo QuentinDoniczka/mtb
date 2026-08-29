@@ -42,10 +42,12 @@ Une liste à dérouler. Elle s'ouvre sur **Non renseigné**, puis propose neuf c
 
 Laissé vide : le tableau affiche **Non renseigné** à cette place.
 
-**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
-propose, dans cet ordre : **Non renseigné**, **RING**, **IGP / RCI**, **Mondioring**, **Obéissance**,
-**Pistage**, **Recherche utilitaire**, **Sauvetage**, **Truffe**, **Autres disciplines**. Il n'y a
-rien d'autre dedans, et rien à y taper.
+![Le haut de l'encadré Résultat de travail : le champ Discipline, sa liste fermée posée sur Non renseigné, et sa ligne d'aide « La discipline dans laquelle ce résultat a été obtenu. »](captures/resultat-discipline.png)
+
+**L'image ci-dessus montre la liste fermée, telle que vous la trouverez.** Quand vous cliquez dessus,
+elle s'ouvre et propose, dans cet ordre : **Non renseigné**, **RING**, **IGP / RCI**, **Mondioring**,
+**Obéissance**, **Pistage**, **Recherche utilitaire**, **Sauvetage**, **Truffe**,
+**Autres disciplines**. Il n'y a rien d'autre dedans, et rien à y taper.
 
 ### Chien concerné
 
@@ -77,10 +79,12 @@ L'année seule, en quatre chiffres, par exemple `2019`. Laissée vide, elle affi
 Recopiez-le tel qu'il est écrit sur le document officiel : `Brevet`, `Ring 1`, `Classe 3 EXC`, `IGP1`.
 Ce que vous avez déjà saisi vous est proposé dès les premières lettres. Laissé vide : **Non renseigné**.
 
-**Cette liste de suggestions n'est pas illustrée.** Elle s'ouvre sous le champ dès que vous tapez les
-premières lettres, et elle ne propose **que ce que vous avez déjà saisi vous-même** dans d'autres
-résultats : rien n'y est prévu d'avance. Vous pouvez cliquer une suggestion, ou l'ignorer et taper ce
-que vous voulez.
+![Le champ Niveau ou titre obtenu : la case de saisie vide, entourée d'un cadre bleu et marquée d'une petite flèche à droite, avec sa ligne d'aide « Recopiez le niveau ou le titre tel qu'il est écrit sur le document officiel. Les valeurs déjà saisies sont proposées dès les premières lettres. »](captures/resultat-niveau-suggestions.png)
+
+**L'image ci-dessus montre le champ vide, tel que vous le trouverez.** La liste de suggestions, elle,
+s'ouvre sous le champ dès que vous tapez les premières lettres, et elle ne propose **que ce que vous
+avez déjà saisi vous-même** dans d'autres résultats : rien n'y est prévu d'avance. Vous pouvez cliquer
+une suggestion, ou l'ignorer et taper ce que vous voulez.
 
 ### Conducteur
 

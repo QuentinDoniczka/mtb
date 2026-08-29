@@ -123,10 +123,12 @@ Sa ligne d'aide dit : « Laissez vide pour afficher toutes les portées. »
 
 Sa ligne d'aide dit : « La liste n'affiche que les portées nées cette année-là. »
 
-**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
-propose, dans cet ordre : **Toutes les années** en premier, puis **une ligne par année où une portée
-est née**, de la plus récente à la plus ancienne. Il n'y a rien d'autre dedans, et vous n'avez aucune
-année à y écrire.
+![Gros plan du panneau Réglages : le champ Nombre de portées à afficher, vide, et en dessous le réglage Année, sa liste fermée entourée d'un cadre bleu et posée sur Toutes les années, chacun suivi de sa ligne d'aide](captures/liste-portees-annee-ouverte.png)
+
+**L'image ci-dessus montre la liste fermée, telle que vous la trouverez.** Quand vous cliquez dessus,
+elle s'ouvre et propose, dans cet ordre : **Toutes les années** en premier, puis **une ligne par année
+où une portée est née**, de la plus récente à la plus ancienne. Il n'y a rien d'autre dedans, et vous
+n'avez aucune année à y écrire.
 
 - Le premier choix, **Toutes les années**, est celui de départ : aucune année n'est écartée.
 - Les autres choix sont les années de vos portées, de la plus récente à la plus ancienne.

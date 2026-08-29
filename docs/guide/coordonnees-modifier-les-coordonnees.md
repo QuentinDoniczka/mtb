@@ -151,9 +151,11 @@ alphabétique.
 - **Une page choisie** — les boutons du site qui n'ont pas de page à eux mènent à celle-là, et ils
   **portent son nom**. Vous renommez la page, les boutons se renomment tout seuls.
 
-**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
-propose **Aucune** en première ligne, puis **une ligne par page publiée de votre site**, par ordre
-alphabétique. Il n'y a rien d'autre dedans, et rien à y taper.
+![La ligne Page de contact du formulaire : la liste fermée, entourée d'un cadre bleu et posée sur Aucune, suivie de sa ligne d'aide expliquant vers quelle page mènent les boutons du site et que « Aucune » n'affiche aucun bouton](captures/coordonnees-ecran-page-de-contact.png)
+
+**L'image ci-dessus montre la liste fermée, telle que vous la trouverez.** Quand vous cliquez dessus,
+elle s'ouvre et propose **Aucune** en première ligne, puis **une ligne par page publiée de votre
+site**, par ordre alphabétique. Il n'y a rien d'autre dedans, et rien à y taper.
 
 **Une page que vous avez choisie puis remise en brouillon reste dans cette liste**, sous son vrai titre.
 C'est voulu : votre choix n'est jamais effacé dans votre dos. Sur le site, en revanche, **aucun bouton

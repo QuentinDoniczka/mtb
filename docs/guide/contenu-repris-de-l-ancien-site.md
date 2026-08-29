@@ -88,9 +88,12 @@ réservés sur vingt-sept portées à la fois.
    **Chiots disponibles**, **Tous réservés** ou **Portée passée**.
 4. Cliquez sur **Mettre à jour**.
 
-**Cette liste déroulante n'est pas illustrée.** Elle s'ouvre quand vous cliquez dessus, et elle
-propose quatre lignes, dans cet ordre : **Non renseigné** — c'est celle où sont vos 27 portées
-aujourd'hui —, puis **Chiots disponibles**, **Tous réservés** et **Portée passée**.
+![Le haut de l'encadré La portée sur une portée reprise de l'ancien site : le champ Date de naissance (obligatoire) rempli avec 28/08/2024, et en dessous la liste Disponibilité fermée, posée sur Non renseigné, suivie de sa ligne d'aide](captures/repris-disponibilite.png)
+
+**L'image ci-dessus montre la liste fermée, telle que vous la trouverez** sur une portée reprise :
+posée sur **Non renseigné**. Quand vous cliquez dessus, elle s'ouvre et propose quatre lignes, dans cet
+ordre : **Non renseigné** — c'est celle où sont vos 27 portées aujourd'hui —, puis
+**Chiots disponibles**, **Tous réservés** et **Portée passée**.
 
 **Ce qui se met à jour tout seul** : la page de la portée, la liste de toutes les portées, l'encart de
 la dernière portée, et les fiches du père et de la mère quand ils ont la leur sur le site.
@@ -162,7 +165,47 @@ vous ne l'avez pas fait, leur fiche reste correcte : elle garde son cadre au nom
 
 ---
 
-## 4. Deux liens de pedigree n'ont pas été repris
+## 4. Aucune portée n'a de photo principale
+
+C'est le même vide que le précédent, du côté des portées : **aucune de vos portées n'a de
+Photo principale**. Sur la liste des portées, ces portées n'affichent pas de petite photo ; sur la
+page d'accueil, l'encart de la dernière portée s'affiche sans image. **Ce n'est pas un défaut
+d'affichage** : rien de gris, rien de cassé, rien de troué — l'emplacement de la photo n'existe
+simplement pas tant qu'elle n'est pas choisie, et le nom, la date et la mention de disponibilité
+restent à leur place.
+
+Pourquoi : **votre ancien site ne désignait aucune photo comme *la* photo d'une portée.** Ses images
+se suivaient dans la page, et la première n'était pas un portrait — sur les fiches de chiens, c'était
+même une bannière de rubrique, la même sur seize fiches. En élire une à votre place aurait été un
+choix arbitraire. Toutes les photos de vos portées ont donc été rangées, sans exception, dans la
+**Galerie photos** de chaque portée : **elles sont toutes là, et elles sont bien remplies.**
+
+### Les étapes, pour chaque portée
+
+1. Ouvrez la portée : **Portées** → **Toutes les portées** → l'identifiant de la portée.
+2. Dans la **colonne de droite**, encadré **Photo principale**, cliquez sur
+   **Choisir la photo principale**.
+3. La fenêtre s'ouvre sur l'onglet **Téléverser des fichiers** : cliquez sur l'onglet **Médiathèque**,
+   juste à côté, pour voir les photos déjà présentes. Tapez ensuite l'identifiant de la portée dans le
+   champ de recherche, en haut à droite : ses photos le portent, par exemple
+   « Photo de la portée A3 2025 (3 sur 8) ».
+4. Cliquez sur la photo qui représente le mieux la portée, puis sur **Utiliser comme photo
+   principale**, en bas à droite de la fenêtre.
+5. Cliquez sur **Mettre à jour**.
+
+**Ce qui se met à jour tout seul** : la petite photo dans la liste des portées, et l'encart de la
+dernière portée sur la page d'accueil quand c'est la plus récente. Vous n'ouvrez aucune de ces pages.
+
+**Choisissez une photo dont le sujet n'est pas dans le bas de l'image** : l'encart d'accueil ramène
+toutes les photos au même format, plus large que haut, et garde la partie haute. Une portée n'a pas de
+réglage de cadrage — le choix de la photo est le seul levier.
+
+**Vous n'êtes pas obligée de toutes les faire.** Commencez par la dernière portée, celle que la page
+d'accueil montre. Les anciennes attendront, et rien ne s'affichera de travers entre-temps.
+
+---
+
+## 5. Deux liens de pedigree n'ont pas été repris
 
 Ceux de **Pégaz** et de **Tesla**. Sur votre ancien site, ces deux liens pointaient vers la fiche LOF
 **d'un autre chien** : le vieil éditeur avait coupé le lien en deux, et ce qui restait menait
@@ -178,7 +221,7 @@ remplit de la même façon, le jour où vous voudrez.
 
 ---
 
-## 5. Les descriptions de photos, quand vous aurez le temps
+## 6. Les descriptions de photos, quand vous aurez le temps
 
 Chaque photo porte une description, qui est **lue à voix haute** aux personnes aveugles qui visitent
 le site. Aujourd'hui, ces descriptions disent **où** la photo est publiée — « Photographie publiée sur
@@ -195,7 +238,7 @@ et **Description**.)*
 
 ---
 
-## 6. Ce qui n'a pas bougé, et qui peut surprendre
+## 7. Ce qui n'a pas bougé, et qui peut surprendre
 
 **Rien n'a été perdu.** Tout le texte de vos pages est reporté **intégralement** dans le
 **Commentaire de l'éleveuse** de chaque portée et de chaque fiche. Ce qui n'avait pas de case à lui —
@@ -238,6 +281,7 @@ n'est pas encore appliquée aux moteurs de recherche. Nous vous préviendrons qu
 **C'est normal, vous n'avez rien à faire :**
 
 - Un cadre de portrait avec le nom du chien au centre, sans photo.
+- Une portée sans petite photo dans la liste des portées, ou un encart d'accueil sans image.
 - Une portée qui n'affiche aucune mention de disponibilité.
 - **Non renseigné** à la place d'un champ que l'ancien site n'écrivait pas.
 - Un chien absent de **La meute** tant que son **Statut** n'est pas coché.

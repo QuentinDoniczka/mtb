@@ -73,8 +73,10 @@ de liens. Rien n'est cassé pour autant.
    composés. Choisissez celui que vous voulez modifier, puis cliquez sur **Sélectionner**.
    **S'il n'y en a aucun, ou s'il vous en manque un**, voir « Créer un menu », ci-dessus.
 
-   *Cette liste déroulante n'est pas illustrée. Elle s'ouvre quand vous cliquez dessus, et elle ne
-   contient que **les menus que vous avez composés**, par leur nom.*
+   ![La ligne en haut de l'écran des menus : le texte Sélectionnez le menu à modifier, la liste fermée posée sur le nom d'un menu déjà composé, le bouton Sélectionner juste à droite, puis le lien créez un nouveau menu et le rappel d'enregistrer vos modifications](captures/menu-selection.png)
+
+   *L'image ci-dessus montre la liste fermée, telle que vous la trouverez. Quand vous cliquez dessus,
+   elle s'ouvre et ne contient que **les menus que vous avez composés**, par leur nom.*
 
 3. Dans la colonne de gauche de l'écran, l'encadré **Pages** propose **trois onglets** :
    **Les plus récentes**, **Tout voir** et **Rechercher**. **Cliquez sur Tout voir.**

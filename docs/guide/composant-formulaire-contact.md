@@ -92,6 +92,12 @@ sur un téléphone : son sujet doit se lire « Message de », le nom du visiteur
 l'élevage ». L'adresse du visiteur doit se retrouver dans le corps du message, pour que vous puissiez
 lui répondre directement.
 
+**Pour lui répondre, cliquez simplement sur « Répondre » dans votre messagerie.** Votre réponse part à
+l'adresse du visiteur, celle qu'il a tapée dans le formulaire : **vous n'avez aucune adresse à
+recopier à la main.** Ne vous fiez pas à l'expéditeur affiché — le message arrive **de la part du
+site**, et non au nom du visiteur. C'est normal, et cela n'empêche rien : le bouton **Répondre**
+écrit bien à la bonne personne.
+
 **Vérifiez ces deux points sur votre premier message d'essai** — voir « Votre envoi d'essai, le jour de
 la mise en ligne », plus bas. C'est un envoi d'une minute, et c'est le seul moyen de le savoir : si le
 sujet ou l'adresse ne sont pas là, dites-le-nous, cela se corrige.
@@ -196,10 +202,8 @@ phrase et il revient.
 **Un seul formulaire par page.** Une fois posé, WordPress ne vous laisse pas en poser un second sur la
 même page. Ce n'est pas une panne : une page n'a qu'un formulaire.
 
-**Ne le posez pas ailleurs que dans une page.** Il est conçu pour le contenu d'une page, et c'est le
-seul endroit où nous l'avons vu fonctionner. Posé dans un haut de page ou dans un bas de page, **rien
-ne garantit qu'il envoie quoi que ce soit** : les visiteurs rempliraient les champs pour rien, et vous
-ne recevriez aucun message sans jamais le savoir. **Il n'a sa place que dans le contenu d'une page.**
+**Il n'a sa place que dans le contenu d'une page.** C'est là qu'il est conçu pour vivre, et le seul
+endroit où nous l'avons vu fonctionner.
 
 **Ne le posez pas dans une fiche de portée, de chien ou de résultat.** Ces fiches se remplissent, elles
 ne se composent pas.
