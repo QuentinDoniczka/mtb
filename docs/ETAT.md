@@ -10,6 +10,82 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
+**Phase : lot 9 (#17 gabarits des pages libres) livré, testé et revu le 2026-08-29. #17 est fermée et
+l'épic 7 « Gabarits et thème » est close.** Le lot le plus petit du projet en volume de code — **huit
+lignes de gabarit, zéro octet de CSS, de JS ou de PHP** — et l'un des plus instructifs.
+
+**Ce que #17 devait encore et qu'elle livre** : A8 est **levée**. Les trois `mtb/lien-de-recours` sont
+posés sur l'état vide d'`index.html`, recopiés **octet pour octet** de `search.html` — les trois
+gabarits capables d'un état vide rendent désormais la même sortie de secours. Les deux prémisses du
+refus d'origine étaient tombées : l'adresse de « La meute » se calcule au rendu depuis que T28 est
+payée, et `index.html` n'a jamais été hors empreinte. **Mesuré, pas cru** : `/author/fabienne/` rend
+**2 liens, pas 3** — « La meute » s'omet en silence, sa page n'existant pas (T30), sans `<li>` vide ni
+puce orpheline. L'exception D1 est écrite dans le guide, la contradiction des Mentions légales est
+vérifiée et **délibérément non harmonisée**, D8 est tranchée, T33 est sous son bon numéro.
+
+**La leçon du lot, et elle est neuve : ce lot n'a été bloqué par aucun défaut de code.** La revue a
+déclaré les huit lignes irréprochables et a bloqué le push sur **deux affirmations écrites qui
+contredisaient le code** — une fiche annonçant à l'éleveuse un lien cassé que le code ne produit
+jamais (il **n'affiche aucun lien**, il n'en propose pas un qui tombe dans le vide), et une section du
+contrat gelé déclarant l'AA invérifiée sur toutes les pages du lot. Les lots 6, 7 et 8 avaient été
+bloqués par un **silence** ; celui-ci l'a été par des **paroles fausses dans des documents gelés**.
+C'est la même famille de défaut, vue de l'autre côté : le dépôt affirme quelque chose que le code
+dément.
+
+**Et il faut écrire d'où venait la seconde, parce que c'est la forme qui se répétera** : de *ma*
+consigne. J'avais dicté « le contraste sur fond dégradé n'est vérifié par personne sur la totalité des
+pages du lot ». C'était un cran trop large, et cette formulation route du travail : le prochain lecteur
+ouvre une issue AA pour un **filet décoratif de 6 px**. Le dégradé en cause est `--filet-double`, ancré
+en `left bottom` avec sa hauteur réservée en padding — il **ne passe jamais sous les glyphes**. axe rend
+`incomplete` parce qu'il voit un `linear-gradient` sur un ancêtre et refuse de raisonner sur
+`background-size`. **Un donneur d'ordre qui dicte une formulation sans la vérifier fabrique la prochaine
+erreur du dépôt** — corollaire de la décision 57, et la chaîne a eu raison de recompter au lieu de
+recopier. Ce qui reste réellement non attribué est borné et écrit : **1 à 10 nœuds par page**, personne
+ne les a tracés.
+
+**La passe d'intégration a réfuté quatre affirmations du contrat**, et c'est sa raison d'être. La plus
+coûteuse : §10 déclarait le `<main>` d'`index.html` non focusable et demandait d'ouvrir une issue
+`a11y`. **Faux** — `functions.php:861-865` pose le `tabindex="-1"` au rendu, vérifié sur le HTML brut de
+trois routes **et au comportement clavier**. Le contrat contredisait le commentaire du thème lui-même.
+L'issue n'a pas été ouverte. Également réfuté : le volet `pwbox` de T42 déclaré « non mesurable » alors
+qu'`espace-prive` est publiée **et** protégée et déborde à **263/180** ; les `TH` dits hors flux quand
+c'est le `THEAD` ; et l'`incomplete` de contraste restreint à Travail quand il court sur les six pages.
+
+**Ce que la passe d'intégration a mesuré** : les cinq revendications du contrat reproduites **au chiffre
+près**, aucune valeur recopiée. Un seul débordement sur **42 combinaisons** (Travail à 180 px, 231/180,
+Mondioring à 215 px de min-content) ; **81 arrêts clavier, 0 sans anneau de focus** ; **0 violation
+axe** sur les six pages ; **D6 une seule origine, 0 cookie, 0 requête échouée** sur sept routes ; **D8
+tenue en octets réseau** — Accueil 68 749 o, Travail 60 491 o contre 200 000 ; **D12 éprouvée sur une
+page composée exprès de treize composants mal remplis**, rendue sous `E_ALL` forcé, **0 diagnostic**.
+**D1 vérifiée dans une vraie session `fabienne`** : enregistrement réel de l'accueil ressorti en
+anonyme puis contenu restauré, et le refus sur le **choix** de la page d'accueil confirmé par **trois
+chemins indépendants**. Deux faux positifs écartés à la main, dont un anneau de focus prouvé visible
+**aux pixels** (2 323 pixels changés en cadre fermé, contraste 14,2:1) après qu'une première tentative
+eut donné 73 % de faux positif par saut de défilement.
+
+**T42 est requalifiée, pas rétrécie** : elle valait « 4 combinaisons sur 36 », chiffre relevé sur les
+fiches de portée et de chien. Sur les pages libres elle vaut **1 sur 42** ; les quatre d'origine ont été
+rejouées et **vivent toutes**, plus le volet `pwbox` — **5 combinaisons vivantes au total**.
+
+**D9 démontrée à froid**, ce que la passe d'intégration avait explicitement déclaré non couvert : deux
+cycles `down -v` → `up` complets, `[provision] terminé.` en 62 s et 72 s, provisionnement **rejouable
+sur base neuve en démonstration comme en réel** (17 chiens, 27 portées, 61 résultats, 7 pages, **0
+rejet**), garde T39 confirmé par `wp option get WPLANG` en direct, et **le changement du lot survit
+intact au cycle complet**. Un résidu de session à connaître : un conteneur orphelin d'un
+`docker compose run` antérieur tenait le volume et le réseau, et **sans son nettoyage le « à froid »
+n'aurait pas été à froid**.
+
+**T49 avait une cause, et elle est réparée** : `leaddev-back-mtb` et `test-integration-mtb` portaient un
+`: ` **non échappé** dans leur `description:` YAML, donc un frontmatter impossible à parser, donc deux
+agents jamais enregistrés — pendant que `CLAUDE.md` les décrivait comme des maillons de la chaîne. Les
+descriptions sont désormais entre guillemets. **La correction ne prend qu'à la session suivante** : la
+passe d'intégration du lot 9 a encore tourné sur un agent générique adossé au fichier de prompt.
+
+**Deux 404 qui sont le bon comportement, contre-vérifiées trois fois ce lot** : `bhpl-en-france` et
+`politique-de-confidentialite` répondent 404 en anonyme parce qu'elles sont en `draft`, et ce statut
+vient des **fichiers de données versionnés** de l'import (`"statut": "draft"`), donc rejoué à
+l'identique à chaque provisionnement. C'est D11 tenue, pas D4 manquée.
+
 **Phase : lot 8 (#20 import des portées et des chiens, #21 import des résultats de travail et des
 pages libres) livré, testé et revu le 2026-08-28. C'est le lot où le contenu de l'ancien site entre
 dans le nouveau : **27 portées, 17 chiens, 61 résultats de travail, 7 pages libres, 135 photographies**
@@ -161,15 +237,8 @@ position**, les six composants présents. Une affirmation de ce paragraphe s'est
 | Reprise du contenu (52 URL) | ✅ **capturée au lot 7 (#19), importée au lot 8 (#20, #21)** — la capture (309 fichiers, 36 Mo, dont **192 photographies**) reste la pièce à conviction, montée **en lecture seule** dans `wpcli` depuis `01d4489` et prouvée telle (trois écritures refusées, empreinte identique avant/après). L'import a versé **27 portées, 17 chiens, 61 résultats, 7 pages, 135 pièces jointes**, depuis `donnees/**` versionnés. **3 photos des pages libres non téléversées** (arbitrage A5 : leur `alt` est une question à l'éleveuse). ⚠️ **Restent #23-#24** pour honorer les faits de non-indexation et les 301 |
 | Guide de l'éleveuse (`docs/guide/`) | ✅ **21 fiches**. D3 tenue. Les deux fiches du lot 8 ont été relues « en cherchant le mensonge » — **et il y en avait** : « sept pages avec leur texte » quand trois sont vides à dessein, un cadre décrit « gris » qui est **beige à contour ocre**, un palmarès annoncé pour des chiens dont **60 résultats sur 61 ne sont rattachés à aucune fiche**, et une section entière décrivant des marqueurs `[IMAGE …]` que le code **ne produit plus**. Toutes corrigées avant le push. **BRIEF §13.1 toujours pas tenu** : le dossier `docs/guide/captures/` n'existe pas, et le lot 8 nomme **6 captures manquantes** de plus |
 
-**Prochaine action** : `/lead-mtb #17` — **une seule issue**, verdict obtenu de `github-boards` le
-2026-08-28. Ce n'est pas un choix de confort : l'ordre de dépendance place l'épic 7 avant l'épic 9, et
-**#23 et #24 sont l'une et l'autre bloquées par une question à l'utilisateur** (Q1 et Q4). Il n'y a donc
-pas trois issues à mettre dans un lot, et il ne faut pas en fabriquer.
-
-Empreinte de #17 : `themes/mtb/templates/{front-page,page-bhpl,page-bhpl-france,page-litterature,
-page-travail,page-placement,page-mentions-legales,page-confidentialite,index}.html` et `patterns/**`.
-Son corps exclut lui-même `theme.json`, `single-portee.html`, `single-chien.html`, `base.css` et
-`tokens.css` — les deux pièges habituels du projet ne sont pas en jeu.
+**Prochaine action** : voir le rapport de fin de lot 9 — l'épic 7 est close, la suite se joue
+entre l'épic 9 (bloquée par Q1 et Q4), l'épic 10 et les dix dettes de l'épic 12.
 
 **Ce que le lot 8 a déjà payé dans le reste de #17** : le point 1 (contenu ne vivant dans aucun fichier)
 est clos, et le point 2 l'est à moitié — l'Accueil et Travail sont repris par #21. Ne redécouvre pas ces
@@ -208,8 +277,14 @@ ajouter à sa checklist avant de lancer sa chaîne, sinon rien ne les portera à
    `Guéneau` dans son propre pied de page. Rien n'a été harmonisé, et c'est le bon choix.
 3. La page d'accueil réelle **n'est pas choisissable par l'éleveuse** (`options-reading.php` exige
    `manage_options`) — D1 tenue **avec une exception nommée**.
-4. **A8 ouverte** : les motifs de recours de `MASTER.md` §9.5 ne sont pas livrés pour les motifs.
-5. **D8 non tranchée** sur l'Accueil (T37).
+4. ~~**A8 ouverte** : les motifs de recours de `MASTER.md` §9.5 ne sont pas livrés pour les motifs.~~
+   **LEVÉE au lot 9.** Les deux prémisses du refus étaient tombées : l'adresse de « La meute » se calcule
+   au rendu, et `index.html` n'a jamais été hors empreinte. Les trois `mtb/lien-de-recours` sont posés sur
+   l'état vide de l'index. **Mesuré** sur `/author/fabienne/` : **2 liens rendus, pas 3** — « La meute »
+   s'omet en silence, sa page n'existant pas (dette T30), sans `<li>` vide ni puce orpheline.
+5. ~~**D8 non tranchée** sur l'Accueil (T37).~~ **TRANCHÉE par l'utilisateur le 2026-08-29** : le budget
+   de `BRIEF.md` §12 se lit en **octets réseau**. Mesuré à neuf : Accueil **68 749 o**, Travail **60 491 o**,
+   plafond 200 000. **D8 tenue, T37 fermée.** La cause du dépassement décompressé survit sous **T52**.
 
 **Deux pages vides à ne pas prendre pour un oubli** : `bhpl-en-france` (source en 302, protégée par mot de
 passe sur l'ancien site) et `politique-de-confidentialite` (source en 404, absente du sitemap) sont vides
@@ -327,6 +402,11 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 
 | # | Dette | Créée par | Payée par |
 |---|-------|-----------|-----------|
+| **T55** | **`MASTER.md` se contredit sur le libellé du lien vers l'index des portées, et c'est §10.3 qui perd.** §9.5 écrit « **Les portées** », §9.3 « Voir toutes les portées », et **§10.3 — « Vocabulaire figé », qui se déclare lui-même l'arbitre — écrit « Toutes les portées »**. Le code (`lien-de-recours/rendu.php:71`, `editeur.js:26`) dit « Les portées », aligné sur §9.5 ; `issue-16.md:378` le dit explicitement et **ne cite jamais §10.3**. L'écart n'a donc jamais été arbitré, il a été hérité. Il vit **entièrement dans `mtb-core`** : le corriger là corrigerait les **trois** gabarits d'un coup, ce qui prouve que le libellé appartient au serveur. Ne pas y embarquer le `h1` de `archive-mtb_portee.html` — §10.3 régit des libellés de lien, pas un titre de page. | #16, relevé au lot 9 | `lead-design-mtb` ou une passe d'alignement sur `mtb-core` |
+| **T54** | **`MASTER.md` §10.2 liste huit disciplines, le code en rend neuf.** `query/resultat/bootstrap.php:29-41` rend neuf clés — la neuvième est `autres_disciplines` — et `fields/resultat/ecran.php:209-213` la propose à l'écran de saisie. **Les fiches d'aide ont raison d'écrire « neuf » ; c'est `MASTER.md` qui est périmé**, alors même que son §10.3 se déclare l'arbitre du vocabulaire. Cette neuvième clé est l'objet de **Q14**, ouverte. | relevé au lot 9 | `lead-design-mtb` (lié à Q14) |
+| **T53** | **`MASTER.md` §9.5 nomme deux écrans de recours, le thème en a désormais trois.** §9.5 spécifie la 404 et la recherche sans résultat ; A8bis pose la même sortie de secours sur l'**état « aucun résultat » d'`index.html`**, que §9.5 ne couvre pas. Extrapolation assumée, à **zéro octet de CSS** et sans un libellé composé par le thème. Corollaire : le `<p>Aucun contenu à afficher.</p>` est **conservé faute de libellé figé** — ni §9.5 ni §10.3 n'en donnent pour l'état « archive vide », et en inventer un serait un acte de contenu, exactement ce que A4 a refusé pour le `h1`. | #17, lot 9 | `lead-design-mtb` : étendre §9.5, ou faire retirer le balisage |
+| **T52** | **Le projet expédie ~50 Ko de commentaires CSS au navigateur, faute d'étape de minification.** Mesuré au lot 9 sur l'Accueil : **147 492 o de CSS décompressé pour 56 140 o sur le réseau** — `base.css` 46 927, `mtb-bandeau-ouverture.css` 34 566, `entete-pied.css` 28 791, `mtb-grille-chiens.css` 26 786, `tokens.css` 10 422. **Non bloquante** : D8 se lit en octets réseau depuis la décision de l'utilisateur du 2026-08-29, et le site y est très largement sous le plafond. C'est le reliquat vivant de T37, fermée. | héritée, chiffrée au lot 9 | une issue `perf`, hors chemin critique |
+| **T51** | **`mtb/lien-de-recours` émet un `<li>` sans garde de conteneur.** Posé au premier niveau d'une page plutôt que dans un `core/list`, il rend un `<li>` orphelin directement dans `.entry-content`. **Atténuée et non nulle** : le bloc est `inserter: false` (`blocks/lien-de-recours/block.json:18`), donc le chemin d'édition ordinaire ne peut pas produire ce cas, et aucun des trois gabarits livrés ne le fait. | #16, relevé au lot 9 par la passe d'intégration | une passe d'alignement sur `mtb-core` |
 | **T50** | **Les fiches d'aide promettent l'historique des versions, que rien ne garantit.** Deux fiches disent à l'éleveuse que « le site garde les versions précédentes de votre texte ». C'est vrai — par le **défaut de WordPress**, `WP_POST_REVISIONS` n'étant défini nulle part dans le projet. Le jour où quelqu'un désactive les révisions, **deux fiches mentent d'un coup**. Soit le projet fixe la constante, soit les fiches cessent de promettre. | lot 8 | non affectée |
 | **T49** | **`test-integration-mtb` et `leaddev-back-mtb` n'existent pas** dans `.claude/agents/`, alors que `CLAUDE.md` et `/lead-mtb` les décrivent comme des maillons de la chaîne. La passe d'intégration du lot 8 a tourné sur un agent générique, et la planification back de #21 est passée par un agent d'architecture. La chaîne documentée n'est pas la chaîne réelle. | lot 8 | non affectée |
 | **T48** | **Le contournement CRLF du provisionnement.** Sur un checkout Windows (`core.autocrlf=true`, aucun `.gitattributes`), `/bin/sh` refuse `provision.sh` et **la pile ne démarre pas du tout**. Contourné dans `compose.yaml` par un `sed` à l'entrypoint, documenté à l'endroit exact. La vraie réparation serait un `.gitattributes` **ciblé sur `docker/**` seul, jamais à la racine** — un fichier racine renormaliserait `docs/migration/source/html/*.html` et **détruirait la preuve d'archive** (T-#21-m). | lot 8 | non affectée |
@@ -342,7 +422,7 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 | ~~**T41**~~ | ~~Au démarrage à froid, un relecteur ne voit que la moitié du site.~~ **PAYÉE au lot 7**, sur décision de l'utilisateur. `provision.sh` compose désormais l'accueil et la page Contact, et pose l'accueil en page statique. **Le contenu n'est pas recopié dans le script** : il est **relu à chaque provisionnement** dans `wp-content/themes/mtb/patterns/accueil.php`, donc le thème reste l'unique source de vérité sur la composition — contrainte 3 tenue jusque dans la pile de développement. Vérifié à froid : bandeau, encart « Portée DEMO1 2025 », grille des reproducteurs, formulaire sur `/contact/`, **0 diagnostic PHP**, et au rejeu « contenu réaffirmé » sans aucune duplication. **Piège trouvé en chemin, à ne pas reperdre** : référencer le motif par `<!-- wp:pattern -->` au lieu d'en copier le balisage casse `titre-principal.php`, qui inspecte le **premier bloc réel** de `post_content` pour décider qui porte le `<h1>` — le premier bloc devient `core/pattern`, le titre du cœur n'est plus effacé, et la page rend **deux `<h1>`**. Documenté en commentaire à l'endroit exact. **Arrive après le verdict de la revue** : validé par la seule vérification à froid de `docker-mtb` | #29 et infra, lot 7 | ✅ **payée au lot 7** |
 | ~~**T39**~~ | ~~`docker/provision/provision.sh:74-75` peut livrer un site en anglais, en silence.~~ **PAYÉE au lot 7.** Le script **relit `WPLANG` juste après l'avoir écrit** et journalise une ligne `ERREUR` explicite si `sanitize_option()` l'a vidée en silence (paquet `fr_FR` non téléchargeable) — le marqueur `[provision] terminé.` reste **inchangé et toujours émis**, pour ne pas casser les scripts qui l'attendent. Réserve honnête : sur le démarrage à froid de vérification le réseau fonctionnait, donc **la branche d'erreur n'a pas pu être observée en conditions réelles**, seulement relue (`sh -n` propre). Le défaut d'origine, lui, avait été reproduit de façon déterministe au lot 6 |
 | **T38** | **`docs/migration/redirections.md:41-43` est périmé** depuis les commits de #17 : il écrit « page Travail **non livrée** (#17) » et « accueil livré, mais son contenu n'est pas repris ». Techniquement encore vrai du point de vue du dépôt — rien n'est versionné — mais trompeur pour le prochain lecteur, qui croira l'epic non commencée | revue du lot 6 | #19-#21, à la première relecture du fichier |
-| **T37** | **D8 n'est pas tranchée : deux mesures vraies, deux contenus différents.** `issue-17.md:351-362` mesure **210 680 o décompressés** sur l'Accueil **avec le contenu réel recopié** — 10 680 o au-dessus du budget — et 72 413 o en octets réseau, sous le plafond. La recette du lot repasse au vert (**188 753 o décompressés**) mais **sur une base d'essai légère**. Les deux mesures portent sur des contenus différents et ne se contredisent pas. Cause chiffrée et externe au contenu : **141 473 o de CSS décompressé, non minifié**, commentaires compris (`base.css` 42 648, `mtb-bandeau-ouverture.css` 33 980, `entete-pied.css` 28 269, `mtb-grille-chiens.css` 26 333). **Le lot ne peut pas se clore en déclarant D8 tenue sans dire laquelle des deux lectures on retient** — c'est une décision, pas une mesure | revue du lot 6 | une issue `perf` (étape de minification) + arbitrage de la lecture retenue |
+| ~~**T37**~~ | ~~**D8 n'est pas tranchée : deux mesures vraies, deux contenus différents.**~~ **FERMÉE au lot 9, sur décision de l'utilisateur du 2026-08-29 : le budget de `BRIEF.md` §12 se lit en octets réseau.** Mesuré indépendamment à cette lecture — Accueil **68 749 o**, Travail **60 491 o**, plafond 200 000 : **D8 tenue, sans réserve.** Deux chiffres de la ligne d'origine sont morts et il faut savoir pourquoi : les 210 680 o décompressés **ne sont pas reproductibles** — ils portaient sur un Accueil que `docker/provision/provision.sh:192` réécrit **inconditionnellement** à chaque provisionnement, si bien qu'aucun contenu repris n'y a jamais vécu (l'import du lot 8 ne comporte pas d'accueil, et `docs/migration/reprise-resultats-pages.md:85` le déclarait déjà) ; l'Accueil remesuré donne **185 188 o décompressés**, soit 25 Ko sous le chiffre du contrat et **sous le plafond**. Et `base.css` n'est plus à 42 648 o mais à **46 927 o** — la feuille a grossi. **La cause, elle, est intacte et mesurée** : 147 492 o de CSS décompressé pour 56 140 o sur le réseau. Elle survit sous **T52**, non bloquante. ~~Suite de la ligne d'origine, conservée :~~ `issue-17.md:351-362` mesure **210 680 o décompressés** sur l'Accueil **avec le contenu réel recopié** — 10 680 o au-dessus du budget — et 72 413 o en octets réseau, sous le plafond. La recette du lot repasse au vert (**188 753 o décompressés**) mais **sur une base d'essai légère**. Les deux mesures portent sur des contenus différents et ne se contredisent pas. Cause chiffrée et externe au contenu : **141 473 o de CSS décompressé, non minifié**, commentaires compris (`base.css` 42 648, `mtb-bandeau-ouverture.css` 33 980, `entete-pied.css` 28 269, `mtb-grille-chiens.css` 26 333). **Le lot ne peut pas se clore en déclarant D8 tenue sans dire laquelle des deux lectures on retient** — c'est une décision, pas une mesure | revue du lot 6 | une issue `perf` (étape de minification) + arbitrage de la lecture retenue |
 | **T36** | **Le repli d'`alt` est perdu sur les galeries des fiches.** `galerie-photos/rendu.php:152-166` refuse délibérément de composer un repli, donc `lecture.php:590-599` (« Photo de Jango ») ne sert pas. Nuance à ne pas perdre : l'`alt` de la médiathèque **est** transmis tel quel — l'image ne sort `alt=""` que si l'éleveuse a laissé la description vide, et le nom accessible du lien reste porté par `<span>Photo n sur N</span>`. Comportement contractuel de #12, déclaré | #12, rendu visible au lot 6 | arbitrage `lead-design-mtb` |
 | **T35** | **`<main>` n'a aucun rembourrage bas** (`enveloppe-fiche.php:60`) : le dernier élément de contenu touche le pied de page à **0 px**. Aucune feuille du thème ne porte de sélecteur `main` ; `fiches.css:52-60` porte délibérément tout l'écart sur la marge **haute**. Vrai sur **toutes** les pages, pas seulement les fiches | antérieure au lot 6, chiffrée par lui | epic `design` ou passe d'alignement |
 | **T34** | **Décrochement horizontal de 256 px entre `h2` de même niveau, à l'intérieur d'une même fiche.** `/chien/pegaz/` : « Santé » et « Titres et brevets » à **left = 432 px**, « Palmarès de travail », « Portées » et « Galerie » à **left = 176 px**. Idem `/portees/k9-2026/` et `/portees/`. Chaque affectation prise isolément suit `MASTER.md` §7.1 ; c'est leur **voisinage** qui produit une fiche qui se lit comme deux pages cousues. La question ouverte Q-front-1 du contrat #15 anticipait l'écart **entre** pages, pas **dans** une fiche | #15 et #16, lot 6 | **`lead-design-mtb`** — extension de Q-front-1 aux deux fiches |
@@ -391,6 +471,7 @@ Vérifiés sur le site source le 2026-08-14. Toute autre donnée d'élevage se l
 
 | Lot | Epic | Issues | Résultat | Commit |
 |-----|------|--------|----------|--------|
+| 9 | 7. Gabarits et thème (clôture) | #17 | **Le plus petit lot du projet, et aucun de ses blocages n'était du code** : huit lignes de gabarit, **zéro octet de CSS, JS ou PHP**. A8 **levée** — les trois `mtb/lien-de-recours` posés sur l'état vide d'`index.html`, recopiés octet pour octet de `search.html` ; **2 liens rendus et non 3**, « La meute » s'omettant en silence (T30). Exception D1 écrite au guide, Mentions légales vérifiées et **délibérément non harmonisées**, T33 renumérotée. **D8 tranchée par l'utilisateur** : budget lu en **octets réseau** — Accueil 68 749 o, Travail 60 491 o contre 200 000, **T37 fermée**. Intégration : les cinq revendications du contrat reproduites **au chiffre près**, 1 débordement sur **42 combinaisons**, **81 arrêts clavier / 0 sans anneau**, **0 violation axe**, D12 éprouvée sur treize composants mal remplis sous `E_ALL` forcé, **D1 mesurée en session `fabienne` réelle**. Elle **réfute quatre affirmations du contrat**, dont une qui allait faire ouvrir une issue `a11y` pour un `<main>` **déjà focusable**. Revue **BLOQUANTE** — zéro CRITICAL, **deux HIGH tous deux de prose** : une fiche annonçant un lien cassé que le code ne produit jamais, et une section du contrat déclarant l'AA invérifiée sur tout le lot — **cette seconde née de ma propre consigne**, un cran trop large sur un filet décoratif de 6 px. Les deux levés, contre-revus, **aucune régression**. **D9 démontrée à froid** sur deux cycles complets. **T49 a une cause et elle est réparée** : un `: ` non échappé en YAML privait la chaîne de deux agents. **Cinq dettes neuves consignées** (T51-T55) qui ne vivaient que dans le contrat. | `5c7cf34`, `60f36f4`, `072d390`, `e10ca03` |
 | 8 | 8. Reprise du contenu | #20, #21 | **Le contenu de l'ancien site entre dans le nouveau** : 27 portées, 17 chiens, 61 résultats, 7 pages libres, 135 pièces jointes, **592 WebP**. Transcrit dans des **fichiers versionnés**, importé par une commande qui **crée et ne met jamais à jour**, contrôlé par un comparateur hors ligne rejouable. **D11 démontrée au byte près** après destruction/reconstruction : 106 empreintes de contenu identiques, 47/48 URL identiques à l'octet, la 48ᵉ à 1 octet (borne 99/100 d'un compteur, prédite avant mesure). Intégration : **~900 vérifications, 2 échecs bloquants**. Le premier était invisible sans exécution : `est_une_liste()` déclarait le tableau vide « liste », donc **tout `"attributs": {}` était rejeté et 6 pages sur 7 perdues** — 13 occurrences dans les données, 13 avertissements, et la seule page sans occurrence était la seule créée. Revue **BLOQUANTE** puis **OK avec réserves** : un CRITICAL (**13 fichiers, 643 lignes non commités** — dont le fait `noindex` de Placement et `MASTER.md` 1.1 : ce qui avait été mesuré n'était pas ce qu'un push aurait envoyé) et trois HIGH (une fiche décrivant des marqueurs que le code ne produit plus ; **la même clé `_mtb_robots_source` sous deux formes incompatibles**, chaîne contre tableau, les deux documentations affirmant l'alignement ; l'**affixe de Jango** perdu dès qu'un résultat est rattaché à une fiche, contre une liste d'écarts qui se déclarait exhaustive). Tous levés. **`MASTER.md` passe en 1.1** : `break-word` ne comptant pas dans le calcul des tailles min-content, la règle §7.7 était **fausse**, pas contournée — 347,25 px sous `break-word` **comme sous `normal`**, 15,5 px sous `anywhere`. **`MTB_FIXTURES` livré** : le garde de non-mélange de #20 prescrivait un remède (`down -v`) que le provisionnement défaisait aussitôt. | `2018abe` → `9418979`, dont `031e59b`, `01d4489`, `efb8bc2`, `dcac163`, `0430fa8`, `50e37fc` |
 | 7 | 8. Reprise + 9. Contact + dette | #19, #22, #29 | **Les 52 URL de l'ancien site sont archivées** — 309 fichiers, 36 Mo, dont **192 photographies**, sur décision de l'utilisateur de les versionner : la contrainte 4 ne dépend plus de la survie de l'abonnement IONOS. **Formulaire de contact** qui n'écrit rien en base (décision 45), anti-spam sans service tiers, mention d'information adossée ligne à ligne au code (décision 48). **`wp mtb import-fixtures`** enfin livrée : la pile sème 14 contenus. Deux passes correctives : msmtp réparé dans les images (**les deux voies de courrier étaient mortes**) et composition des pages au provisionnement. **Dettes T39 et T41 payées.** Intégration : **≈627 vérifications, 6 échecs, aucun imputable au lot**. Revue **BLOQUANTE** — zéro CRITICAL, deux HIGH : **cinq pages en `noindex` que rien ne signalait** (Q23) et trois livrables non commités. Les deux levés. Le jeton HMAC substitué au nonce est **ratifié** (décision 51). **Cinq questions tranchées par l'utilisateur** dans la session. | `3879b0d` → `a...`, dont `1464a7e`, `ca5e6b7`, `35aa919`, `3c4d047`, `ddaaea4`, `f0d06ff`, `e235160` |
 | 6 | 6. Tableau de résultats + 7. Gabarits | #15, #16, **#17 (ouverte)** | **Le lot qui paie T10 : le site a un rendu public.** Une portée saisie apparaît sur son URL, dans l'index, dans l'encart d'accueil et sur la fiche de sa mère — **D1 et D2 vérifiées au HTML pour la première fois**. Tableau de résultats (10ᵉ composant), gabarits des fiches portée et chien, bloc `lien-de-recours` à URL calculées, 8 motifs de pages libres, 6 fiches de guide, 14 aperçus. **Dettes T3, T22, T23 payées et mesurées.** **Lot développé le 2026-08-20 par trois chaînes mortes avant validation**, retrouvé le 2026-08-23 à 15 commits d'avance sur `origin/main`. Intégration : **147 vérifications, 2 échecs, tous deux hors périmètre** (T39, T40). Revue **BLOQUANTE** — zéro CRITICAL, deux HIGH : un **fait d'élevage faux** affiché (« Eenhoorn Sire Eenhoorn », T32/L2) et un **écart silencieux** au `MASTER.md` (carte parent amputée, T32). Les deux levés et contre-vérifiés avant le push. **#17 non fermée** : son contenu recopié ne vit dans aucun fichier, D11 y est invérifiable. | `7cc371c` → `4da55b2`, puis `e80944e`, `25cdd0a` |
