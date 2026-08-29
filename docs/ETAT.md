@@ -237,8 +237,22 @@ position**, les six composants présents. Une affirmation de ce paragraphe s'est
 | Reprise du contenu (52 URL) | ✅ **capturée au lot 7 (#19), importée au lot 8 (#20, #21)** — la capture (309 fichiers, 36 Mo, dont **192 photographies**) reste la pièce à conviction, montée **en lecture seule** dans `wpcli` depuis `01d4489` et prouvée telle (trois écritures refusées, empreinte identique avant/après). L'import a versé **27 portées, 17 chiens, 61 résultats, 7 pages, 135 pièces jointes**, depuis `donnees/**` versionnés. **3 photos des pages libres non téléversées** (arbitrage A5 : leur `alt` est une question à l'éleveuse). ⚠️ **Restent #23-#24** pour honorer les faits de non-indexation et les 301 |
 | Guide de l'éleveuse (`docs/guide/`) | ✅ **21 fiches**. D3 tenue. Les deux fiches du lot 8 ont été relues « en cherchant le mensonge » — **et il y en avait** : « sept pages avec leur texte » quand trois sont vides à dessein, un cadre décrit « gris » qui est **beige à contour ocre**, un palmarès annoncé pour des chiens dont **60 résultats sur 61 ne sont rattachés à aucune fiche**, et une section entière décrivant des marqueurs `[IMAGE …]` que le code **ne produit plus**. Toutes corrigées avant le push. **BRIEF §13.1 toujours pas tenu** : le dossier `docs/guide/captures/` n'existe pas, et le lot 8 nomme **6 captures manquantes** de plus |
 
-**Prochaine action** : voir le rapport de fin de lot 9 — l'épic 7 est close, la suite se joue
-entre l'épic 9 (bloquée par Q1 et Q4), l'épic 10 et les dix dettes de l'épic 12.
+**Prochaine action** : `/lead-mtb #27 #28 #37` — **empreintes disjointes, parallèle sûr**, verdict obtenu
+de `github-boards` le 2026-08-29. Aucune des trois ne touche `theme.json`, `functions.php` ni l'index
+d'enregistrement des blocs.
+
+**Pourquoi ce lot et pas l'épic 9** : #23 et #24 sont bloquées par Q1 et Q4. Et **#25 l'est aussi, par
+transitivité** — le guide qu'elle assemble promet un pas-à-pas « protéger une page par mot de passe »
+qui **n'existe pas** dans `docs/guide/` et qui est un livrable de #23. La lancer maintenant reviendrait
+à inventer ce pas-à-pas ou à l'omettre. #27 est en outre le prérequis d'infra de #23 et #24 : c'est
+elle qui ouvre une voie conforme pour une règle de réécriture (dette T6).
+
+**Recouvrements à ne pas découvrir en cours de route** : #26 partage `class-loader.php` avec #27 (mais
+#26 est bloquée par Q5) · #30 et #31 se disputent `compose.yaml`, `docker/**` et le `Makefile` · #28,
+#35 et #36 atterrissent toutes dans `includes/admin/**` — **jamais deux des trois dans le même lot** ·
+#33 (glob `assets/css/blocs/*.css`) englobe le fichier exact que vise #34 · #39 et #43 vivent toutes
+deux dans `includes/blocks/lien-de-recours/**` · **#42 est bloquée par Q14**, à exclure de tout lot
+jusqu'à réponse.
 
 **Ce que le lot 8 a déjà payé dans le reste de #17** : le point 1 (contenu ne vivant dans aucun fichier)
 est clos, et le point 2 l'est à moitié — l'Accueil et Travail sont repris par #21. Ne redécouvre pas ces
@@ -252,8 +266,12 @@ milieu d'une chaîne :
   vient de la rendre plus concrète : **les 12 liens internes survivants pointent vers des URL accentuées
   de l'ancien site** (`/bhpl/portée-m-2016/`…). La réponse détermine directement ces douze redirections.
 
-**Le corps de #24 ne porte aucun des deux faits que le lot 8 lui lègue** — vérifié sur le board. À faire
-ajouter à sa checklist avant de lancer sa chaîne, sinon rien ne les portera à l'exécution.
+~~**Le corps de #24 ne porte aucun des deux faits que le lot 8 lui lègue** — vérifié sur le board.~~
+**FAUX, corrigé le 2026-08-29** : les deux faits **sont** dans le corps de #24, verbatim et avec leur
+détail fichier par fichier — la tâche des douze ancres internes et celle de `_mtb_robots_source` /
+`wp_robots`. L'issue a été éditée le 2026-08-28 à 21:12Z, **à la clôture du lot 8**, et cette ligne n'a
+pas été mise à jour derrière. Rien à ajouter à sa checklist. Leçon interne : une affirmation « vérifié
+sur le board » **périme dès le geste suivant sur le board** — elle se revérifie, elle ne se relaie pas.
 
 **Ce que le lot 8 lègue à #23 et #24, et qu'aucun corps d'issue ne portait :**
 - **12 liens vers `mtbrabant.com`** survivent dans la prose importée, sur six fiches de chien, se résolvant
