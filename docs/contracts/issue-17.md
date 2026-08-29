@@ -17,6 +17,17 @@ sous des conclusions justes**, et elles sont corrigées à l'endroit où elles �
 six pages), §13.5 (formulation des blocs de nom nul), §13 en-tête et §11 (**l'Accueil n'a jamais reçu
 de contenu importé**). **D8 n'est pas rouverte** : tranchée en octets réseau, T37 fermée.
 
+**Amendé une troisième fois le 2026-08-29, après la revue**, qui a bloqué le push sur deux HIGH, tous
+deux de **prose** — le code de `5c7cf34` étant déclaré irréprochable. §13.4 est **réénoncé une
+seconde fois** : la correction précédente avait remplacé une affirmation fausse étroite par une
+affirmation fausse **large**, qui aurait fait ouvrir une issue AA pour un filet décoratif ; la
+formulation qui fait foi est celle du §13.4, vérifiée feuille par feuille, et **aucune issue ne doit
+être ouverte sur la base des `incomplete` d'axe**. Corrigés aussi : le renvoi périmé du §13.6 sur
+`INPUT#pwbox`, le chemin abrégé du `.json` des Mentions légales (§10), et deux citations introduites
+par `60f36f4` qui avalaient une phrase de mesure. Hors de ce fichier, la fiche
+`docs/guide/page-creer-la-page-la-meute.md` annonçait à l'éleveuse un **lien cassé qui n'existe
+pas** — le composant n'affiche rien plutôt qu'un lien mort, comme le §13.5 l'avait mesuré.
+
 Une seule moitié de plan a été produite (`leaddev-front-mtb`) : l'issue ne touche que le thème et ne
 modifie aucune ligne de `mtb-core`. Les arbitrages du §7 portent donc sur les présupposés du corps de
 l'issue et sur les questions que le plan ne pouvait pas trancher seul.
@@ -425,7 +436,9 @@ Les valeurs héritées d'`ETAT.md` (0 px, 134/173 px) sont **périmées**.*
   (`Elevage du Mont Brabant`, SIRET `82237792500018`). **Rien n'a été harmonisé, et c'est le bon
   choix.** Les écarts sont déjà consignés en trois endroits — `source/pages/README.md`
   (« Écarts avec les coordonnées de référence »), `issue-21.md` §5, et la clé `ecart` de
-  `migration/resultats-pages/donnees/pages/mentions-legales.json` — plus, dans les mots de
+  `wp-content/plugins/mtb-core/includes/migration/resultats-pages/donnees/pages/mentions-legales.json`
+  (**chemin complété le 2026-08-29** : la forme abrégée d'origine se résolvait en `docs/migration/…`,
+  où le fichier n'existe pas) — plus, dans les mots de
   l'éleveuse, `docs/guide/page-ce-qui-a-ete-repris-de-l-ancien-site.md`. **Aucun quatrième
   exemplaire n'a été créé.** Une seule nuance à ne pas graver de travers : le `0680505619` à dix
   chiffres est celui de l'**encart latéral global du site**, pas d'une seconde écriture propre à la
@@ -645,12 +658,42 @@ est **0**. C'est la leçon du lot 5 rejouée : un audit mesure une propriété, 
 > partie sur chaque page**. Les **0 violation** restent vrais : axe ne signale rien, parce qu'il
 > **refuse de trancher**, ce qui n'est pas la même chose que passer.
 >
-> **Énoncé qu'il faut laisser écrit noir sur blanc** : *le contraste du texte sur fond dégradé n'est
-> vérifié par personne, sur la totalité des pages de ce lot.* Ce n'est ni mesuré ni infirmé — c'est
-> un trou. La règle transverse du brief fait de l'accessibilité AA une exigence bloquante, et
-> l'en-tête est le composant le plus vu du site. **À router** : la vérification demande une lecture
-> de contraste sur pixels rendus, au pire pixel du dégradé, comme le lot 4 l'a fait pour ses onze
-> contrastes (décision 36). Hors empreinte de #17, qui ne touche ni l'en-tête ni un dégradé.
+> **Réénoncé une seconde fois le 2026-08-29, et c'est la formulation qui fait foi.** La première
+> correction écrivait « *le contraste du texte sur fond dégradé n'est vérifié par personne sur la
+> totalité des pages de ce lot* ». **C'est faux, et faux d'une façon coûteuse** : cette phrase
+> ferait ouvrir une issue AA pour un filet décoratif. Elle est remplacée par ce qui suit, vérifié
+> ligne à ligne dans les feuilles.
+>
+> **Le dégradé qu'axe voit est `--filet-double`, et aucun texte ne se pose dessus.**
+> `tokens.css:59-70` le définit comme un `linear-gradient` de **trois arrêts sur 6 px**
+> (`--filet-double-h: 6px`, commenté « à réserver en padding »). Partout où il apparaît sous un nœud
+> nommé, il est **ancré en bord et réservé par du padding** :
+> - le `h1` — `base.css:169-183` : `background-position: left bottom`,
+>   `background-size: 100% var(--filet-double-h)`, `padding-block-end: calc(var(--e-4) + var(--filet-double-h))` ;
+> - l'en-tête — `entete-pied.css:128-136` : `background-color: var(--calcaire)` **plat**, filet en
+>   `left bottom`, même `background-size`, même réserve de padding.
+>
+> **Correction à la consigne qui m'a été transmise, relevée en vérifiant** : on m'a dicté « l'en-tête
+> **et le pied** sur `--calcaire` plat, filet en `left bottom` ». C'est exact pour l'en-tête et
+> **faux pour le pied** : `entete-pied.css:381-389` pose le pied sur **`var(--pin)`**, pas
+> `--calcaire`, et son filet est en **`left top`**, pas `left bottom`, avec la réserve en
+> `padding-block-start`. **La conclusion ne change pas d'un iota** — fond plat, filet de 6 px ancré
+> sur un bord opposé au texte — mais les deux composants ne se ressemblent pas, et une raison fausse
+> est précisément ce qu'on corrige ici.
+>
+> **Ce qui suit de là** : les deux nœuds que cette section nommait — le `h1` et le lien de titre de
+> site de l'en-tête — sont **sur fond plat**, donc couverts par les onze contrastes relus sur pixels
+> rendus (**décision 36**). `axe` rend `incomplete` parce qu'il voit un `linear-gradient` sur un
+> ancêtre et **refuse de raisonner sur `background-size` et `background-position`** : le message est
+> mécanique, ce n'est pas un signal. Et le seul vrai dégradé sous du texte de tout le projet,
+> `--voile-photo` (`tokens.css:126`), est **déjà borné par la décision 35** — plancher absolu de
+> 5,70:1 quelle que soit la photo, 6,31:1 mesuré.
+>
+> **Ce qui reste réellement non attribué, et rien de plus** : les **1 à 10 autres nœuds non jugés par
+> page** (12 sur Travail, 3 sur Littérature, dont 2 sont les nœuds nommés ci-dessus), que personne
+> n'a tracés jusqu'à leur élément. C'est une inconnue bornée, pas un risque identifié.
+>
+> **Aucune issue ne doit être ouverte sur la base de ces `incomplete`.**
 
 `color-contrast` a bien tourné et ne rend aucune violation. Passent également
 `skip-link`, `bypass`, `landmark-one-main`, `heading-order`, `link-name`, `region` et
@@ -677,8 +720,10 @@ observable.
 > **Point de vocabulaire, consigné parce qu'il a déjà causé une confusion le 2026-08-29 :** la
 > **dette T30** est « la page *La meute* n'existe que dans la base de développement ». Elle n'a
 > **aucun rapport avec l'issue #30**. Les deux se lisent presque pareil ; ce contrat parle
-> exclusivement de la dette. Les deux liens rendus pointent sur `home_url()` et sur l'archive des portées, aucune URL
-n'étant écrite par le gabarit (`grep 'href=' index.html` → **0**).
+> exclusivement de la dette.
+
+Les deux liens rendus pointent sur `home_url()` et sur l'archive des portées, aucune URL n'étant
+écrite par le gabarit (`grep 'href=' index.html` → **0**).
 
 `parse_blocks()` sur le gabarit rend un arbre propre —
 `core/query-no-results → core/paragraph, core/list → mtb/lien-de-recours ×3`.
@@ -688,8 +733,10 @@ n'étant écrite par le gabarit (`grep 'href=' index.html` → **0**).
 > fichier de gabarit — ce sont les sauts de ligne entre blocs de premier niveau, et leur `innerHTML`
 > est **vide**. L'énoncé juste est : **aucun bloc de nom nul ne porte de HTML**, donc aucun balisage
 > libre n'est servi hors d'un bloc. C'est ce que la mesure d'origine disait ; c'est mon résumé qui
-> avait laissé tomber la qualification. La région « aucun résultat » d'`index.html` et celle de `search.html`
-ne diffèrent **que** par le texte du paragraphe.
+> avait laissé tomber la qualification.
+
+La région « aucun résultat » d'`index.html` et celle de `search.html` ne diffèrent **que** par le
+texte du paragraphe.
 
 ### 13.6 Ce qui n'a pas été mesuré, et doit être dit
 
@@ -702,4 +749,7 @@ ne diffèrent **que** par le texte du paragraphe.
 - **Le contraste des anneaux de focus** sur chaque fond : `color-contrast` d'axe ne les juge pas.
 - **Les libellés de l'éditeur du §12** n'ont pas été relevés à nouveau à l'écran cette passe ; ils
   sont repris de la mesure du 2026-08-20.
-- **Le volet `INPUT#pwbox` de T42** : sans objet sur cette installation (§13.2).
+*(La ligne « le volet `INPUT#pwbox` de T42 : sans objet sur cette installation » figurait ici. **Elle
+est retirée le 2026-08-29** : le §13.2 établit que ce volet **est** mesurable — `/espace-prive/`
+répond 200 et déborde à 263/180. La laisser dans une liste de « non mesuré » tout en renvoyant à la
+section qui la réfute était une contradiction interne.)*
