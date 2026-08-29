@@ -20,6 +20,10 @@ modifier.
 > **Un module = un dossier.** `includes/<groupe>/<module>/bootstrap.php`
 >
 > **Aucune issue ne modifie jamais `mtb-core.php` ni `includes/class-loader.php`.**
+>
+> **Amendé le 2026-08-29 par #27** : `mtb-core.php` reste interdit **sans exception ni amendement
+> possible** ; `class-loader.php` ne s'ouvre que par **réouverture nominative**, écrite et datée au
+> §13, et se referme à la clôture de l'issue qui l'a obtenue. Une seule a été accordée : #27.
 
 Le chargeur parcourt deux niveaux et inclut **un seul fichier conventionnel par module** :
 `bootstrap.php`. Le reste du module (`champs.php`, `render.php`, `class-*.php`) est inclus par le
@@ -59,9 +63,14 @@ chargé avant lui : il en a besoin **au rendu**, bien après `init`.
 | `migration` | commandes WP-CLI, imports ponctuels | déclaration à l'inclusion, sous garde `WP_CLI` |
 
 - `init` **99 est réservée au chargeur** (synchronisation de version et des règles de réécriture).
-  Aucun module ne l'utilise.
+  Aucun module ne l'utilise. **Amendé le 2026-08-29 par #27 : `wp_loaded` 20 lui est également
+  réservée.**
 - **Aucun module n'appelle jamais `flush_rewrite_rules()`.** Le chargeur s'en charge, une seule fois,
-  quand la liste des types de contenu change (section 4).
+  quand **l'état des règles de réécriture** change (section 4, amendée le 2026-08-29 par #27). Un
+  module **a en revanche le droit** d'appeler `add_rewrite_rule()`, `add_permastruct()`,
+  `add_rewrite_tag()` et `add_rewrite_endpoint()` depuis son rappel `init` 10, **sans condition de
+  contexte**, et n'a rien d'autre à faire pour que sa règle prenne effet. Voir l'amendement 2 en fin
+  de fichier.
 - Un module porte **le même nom de dossier** dans `content/` et dans `fields/` : `content/portee/` et
   `fields/portee/` sont les deux moitiés du même sujet. `fields/` accueille en plus les **contrôles
   partagés** entre types (le contrôle « père : fiche ou nom libre », le contrôle galerie).
@@ -114,6 +123,13 @@ empreinte = MTB_CORE_VERSION
             effectivement enregistrés à cet instant (listes triées)
 ```
 
+> **Amendé le 2026-08-29 par #27.** L'empreinte est désormais **scindée en deux moitiés** — identité et
+> réécriture — comparées séparément et déclenchant chacune son propre effet. La forme complète, ses
+> six collections et le tableau « ce qui déclenche quoi » sont dans l'**amendement 2** en fin de
+> fichier et dans `docs/contracts/issue-27.md` §4. Motif : l'empreinte ci-dessus n'observait que les
+> **noms** des types, jamais leurs **arguments de réécriture** — changer `'slug' => 'portees'` ne la
+> faisait pas bouger, et la nouvelle adresse ne prenait jamais effet.
+
 **Pourquoi la signature, et pas seulement la version** — c'est l'arbitrage central de ce contrat.
 Une comparaison à `MTB_CORE_VERSION` seule obligerait **chaque issue qui ajoute un type de contenu à
 éditer `mtb-core.php`** pour incrémenter la constante, sans quoi les règles de réécriture ne seraient
@@ -121,6 +137,10 @@ jamais régénérées. Cela recréerait exactement l'index central que la décis
 forme la plus dangereuse : deux chaînes parallèles écrivant la même ligne, dernier arrivé gagne, en
 silence. Avec la signature, l'issue #3 ajoute `mtb_portee` dans son propre dossier, la signature
 change toute seule, les permaliens fonctionnent, **et aucun fichier commun n'est touché**.
+
+**#27 étend le même raisonnement des noms aux règles** : une issue qui pose une règle de réécriture ne
+touche aucun fichier commun non plus. Ce paragraphe est ce que #27 pousse plus loin, jamais ce qu'elle
+contredit.
 
 Conséquence à retenir : **`mtb-core.php` est écrit une fois à l'issue #1 et plus jamais rouvert.**
 
@@ -149,7 +169,7 @@ Un seul hook est exposé par cette issue :
 
 | Hook | Type | Signature | Usage |
 |---|---|---|---|
-| `mtb_core_mise_a_jour` | action | `( ?array $ancienne_empreinte, array $nouvelle_empreinte )` | Se déclenche une fois quand la version ou la liste des types de contenu change. **Seul point d'accroche pour une migration de données** d'une issue future. Le thème ne l'utilise pas. |
+| `mtb_core_mise_a_jour` | action | `( ?array $ancienne_empreinte, array $nouvelle_empreinte )` | Se déclenche une fois quand la version ou la liste des types de contenu change. **Seul point d'accroche pour une migration de données** d'une issue future. Le thème ne l'utilise pas. **Amendé le 2026-08-29 par #27** : ce hook ne se déclenche **pas** pour un changement d'URL seul (slug, archive, règle de réécriture) — il reste réservé à la version et à la liste des contenus. Un battement de règles ne peut donc plus rejouer une migration de données. |
 
 Le chargeur n'offre **aucun filtre** sur la liste des groupes : la surface est close volontairement.
 
@@ -386,6 +406,9 @@ C'est la carte du plugin, puisque le code n'en contient aucune.
 
 > Tenu à jour par `/lead-mtb` à la clôture de chaque lot, ce fichier étant hors de l'empreinte de
 > toute chaîne. Dernière mise à jour : clôture du lot 2 (issues #3, #4, #5).
+>
+> **#27 (2026-08-29) n'a livré aucun module** : elle n'a modifié que `includes/class-loader.php`.
+> Aucune ligne n'est donc ajoutée à cet inventaire, et `includes/routing/` n'a **pas** été créé.
 
 ## 12. Conventions de code — gelées pour les 20 issues
 
@@ -472,9 +495,27 @@ en `WP_DEBUG`. C'est voulu — les masquer serait contraire à la tâche « sans
 - Le thème ne compose jamais une chaîne métier ni ne reformate une valeur de santé, un LOF, une
   cotation ou une date.
 - L'extension n'émet aucune règle visuelle ni mise en page.
-- Aucune issue n'édite `mtb-core.php` ni `includes/class-loader.php`.
-- Aucun module n'appelle `flush_rewrite_rules()`, n'utilise `init` 99, ni ne dépend de l'ordre de
-  parcours des groupes.
+- **Aucune issue n'édite `mtb-core.php`.** Sans exception, sans amendement possible : sa réouverture
+  ramènerait l'incrémentation manuelle de `MTB_CORE_VERSION`, c'est-à-dire l'index central que la
+  décision 9 proscrit.
+- **`includes/class-loader.php` ne s'ouvre que par une réouverture nominative.** Une issue qui doit le
+  modifier l'écrit dans son propre contrat, sous un amendement daté au présent §13 nommant l'issue, la
+  date de gel et la ligne amendée. Le fichier est refermé à la clôture de cette issue.
+  **Réouvertures accordées à ce jour : #27 (2026-08-29), pour l'empreinte des règles de réécriture.
+  Fermée.**
+  > **Avertissement à #26** (bloquée par Q5) : elle partage ce fichier. Elle **n'hérite rien** de la
+  > réouverture de #27 — celle-ci est close et nominative. #26 rouvre **sous son propre amendement**,
+  > écrit et daté, et ne se lance **jamais dans le même lot** qu'une autre issue touchant
+  > `class-loader.php`. La disjonction des empreintes fichiers est la seule protection de l'arbre
+  > unique.
+- Aucun module n'appelle `flush_rewrite_rules()`, n'utilise `init` 99 **ni `wp_loaded` 20**, ni ne
+  dépend de l'ordre de parcours des groupes. **Ces interdits sont inchangés par #27, sans exception.**
+- **`add_rewrite_rule()` n'a jamais été interdit** — l'interdit portait sur `flush_rewrite_rules()`, et
+  **la confusion entre les deux est la cause de la dette T6**. Il est désormais **explicitement
+  permis**, sur `init` 10, **sans condition de contexte**. Le préfixe `mtb_` reste dû au §6 (nommage)
+  et **n'est pas** ce qui rend la règle visible de l'empreinte.
+- Aucun module n'enregistre une règle **sous condition de contexte** (`is_admin()` ou équivalent) :
+  l'empreinte battrait, et les règles seraient régénérées à chaque requête.
 - Aucune étape de build (npm, JSX, `build/`). Aucune dépendance Composer.
 - Aucun appel HTTP sortant, aucun domaine tiers.
 - Aucun `uninstall.php`, aucune suppression de contenu par l'extension.
@@ -493,12 +534,18 @@ en `WP_DEBUG`. C'est voulu — les masquer serait contraire à la tâche « sans
 | 7 | `array()` ou `[]` | **`array()`** | Imposé par le standard `WordPress-Core` que `CLAUDE.md` invoque. Inhabituel en 2026, donc explicité ici pour que dix chaînes n'écrivent pas dans deux styles. |
 | 8 | Clés de méta | **`_mtb_<champ>`, tiret bas initial obligatoire** | Rend la méta protégée, donc jamais listée dans « Champs personnalisés » : garantie mécanique qu'aucune clé technique n'atteint l'écran de l'éleveuse (`MASTER.md` §10.4). |
 | 9 | Portée du `try/catch` | **Conservé, mais sa limite est documentée** | Ma formulation initiale (« une erreur de syntaxe ne se rattrape jamais ») était inexacte ; corrigée en section 12. La formulation honnête compte plus que le mécanisme. |
+| 10 | *(#27, 2026-08-29)* Voie conforme pour une règle de réécriture : septième groupe `includes/routing/`, filtre sur la liste des groupes, ou élargissement de l'empreinte | **Élargissement de l'empreinte du chargeur. Aucun nouveau groupe, aucun filtre, aucun fichier créé** | Un groupe ou un filtre transformerait `add_rewrite_rule()` — le geste réflexe de tout développeur WordPress — en **no-op silencieux**, créant le piège qu'il prétend fermer, et laisserait ouvert le défaut réel : l'empreinte n'observait que les **noms**, jamais les **arguments de réécriture**. Un changement de slug ne prenait donc jamais effet, **sans le moindre 404 visible**. L'élargissement n'ajoute **qu'une permission**, ne retire aucune ligne du §13, et ne touche pas `mtb-core.php`. Détail complet dans `docs/contracts/issue-27.md`. |
 
 ## 15. Points restés ouverts
 
 - **Q5 (`ETAT.md`) — mode de déploiement en production.** Ne bloque pas : la routine de version de la
   section 4 est correcte que le déploiement se fasse par FTP ou par `git pull` + activation. La
   réponse doit être connue avant la mise en ligne, pas avant l'issue #1.
+  **#27 (2026-08-29) pousse ce raisonnement aux règles de réécriture** : le correctif doit prendre
+  effet sur la **première requête anonyme venue**, sans réactivation d'extension et sans passage par
+  Réglages → Permaliens — ce qui rendrait le mode de déploiement **sans incidence** sur les règles de
+  réécriture. *(Prédiction posée au gel du contrat ; l'état de sa vérification est consigné dans
+  `docs/contracts/issue-27.md` §11.)*
 - **Durcissement contre le listage de répertoire** (`index.php` « Silence is golden » dans les
   dossiers d'`includes/`) : hors empreinte de l'issue #1. Relève de la configuration serveur et de
   l'issue `infra` de mise en ligne — **à signaler à ce moment-là, pas à contourner ici**.
@@ -594,3 +641,141 @@ de l'inventer. Les trois pistes à instruire, dans cet ordre : un bloc de contex
 fiche par `mtb_get_*()` au lieu de recevoir ses photos en attribut ; un motif rendu côté serveur ; ou
 un gabarit PHP, qui sortirait du thème de blocs et se paierait cher. **À trancher au brainstorm de
 #16/#17, avant tout gel de contrat.**
+
+---
+
+# Amendement 2 — 2026-08-29, issue #27 : l'empreinte observe aussi les règles de réécriture
+
+**Réouverture nominative de `includes/class-loader.php`, accordée à la seule issue #27, refermée à sa
+clôture.** Le détail complet est dans `docs/contracts/issue-27.md` ; cet amendement porte ce qui
+modifie le présent contrat.
+
+## Ce qui a été constaté
+
+`Loader::synchroniser_version()` observait les **noms** des types de contenu et taxonomies préfixés
+`mtb_`, jamais leurs **arguments de réécriture**. Or `content/portee/bootstrap.php` déclare
+`'rewrite' => array( 'slug' => 'portees', 'with_front' => false )` et `'has_archive' => true`.
+
+> Changer ce `slug` ne faisait pas bouger le nom `mtb_portee`, donc pas bouger l'empreinte, donc pas
+> régénérer les règles : **la nouvelle adresse ne prenait jamais effet et l'ancienne continuait de
+> répondre.** Pas un 404 visible — un site qui a l'air de marcher avec les mauvaises URL.
+
+La dette **T6** annonçait par ailleurs « aucune voie conforme pour poser une règle de réécriture ».
+C'était inexact sur deux points, et les deux routent le travail à venir :
+
+- **`add_rewrite_rule()` n'a jamais été interdit par ce contrat.** Le §13 interdit
+  `flush_rewrite_rules()`, `init` 99 et la dépendance à l'ordre des groupes. **La confusion entre ces
+  deux fonctions est la cause de la dette.**
+- **#23 et #24 n'ont besoin d'aucune règle de réécriture.** Une règle traduit une URL en *requête* ;
+  une 301 est une *réponse*. Voir `issue-27.md` §7 — c'est la section que leurs chaînes doivent lire
+  avant de chercher un mécanisme qui ne leur sert pas.
+
+## Décision
+
+**L'empreinte est scindée en deux moitiés, comparées séparément.** Ni septième groupe, ni filtre, ni
+fichier nouveau : la surface globale du §5 reste close, `GROUPES` reste close, le contrat de
+`bootstrap.php` du §1 reste unique.
+
+```
+mtb_core_empreinte = array(
+    // ── moitié IDENTITÉ ──  déclenche do_action( 'mtb_core_mise_a_jour' )
+    'version'    => MTB_CORE_VERSION,
+    'types'      => noms_mtb( array_keys( get_post_types() ) ),   // inchangé depuis #1
+    'taxonomies' => noms_mtb( array_keys( get_taxonomies() ) ),   // inchangé depuis #1
+
+    // ── moitié RÉÉCRITURE ──  déclenche flush_rewrite_rules( false )
+    // array() tant que get_option( 'permalink_structure' ) est vide
+    'reecriture' => array(
+        'permastructs' => <extra_permastructs,  ksort>,
+        'etiquettes'   => <rewritecode/rewritereplace/queryreplace, ksort>,
+        'regles_haut'  => <extra_rules_top,     ksort>,
+        'regles_bas'   => <extra_rules,         ksort>,
+        'regles_hors'  => <non_wp_rules,        ksort>,
+        'terminaisons' => <endpoints,            sort>,
+    ),
+)
+```
+
+Ces six collections sont **les entrées que `WP_Rewrite::rewrite_rules()` lit lui-même** pour fabriquer
+l'option `rewrite_rules`. Elles contiennent déjà `slug`, `with_front`, `has_archive`, `feeds`,
+`pages`, `ep_mask`, `query_var` et `hierarchical` sous leur forme utile. **Rien n'est à tenir en phase
+avec une future version de WordPress.**
+
+Lire les arguments de réécriture directement était impossible : `WP_Post_Type::set_props()`
+(`class-wp-post-type.php:641`) place toute la normalisation de `rewrite` derrière
+`is_admin() || get_option( 'permalink_structure' )`, donc la valeur **diffère entre requête publique
+et requête d'administration** — l'empreinte aurait battu d'elle-même. D'où la garde ci-dessous.
+
+**Ce qui déclenche quoi :**
+
+| Changement | `flush_rewrite_rules( false )` | `mtb_core_mise_a_jour` |
+|---|---|---|
+| Nouveau type ou taxonomie `mtb_` **qui produit des règles** (`rewrite` ≠ `false`) | oui | **oui** |
+| Nouveau type ou taxonomie `mtb_` **en `'rewrite' => false`** | **non** — aucune règle produite, rien à régénérer | **oui** |
+| `MTB_CORE_VERSION` incrémentée **seule** | **non** — les entrées n'ont pas bougé | **oui** |
+| Changement de `slug` / `with_front` / `has_archive` | **oui** | non |
+| Règle ajoutée ou retirée par un module | **oui** | non |
+| `permalink_structure` vide | non — moitié non calculée | la moitié identité reste active |
+
+> **Changement de comportement par rapport à la rédaction d'origine du §4, à connaître** : avant #27,
+> **toute** variation de l'empreinte déclenchait un flush, la version en faisant partie. Une
+> incrémentation de `MTB_CORE_VERSION` était donc un moyen détourné de forcer une régénération.
+> **Ce moyen n'existe plus** — et il n'est pas regretté : il passait par l'édition de `mtb-core.php`,
+> l'index central que la décision 9 proscrit. Le flush ne suit désormais que les entrées de réécriture,
+> ce qui est la seule chose qu'il ait jamais servi à corriger.
+
+**Pourquoi séparer** : `mtb_core_mise_a_jour` est **le seul point d'accroche d'une migration de
+données** (§5). Une migration rejouée en boucle par un battement de règles serait bien pire qu'un
+flush en trop. La séparation rend ce mode de panne **structurellement impossible**.
+
+L'énoncé du §5 (« se déclenche une fois quand la version ou la liste des types de contenu change »)
+reste **littéralement vrai** : la séparation l'honore plus exactement qu'avant.
+
+## Trois règles nouvelles, gelées
+
+1. **Chaque moitié de l'empreinte est enregistrée au moment où son propre effet a réellement eu lieu.**
+   La moitié identité à `init` 99, son `do_action` ayant déjà eu lieu. La moitié réécriture à
+   `wp_loaded` **20**, parce que `WP_Rewrite::flush_rules()` se re-programme sur `wp_loaded` tant que
+   `did_action( 'wp_loaded' )` est faux (`class-wp-rewrite.php:1873-1881`, WordPress 6.9) — à `init`
+   99, la régénération n'a donc pas encore eu lieu.
+2. **`wp_loaded` 20 est réservée au chargeur**, au même titre qu'`init` 99. Aucun module ne l'utilise.
+   Le §4 (« pas de hook d'activation ») n'est pas touché : `wp_loaded` est un hook de requête, jamais
+   un hook de cycle de vie d'extension.
+3. **Un module n'enregistre jamais une règle sous condition de contexte** (`is_admin()` ou
+   équivalent) : l'empreinte battrait, et les règles seraient régénérées à chaque requête.
+
+## Compatibilité ascendante — aucun code de migration
+
+L'empreinte stockée avant #27 vaut
+`{"version":"0.1.0","types":["mtb_chien","mtb_portee","mtb_resultat"],"taxonomies":[]}`. Au premier
+déploiement : moitié identité **identique** → `mtb_core_mise_a_jour` **ne se déclenche pas** ; clé
+`reecriture` **absente** → **un flush, une fois**. Lecture de l'ancienne forme par repli
+(`$ancienne['reecriture'] ?? array()`), sans version de schéma.
+
+Vérifié au gel : **personne ne s'accroche à `mtb_core_mise_a_jour`** — zéro `add_action`, zéro
+`has_action` dans tout le dépôt.
+
+## Ce que le §13 devient
+
+| Interdit, tel qu'écrit avant | Après #27 |
+|---|---|
+| `flush_rewrite_rules()` dans un module | **inchangé, sans exception** — seul moyen de garantir un flush par déploiement et non un par module |
+| `init` 99 | **inchangé**, et `wp_loaded` 20 s'y ajoute |
+| dépendre de l'ordre de parcours des groupes | **inchangé — et renforcé** : l'empreinte est triée précisément pour ne dépendre d'aucun ordre |
+| `add_rewrite_rule()` | **n'a jamais été interdit** → désormais **explicitement permis**, sur `init` 10, sans condition de contexte. Le préfixe `mtb_` reste dû au §6 (nommage) et **n'est pas** ce qui rend la règle visible de l'empreinte |
+| « aucune issue n'édite `mtb-core.php` ni `class-loader.php` » | **`mtb-core.php` : inchangé, sans exception.** `class-loader.php` : **réouverture nominative**, accordée à #27 le 2026-08-29, **refermée**. Voir le §13 amendé et son avertissement à #26 |
+
+## Ce qui n'est **pas** amendé
+
+`GROUPES` reste close. Le §5 (« le chargeur n'offre aucun filtre sur la liste des groupes : la surface
+est close volontairement ») reste **littéral** : #27 n'ajoute ni groupe, ni filtre, ni constante, ni
+fonction globale, ni variable globale. Le §1 (« un module = un dossier, un `bootstrap.php` ») reste
+unique. `mtb-core.php` n'est pas ouvert, et l'incrémentation de `MTB_CORE_VERSION` reste précisément
+l'index central que la décision 9 proscrit.
+
+## Angles morts assumés
+
+Quatre, nommés dans `issue-27.md` §5 et dans l'en-tête de `class-loader.php` lui-même : un filtre de
+sortie (`rewrite_rules_array` et parents) n'est pas vu · un enregistrement conditionnel fait battre
+l'empreinte · sans structure de permaliens la moitié réécriture n'est pas calculée · **l'empreinte
+observe des entrées, pas un résultat** — elle n'affirme pas que les URL servies sont les bonnes.
