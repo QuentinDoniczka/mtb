@@ -268,9 +268,12 @@ réécrit toute seule au prochain enregistrement.
 - Dans la fenêtre des photos, la zone de description porte encore le titre « Texte alternatif ». C'est
   bien la bonne zone.
 
-**Une limite connue, qui sera améliorée.** La liste **Toutes les portées** n'affiche pour l'instant ni
-la date de naissance ni la disponibilité. Pour retrouver une portée, cherchez son identifiant dans le
-champ de recherche en haut de la liste.
+**Pour retrouver une portée.** La liste **Toutes les portées** affiche une colonne **Date de
+naissance** et une colonne **Disponibilité**, elle se range de la portée la plus récente à la plus
+ancienne, et elle porte un filtre par année. La recherche en haut de la liste reste là et reste
+pratique pour un identifiant précis. Voir
+[Retrouver un contenu dans vos listes](listes-retrouver-un-contenu.md), qui explique aussi comment
+**changer la disponibilité de plusieurs portées d'un coup**, sans en ouvrir une seule.
 
 **Si quelque chose vous inquiète** : ne supprimez rien, notez l'identifiant de la portée et l'heure, et
 appelez-nous. Une portée mal remplie n'a jamais cassé un site.

@@ -129,7 +129,8 @@ du tableau de la page Travail et du palmarès du chien. Il reste récupérable d
    **Tous les résultats de travail**.
 2. En haut de la liste, cliquez sur **Corbeille**.
 3. Sur la ligne voulue, cliquez sur **Rétablir**. Le lien apparaît quand la souris passe sur la ligne.
-   Le bandeau **Résultat de travail sorti de la corbeille.** s'affiche.
+   Le bandeau s'affiche. Il commence par **Résultat de travail sorti de la corbeille.** et vous
+   avertit ensuite qu'il revient en brouillon, hors du site, et qu'il faut le publier.
 4. **Le résultat revient en Brouillon, c'est-à-dire hors du site.** Vous le voyez de nouveau dans la
    liste, mais les visiteurs, eux, ne le voient pas.
 5. Ouvrez-le et cliquez sur **Publier**. Il réapparaît alors dans le tableau de la page Travail et
@@ -174,10 +175,12 @@ de la page Travail, sans palmarès puisqu'il n'y a pas de fiche.
 - Un résultat publié n'apparaît pas sur la page Travail.
 - Le titre d'une ligne ne correspond pas à ce que vous avez saisi après un **Mettre à jour**.
 
-**Une limite connue, qui sera améliorée.** La liste **Tous les résultats de travail** n'a pour l'instant
-ni colonne **Discipline**, ni tri par année. Elle est classée par date d'ajout et se parcourt au titre.
-Ajouter un résultat prend trente secondes ; en retrouver un parmi trente est aujourd'hui pénible. Le
-moyen le plus rapide reste le champ de recherche en haut de la liste, en tapant le nom du chien.
+**Pour retrouver un résultat.** La liste **Tous les résultats de travail** affiche les colonnes
+**Discipline**, **Année** et **Chien**, elle se range dans l'ordre de la page Travail — discipline par
+discipline, année la plus récente en tête — et elle porte un filtre par discipline. Les résultats sans
+discipline se rassemblent en fin de liste. La recherche en haut de la liste reste là et reste pratique
+pour un nom de chien précis. Voir
+[Retrouver un contenu dans vos listes](listes-retrouver-un-contenu.md).
 
 > **Capture à prendre :** la liste **Tous les résultats de travail**, avec au moins une ligne
 > **Résultat de travail (à compléter)** visible.
