@@ -9,6 +9,14 @@ A8 (levée) et **A8bis** (le reliquat livré dans `index.html`), §10 (cinq cons
 clôture)**. **L'arbitrage A1 n'est pas rouvert** : aucun `page-*.html`, aucun `front-page.html`.
 **L'empreinte d'écriture de cette passe est plus étroite que le §9** — voir la réserve du §9.
 
+**Amendé une seconde fois le 2026-08-29, après la passe d'intégration**, qui a reproduit les mesures
+du §13 et **en a réfuté quatre**. Toutes les conclusions tiennent ; ce sont des **raisons fausses
+sous des conclusions justes**, et elles sont corrigées à l'endroit où elles étaient écrites : §10 (le
+`tabindex` du `<main>` — **constat retiré, il n'y a pas d'écart**), §13.2 (le `THEAD` et non les
+`TH` ; le volet `INPUT#pwbox` **est** mesurable), §13.4 (l'`incomplete` de contraste court sur les
+six pages), §13.5 (formulation des blocs de nom nul), §13 en-tête et §11 (**l'Accueil n'a jamais reçu
+de contenu importé**). **D8 n'est pas rouverte** : tranchée en octets réseau, T37 fermée.
+
 Une seule moitié de plan a été produite (`leaddev-front-mtb`) : l'issue ne touche que le thème et ne
 modifie aucune ligne de `mtb-core`. Les arbitrages du §7 portent donc sur les présupposés du corps de
 l'issue et sur les questions que le plan ne pouvait pas trancher seul.
@@ -367,13 +375,34 @@ Les valeurs héritées d'`ETAT.md` (0 px, 134/173 px) sont **périmées**.*
   #17 n'ajoute pas une occurrence de la chaîne — il ajoute un consommateur de plus d'une chaîne
   unique. **Ne pas y embarquer** le `h1` de `archive-mtb_portee.html` (§10.3 régit des libellés de
   lien, pas un titre de page).
-- **Le `<main>` d'`index.html` n'est pas focusable, contrairement à celui de ses deux frères.**
-  `parts/header.html` pose un lien d'évitement vers `#contenu` ; `404.html:3` et `search.html:3`
-  écrivent `<main id="contenu" tabindex="-1">` en dur, tandis qu'`index.html` produit son `<main>`
-  par un `core/group` (`tagName:main`, `anchor:contenu`), qui rend l'`id` mais **pas** le `tabindex`.
-  **Non corrigé, et délibérément** : ajouter l'attribut au balisage sauvegardé d'un `core/group`
-  invaliderait le bloc dans l'éditeur, et basculer le `<main>` en balisage brut déplacerait le `h1`
-  de la dette T3, mesurée et payée. Écart hérité de #2/#16. **À router vers une issue `a11y`.**
+- ~~**Le `<main>` d'`index.html` n'est pas focusable, contrairement à celui de ses deux frères.**~~
+  **RÉFUTÉ le 2026-08-29 par la passe d'intégration, et vérifié à nouveau ici. Aucune issue `a11y` à
+  ouvrir : il n'y a pas d'écart.** Le constat lisait le **fichier** et concluait sur le **rendu** —
+  c'est l'erreur, et elle mérite d'être nommée. `index.html` produit bien son `<main>` par un
+  `core/group` (`tagName:main`, `anchor:contenu`) dont le balisage sauvegardé ne porte pas de
+  `tabindex` ; mais `wp-content/themes/mtb/functions.php`, fonction
+  `mtb_rendre_la_cible_focalisable` accrochée à `render_block`, **pose l'attribut au rendu** : elle
+  ne se déclenche que sur `attrs.anchor === 'contenu'`, ouvre un `WP_HTML_Tag_Processor` sur la
+  première balise, et **n'écrit que si `tabindex` est absent** — donc sans jamais doubler celui que
+  `404.html` et `search.html` écrivent en dur. `enveloppe-fiche.php:56` documentait déjà ce filtre.
+  Mesuré sur le HTML servi des trois routes :
+  `/author/fabienne/` → `<main tabindex="-1" class="wp-block-group mtb-canal is-layout-constrained…" id="contenu">`
+  (attribut injecté, d'où l'ordre différent) · `/?s=zzz` et une 404 →
+  `<main id="contenu" tabindex="-1" class="mtb-canal">` (attribut littéral). La cible du lien
+  d'évitement est focalisable **sur les trois**, et la passe d'intégration l'a éprouvé au
+  comportement (Tab → « Aller au contenu » → Entrée pose le focus sur `MAIN#contenu`), pas seulement
+  à l'attribut. **Leçon à garder : sur ce thème, l'absence d'un attribut dans un `.html` ne prouve
+  rien — un filtre `render_block` peut le poser.**
+- **Dette neuve, au débit de #16 et non de #17 : `mtb/lien-de-recours` émet un `<li>` sans garde de
+  conteneur.** Le bloc rend `<li class="mtb-lien-de-recours">…</li>` sans vérifier qu'un `<ul>` ou un
+  `<ol>` l'enveloppe ; posé seul au premier niveau d'un `post_content`, il produit un `<li>` orphelin
+  dans `.entry-content`. **Aucun gabarit livré ne fait cela** — `404.html`, `search.html` et
+  désormais `index.html` le placent tous les trois dans un `core/list`. **Précision qui change la
+  gravité** : `block.json:18` porte `"supports": {"inserter": false}`, vérifié — le composant
+  n'apparaît dans aucun panneau d'insertion ni aucune recherche de bloc, donc **le chemin d'édition
+  ordinaire de l'éleveuse ne peut pas produire ce cas**. Il reste atteignable par l'éditeur de code
+  ou par un collage de balisage brut, chemins délibérés et non offerts. Constaté, non corrigé, **à
+  router vers #16** — l'extension est hors de l'empreinte de #17.
 - **La valeur du numéro de voie existe dans le `<head>` des pages archivées, et n'est écrite dans
   aucun `.md` du dépôt.** Mesuré par moi : **53 des 54 fichiers** de `docs/migration/source/html/`
   portent `<meta property="business:contact_data:street_address" content="ROUTE DE SALERNES 3060"/>`
@@ -449,7 +478,8 @@ comptés compressés ou décompressés.** Les deux lectures ne donnent pas le m�
 sur l'Accueil en octets décompressés. L'arbitrage appartient au niveau du lot, pas à cette chaîne.
 
 **La cause est identifiée, chiffrée, et entièrement hors de l'empreinte de #17** : le projet expédie
-au navigateur des feuilles non minifiées, commentaires compris — `base.css` 42 648 o,
+au navigateur des feuilles non minifiées, commentaires compris — `base.css` ~~42 648 o~~ **46 927 o
+(remesuré le 2026-08-29 : la feuille a grossi depuis le gel ; c'est ce chiffre qui fait foi)**,
 `mtb-bandeau-ouverture.css` 33 980 o, `entete-pied.css` 28 269 o, `mtb-grille-chiens.css` 26 333 o.
 Une étape de minification rendrait la marge d'un coup, sans retirer un mot de contenu.
 
@@ -495,6 +525,35 @@ la fiche d'aide (décision 43 — une fiche qui ment est un défaut bloquant) :
 Prises sur la pile Docker, **avec le contenu réel importé au lot 8** et non sur une base d'essai
 légère. Chaque mesure affirme d'abord la présence de son objet (décision 56).
 
+> **Réserve du 2026-08-29 : cette phrase est fausse pour l'Accueil, et l'Accueil est justement la
+> page dont le poids a servi d'argument. L'exception doit être lue avant tout chiffre de ce §13 et
+> du §11.**
+>
+> **L'Accueil n'a jamais reçu de contenu importé.** Trois faits vérifiés :
+> `docker/provision/provision.sh` fait un `wp post update "$accueil_id"` **inconditionnel** à chaque
+> provisionnement — « contenu réaffirmé depuis le motif `mtb/accueil` » — donc la page est
+> **réécrite depuis la charpente** à chaque `make up` ; son `post_modified` est **2026-08-29
+> 19:15:25**, quand les pages réellement importées portent **2026-08-28 23:03:22** (`bhpl`,
+> `travail`, ids 249-255, dont **aucun accueil**) ; et `docs/migration/reprise-resultats-pages.md`
+> déclare déjà l'Accueil **hors périmètre de reprise**, précisément pour cette raison.
+>
+> **Ce que cela invalide** : les **63 mots** relevés au §13.1 pour l'Accueil sont ceux d'une
+> charpente, pas d'un contenu ; et par ricochet, les **210 680 o décompressés** du §11.1, qui
+> portaient l'alarme sur D8, ont été pris sur un état de base que **plus personne ne peut rejouer**.
+> Remesuré à neuf : **Travail 169 207 o** (concorde avec les 170 658 o d'origine), **Accueil
+> 185 188 o — soit 25 Ko sous le chiffre d'origine, et sous le plafond**. Le dépassement de 10 680 o
+> **n'est pas observable sur cette pile**.
+>
+> **Ce que cela n'invalide pas, et il ne faut pas s'y tromper** : **D8 reste tranchée** par
+> l'utilisateur le 2026-08-29, en **octets réseau**, et **T37 reste fermée** — voir §11.1. Rien ici
+> ne rouvre cet arbitrage. Et **la cause est intacte, mesurée, indépendante du contenu** : le projet
+> expédie **147 492 o de CSS décompressé pour 56 140 o sur le réseau**. C'est la dette de
+> minification, et elle ne se règle pas en retirant un mot de contenu.
+>
+> **Les mesures d'accessibilité des §13.2 à §13.4 ne sont pas touchées** : elles portent sur les cinq
+> autres pages autant que sur l'Accueil, et le seul débordement relevé est sur **Travail**, dont le
+> contenu est bien celui du lot 8.
+
 ### 13.1 Présence, avant tout jugement
 
 Les six pages libres publiées répondent **200**, avec leur `<title>`, leur `h1` et leur volume de
@@ -515,17 +574,43 @@ Méthode du projet : au lieu de zoomer, on divise par deux la largeur du viewpor
 - Élément fautif nommé, chaîne complète :
   `MAIN#contenu > DIV.entry-content > DIV.mtb-tableau-resultats > SECTION > TABLE.mtb-tableau`.
   Le `SECTION` parent est en `overflow-x: visible` ; la table la plus large est **« Mondioring »,
-  215 px** de largeur min-content. Les `TH` sont hors flux (`position:absolute; width:1px`) et ne
-  contribuent pas : ce sont des faux positifs, écartés.
+  215 px** de largeur min-content. Les `TH` remontent d'abord comme fautifs et sont des faux
+  positifs — ils ne contribuent pas au `scrollWidth`.
+
+  > **Raison corrigée le 2026-08-29 : ce ne sont pas les `TH` qui sont hors flux, c'est le `THEAD`.**
+  > La première formulation écrivait « les `TH` sont hors flux (`position:absolute; width:1px`) » ;
+  > c'est faux, et vérifié : les `TH` sont `position: static`, larges de 63 à 133 px. C'est
+  > `.mtb-tableau thead` qui porte `position:absolute; inline-size:1px; block-size:1px;
+  > clip-path:inset(50%)` (`base.css` §10.5.1, sous `max-width:47.999rem`) — le patron du tableau
+  > empilé en cartes. Les `TH` sont donc **écrêtés par leur conteneur**, pas retirés du flux. **La
+  > conclusion ne bouge pas** (ils ne contribuent pas au `scrollWidth`) ; seule la raison était
+  > fausse, et sur ce projet une raison fausse est ce qui fait ouvrir une issue pour rien.
 
 **C'est la dette T42, et la mesure corrige le chiffre qu'on m'avait transmis.** T42 était annoncée à
 « 4 combinaisons sur 36 » ; ce chiffre avait été relevé **sur les fiches de portée et de chien**, pas
 sur les pages libres. Sur les huit pages libres, T42 vaut **1 combinaison sur 42**. Contre-vérifié
 hors périmètre pour ne pas conclure à tort : `/portees/a3-2025/` (244/180,
 `TABLE.mtb-tableau--chiots`), `/portees/v1-2024/` (194/180, idem), `/chien/jango/` (198/180,
-`TABLE.mtb-tableau`), `/chien/very-best/` propre. **Le volet `INPUT#pwbox` de T42 n'est pas mesurable
-sur cette installation** : aucun contenu n'y porte de mot de passe, le formulaire du cœur n'est donc
-jamais rendu. **Mesuré, non corrigé** : les deux feuilles fautives appartiennent à #15 et #16.
+`TABLE.mtb-tableau`), `/chien/very-best/` propre.
+
+> **Correction du 2026-08-29 — j'avais écrit que le volet `INPUT#pwbox` de T42 « n'est pas mesurable
+> sur cette installation, aucun contenu n'y portant de mot de passe ». C'est FAUX, et la source de
+> l'erreur est identifiée : je me suis fié à un relevé d'agent au lieu d'interroger la base.**
+> Vérifié moi-même : `wp post list --post_type=page --fields=ID,post_name,post_status,post_password`
+> rend `5,espace-prive,publish,chiot2026`. La page **« Espace privé (démonstration) » est publiée ET
+> protégée**, créée par `provision.sh` ; `/espace-prive/` répond **200** en anonyme et rend
+> `post-password-form` avec `<input id="pwbox-5" size="20">`. La passe d'intégration l'a mesurée à
+> **263/180** — **la valeur exacte d'`ETAT.md`**. Le volet est donc intact, et T42 est reproduite
+> dans ses trois composantes.
+
+**Total de T42, réénoncé** : **1 combinaison sur 42 sur les pages libres** — ce qui reste la
+requalification juste, le chiffre d'origine ayant bien été relevé sur les fiches — et **5
+combinaisons vivantes au total** sur l'ensemble du site, les quatre d'origine ayant été rejouées et
+vivant toutes : `/portees/a3-2025/` 244/180, `/portees/v1-2024/` 194/180, `/chien/jango/` 198/180,
+`/espace-prive/` 263/180, plus `/travail/` 231/180.
+
+**Mesuré, non corrigé** : les deux feuilles fautives appartiennent à #15 et #16, et le troisième
+coupable (`size="20"` codé en dur) est dans `post_password_form()` du cœur de WordPress.
 
 ### 13.3 Parcours clavier
 
@@ -551,7 +636,23 @@ est **0**. C'est la leçon du lot 5 rejouée : un audit mesure une propriété, 
 ### 13.4 axe-core
 
 **0 violation, toutes gravités confondues, sur les six pages** (26 à 40 règles par page).
-`color-contrast` a bien tourné et passe, avec un seul `incomplete` sur Travail. Passent également
+
+> **Corrigé le 2026-08-29 : l'`incomplete` de `color-contrast` n'est pas propre à Travail — il court
+> sur les SIX pages, et c'est un silence, pas un détail.** J'avais écrit « un seul `incomplete` sur
+> Travail ». La passe d'intégration a compté les nœuds non jugés : **6 / 7 / 3 / 6 / 6 / 12** sur
+> Accueil, BHPL, Littérature, Mentions légales, Placement, Travail — message identique partout
+> (**« background gradient »**), et **le `h1` ainsi que le lien de titre de site de l'en-tête en font
+> partie sur chaque page**. Les **0 violation** restent vrais : axe ne signale rien, parce qu'il
+> **refuse de trancher**, ce qui n'est pas la même chose que passer.
+>
+> **Énoncé qu'il faut laisser écrit noir sur blanc** : *le contraste du texte sur fond dégradé n'est
+> vérifié par personne, sur la totalité des pages de ce lot.* Ce n'est ni mesuré ni infirmé — c'est
+> un trou. La règle transverse du brief fait de l'accessibilité AA une exigence bloquante, et
+> l'en-tête est le composant le plus vu du site. **À router** : la vérification demande une lecture
+> de contraste sur pixels rendus, au pire pixel du dégradé, comme le lot 4 l'a fait pour ses onze
+> contrastes (décision 36). Hors empreinte de #17, qui ne touche ni l'en-tête ni un dégradé.
+
+`color-contrast` a bien tourné et ne rend aucune violation. Passent également
 `skip-link`, `bypass`, `landmark-one-main`, `heading-order`, `link-name`, `region` et
 `meta-viewport` (le zoom n'est pas bloqué). **Zéro requête vers un domaine tiers** relevée au
 navigateur sur les pages instrumentées.
@@ -571,12 +672,23 @@ modification (`grep -c` : 1 → 0).
 **Deux liens, pas trois, et c'est le comportement voulu.** La page `la-meute` n'existe pas en base
 (`/la-meute/` → 404) : le bloc s'omet, sans `<li>` vide ni puce orpheline
 (`grep -c '<li[^>]*>[[:space:]]*</li>'` → **0**). C'est la **dette T30**, ouverte, qui devient ainsi
-observable. Les deux liens rendus pointent sur `home_url()` et sur l'archive des portées, aucune URL
+observable.
+
+> **Point de vocabulaire, consigné parce qu'il a déjà causé une confusion le 2026-08-29 :** la
+> **dette T30** est « la page *La meute* n'existe que dans la base de développement ». Elle n'a
+> **aucun rapport avec l'issue #30**. Les deux se lisent presque pareil ; ce contrat parle
+> exclusivement de la dette. Les deux liens rendus pointent sur `home_url()` et sur l'archive des portées, aucune URL
 n'étant écrite par le gabarit (`grep 'href=' index.html` → **0**).
 
 `parse_blocks()` sur le gabarit rend un arbre propre —
-`core/query-no-results → core/paragraph, core/list → mtb/lien-de-recours ×3` — sans bloc de nom nul,
-donc sans balisage hors bloc. La région « aucun résultat » d'`index.html` et celle de `search.html`
+`core/query-no-results → core/paragraph, core/list → mtb/lien-de-recours ×3`.
+
+> **Formulation corrigée le 2026-08-29.** J'avais écrit « **sans bloc de nom nul**, donc sans
+> balisage hors bloc » : faux à la lettre. `parse_blocks()` en rend **trois**, comme pour tout
+> fichier de gabarit — ce sont les sauts de ligne entre blocs de premier niveau, et leur `innerHTML`
+> est **vide**. L'énoncé juste est : **aucun bloc de nom nul ne porte de HTML**, donc aucun balisage
+> libre n'est servi hors d'un bloc. C'est ce que la mesure d'origine disait ; c'est mon résumé qui
+> avait laissé tomber la qualification. La région « aucun résultat » d'`index.html` et celle de `search.html`
 ne diffèrent **que** par le texte du paragraphe.
 
 ### 13.6 Ce qui n'a pas été mesuré, et doit être dit
