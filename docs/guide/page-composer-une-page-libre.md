@@ -69,6 +69,11 @@ l'écran qui le porte n'est pas dans votre menu de gauche, et c'est normal. Cré
 modèle ne la met donc pas à la place de l'accueil actuel. **Si vous avez besoin d'en changer,
 appelez-nous** — c'est l'affaire de deux minutes de notre côté.
 
+**En revanche, ce qu'on lit sur votre accueil est à vous, entièrement.** La page d'accueil s'ouvre et
+se corrige comme n'importe quelle autre : **Pages**, puis **Toutes les pages**, puis son titre. Vous y
+changez le texte, les photos, l'ordre des sections, et vous cliquez sur **Mettre à jour**. **Une seule
+chose vous échappe : dire quelle page tient ce rôle. Pas ce qu'elle raconte.**
+
 ---
 
 ## Si la fenêtre s'est refermée, ou si la page existe déjà
@@ -224,8 +229,10 @@ changement — et l'un des deux finirait par mentir.
 
 - **Des cadres beiges à contour en tirets partout dans la page qui vient d'être créée.** C'est la
   charpente qui attend votre texte. Les visiteurs ne voient rien. Voir plus haut.
-- **La page Travail n'affiche qu'un ou deux tableaux, pas neuf.** Les disciplines sans aucun résultat
-  n'affichent ni titre ni tableau, exprès.
+- **La page Travail n'affiche pas un tableau par discipline.** Le site en connaît **neuf**, et
+  n'affiche que celles où vous avez au moins un résultat : une discipline sans aucun
+  résultat n'affiche ni titre ni tableau, exprès. Le nombre de tableaux se règle donc tout seul, et il
+  change le jour où vous ajoutez un résultat dans une discipline qui n'en avait pas.
 - **Le titre de la page n'apparaît pas au-dessus du texte.** Il est dans le bandeau, sur la photo.
 - **Le titre s'affiche au-dessus du texte alors que vous attendiez un bandeau.** Ce modèle-là n'en a
   pas : ce sont les mentions légales et la politique de confidentialité.

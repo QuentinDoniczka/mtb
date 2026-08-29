@@ -3,6 +3,12 @@
 Gelé le 2026-08-20. Opposable à `dev-front-mtb`, `contenu-mtb`, `refacto-mtb`,
 `dev-integration-mtb`, `doc-client-mtb`.
 
+**Amendé le 2026-08-29**, par ajouts datés et sans rien retirer — A5 (renumérotation T28 → T33),
+A8 (levée) et **A8bis** (le reliquat livré dans `index.html`), §10 (cinq constats neufs), §11
+(le « 0 octet » corrigé par la mesure), **§11.1 (D8 tranchée, T37 fermée)** et **§13 (mesures de
+clôture)**. **L'arbitrage A1 n'est pas rouvert** : aucun `page-*.html`, aucun `front-page.html`.
+**L'empreinte d'écriture de cette passe est plus étroite que le §9** — voir la réserve du §9.
+
 Une seule moitié de plan a été produite (`leaddev-front-mtb`) : l'issue ne touche que le thème et ne
 modifie aucune ligne de `mtb-core`. Les arbitrages du §7 portent donc sur les présupposés du corps de
 l'issue et sur les questions que le plan ne pouvait pas trancher seul.
@@ -44,6 +50,7 @@ Corollaire, également gravé :
 |---|---|
 | Huit motifs de page | `wp-content/themes/mtb/patterns/{accueil,bhpl,bhpl-en-france,litterature,travail,placement,mentions-legales,politique-de-confidentialite}.php` |
 | Dette T3 | `wp-content/themes/mtb/templates/index.html` (une ligne) |
+| **A8bis — liens de recours** *(ajout du 2026-08-29)* | `wp-content/themes/mtb/templates/index.html` (huit lignes ajoutées, deux retirées) |
 | Sources verbatim archivées | `docs/migration/source/pages/**` |
 | Contenu réel saisi | base de développement uniquement — **aucun fichier**, `provision.sh` interdit |
 | Fiche d'aide | `docs/guide/` (nom de fichier neuf) |
@@ -238,10 +245,11 @@ jusqu'à six). La divergence deviendra visible. **On la constate, on ne la corri
 | A3 | ~~Page Travail : neuf instances ou tableau filtrable ?~~ | ~~Neuf instances, une par discipline.~~ **RENVERSÉ le 2026-08-20 — voir A3bis.** | ~~Décision 11 ferme la liste à neuf : rien à maintenir.~~ Le raisonnement tenait la liste pour close ; `donnees.php` prouve qu'elle ne l'est pas. |
 | **A3bis** | **Page Travail : combien d'instances du tableau ?** | **UNE seule, sans aucun attribut : `<!-- wp:mtb/tableau-resultats /-->`.** | Trois raisons, par ordre de gravité. **(1) Perte de donnée.** Neuf instances énumèrent neuf clés ; le défaut rend **tous** les groupes que la fonction de lecture renvoie, orphelins compris. Un résultat dont la discipline a été renommée ou n'a jamais été renseignée **n'apparaîtrait nulle part sur le site public** — la garantie de #5 « rien ne disparaît en silence » annulée par la surface d'insertion, et la contrainte 4 avec elle. **(2) Contrainte 1.** Une dixième discipline n'apparaîtrait qu'après réouverture de `patterns/travail.php` **par un développeur**. Fabienne ne le peut pas : c'est exactement le motif qui a écarté les `page-*.html` en A1, appliqué au fichier de motif lui-même. **(3) Le rendu est identique** dans le cas nominal — même `h2`, même ordre gelé, même silence sur une discipline vide (`groupes()` mémorise en statique, le coût de lecture est le même). Ce n'est donc pas un arbitrage de style : l'écriture à neuf instances marchait à l'écran et **perdait de la donnée**. Le filtre JavaScript reste écarté pour sa raison d'origine — zéro octet de JS public. |
 | A4 | Dette T3 — quel `h1` pour `index.html` ? | **`wp:site-title {"level":1,"isLink":false}`**, et `page_on_front` posé en base de développement. | Aucun libellé inventé (« Actualités » contredirait Q6, « Journal » serait un acte de contenu). Le code garantit un `h1` dans **tous** les états de la base ; le réglage rend la route inatteignable. **Conséquence assumée** : tant que `page_on_front` n'est pas posé, le nom de l'élevage apparaît deux fois sur `/` — en petit dans l'en-tête, en très gros juste dessous. Défaut **visuel**, sur une route qui n'a plus vocation à recevoir personne. Consigné comme point pour `lead-design-mtb`. Option « masquer le `h1` en CSS » écartée : elle coûterait une feuille neuve pour un titre que personne ne voit. |
-| A5 | Catégorie des motifs ? | **`Categories: text`** (rendue « Texte »). | Sans catégorie, le panneau range les huit sous « **Non classé** », qui sonne cassé. `register_block_pattern_category( 'mtb', 'Mont Brabant' )` exigerait `functions.php`, hors empreinte → **dette T28**. La modale de création de page ignore de toute façon les catégories : l'effet est limité au panneau « Motifs ». |
+| A5 | Catégorie des motifs ? | **`Categories: text`** (rendue « Texte »). | Sans catégorie, le panneau range les huit sous « **Non classé** », qui sonne cassé. `register_block_pattern_category( 'mtb', 'Mont Brabant' )` exigerait `functions.php`, hors empreinte → **dette T33** (numérotée T28 au gel, **renumérotée T33** par `ETAT.md` le 2026-08-23 : T28 était déjà pris par une dette du contrat #16, désormais payée. `ETAT.md` fait foi). La modale de création de page ignore de toute façon les catégories : l'effet est limité au panneau « Motifs ». **Toujours ouverte le 2026-08-29** — vérifié : `mtb-core/includes/blocks/categorie-mtb/bootstrap.php` déclare bien « Mont Brabant », mais par `block_categories_all`, qui est la catégorie des **blocs** de l'insérteur, pas celle des **compositions**. Les deux mécanismes sont distincts ; celui des compositions reste non appelé. |
 | A6 | Q6, volet tarifs des chiots | **Tranchée par l'utilisateur le 2026-08-20 : aucun tarif.** | Aucun emplacement de tarif dans `patterns/placement.php`, aucun champ, aucun montant, aucune fourchette, aucun « à partir de ». Si le contenu source porte un montant, `contenu-mtb` **ne le reprend pas** et le signale. `ETAT.md` est périmé sur ce point. |
 | A7 | Politique de confidentialité | **Charpente seule, trous nommés.** | Interdiction explicite d'inventer une durée de conservation (Q3 ouverte) ; l'hébergeur dépend de Q5 ; la mention RGPD du formulaire appartient à #22-#24. Trois sections nues, aucun libellé. La page **n'est pas publiée** par cette chaîne. |
-| A8 | Motif `mtb/liens-de-recours` pour `404.html` et `search.html` ? | **Non livré.** | `MASTER.md` §9.5 exige trois liens dont « La meute », dont l'adresse est **inconstructible** : `mtb_chien` est enregistré `has_archive => false`, donc « La meute » est une Page sans identifiant dérivable. Et les deux gabarits consommateurs appartiennent à #16. Remonté en question ouverte. |
+| A8 | ~~Motif `mtb/liens-de-recours` pour `404.html` et `search.html` ?~~ | ~~**Non livré.**~~ **LEVÉE le 2026-08-29 — voir A8bis.** | ~~`MASTER.md` §9.5 exige trois liens dont « La meute », dont l'adresse est **inconstructible**…~~ La prémisse a été renversée : l'adresse se calcule au rendu. |
+| **A8bis** | **Le reliquat de A8 pour la part « motifs » de #17.** | **Livré dans `templates/index.html`** : les trois `mtb/lien-de-recours` posés dans l'état « aucun résultat », et le commentaire périmé de la ligne 1 supprimé. | **Les deux raisons du refus de A8 ont disparu, et je les ai vérifiées dans le code, pas déduites.** **(1) « La meute » n'est plus inconstructible** : `blocks/lien-de-recours/rendu.php:76-101` la résout par `get_page_by_path('la-meute')` avec double garde (`publish` **et** mot de passe vide), et `render.php:39-41` fait un `return;` nu quand la destination manque — le cœur met le fichier en tampon, et c'est le **tampon vide** qui devient le rendu : pas de `<li>` vide, pas de puce orpheline. L'omission silencieuse est **mesurée**, pas crue (voir §13). **(2) Les gabarits consommateurs ne sont plus tous hors empreinte** : `404.html` et `search.html` le sont et portaient déjà les trois liens (payés par #16) ; **`index.html` ne l'a jamais été**, et son propre commentaire de ligne 1 déclarait ce reliquat au présent. Le balisage posé est recopié **caractère pour caractère** de `search.html:24-30` — les trois gabarits capables d'un état vide rendent désormais la même sortie de secours. **Zéro octet de CSS** : `.mtb-liens-de-secours` est déjà habillée dans `base.css` §11, dont le commentaire prévoit lui-même une liste « à trois, deux ou un élément ». |
 | A9 | `dev-ux-mtb` lancé ? | **Non.** | Les motifs ne font que composer des blocs déjà habillés ; aucun crochet de classe neuf n'est créé. **Zéro octet de CSS ajouté, D8 tenue gratuitement.** Si un dev estime devoir écrire du CSS, c'est le signe qu'un motif a introduit une structure qu'il ne devait pas introduire. |
 | A10 | Photos du site source importées ? | **Non.** | La reprise des médias appartient à #19-#21 (T12 : les formats modernes ne valent que pour les téléversements postérieurs au module d'images). Importer ici garantirait un doublon. Les galeries et bandeaux restent sans photo — ce qui démontre authentiquement D12. |
 
@@ -275,6 +283,15 @@ ce lot**, dettes T22 et T23) · `theme.json` · `functions.php` · `parts/header
 
 **Commit** : `git commit -m "…" -- <chemins>`, jamais `git add` puis `git commit` nu — l'index git est
 partagé entre les trois chaînes parallèles (décision 23).
+
+> **Réserve du 2026-08-29 — l'empreinte de la passe de clôture est plus étroite que celle-ci.**
+> L'orchestrateur a restreint l'écriture à `templates/index.html`, `patterns/**`, `docs/guide/` et
+> ce fichier. **`docs/migration/source/pages/**` en a été retiré**, bien que le §9 l'autorise depuis
+> le gel : les pages libres y ont été importées par #20 et #21 au lot 8, et rouvrir leurs fichiers
+> risquait de défaire leur travail. **Conséquence concrète, assumée** : le constat sur le `<meta>`
+> de `<head>` (§10, ajouts du 2026-08-29) est consigné **ici** et non dans
+> `source/pages/README.md`, qui en est le porteur naturel. C'est un pis-aller, il est déclaré, et il
+> est routé.
 
 ---
 
@@ -331,6 +348,60 @@ Les valeurs héritées d'`ETAT.md` (0 px, 134/173 px) sont **périmées**.*
   liens de chien dans le tableau de résultats **19 px** (#15), liens de nom dans la grille de chiens
   **28 px** (#13/#14). #17 n'introduit aucun élément interactif.
 
+*Ajouts du 2026-08-29, à la clôture de la chaîne.*
+
+- **`MASTER.md` §9.5 nomme deux écrans de recours, le thème en a désormais trois.** §9.5 spécifie la
+  404 et la recherche sans résultat ; A8bis pose la même sortie de secours sur l'**état « aucun
+  résultat » de `index.html`**, que §9.5 ne couvre pas. Extrapolation assumée, à zéro octet de CSS et
+  sans un libellé composé par le thème. **À router vers `lead-design-mtb`** : étendre §9.5, ou faire
+  retirer le balisage. Corollaire : le `<p>Aucun contenu à afficher.</p>` est **conservé faute de
+  libellé figé** — §9.5 et §10.3 n'en donnent aucun pour l'état « archive vide », et en inventer un
+  serait un acte de contenu, exactement ce que A4 a refusé pour le `h1`.
+- **`MASTER.md` se contredit sur le libellé du lien vers l'index des portées, et #17 n'y touche pas.**
+  §9.5 écrit « Accueil, **Les portées**, La meute » ; §9.3 « Voir toutes les portées » ; **§10.3
+  (« Vocabulaire figé », qui se déclare lui-même l'arbitre) écrit « Toutes les portées »**. Le code
+  (`lien-de-recours/rendu.php:71` et `editeur.js:26`) dit « Les portées », aligné sur §9.5 —
+  `issue-16.md:378` le dit explicitement et **ne cite jamais §10.3**. L'écart n'a donc pas été
+  arbitré, il a été hérité. Il vit **entièrement dans `mtb-core`**, hors empreinte : le corriger là
+  corrigerait les **trois** gabarits d'un coup, ce qui prouve que le libellé appartient au serveur.
+  #17 n'ajoute pas une occurrence de la chaîne — il ajoute un consommateur de plus d'une chaîne
+  unique. **Ne pas y embarquer** le `h1` de `archive-mtb_portee.html` (§10.3 régit des libellés de
+  lien, pas un titre de page).
+- **Le `<main>` d'`index.html` n'est pas focusable, contrairement à celui de ses deux frères.**
+  `parts/header.html` pose un lien d'évitement vers `#contenu` ; `404.html:3` et `search.html:3`
+  écrivent `<main id="contenu" tabindex="-1">` en dur, tandis qu'`index.html` produit son `<main>`
+  par un `core/group` (`tagName:main`, `anchor:contenu`), qui rend l'`id` mais **pas** le `tabindex`.
+  **Non corrigé, et délibérément** : ajouter l'attribut au balisage sauvegardé d'un `core/group`
+  invaliderait le bloc dans l'éditeur, et basculer le `<main>` en balisage brut déplacerait le `h1`
+  de la dette T3, mesurée et payée. Écart hérité de #2/#16. **À router vers une issue `a11y`.**
+- **La valeur du numéro de voie existe dans le `<head>` des pages archivées, et n'est écrite dans
+  aucun `.md` du dépôt.** Mesuré par moi : **53 des 54 fichiers** de `docs/migration/source/html/`
+  portent `<meta property="business:contact_data:street_address" content="ROUTE DE SALERNES 3060"/>`
+  — numéro **après** le nom de voie, là où la page Contact écrit `3060 ROUTE DE SALERNES`. Le seul
+  fichier sans est `bhpl-en-france.html`, dont le corps est vide (302). **Ce n'est pas une donnée des
+  Mentions légales** : c'est un `<meta>` de gabarit global, présent sur toutes les pages, et l'écrire
+  sous une section « Mentions légales » ferait croire que cette page porte le numéro — un pas vers
+  l'harmonisation, que la règle d'exactitude interdit. La **classe** de fait est déjà déclarée deux
+  fois (`source/html/README.md` §4 et `issue-19.md` §3.1 bis, qui posent que la réduction ne découpe
+  que le `<body>` et qu'aucune métadonnée de `<head>` n'atteint une capture) ; seule la **valeur**
+  manquait. Consignée ici faute de mieux : le porteur naturel est
+  `docs/migration/source/pages/README.md`, que le §9 de ce contrat autorise mais que l'empreinte
+  restreinte de la passe du 2026-08-29 n'autorisait pas. **À router.**
+- **La contradiction interne des Mentions légales est vérifiée, et elle était déjà écrite.** Contrôlé
+  sur `docs/migration/source/html/mentions-legales.html` (blob git `4001f9a5…`, la copie de l'arbre
+  de travail est en CRLF et donne une autre empreinte — artefact de dépôt, pas d'altération) :
+  `Gueneau` sans accent une fois, `Guéneau MAJ Ju…` une fois dans le pied de page du même fichier,
+  `ROUTE DE SALERNES` sans numéro dans le corps, ` 680505619` à neuf chiffres. `ETAT.md` affirmait
+  que la source ne portait ni siège social ni raison sociale : **c'est faux, elle porte les deux**
+  (`Elevage du Mont Brabant`, SIRET `82237792500018`). **Rien n'a été harmonisé, et c'est le bon
+  choix.** Les écarts sont déjà consignés en trois endroits — `source/pages/README.md`
+  (« Écarts avec les coordonnées de référence »), `issue-21.md` §5, et la clé `ecart` de
+  `migration/resultats-pages/donnees/pages/mentions-legales.json` — plus, dans les mots de
+  l'éleveuse, `docs/guide/page-ce-qui-a-ete-repris-de-l-ancien-site.md`. **Aucun quatrième
+  exemplaire n'a été créé.** Une seule nuance à ne pas graver de travers : le `0680505619` à dix
+  chiffres est celui de l'**encart latéral global du site**, pas d'une seconde écriture propre à la
+  page — `source/pages/README.md` le dit déjà (« Ce n'est pas une donnée de la page qui le porte »).
+
 ## 11. D8 — le budget, et comment il se lit
 
 Mesuré cache froid, octets réseau réels (CDP `encodedDataLength`), page la plus lourde = **l'Accueil**
@@ -348,7 +419,23 @@ chiffré porte sur **HTML + CSS + JS**. Le dépassement apparent des 200 000 o s
 polices comprises, est entièrement imputable à `newsreader-var-latin.woff2` (124 474 o), actif partagé
 par tout le site, servi une seule fois, hors de l'empreinte de #17.
 
-### 11.1 Une ambiguïté du brief que #17 ne peut pas trancher seule
+### 11.1 Une ambiguïté du brief que #17 ne peut pas trancher seule — **TRANCHÉE le 2026-08-29**
+
+> **ARBITRAGE RENDU. Le budget de `BRIEF.md` §12 se lit en octets réseau, c'est-à-dire compressés.**
+>
+> - **Tranché le** : 2026-08-29.
+> - **Par** : l'orchestrateur `/lead-mtb`, au niveau du lot, sur la réponse de l'utilisateur. Ce n'est
+>   pas une mesure, c'est une décision — c'était précisément ce que la dette T37 réclamait.
+> - **Conséquence** : Accueil **72 413 o** et Travail **58 439 o** contre un plafond de 200 000 o.
+>   **D8 est tenue**, sans réserve, sur les deux pages. La **dette T37 se ferme**.
+> - **Ce qui ne se ferme pas** : le dépassement en octets **décompressés** (Accueil 210 680 o, soit
+>   10 680 o au-dessus) reste un fait mesuré, et sa cause reste identifiée et chiffrée — **~50 Ko de
+>   commentaires CSS non minifiés** expédiés au navigateur. Il devient une **dette non bloquante
+>   distincte**, ouverte au niveau du lot. #17 ne l'ouvre pas et n'agit pas dessus.
+>
+> Le tableau ci-dessous est conservé tel quel : il porte les deux mesures qui ont motivé l'arbitrage,
+> et elles restent vraies l'une comme l'autre. Seul le verdict change.
+
 
 **`BRIEF.md` §12 écrit « HTML + CSS + JS < 200 Ko hors photos » et ne dit pas si les octets sont
 comptés compressés ou décompressés.** Les deux lectures ne donnent pas le même verdict :
@@ -373,6 +460,24 @@ maigri. Aucun octet de dépassement ne lui est imputable, et la règle gelée au
 **Poids public ajouté par #17 : 0 octet.** Aucun CSS, aucun JS, et un `index.html` allégé de 74 o.
 Les 6 044 o des huit fichiers de motifs sont des fichiers de thème, jamais servis au navigateur.
 
+> **Chiffre amendé le 2026-08-29 : « 0 octet » n'est plus exact.** La passe A8bis ajoute des octets sur
+> **une seule route**, et le chiffre prévu au plan était faux — c'est la mesure qui fait foi.
+>
+> | | octets |
+> |---|---|
+> | Prévu au plan | +71 o |
+> | **Mesuré** sur `/author/fabienne/`, `curl -s … \| wc -c` avant/après | **19 708 → 19 910 = +202 o** |
+>
+> **L'écart de 131 o n'est pas dans notre balisage.** Le cœur de WordPress inline **219 o** de
+> `wp-includes/blocks/list/style.min.css` la première fois qu'un `core/list` apparaît sur ce gabarit.
+> Coût du cœur, déjà payé de la même façon sur `404.html` et `search.html`. Reste, à nous : le retrait
+> du commentaire périmé (−258 o) contre le balisage rendu (+235 o) et sa sérialisation (≈ +6 o).
+>
+> **Sur les huit pages libres, sur l'accueil, sur les fiches et sur les archives de portées : toujours
+> 0 octet.** `index.html` n'est plus servi par `/` (`page_on_front` est posé) ; la seule route qui
+> l'atteint est une archive vide. **D8 n'est pas entamée** : les 202 o portent sur une page de
+> ~19,9 Ko, et la marge en cause au §11.1 est sur l'Accueil, que cette passe ne touche pas d'un octet.
+
 ## 12. Vocabulaire réel de WordPress 6.9 — mesuré à l'écran
 
 Les libellés que voit Fabienne **ne sont pas** ceux que le plan supposait. À recopier exactement dans
@@ -382,3 +487,107 @@ la fiche d'aide (décision 43 — une fiche qui ment est un défaut bloquant) :
 - l'onglet de l'insérteur s'appelle **« Compositions »**, pas « Motifs » ;
 - les catégories proposées sont **« Toutes », « Contenu de départ », « Texte »** — les huit
   compositions apparaissent dans les trois.
+
+---
+
+## 13. Mesures de clôture — 2026-08-29
+
+Prises sur la pile Docker, **avec le contenu réel importé au lot 8** et non sur une base d'essai
+légère. Chaque mesure affirme d'abord la présence de son objet (décision 56).
+
+### 13.1 Présence, avant tout jugement
+
+Les six pages libres publiées répondent **200**, avec leur `<title>`, leur `h1` et leur volume de
+texte : Accueil 63 mots, BHPL 1 083, Littérature 30, Mentions légales 57, Placement 309, Travail
+1 141 (et **8 tableaux**). Les deux brouillons — `bhpl-en-france` et `politique-de-confidentialite` —
+répondent **404 en anonyme**, ce qui est leur état voulu ; ils ont été mesurés par prévisualisation
+et **n'ont pas été publiés**.
+
+### 13.2 Zoom 200 % et 360 px — 42 combinaisons, 41 propres
+
+Méthode du projet : au lieu de zoomer, on divise par deux la largeur du viewport CSS (360 px zoomé à
+200 % = 180 px CSS). Largeurs jouées : 1440, 1280, 768, 720, 640, 360, 180. Critère :
+`scrollWidth > clientWidth`.
+
+- **Les six pages passent à 360 px.** La ligne du brief est tenue.
+- **Un seul débordement, sur 42** : **Travail à 180 px**, `scrollWidth 231 / clientWidth 180`.
+  Seuil exact relevé par balayage : propre jusqu'à **232 px**, déborde à partir de **230 px**.
+- Élément fautif nommé, chaîne complète :
+  `MAIN#contenu > DIV.entry-content > DIV.mtb-tableau-resultats > SECTION > TABLE.mtb-tableau`.
+  Le `SECTION` parent est en `overflow-x: visible` ; la table la plus large est **« Mondioring »,
+  215 px** de largeur min-content. Les `TH` sont hors flux (`position:absolute; width:1px`) et ne
+  contribuent pas : ce sont des faux positifs, écartés.
+
+**C'est la dette T42, et la mesure corrige le chiffre qu'on m'avait transmis.** T42 était annoncée à
+« 4 combinaisons sur 36 » ; ce chiffre avait été relevé **sur les fiches de portée et de chien**, pas
+sur les pages libres. Sur les huit pages libres, T42 vaut **1 combinaison sur 42**. Contre-vérifié
+hors périmètre pour ne pas conclure à tort : `/portees/a3-2025/` (244/180,
+`TABLE.mtb-tableau--chiots`), `/portees/v1-2024/` (194/180, idem), `/chien/jango/` (198/180,
+`TABLE.mtb-tableau`), `/chien/very-best/` propre. **Le volet `INPUT#pwbox` de T42 n'est pas mesurable
+sur cette installation** : aucun contenu n'y porte de mot de passe, le formulaire du cœur n'est donc
+jamais rendu. **Mesuré, non corrigé** : les deux feuilles fautives appartiennent à #15 et #16.
+
+### 13.3 Parcours clavier
+
+| Page | arrêts | sans anneau de focus |
+|---|---|---|
+| Accueil | 11 | **0** |
+| BHPL | 13 | **0** |
+| Littérature | 4 | **0** |
+| Mentions légales | 6 | **0** |
+| Placement | 36 | **0** |
+| Travail | 11 | **0** |
+
+Le lien d'évitement « Aller au contenu » est le **premier arrêt sur les six pages**, avec un double
+anneau (`outline: solid 2px rgb(22,36,28)` décalé de 2 px, plus `box-shadow 0 0 0 2px
+rgb(242,241,234)`). Aucun arrêt orphelin, aucun piège au clavier, aucun `tabindex` positif.
+
+**Un faux positif écarté, et il vaut d'être consigné** : une première passe comptait 5 échecs sur
+l'Accueil (liens de la grille de chiens), dont l'`outline` propre est bien `none`. L'anneau est en
+réalité dessiné sur la carte ancêtre en `:focus-within`, le lien portant un `::after` étiré. Vérifié
+par comparaison des styles calculés avant/après focus **et par capture d'écran**. Le chiffre juste
+est **0**. C'est la leçon du lot 5 rejouée : un audit mesure une propriété, jamais une expérience.
+
+### 13.4 axe-core
+
+**0 violation, toutes gravités confondues, sur les six pages** (26 à 40 règles par page).
+`color-contrast` a bien tourné et passe, avec un seul `incomplete` sur Travail. Passent également
+`skip-link`, `bypass`, `landmark-one-main`, `heading-order`, `link-name`, `region` et
+`meta-viewport` (le zoom n'est pas bloqué). **Zéro requête vers un domaine tiers** relevée au
+navigateur sur les pages instrumentées.
+
+### 13.5 A8bis — l'omission silencieuse, mesurée et non crue
+
+Route qui sert réellement `index.html` et atteint son état vide : **`/author/fabienne/`, HTTP 200**
+(l'autrice existe, elle n'a écrit aucun article). Preuve que le fichier est bien la source servie, et
+non une copie en base : le commentaire périmé, propre à ce fichier, disparaît de la réponse après
+modification (`grep -c` : 1 → 0).
+
+| Mesure | Avant | Après |
+|---|---|---|
+| `grep -c 'mtb-lien-de-recours'` | 0 | **2** |
+| `wc -c` de la réponse | 19 708 | 19 910 |
+
+**Deux liens, pas trois, et c'est le comportement voulu.** La page `la-meute` n'existe pas en base
+(`/la-meute/` → 404) : le bloc s'omet, sans `<li>` vide ni puce orpheline
+(`grep -c '<li[^>]*>[[:space:]]*</li>'` → **0**). C'est la **dette T30**, ouverte, qui devient ainsi
+observable. Les deux liens rendus pointent sur `home_url()` et sur l'archive des portées, aucune URL
+n'étant écrite par le gabarit (`grep 'href=' index.html` → **0**).
+
+`parse_blocks()` sur le gabarit rend un arbre propre —
+`core/query-no-results → core/paragraph, core/list → mtb/lien-de-recours ×3` — sans bloc de nom nul,
+donc sans balisage hors bloc. La région « aucun résultat » d'`index.html` et celle de `search.html`
+ne diffèrent **que** par le texte du paragraphe.
+
+### 13.6 Ce qui n'a pas été mesuré, et doit être dit
+
+- **Le zoom navigateur réel à 200 %** : c'est la réduction du viewport CSS qui a été jouée, méthode
+  du projet. Elle ne modifie ni le `devicePixelRatio` ni le rendu des polices.
+- **Firefox et WebKit** : Chromium seul. La reflowabilité multi-moteurs n'est pas couverte.
+- **Le parcours clavier à d'autres largeurs que 1280 px** — un menu replié en dessous de 768 px
+  changerait l'ordre de tabulation.
+- **L'ordre visuel de tabulation** : seul l'ordre DOM a été vérifié, pas sa concordance à l'écran.
+- **Le contraste des anneaux de focus** sur chaque fond : `color-contrast` d'axe ne les juge pas.
+- **Les libellés de l'éditeur du §12** n'ont pas été relevés à nouveau à l'écran cette passe ; ils
+  sont repris de la mesure du 2026-08-20.
+- **Le volet `INPUT#pwbox` de T42** : sans objet sur cette installation (§13.2).

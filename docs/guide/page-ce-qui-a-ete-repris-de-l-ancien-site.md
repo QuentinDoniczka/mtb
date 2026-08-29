@@ -270,7 +270,10 @@ ferons.
   volontairement, et vous pouvez la corriger.
 - **Une photo qui était sur l'ancien site et qui n'est pas sur la nouvelle page.** Il y en a trois, et
   nous attendons votre description pour les remettre.
-- **La page Travail n'affiche que huit tableaux.** Une discipline sans résultat n'affiche rien.
+- **La page Travail n'affiche pas un tableau par discipline.** Elle n'affiche que les disciplines où
+  vous avez au moins un résultat : une discipline sans résultat n'affiche ni titre ni tableau. Le
+  nombre de tableaux se règle tout seul, et il change le jour où vous ajoutez un résultat dans une
+  discipline qui n'en avait pas.
 
 **Ce n'est pas normal, signalez-le :**
 
@@ -312,8 +315,10 @@ Cinq réponses, quand vous aurez un moment. Aucune n'est urgente.
 1. **Les trois photos** : une phrase par photo, disant ce qu'elle montre. Deux sont sur **BHPL**, une
    sur **Travail**.
 2. **BHPL en France** : avez-vous le mot de passe de l'ancienne page, ou son texte quelque part ?
-3. **Les mentions légales** : voulez-vous que nous alignions votre nom, l'adresse et le téléphone sur
-   les valeurs correctes ? Dites-le, et c'est fait.
+3. **Les mentions légales** : voulez-vous que nous mettions l'accent à votre nom, « Fabienne Gueneau »
+   → « Fabienne Guéneau » ? **C'est le seul des trois écarts qui se voie encore sur le nouveau site** :
+   l'adresse et le téléphone y sont déjà les bons, puisqu'ils viennent de l'écran **Coordonnées**.
+   Dites-le, et c'est fait — ou faites-le vous-même, c'est trois secondes.
 4. **Deux graphies d'un même élevage** dans les résultats de travail : « des Mines d'**Odiles** »
    (2016, Hardy) et « des Mines d'**Odile** » (2018, Hekla). L'ancien site écrit les deux, dans la même
    page. Laquelle est la bonne ? Nous n'en avons aligné aucune.
