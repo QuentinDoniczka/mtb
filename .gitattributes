@@ -1,0 +1,3 @@
+# Les définitions d'agents doivent arriver en CRLF dans la copie de travail :
+# c'est la forme des quinze fichiers qui s'enregistrent correctement (voir #47).
+.claude/agents/*.md text eol=crlf
