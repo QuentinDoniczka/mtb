@@ -27,3 +27,12 @@ COPY docker/mail/mail.ini /usr/local/etc/php/conf.d/zz-mtb-mail.ini
 # prochaine recréation du conteneur — d'où la correction ici, dans l'image, et non à la main.
 RUN chown www-data:www-data /etc/msmtprc \
     && chmod 600 /etc/msmtprc
+
+# Surcharge des réglages de journalisation d'erreurs de l'image officielle (#31) : sans elle, le
+# journal dédoublonne les diagnostics répétés — une notice qui se répète sur vingt pages n'y
+# apparaît qu'une fois —, ce qui rend non probante toute vérification qui le lit. Le fichier
+# explique le détail, y compris pourquoi la directive de troncature qu'il porte n'a, elle, aucun
+# effet sur le PHP 8.1 de cette stack. Le préfixe "zz-" du nom de destination est ce qui garantit
+# qu'il est chargé après "error-logging.ini". Même contexte de build (racine du dépôt) que les
+# COPY ci-dessus, d'où le chemin source complet.
+COPY docker/wordpress/zz-mtb-debug.ini /usr/local/etc/php/conf.d/zz-mtb-debug.ini

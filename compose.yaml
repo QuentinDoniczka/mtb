@@ -41,6 +41,34 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_TABLE_PREFIX: wp_
       WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-1}
+      # Destination des diagnostics PHP (#31). WORDPRESS_DEBUG pilote déjà WP_DEBUG, mais le
+      # wp-config.php généré par l'image officielle ne définit NI WP_DEBUG_LOG NI
+      # WP_DEBUG_DISPLAY : le cœur retombe alors sur ses valeurs par défaut (journal désactivé,
+      # affichage activé), et wp_debug_mode() fait "ini_set('display_errors', 1)" — donc une
+      # notice s'imprimait dans le HTML du visiteur pendant que "wp-content/debug.log" n'existait
+      # même pas. Les deux constantes manquantes sont posées ici.
+      #
+      # WP_DEBUG_DISPLAY est câblé à "false" sans interrupteur : un hébergement mutualisé ne
+      # montre jamais une notice au visiteur, et une notice imprimée dans la page fausserait à
+      # elle seule le poids de page, la validité du balisage et la passe d'accessibilité.
+      #
+      # Pourquoi WORDPRESS_CONFIG_EXTRA plutôt qu'un fichier posé à l'installation : ce bloc est
+      # "eval"-ué à CHAQUE requête par wp-config.php, jamais figé à la création du volume. Le
+      # réglage prend donc sur une stack déjà installée, sans "make reset", et ne peut pas se
+      # désynchroniser.
+      #
+      # Ne JAMAIS définir WP_DEBUG dans ce bloc : le wp-config.php généré l'a déjà défini, à
+      # partir de WORDPRESS_DEBUG, AVANT d'atteindre l'"eval" qui exécute ces lignes. Le
+      # redéfinir émettrait un avertissement « constant already defined » — soit fabriquer
+      # exactement le bruit que ce réglage sert à capturer.
+      #
+      # Le service "wpcli" ne reçoit délibérément pas WORDPRESS_DEBUG : la décision 29 de
+      # docs/ETAT.md et quatre contrats gelés s'appuient sur « WP_DEBUG est faux en WP-CLI », et
+      # provision.sh analyse la sortie de commandes WP-CLI. « Aucune notice » ne se mesure donc
+      # que sur une page rendue (voir docs/docker.md).
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_DEBUG_LOG', WP_DEBUG );
+        define( 'WP_DEBUG_DISPLAY', false );
     volumes:
       - wp_data:/var/www/html
       # Thème et extension montés depuis l'arbre de travail — jamais copiés dans l'image.

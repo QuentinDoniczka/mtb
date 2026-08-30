@@ -63,6 +63,47 @@ Identifiants de développement définis dans `.env.example` (à copier dans `.en
 | `make down` | Arrête la stack, conserve les volumes (données, cœur WordPress) |
 | `make reset` | Arrête la stack **et supprime les volumes** — repart de zéro |
 | `make export-uploads` | Exporte les médias téléversés vers `./export-uploads/`, portables vers la production |
+| `make debug-log` | Affiche le journal des diagnostics PHP (`wp-content/debug.log`, dans le volume) |
+| `make debug-log-reset` | Vide ce journal, avant une mesure « aucune notice » |
+
+## Diagnostics PHP
+
+`WORDPRESS_DEBUG` (dans `.env`, livré à `1`) pilote **`WP_DEBUG`** et, depuis #31, **`WP_DEBUG_LOG`**,
+qui le suit. **`WP_DEBUG_DISPLAY` est câblé à `false` en toutes circonstances** : aucune combinaison
+de réglages ne peut imprimer une notice dans la page servie à un visiteur. C'est la moitié non
+négociable de la fidélité à un hébergement mutualisé — un mutualisé journalise ses erreurs, il ne les
+montre pas. Ces deux constantes sont posées par `WORDPRESS_CONFIG_EXTRA` dans `compose.yaml`, un bloc
+que `wp-config.php` évalue à chaque requête : le réglage prend sur une stack déjà installée, sans
+`make reset`.
+
+| `WORDPRESS_DEBUG` | `WP_DEBUG` | `WP_DEBUG_LOG` | `WP_DEBUG_DISPLAY` |
+|---|---|---|---|
+| `1` (livré) | `true` | `true` | `false` |
+| `0` | `false` | `false` | `false` |
+| absente | `false` | `false` | `false` |
+
+Les diagnostics d'une page rendue s'écrivent dans **`wp-content/debug.log`**, à l'intérieur du volume
+`mtb_wp_data` — jamais dans le dépôt. On les lit avec `make debug-log` et on vide le journal avec
+`make debug-log-reset`. Le fichier n'existe qu'à partir de la première écriture, et `make debug-log-reset`
+le laisse présent mais vide : dans les deux cas `make debug-log` répond « journal vide », ce qui signifie
+« rien à signaler » et non « journal introuvable ».
+
+Le journal ne **dédoublonne plus** : `docker/wordpress/zz-mtb-debug.ini` annule le
+`ignore_repeated_errors = On` de l'image officielle, qui faisait qu'une notice répétée sur vingt pages
+n'apparaissait qu'une fois. Le même fichier pose `log_errors_max_len = 0` contre la troncature à
+1 024 octets demandée par l'image — **sans effet mesurable ici** : cette directive PHP a été supprimée
+en 8.0 et n'existe plus sur le PHP 8.1 de la stack, donc aucun message n'était tronqué de toute façon.
+
+**Deux conséquences à connaître avant de conclure quoi que ce soit d'une mesure :**
+
+- **Les diagnostics ne sortent plus dans `docker compose logs wordpress`.** Dès que `WP_DEBUG_LOG` est
+  vrai, `wp_debug_mode()` repointe `error_log` sur le fichier de journal ; ils quittent donc
+  `/dev/stderr`. Toute consigne antérieure renvoyant vers les journaux du conteneur est périmée.
+- **`WP_DEBUG` reste `false` en WP-CLI** (décision 29 de `docs/ETAT.md`) : le service `wpcli` ne reçoit
+  délibérément pas `WORDPRESS_DEBUG`, car `docker/provision/provision.sh` analyse la sortie de
+  commandes WP-CLI et plusieurs contrats gelés s'appuient sur ce partage. **« Aucune notice » n'est
+  donc une affirmation recevable que mesurée sur une page rendue**, journal vidé au préalable — jamais
+  depuis un `make wp`.
 
 ## Fixtures
 
