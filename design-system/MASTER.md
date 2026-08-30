@@ -890,7 +890,7 @@ Aucune police d'icônes, aucun fichier SVG externe.
 
 ---
 
-## 9. États vides et erreurs
+## 9. États vides et écrans sans contenu
 
 **Règle transverse (D12)** :
 
@@ -958,8 +958,12 @@ passe, recherche sans résultat, liste sans résultat, confirmation d'envoi — 
 d'élevage n'est affiché**. Un écran neuf y entre à ce titre, quel que soit son code de réponse.
 
 Cette section dit **ce qui est rendu et sur quels écrans**, jamais comment la sortie de secours se
-présente : ni puces, ni alignement, ni fond, ni espacement de la liste. La feuille de style s'en
-abstient délibérément, et doit pouvoir continuer.
+présente : ni puces, ni `list-style`, ni alignement, ni fond. **Une seule exception, et elle est
+imposée d'ailleurs** : la feuille de style écrit la cible tactile et l'écart entre deux liens —
+`44px` et `--e-2` — parce que le **§12.10** les exige et que le navigateur ne les donne pas
+(`assets/css/base.css:954-962`). Ces deux règles sont donc **normatives et ne se retirent pas** :
+les supprimer ramènerait la cible sous 44 px et collerait les liens sur les trois écrans à la fois.
+De tout le reste, la feuille s'abstient délibérément, et doit pouvoir continuer à s'en abstenir.
 
 #### La sortie de secours
 
@@ -969,9 +973,12 @@ abstient délibérément, et doit pouvoir continuer.
   « les mêmes liens de recours » — et ne la recopient pas : une seconde énumération serait une seconde
   source de vérité, qui divergerait au premier libellé retouché.
 - **L'ordre est celui de cette énumération**, sur tous les écrans qui la portent, sans exception.
-- **Jusqu'à trois, jamais garantis trois.** Un lien dont la destination n'existe pas — l'index des
-  portées si l'extension est absente, la page de la meute tant qu'elle n'est pas créée et publiée — ne
-  se rend **pas du tout** : pas de lien mort, pas de lien désactivé, pas d'élément de liste vide.
+- **Jusqu'à trois, jamais garantis trois.** Un lien dont la destination n'existe pas ne se rend
+  **pas du tout** : pas de lien mort, pas de lien désactivé, pas d'élément de liste vide. L'index
+  des portées s'efface ainsi si l'extension est absente ; la page de la meute, tant qu'elle n'est pas
+  créée, publiée, **sans mot de passe et servie à l'adresse `la-meute`**. Ce dernier point est une
+  convention que rien n'impose à l'éleveuse : si elle nomme sa page « Nos chiens », la page existe et
+  le lien ne paraît pas.
   La sortie de secours compte donc trois, deux ou un élément selon l'installation, et un écran qui en
   affiche deux est conforme. Ce n'est pas un défaut à corriger : un lien absent vaut mieux qu'un lien
   mort sur un écran où le visiteur est déjà perdu. L'éleveuse le sait, la fiche
@@ -1413,6 +1420,6 @@ Aucune n'est inventée, aucune n'est comblée en silence (D11).
 
 | Date | Version | Ce qui change | Motif |
 |---|---|---|---|
-| 2026-08-30 | 1.2 | **§9.5 seul.** La section est réécrite en trois temps : la sortie de secours posée une seule fois — dont le fait qu'un lien s'omet en silence quand sa destination n'existe pas, la liste comptant trois, deux ou un élément —, puis le tableau **clos** des écrans qui la portent, où figure aussi l'index des portées, qui ne la porte pas et relève du §9.3, puis les deux écrans qui ne sont pas des recours, texte inchangé. « trois liens » devient « jusqu'à trois liens ». « Aucun contenu à afficher. » est figé avec sa provenance (socle de #2) et sa condition de péremption. Le titre « Pages d'erreur », faux de quatre de ses cinq écrans — un seul, la 404, est une erreur —, est corrigé ; **le numéro 9.5 est conservé**, aucun renvoi ne le citant autrement. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie, mise en page et vocabulaire inchangés — §10.2 et §10.3 ne sont pas touchés, leurs écarts ayant chacun leur propre issue. Aucune ligne de thème ni d'extension n'en découle. | Dette **T53**, relevée au lot 9 par le contrat #17 (arbitrage A8bis) : le thème porte la même sortie de secours sur **trois** écrans, le document n'en décrivait que deux, et la fiche imprimée de l'éleveuse en décrivait déjà trois |
+| 2026-08-30 | 1.2 | **§9.5 seul.** La section est réécrite en trois temps : la sortie de secours posée une seule fois — dont le fait qu'un lien s'omet en silence quand sa destination n'existe pas, la liste comptant trois, deux ou un élément —, puis le tableau **clos** des écrans qui la portent, où figure aussi l'index des portées, qui ne la porte pas et relève du §9.3, puis les deux écrans qui ne sont pas des recours, texte inchangé. « trois liens » devient « jusqu'à trois liens ». « Aucun contenu à afficher. » est figé avec sa provenance (socle de #2) et sa condition de péremption — ce qui **clôt la ligne de `docs/contracts/issue-2.md`** qui l'annonçait « provisoire, remplacée par les formulations MASTER §9.5 à l'epic Gabarits » : le remplacement n'aura pas lieu, le libellé est retenu tel quel, et ce contrat gelé n'attend plus rien. Le titre « Pages d'erreur », faux de quatre de ses cinq écrans — un seul, la 404, est une erreur —, est corrigé ; **le numéro 9.5 est conservé**, aucun renvoi ne le citant autrement. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie, mise en page et vocabulaire inchangés — §10.2 et §10.3 ne sont pas touchés, leurs écarts ayant chacun leur propre issue. Aucune ligne de thème ni d'extension n'en découle. | Dette **T53**, relevée au lot 9 par le contrat #17 (arbitrage A8bis) : le thème porte la même sortie de secours sur **trois** écrans, le document n'en décrivait que deux, et la fiche imprimée de l'éleveuse en décrivait déjà trois |
 | 2026-08-28 | 1.1 | **§7.7 seul.** `overflow-wrap: anywhere` devient la valeur par défaut, portée par un sélecteur racine ; `break-word` n'est conservé que sur `th`/`td`, avec sa raison. Les trois mesures qui l'imposent sont écrites dans le document (§7.7.1), ainsi que le fait normatif qui les explique. Le §7.7.2 tranche la valeur de la règle côté éditeur et nomme le préalable d'inspection (D8). Rien d'autre n'est rouvert : palette, typographie, espacement, photographie et vocabulaire inchangés ; le §4.5 reste vrai tel quel. | Trois emplacements livrés contournaient la règle 1.0 avec la même mesure ; débordement à 360 px et 320 px sur de la prose reprise, D7 bloquante |
 | 2026-08-15 | 1.0 | Document initial. Palette et ratios repris de `styles/style5` et recalculés indépendamment ; trois jetons ajoutés (`--pin-creux`, `--calcaire-ombre`, `--oxyde`) ; filet double conservé et réinterprété (vide de 2 px) ; **médaillons ronds abandonnés** ; structure IONOS entièrement remplacée par une grille à trois canaux ; deux polices variables auto-hébergées (Newsreader, Public Sans). | `docs/ETAT.md` décision 8 |
