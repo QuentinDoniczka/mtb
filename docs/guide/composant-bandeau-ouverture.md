@@ -203,8 +203,9 @@ enregistrer.
   même chose — « il manque quelque chose ici, rien de grave ». Le détail change d'un composant à
   l'autre : certains ajoutent un bouton pour compléter tout de suite, comme **Ajouter des photos**
   dans la **Galerie photos**. Fiez-vous à la phrase, c'est elle qui vous dit quoi faire.
-- **La photo se décrit dans le champ Texte alternatif**, dans la colonne de droite de la fenêtre des
-  photos. C'est là qu'on écrit ce que montre la photo, pour les personnes aveugles.
+- **La photo se décrit dans le premier des quatre champs de la colonne de droite** de la fenêtre des
+  photos, celui qui s'appelle **Description de la photo (pour les personnes aveugles)**. C'est là qu'on
+  écrit ce que montre la photo, pour les personnes aveugles.
 - **Bandeau d'ouverture** est en gris dans la liste du bouton **+** : la page en a déjà un.
 - **Bandeau d'ouverture** ne se propose pas dans une fiche de portée, de chien ou de résultat : ces
   fiches se remplissent, elles ne se composent pas.
@@ -212,6 +213,9 @@ enregistrer.
 **Ce n'est pas normal, signalez-le :**
 
 - Le bouton **+** ne propose aucune rubrique **Mont Brabant**.
+- **Dans la fenêtre des photos, le premier des quatre champs porte un autre nom que
+  « Description de la photo (pour les personnes aveugles) ».** Rien n'est cassé et rien n'est perdu :
+  écrivez votre description dans ce premier champ comme d'habitude, et dites-le-nous.
 - **L'encadré d'attente apparaît sans son contour en tirets, sans le nom du composant, ou sans sa
   phrase.** Ces trois-là sont toujours présents : s'il en manque un, signalez-le.
 - Après **Mettre à jour**, la page publiée montre le titre deux fois alors que le bandeau est bien le

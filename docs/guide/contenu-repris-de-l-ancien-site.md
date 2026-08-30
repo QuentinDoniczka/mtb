@@ -230,11 +230,12 @@ chien est sur quelle photo.
 
 **Ce n'est pas urgent, et ce n'est pas une panne.** C'est perfectible, un jour de pluie : ouvrez une
 photo depuis la fenêtre des photos et, dans la colonne de droite, remplacez le contenu du champ
-**Texte alternatif** par ce que l'on voit — le chien de profil dans l'herbe, la portée dans son parc.
-Une photo à la fois, quand le cœur vous en dit.
+**Description de la photo (pour les personnes aveugles)** par ce que l'on voit — le chien de profil
+dans l'herbe, la portée dans son parc. Une photo à la fois, quand le cœur vous en dit.
 
-*(**Texte alternatif** est le premier des quatre champs de cette colonne, avant **Titre**, **Légende**
-et **Description**.)*
+*(**Description de la photo (pour les personnes aveugles)** est le premier des quatre champs de cette
+colonne, avant **Titre**, **Légende** et **Description**. C'est bien le premier qu'il faut corriger,
+pas le dernier.)*
 
 ---
 
@@ -292,6 +293,9 @@ n'est pas encore appliquée aux moteurs de recherche. Nous vous préviendrons qu
 - Une portée ou une fiche que vous ne retrouvez pas dans **Toutes les portées** ou
   **Tous les chiens**.
 - Une photo qui manque alors qu'elle était sur l'ancien site.
+- **Dans la fenêtre des photos, le premier des quatre champs porte un autre nom que
+  « Description de la photo (pour les personnes aveugles) ».** Rien n'est cassé et rien n'est perdu :
+  corrigez vos descriptions dans ce premier champ comme d'habitude, et dites-le-nous.
 
 **Ce qu'il vaut mieux ne pas faire :**
 

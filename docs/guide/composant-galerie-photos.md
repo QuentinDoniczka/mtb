@@ -108,22 +108,27 @@ Pour l'écrire ou la corriger :
 1. Cliquez sur **Ajouter des photos**.
 2. La fenêtre **Photos de la galerie** s'ouvre sur l'onglet **Téléverser des fichiers** : cliquez sur
    l'onglet **Médiathèque**, juste à côté, puis sur la photo concernée.
-3. Écrivez sa description dans la colonne de droite de la fenêtre, dans le champ **Texte alternatif** —
-   c'est le premier des quatre, avant **Titre**, **Légende** et **Description**.
+3. Écrivez sa description dans la colonne de droite de la fenêtre, dans le champ
+   **Description de la photo (pour les personnes aveugles)** — c'est le premier des quatre, avant
+   **Titre**, **Légende** et **Description**.
 4. Refermez la fenêtre avec la croix en haut à droite : ce bouton s'appelle **Fermer**, mais n'affiche
    pas ce mot à l'écran. Si vous ne voulez rien ajouter à la galerie, refermez sans cliquer sur
    **Sélectionner** : votre correction est enregistrée quand même.
 
-**Fiez-vous à ce nom : Texte alternatif est bien celui du champ aujourd'hui, et bien la bonne zone.**
-Ce n'est pas le nom que nous aurions choisi, et nous le renommerons un jour ; le champ, lui, restera au
-même endroit et servira à la même chose. **N'écrivez pas dans le champ Description**, plus bas : il ne
-sert à rien ici.
+**Deux champs de cette colonne commencent par le mot « Description » : fiez-vous au rang, pas au nom.**
+Celui qu'on remplit est **le premier des quatre**. **N'écrivez pas dans le dernier des quatre**, celui
+qui s'appelle **Description** tout court : il ne sert à rien ici.
+
+*Une exception à connaître, pour ne pas la chercher :* si vous posez une photo avec le bouton **+** en
+choisissant **Image** ou **Galerie** au lieu de **Galerie photos**, le panneau de réglages de la page,
+à droite, appelle encore ce champ **Texte alternatif**. C'est le même champ et il sert à la même chose :
+écrivez votre description dedans. Nous n'avons pas la main sur ce nom-là.
 
 **Une photo sans description ne casse rien.** Le site annonce alors la vignette comme
 « Photo 3 sur 12 » : la galerie reste utilisable au clavier et à la voix. Mais le nom du chien, lui, est
 perdu pour quelqu'un qui ne voit pas l'image. Trente secondes par photo, et ce n'est plus le cas.
 
-![La colonne de droite de la fenêtre Photos de la galerie, une photo sélectionnée, avec le champ Texte alternatif en premier, suivi de Titre, Légende et Description](captures/galerie-description-photo.png)
+![La colonne de droite de la fenêtre Photos de la galerie, une photo sélectionnée, avec le champ Description de la photo (pour les personnes aveugles) en premier, suivi de Titre, Légende et Description](captures/galerie-description-photo.png)
 
 ---
 
@@ -209,6 +214,10 @@ enregistrer.
 - Les photos s'affichent dans un ordre qui n'est pas celui du panneau **Photos de la galerie**, après un
   **Mettre à jour**.
 - Une photo cochée dans la fenêtre n'apparaît pas dans la liste du panneau.
+- **Dans la fenêtre des photos, le premier des quatre champs porte un autre nom que
+  « Description de la photo (pour les personnes aveugles) ».** Rien n'est cassé et rien n'est perdu :
+  écrivez votre description dans ce premier champ comme d'habitude, et dites-le-nous. C'est vous qui
+  voyez cet écran, pas nous.
 - Le bouton **+** ne propose aucune rubrique **Mont Brabant**.
 - La galerie s'affiche sur la page en cours de modification, mais pas sur le site.
 

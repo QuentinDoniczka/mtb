@@ -168,14 +168,20 @@ correction automatique.
 
 ### Décrire chaque photo
 
-Dans la fenêtre des photos, cliquez sur une photo : la colonne de droite s'ouvre. Le premier champ
-s'appelle **Texte alternatif** — il vient avant **Titre**, **Légende** et **Description**. C'est là,
-et nulle part ailleurs, que vous prenez trente secondes pour écrire ce que montre la photo — le chien
-de profil dans l'herbe, la portée dans son parc. Ce texte n'est pas affiché à l'écran : il est **lu à
-voix haute** aux personnes aveugles qui visitent le site, et il s'affiche à la place de la photo
-quand celle-ci ne se charge pas. Une photo sans description est une photo qui n'existe pas pour elles.
+Dans la fenêtre des photos, cliquez sur une photo : la colonne de droite s'ouvre. Le premier des quatre
+champs s'appelle **Description de la photo (pour les personnes aveugles)** — il vient avant **Titre**,
+**Légende** et **Description**. C'est là, et nulle part ailleurs, que vous prenez trente secondes pour
+écrire ce que montre la photo — le chien de profil dans l'herbe, la portée dans son parc. Ce texte
+n'est pas affiché à l'écran : il est **lu à voix haute** aux personnes aveugles qui visitent le site,
+et il s'affiche à la place de la photo quand celle-ci ne se charge pas. Une photo sans description est
+une photo qui n'existe pas pour elles.
 
-**N'écrivez pas dans le champ Description**, plus bas dans la même colonne : il ne sert à rien ici.
+**N'écrivez pas dans le dernier des quatre**, celui qui s'appelle **Description** tout court, plus bas
+dans la même colonne : il ne sert à rien ici. Deux champs de cette colonne commencent par le mot
+« Description » — fiez-vous au rang, pas au nom.
+
+*Si ce premier champ porte un jour un autre nom, dites-le-nous : rien ne sera cassé, mais nous voulons
+le savoir. Écrivez votre description dedans en attendant, c'est bien le bon.*
 
 ![La section Photos et pedigree : la liste Galerie photos avec ses photos et, sous chacune, les boutons Retirer la photo, Monter la photo et Descendre la photo, puis le bouton Ajouter des photos et le champ Lien pedigree (LOF Select)](captures/chien-photos.png)
 

@@ -114,7 +114,8 @@ l'ancienne image au lieu de rester à mentir sous la nouvelle.
 **Cet écran n'est pas illustré, et voici pourquoi** : il faudrait une image de plan à l'écran, et le
 plan d'accès n'a pas encore été choisi — voir la section suivante. Le champ **Légende** se trouve dans
 la colonne de droite de la fenêtre où vous choisissez l'image, **en troisième position** : d'abord
-**Texte alternatif**, puis **Titre**, puis **Légende**, puis **Description**.
+**Description de la photo (pour les personnes aveugles)**, puis **Titre**, puis **Légende**, puis
+**Description**.
 
 ---
 
@@ -235,6 +236,9 @@ entrée : descendez jusqu'au bout, c'est là.*
 - Le bouton **+** ne propose aucune rubrique **Mont Brabant**.
 - Le composant fraîchement posé arrive **vide** alors que vos coordonnées sont bien remplies dans
   l'écran **Coordonnées**.
+- **Dans la fenêtre où vous choisissez l'image, le premier des quatre champs porte un autre nom que
+  « Description de la photo (pour les personnes aveugles) ».** Rien n'est cassé et rien n'est perdu :
+  **Légende** reste en troisième position, remplissez-la comme d'habitude, et dites-le-nous.
 - Une coordonnée s'affiche autrement que vous ne l'avez tapée.
 - Le composant s'affiche dans la page en cours de modification, mais pas sur le site.
 

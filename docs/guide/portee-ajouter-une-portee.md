@@ -188,10 +188,13 @@ sur l'onglet **Médiathèque** pour voir les photos déjà présentes ; cliquez 
    cliquez sur l'onglet **Médiathèque**, juste à côté, pour les voir. Cliquez ensuite sur une ou
    plusieurs photos.
 3. Prenez trente secondes pour décrire chaque photo, dans la colonne de droite de cette fenêtre, dans
-   le champ **Texte alternatif** — c'est le premier des quatre, avant **Titre**, **Légende** et
-   **Description**. Ce texte est **lu à voix haute** aux personnes aveugles qui visitent le site, et il
-   s'affiche à la place de la photo quand celle-ci ne se charge pas. Écrivez ce que l'on voit : le
-   chien de profil dans l'herbe, la portée dans son parc.
+   le champ **Description de la photo (pour les personnes aveugles)** — c'est le premier des quatre,
+   avant **Titre**, **Légende** et **Description**. Ce texte est **lu à voix haute** aux personnes
+   aveugles qui visitent le site, et il s'affiche à la place de la photo quand celle-ci ne se charge
+   pas. Écrivez ce que l'on voit : le chien de profil dans l'herbe, la portée dans son parc.
+   N'écrivez rien dans le dernier des quatre, celui qui s'appelle **Description** tout court : il ne
+   sert à rien ici. *Si ce premier champ porte un jour un autre nom, dites-le-nous — rien ne sera
+   cassé, et c'est bien le bon champ en attendant.*
 4. Cliquez sur **Ajouter des photos**, en bas à droite de la fenêtre — le bouton y porte le même nom
    que celui qui l'a ouverte. Les photos s'ajoutent en bas de la liste, sous les mentions **Photo 1**,
    **Photo 2**…
