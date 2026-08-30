@@ -1320,7 +1320,7 @@ par la borne inférieure du couple `--calcaire` / `--pin`.
 | Parcours clavier complet | §8.1, visionneuse §6.7 |
 | Lien d'évitement | §7.3, §10.3 |
 | `alt` utile sur chaque photo | §6.5, §10.2 (libellé du champ) |
-| Cibles ≥ 44 px, écart ≥ `--e-2` | §5.1, §6.7, §8.3, §8.4 |
+| Cibles ≥ 44 px, écart ≥ `--e-2` | §5.1, §6.7, §8.3, §8.4, §9.5 |
 | Aucune information par la couleur seule | §12.9 |
 | Zoom 200 % sans perte | §7.8, §4.4 |
 | 360 px sans défilement horizontal | §7.7 |
