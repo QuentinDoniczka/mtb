@@ -10,6 +10,177 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
+**Phase : lot 10 (#27 voie conforme pour une règle de réécriture, #28 colonnes et filtres des listes
+d'administration, #37 les captures du guide) livré, testé et revu le 2026-08-30. Les trois issues sont
+fermées.** Sept commits, `0c46eeb` → `17d0e01`. Revue **OK — 0 CRITICAL, 0 HIGH**, le push n'a pas été
+bloqué : c'est le premier lot dans ce cas depuis le lot 5.
+
+**La leçon du lot est neuve, et elle nous a eus quatre fois, sur quatre agents, dont deux fois moi : en
+mono-branche, une mesure n'a de valeur que datée d'un commit.** Trois chaînes partagent un arbre de
+travail unique sans isolation ; entre le moment où un agent lit et celui où il conclut, une autre a pu
+écrire. Un `grep` ou un `git status` rapporte alors un fait **vrai**, à un instant **que personne n'a
+nommé**, et l'interprétation qu'on en tire est fausse. Les quatre occurrences : le lead annonce **118**
+captures promises contre 109, comptées pendant que #37 écrivait · #37 lit `git status` avant que
+`includes/admin/listes/` n'existe et déclare fausse une phrase de la fiche des portées · #28 grep au HEAD
+**après** `d95fc71` et infirme à tort un constat juste sur **cinq libellés faux présents dans son propre
+commit** · le lead relit `git status` et croit non commitée une capture déjà enregistrée en `73591c4`.
+**La parade est mécanique** : `git show <sha>:<chemin>`, `git blame`, `git log <sha>..HEAD -- <chemin>` —
+jamais un `grep` ni un `git status` nu, et le SHA cité à côté du constat.
+
+**Et le point qui explique pourquoi ça se reproduira si on ne l'écrit pas : la disjonction des empreintes
+protège les écritures, pas les lectures.** Les trois chaînes étaient correctement isolées en écriture —
+aucune n'a écrasé l'autre, vérifié — et ont quand même produit quatre conclusions fausses. La parade
+n'est donc pas un meilleur découpage des fichiers, c'est une discipline de mesure. C'est le corollaire de
+la décision 57 appliqué au **parallélisme**, et non à la relecture.
+
+**Corollaire le plus coûteux, relevé par #28 sur elle-même** : elle n'a pas seulement conclu faux, elle a
+**attribué à sa propre prose une faute qui était dans un livrable**. Cette inversion disculpe le dépôt et
+accuse un message, alors que c'est le dépôt qui portait le mot faux. Elle a failli entrer dans un contrat
+gelé — soit exactement le défaut qui a bloqué le lot 9. Vérifié : elle n'y est pas entrée.
+
+**Ce que #27 livre, et ce n'est pas ce que l'issue annonçait.** L'empreinte du chargeur observait les
+**noms** des types de contenu, jamais leurs **arguments de réécriture** : changer `'slug' => 'portees'` ne
+la faisait pas bouger, la nouvelle adresse ne prenait jamais effet et l'ancienne continuait de répondre.
+**Pas un 404 visible — un site qui a l'air de marcher avec les mauvaises URL.** Aucune des cinq tâches de
+la checklist ne visait ce défaut, et **Q4 remet précisément ces slugs en jeu**. La chaîne a écarté les
+**deux** approches que l'issue imposait de départager (sous-dossier auto-découvert, point d'extension par
+filtre) au motif qu'elles transforment `add_rewrite_rule()` en **no-op silencieux** pour toute chaîne
+future n'ayant pas lu le contrat — *elles créent le piège qu'elles prétendent fermer*. Retenu :
+élargissement de l'empreinte, scindée en deux moitiés (identité → migration ; réécriture →
+`flush_rewrite_rules( false )`), pour qu'un battement de règles ne puisse plus **rejouer une migration de
+données**. Démontré, **défaut prouvé avant correctif** : `/chiots-a-reserver/` en 404 et règle absente
+avant, **200 dès la première requête** après, en `curl` sans cookie et **sans jamais ouvrir `wp-admin`**.
+
+**Une tâche d'issue a été refusée, et le refus est fondé — la revue l'a jugé.** La tâche 2 disait
+« borner `flush_rewrite_rules()` à l'activation ». Le contrat #1 §4 refuse délibérément
+`register_activation_hook` parce que le déploiement probable est un dépôt FTP ou un `git pull` **sans
+réactivation** : borner à l'activation aurait livré **un site en 404 après la première mise en ligne**.
+Le bornage est fait par comparaison d'empreinte — mesuré à **1 seule régénération sur 20 requêtes
+alternées**, aller-retour idempotent, empreinte de hachage identique bit pour bit.
+
+**Ce que #28 livre**, et c'est le lot le plus directement au service de la règle d'or : retrouver une
+portée parmi 27, un chien parmi 17 ou un résultat parmi 61 ne passe plus par la recherche d'identifiant.
+Colonnes métier, trois filtres, ordre par défaut imposé, et la **modification groupée de la
+disponibilité** — six étapes, zéro fichier à ouvrir, zéro page à dupliquer.
+
+**D12 est démontrée par contre-exemple, et le piège a deux portes.** La chaîne l'avait montré sur les
+portées ; la passe d'intégration l'a rejoué sur les trois types et **la même perte se produit partout** :
+`orderby=meta_value` escamote **32→31** (portées), **23→22** (chiens), **67→66** (résultats), et la
+variante `meta_query EXISTS` escamote pareil. Preuve que le code livré ne prend aucune des deux voies :
+**13 requêtes de liste capturées au SQL réellement émis, 0 occurrence de `postmeta`**, 13 fois
+`FROM wp_posts` sans une seule jointure.
+
+**Un défaut que la refacto a rattrapé contre son propre donneur d'ordre**, et il vaut d'être retenu : le
+module de corbeille de #28 renseignait les cinq clés de message et **écrasait les 15 phrases justes**
+posées par `includes/fields/**` — 15 phrases tuées en silence et 2 fiches d'aide rendues fausses.
+L'arbitrage avait été gelé **sur une mesure jamais refaite**. Corrigé en priorité 20 : on complète, on
+n'écrase jamais. **Un agent qui recompte l'énoncé de son donneur d'ordre fait son travail** — troisième
+lot consécutif où cela sauve quelque chose.
+
+**Ce que #37 livre : 119 captures, et le manuel cesse de parler aux développeurs.** Le chiffre de 33 de
+l'issue était juste **pour son périmètre d'origine** et périmé depuis douze fiches. **84 encarts
+« Capture à prendre » — des consignes de développeur dans le manuel de l'éleveuse — ont été retirés de
+toutes les fiches**, et il n'en reste aucun. Bijection vérifiée trois fois de façon indépendante :
+**119 citées, 119 sur le disque, 119 suivies par git, 0 orpheline, 0 lien cassé, 0 alternative vide**.
+
+**Le périmètre de #37 a été requalifié, et il fallait pour cela lire le brief plutôt que les fiches** :
+`BRIEF.md` §13.1 n'exige pas une capture par composant, il exige des captures pour **huit parcours
+nommés**. Les ~116 promesses ne venaient donc pas du brief mais des fiches elles-mêmes, lot après lot.
+Sept parcours sur huit sont illustrés ; le huitième (« protéger une page par mot de passe ») est reporté
+à **#23**, sa fonctionnalité n'existant pas. **Et la chaîne a trouvé seule un trou du plancher que je
+n'avais pas vu** : « modifier une disponibilité » était le seul parcours nommé sans image. Elle l'a
+mesuré au lieu de supposer les sept couverts parce que sept fiches existaient.
+
+**Arbitrage retenu et généralisé : une liste déroulante se capture fermée, ses options écrites en toutes
+lettres dans la fiche.** Le navigateur dessine les menus natifs hors de la page. La parade n'est pas
+seulement technique : un écran que Fabienne reconnaît, plus une liste de choix **lisible par un lecteur
+d'écran**, vaut mieux qu'une image de menu déroulé — qu'aucune synthèse vocale ne lira jamais.
+
+**Deux promesses seulement ont été abandonnées** — pas 80, comme je l'avais craint :
+`liste-portees-etat-vide.png` (exigerait de **dépublier les 31 portées**) et
+`coordonnees-legende-image.png`. Mesuré par différence entre les noms cités à `4049269` et au HEAD, pas
+déclaré. Le chiffre de « 9 bloquées par Q18-Q20 et Q22 » est **périmé** : Q18-Q20 n'en bloque qu'une,
+Q22 plus aucune — la chaîne a photographié le **panneau d'administration** du plan d'accès au lieu de
+fabriquer une carte.
+
+**Deux défauts relevés par la passe d'intégration, tous deux réparés avant le push.** Une capture
+photographiait une **donnée d'essai** (« PORTEE ESSAI 37 ») dans le manuel de l'éleveuse — même famille
+que les encarts retirés, passée du texte à l'image ; reprise en `73591c4`, relue **à l'image** et non
+déduite de la propreté de la base. Et une **date de naissance illisible se rangeait en tête de liste**
+alors que sa colonne annonçait « Non renseigné », contredisant le §6 du contrat #28 et une phrase de la
+fiche ; réparée en `fa80eb3`, aux deux endroits (l'ordre **et** la valeur de filtre), adossés à la source
+unique `date_en_toutes_lettres()`.
+
+**Une prémisse de ma consigne était fausse et la chaîne l'a mesurée plutôt que de livrer une preuve
+arrangée** : j'avais transmis que le filtre « proposerait une option `pas-` ». **Faux** — `filtres.php`
+filtre déjà par une expression à quatre chiffres avant de composer les options, et `filtre_actif()`
+revalide toute valeur d'URL : **deux gardes en aval, déjà en place**. La seconde correction ne répare donc
+**aucun comportement visible** ; elle supprime un docbloc faux et une seconde notion de « date absente ».
+Le contrat l'écrit sous cette forme, vérifié par la revue — la version flatteuse aurait reproduit le
+défaut du lot 9.
+
+**Ce que la revue a validé en propre, et qui ne se mesure pas** : la **frontière thème/extension** tient
+sur les 2 308 lignes de #28 — aucun fichier de thème touché, **zéro octet de CSS et de JS**, quatre
+classes toutes issues du cœur. `listes-retrouver-un-contenu.md` a été **relue en cherchant le mensonge**,
+quatorze affirmations non triviales confrontées à la ligne de code qui les produit : **aucun mensonge
+trouvé**. Et les quatre libellés que #28 avait arbitrés sans `MASTER.md` sont **validés**.
+
+**Sur les deux désaccords avec `MASTER.md`, la revue tranche que c'est MASTER qui est périmé, pas le
+code** : `MASTER.md:1028` donne 8 disciplines contre 9 au code — « Autres disciplines » porte **4 des 61
+résultats importés** — et `MASTER.md:1014` donne un ordre des statuts divergent de `choix.php:105-127`,
+qui est celui de la page publique. Ces deux écarts sont désormais **imprimés dans le manuel de
+l'éleveuse**. Une chaîne future qui ouvrirait MASTER « réparerait » le code et casserait à la fois la
+page publique et la fiche.
+
+**D9 démontrée à froid, deux cycles complets** — ce que la passe d'intégration avait explicitement
+déclaré non couvert, la stack étant occupée par la prise des captures. `[provision] terminé.` en **51 s**
+(démo) et **78 s** (réel), idempotence **mesurée** au rejeu (`0 créé, 44 déjà importés` puis `0 créé, 68
+déjà présents`), **0 rejet**, T39 confirmé en direct (`WPLANG` = `fr_FR`). Le journal porte la signature
+exacte de #27 : `permastructs +5, etiquettes +19, regles_haut +13`.
+
+**Un fait de base à ne pas reperdre, découvert par la vérification à froid** : la base sur laquelle les
+119 captures ont été prises portait **27 portées réelles + 4 de démonstration**, soit un état **mélangé
+qu'un simple `make up` ne produit jamais**. Une reconstruction propre donne **27/17/61**, pas 31/22/66. Le
+garde de `mtb importer-portees-chiens` refuse de tourner si de la démo est présente, mais rien n'empêche
+l'inverse — rejouer les fixtures démo *après* un import réel.
+
+**Un piège d'infrastructure à connaître avant d'écrire le moindre script d'attente** : le healthcheck du
+service `wpcli` passe *healthy* dès `wp core is-installed`, à **9 s**, soit **bien avant la fin réelle du
+provisionnement** (51 à 78 s). Quiconque scripte « attendre que ce soit prêt » sur ce seul healthcheck
+sera trompé ; le marqueur qui fait foi est `[provision] terminé.` dans les logs.
+
+**T49 : ne pas conclure au défaut de code — le correctif n'a jamais eu sa chance, et c'est moi qui me
+suis trompé en écrivant « second lot consécutif ».** `test-integration-mtb` et `leaddev-back-mtb` ne sont
+toujours pas enregistrés comme types d'agents, et la passe d'intégration du lot 10 a donc encore tourné
+sur un agent générique adossé au fichier de prompt. Mais le frontmatter des deux fichiers a été
+**revérifié** : YAML valide, guillemets fermés, pas de BOM, aucun guillemet interne non échappé — le
+correctif de `6180741` est sain. **Les lots 9 et 10 ont tourné dans la même session continue**, jamais
+redémarrée depuis ce commit, ce que le lot 9 avait lui-même prédit (« la correction ne prend qu'à la
+session suivante »). **À vérifier au tout début du prochain lot, en session neuve, avant d'ouvrir quoi
+que ce soit.** Si le symptôme persiste après un vrai redémarrage, alors seulement une issue `infra`
+d'epic 11 se justifie — avec la preuve du symptôme en session neuve.
+
+**Prochaine action** : `/lead-mtb #31 #34 #41` — **empreintes disjointes, parallèle sûr**, verdict obtenu
+de `github-boards` le 2026-08-30, vérifié fichier par fichier. Aucune des trois ne partage un seul
+fichier avec les deux autres.
+
+**Pourquoi #31 et pas #30** : les deux se disputent `compose.yaml` et le `Makefile`, un seul tient dans un
+lot disjoint. #31 (`WORDPRESS_DEBUG` n'atteint pas `wp-config.php`) compromet **toute** passe
+d'intégration future — c'est ce qui avait forcé le lot 2 à patcher `wp-config.php` à la main — alors que
+#30 a déjà un contournement qui fonctionne (`$wpdb` via `wp eval`). #30 reste ouverte, à reprendre seule
+ou avec un tiers qui ne touche pas `docker/**`.
+
+**Recouvrements à ne pas redécouvrir** : #30 ↔ #31 (`compose.yaml`, `Makefile`) · #33 ↔ #34 (le glob
+`assets/css/blocs/*.css` englobe `galerie-photos.css`) · #33 ↔ #40 (`base.css`) · #39 ↔ #43
+(`includes/blocks/lien-de-recours/**`) · #41 ↔ #43 **et la future issue « ordre des statuts »** vivent
+toutes dans `design-system/MASTER.md` — jamais deux d'entre elles dans le même lot · #32 et #36 ont une
+empreinte **que l'issue elle-même n'a jamais tranchée**, à clarifier avant de les inclure.
+
+**Bloquées, à exclure de tout lot jusqu'à réponse** : #23 et #24 par **Q1** et **Q4** · #25 par
+transitivité (le pas-à-pas « protéger une page par mot de passe » qu'elle assemble est un livrable de
+#23 — et c'est elle, pas une issue neuve, qui porte le `docs/guide/README.md` manquant) · #26 par **Q5**
+· #42 par **Q14**, et c'est #42 qui couvre déjà mot pour mot le désaccord **8 contre 9 disciplines**.
+
 **Phase : lot 9 (#17 gabarits des pages libres) livré, testé et revu le 2026-08-29. #17 est fermée et
 l'épic 7 « Gabarits et thème » est close.** Le lot le plus petit du projet en volume de code — **huit
 lignes de gabarit, zéro octet de CSS, de JS ou de PHP** — et l'un des plus instructifs.
@@ -237,9 +408,8 @@ position**, les six composants présents. Une affirmation de ce paragraphe s'est
 | Reprise du contenu (52 URL) | ✅ **capturée au lot 7 (#19), importée au lot 8 (#20, #21)** — la capture (309 fichiers, 36 Mo, dont **192 photographies**) reste la pièce à conviction, montée **en lecture seule** dans `wpcli` depuis `01d4489` et prouvée telle (trois écritures refusées, empreinte identique avant/après). L'import a versé **27 portées, 17 chiens, 61 résultats, 7 pages, 135 pièces jointes**, depuis `donnees/**` versionnés. **3 photos des pages libres non téléversées** (arbitrage A5 : leur `alt` est une question à l'éleveuse). ⚠️ **Restent #23-#24** pour honorer les faits de non-indexation et les 301 |
 | Guide de l'éleveuse (`docs/guide/`) | ✅ **21 fiches**. D3 tenue. Les deux fiches du lot 8 ont été relues « en cherchant le mensonge » — **et il y en avait** : « sept pages avec leur texte » quand trois sont vides à dessein, un cadre décrit « gris » qui est **beige à contour ocre**, un palmarès annoncé pour des chiens dont **60 résultats sur 61 ne sont rattachés à aucune fiche**, et une section entière décrivant des marqueurs `[IMAGE …]` que le code **ne produit plus**. Toutes corrigées avant le push. **BRIEF §13.1 toujours pas tenu** : le dossier `docs/guide/captures/` n'existe pas, et le lot 8 nomme **6 captures manquantes** de plus |
 
-**Prochaine action** : `/lead-mtb #27 #28 #37` — **empreintes disjointes, parallèle sûr**, verdict obtenu
-de `github-boards` le 2026-08-29. Aucune des trois ne touche `theme.json`, `functions.php` ni l'index
-d'enregistrement des blocs.
+**Prochaine action au moment du lot 9** : ~~`/lead-mtb #27 #28 #37`~~ — **fait au lot 10**, les trois
+issues sont fermées. La prochaine action courante est en tête de fichier.
 
 **Pourquoi ce lot et pas l'épic 9** : #23 et #24 sont bloquées par Q1 et Q4. Et **#25 l'est aussi, par
 transitivité** — le guide qu'elle assemble promet un pas-à-pas « protéger une page par mot de passe »
@@ -420,6 +590,9 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 
 | # | Dette | Créée par | Payée par |
 |---|-------|-----------|-----------|
+| **T58** | **Deux dettes dans le même fichier, à payer d'un seul geste.** `includes/query/portee/hydratation.php` porte (a) le **libellé des trois disponibilités déclaré une seconde fois** (`:57-63`, jumeau de `content/portee/champs.php:26-32`, identiques mot pour mot aujourd'hui — le jour où l'une est retouchée, la colonne d'administration et le badge public diront deux choses différentes **en silence**), et (b) le **tri d'une date illisible resté faux côté public** (`:144-176` compare la date brute par `strcmp`, sans le test de lisibilité que `fa80eb3` a posé côté administration). Conséquence de (b) : depuis `fa80eb3`, l'administration et le site public **divergent sur cet état**, ce que la fiche a dû nuancer. **Une seule issue** (epic 11, `portees`) pour ne pas consommer deux créneaux disjoints sur le même fichier. | lot 10 | une issue `portees` |
+| **T57** | **Les deux dernières captures promises du guide.** `liste-portees-etat-vide.png` exige **aucune portée publiée** — impossible sans dépublier les 31 de la stack, destruction non réversible ; `coordonnees-legende-image.png` est un détail de la fenêtre de médiathèque, déclaré non pris. Tout le reliquat de #37 tient dans ces deux-là : **119 des 121 promesses sont tenues**. | #37, lot 10 | une issue `doc`, epic 10 |
+| **T56** | **L'ordre des statuts de `MASTER.md:1014` diverge de `choix.php:105-127`**, et la revue tranche que **c'est MASTER qui est périmé** : l'ordre du code est celui, gelé, des groupes de la page publique « La meute ». L'écart est désormais **imprimé dans le manuel de l'éleveuse** par la fiche du lot 10. Une chaîne future qui ouvrirait MASTER « réparerait » le code et casserait **à la fois la page publique et la fiche**. **Aucune issue ouverte ne le couvre** — ni #41 (§9.5, écrans de recours) ni #42 (Q14, disciplines). Empreinte : `design-system/MASTER.md` §10.2 seul, aucun code. | lot 10 | une issue à ouvrir, jamais dans le même lot que #41 ou #43 |
 | **T55** | **`MASTER.md` se contredit sur le libellé du lien vers l'index des portées, et c'est §10.3 qui perd.** §9.5 écrit « **Les portées** », §9.3 « Voir toutes les portées », et **§10.3 — « Vocabulaire figé », qui se déclare lui-même l'arbitre — écrit « Toutes les portées »**. Le code (`lien-de-recours/rendu.php:71`, `editeur.js:26`) dit « Les portées », aligné sur §9.5 ; `issue-16.md:378` le dit explicitement et **ne cite jamais §10.3**. L'écart n'a donc jamais été arbitré, il a été hérité. Il vit **entièrement dans `mtb-core`** : le corriger là corrigerait les **trois** gabarits d'un coup, ce qui prouve que le libellé appartient au serveur. Ne pas y embarquer le `h1` de `archive-mtb_portee.html` — §10.3 régit des libellés de lien, pas un titre de page. | #16, relevé au lot 9 | `lead-design-mtb` ou une passe d'alignement sur `mtb-core` |
 | **T54** | **`MASTER.md` §10.2 liste huit disciplines, le code en rend neuf.** `query/resultat/bootstrap.php:29-41` rend neuf clés — la neuvième est `autres_disciplines` — et `fields/resultat/ecran.php:209-213` la propose à l'écran de saisie. **Les fiches d'aide ont raison d'écrire « neuf » ; c'est `MASTER.md` qui est périmé**, alors même que son §10.3 se déclare l'arbitre du vocabulaire. Cette neuvième clé est l'objet de **Q14**, ouverte. | relevé au lot 9 | `lead-design-mtb` (lié à Q14) |
 | **T53** | **`MASTER.md` §9.5 nomme deux écrans de recours, le thème en a désormais trois.** §9.5 spécifie la 404 et la recherche sans résultat ; A8bis pose la même sortie de secours sur l'**état « aucun résultat » d'`index.html`**, que §9.5 ne couvre pas. Extrapolation assumée, à **zéro octet de CSS** et sans un libellé composé par le thème. Corollaire : le `<p>Aucun contenu à afficher.</p>` est **conservé faute de libellé figé** — ni §9.5 ni §10.3 n'en donnent pour l'état « archive vide », et en inventer un serait un acte de contenu, exactement ce que A4 a refusé pour le `h1`. | #17, lot 9 | `lead-design-mtb` : étendre §9.5, ou faire retirer le balisage |
@@ -471,7 +644,7 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 | ~~**T3**~~ | ~~L'accueil et la page de recherche n'ont aucun `<h1>`.~~ **INTÉGRALEMENT PAYÉE au lot 6 (#17)** : `templates/index.html:6` porte désormais un `h1` par `wp:site-title level 1` — mesuré **un seul** `h1` (« Berger Hollandais du Mont Brabant »), 0 violation axe, `lang="fr-FR"`. `search.html` et `404.html` l'avaient reçu au lot 5. **L'accueil n'échoue plus à D7** | #2 | ✅ **payée** (moitié lot 5, moitié lot 6) |
 | **T4** | **D6 n'est tenue que pour le visiteur, pas dans l'administration.** L'éditeur du cœur charge 15 images depuis `s.w.org` (10 pour le guide de bienvenue, 5 pour les aperçus de blocs de l'insérteur), aucune n'est supprimée. Le site public est irréprochable : zéro origine externe, zéro cookie anonyme. Voir décision 15. | #2 | facultatif — une issue infra/admin sur `mtb-core` si l'écartement du guide est un jour voulu |
 | **T5** | `class-loader.php` emploie `scandir()` que `functions.php` déclare interdit pour cause de portabilité mutualisée. **Les deux moitiés du lot posent l'hypothèse inverse.** Si celle du chargeur est fausse, `scandir` renvoie `false` et **l'extension ne charge rien, en silence**, sur un site qui répond 200. | #1 et #2 | avant la mise en ligne (lié à Q5) |
-| **T6** | L'empreinte du chargeur ne couvre que les types et taxonomies : **aucune voie conforme** pour une issue qui ajoute une règle de réécriture sans type `mtb_`. La parade manuelle (Réglages → Permaliens) exige `manage_options`, que Fabienne n'a pas. | #1 | à traiter avant `seo` (#24) et `prive` (#23) |
+| ~~**T6**~~ | ~~L'empreinte du chargeur ne couvre que les types et taxonomies : aucune voie conforme pour une règle de réécriture sans type `mtb_`.~~ **PAYÉE au lot 10 par #27**, et son énoncé était partiellement inexact : une voie existait — l'incrémentation de `MTB_CORE_VERSION` — mais illégitime, passant par l'index central que la décision 9 proscrit. **Le trou réel était ailleurs et il est bouché** : l'empreinte observait les **noms** des types, jamais leurs **arguments de réécriture**, si bien que changer `'slug' => 'portees'` ne la faisait pas bouger et que l'ancienne adresse continuait de répondre — **pas un 404, un site qui a l'air de marcher avec les mauvaises URL**. Convention gelée : *un module appelle `add_rewrite_rule()` depuis son rappel `init` 10, sans condition de contexte, et n'a rien d'autre à faire.* Démontré en `curl` sans cookie, **200 dès la première requête**, sans jamais ouvrir `wp-admin`. **Conséquence de routage, mesurée et contraire à ce que ce tableau affirmait** : **#23 et #24 n'ont jamais eu besoin de #27** — une règle de réécriture traduit une URL en *requête*, une 301 est une *réponse* (`template_redirect`, motif déjà éprouvé dans le dépôt). | #1 | ✅ **payée au lot 10** |
 | **T7** | Le bloc Bouton du cœur rend `#32373c` / `#fff`, **hors des quinze jetons**, atteignable en un clic. `base.css` n'habille que `button` et `input[type=submit]`, jamais `.wp-block-button__link` qui est un `<a>`. | #2 | première issue de composants |
 | **T8** | Le contrat #2 déclare « BRIEF §8 satisfait » : **vrai pour le formulaire natif, faux pour l'exclusion**. Le sitemap du cœur ne filtre pas `has_password` et la recherche native retourne les contenus protégés. Rien ne fuit aujourd'hui (aucun contenu protégé). | #2 | **#23** (`prive`) |
 
@@ -489,6 +662,7 @@ Vérifiés sur le site source le 2026-08-14. Toute autre donnée d'élevage se l
 
 | Lot | Epic | Issues | Résultat | Commit |
 |-----|------|--------|----------|--------|
+| 10 | 11. Dette technique + 10. Guide | #27, #28, #37 | **Premier lot depuis le lot 5 dont la revue n'a bloqué le push sur rien** — 0 CRITICAL, 0 HIGH, 5 MEDIUM, 6 LOW. **#27 paie T6, mais pas le défaut annoncé** : l'empreinte du chargeur observait les *noms* des types, jamais leurs *arguments de réécriture*, si bien qu'un `'slug'` changé ne prenait jamais effet — **pas un 404, un site qui a l'air de marcher avec les mauvaises URL**. Les **deux** approches imposées par l'issue ont été écartées (elles font de `add_rewrite_rule()` un no-op silencieux) et la **tâche 2 refusée à raison** : borner le flush à l'activation aurait livré un site en 404 après une mise en ligne par FTP. Démontré **défaut prouvé avant correctif**, 200 dès la première requête, sans jamais ouvrir `wp-admin`. **#28 met les listes d'administration au service de la règle d'or** — colonnes métier, trois filtres, ordre imposé, modification groupée de la disponibilité — et **D12 est démontrée par contre-exemple sur les trois types** (32→31, 23→22, 67→66), avec **13 requêtes SQL capturées sans une seule jointure de méta**. Sa refacto l'a rattrapée contre son propre arbitrage gelé : le module de corbeille **écrasait 15 phrases justes**. **#37 livre 119 captures et retire 84 encarts « Capture à prendre »** — des consignes de développeur qui vivaient dans le manuel de l'éleveuse. Périmètre requalifié sur le brief §13.1 (huit parcours nommés, pas une capture par composant) ; **seulement 2 promesses abandonnées**, mesurées par différence de commits. Intégration : **391 vérifications, 0 échec imputable au lot**, 2 défauts réparés avant push (une donnée d'essai photographiée, une date illisible classée en tête). **D9 démontrée à froid**, deux cycles, idempotence mesurée. **La leçon du lot** : en mono-branche, **une mesure n'a de valeur que datée d'un commit** — quatre agents s'y sont trompés, dont moi deux fois ; la disjonction des empreintes protège les écritures, **pas les lectures**. | `0c46eeb`, `ad80f45`, `d95fc71`, `cefb203`, `73591c4`, `fa80eb3`, `17d0e01` |
 | 9 | 7. Gabarits et thème (clôture) | #17 | **Le plus petit lot du projet, et aucun de ses blocages n'était du code** : huit lignes de gabarit, **zéro octet de CSS, JS ou PHP**. A8 **levée** — les trois `mtb/lien-de-recours` posés sur l'état vide d'`index.html`, recopiés octet pour octet de `search.html` ; **2 liens rendus et non 3**, « La meute » s'omettant en silence (T30). Exception D1 écrite au guide, Mentions légales vérifiées et **délibérément non harmonisées**, T33 renumérotée. **D8 tranchée par l'utilisateur** : budget lu en **octets réseau** — Accueil 68 749 o, Travail 60 491 o contre 200 000, **T37 fermée**. Intégration : les cinq revendications du contrat reproduites **au chiffre près**, 1 débordement sur **42 combinaisons**, **81 arrêts clavier / 0 sans anneau**, **0 violation axe**, D12 éprouvée sur treize composants mal remplis sous `E_ALL` forcé, **D1 mesurée en session `fabienne` réelle**. Elle **réfute quatre affirmations du contrat**, dont une qui allait faire ouvrir une issue `a11y` pour un `<main>` **déjà focusable**. Revue **BLOQUANTE** — zéro CRITICAL, **deux HIGH tous deux de prose** : une fiche annonçant un lien cassé que le code ne produit jamais, et une section du contrat déclarant l'AA invérifiée sur tout le lot — **cette seconde née de ma propre consigne**, un cran trop large sur un filet décoratif de 6 px. Les deux levés, contre-revus, **aucune régression**. **D9 démontrée à froid** sur deux cycles complets. **T49 a une cause et elle est réparée** : un `: ` non échappé en YAML privait la chaîne de deux agents. **Cinq dettes neuves consignées** (T51-T55) qui ne vivaient que dans le contrat. | `5c7cf34`, `60f36f4`, `072d390`, `e10ca03` |
 | 8 | 8. Reprise du contenu | #20, #21 | **Le contenu de l'ancien site entre dans le nouveau** : 27 portées, 17 chiens, 61 résultats, 7 pages libres, 135 pièces jointes, **592 WebP**. Transcrit dans des **fichiers versionnés**, importé par une commande qui **crée et ne met jamais à jour**, contrôlé par un comparateur hors ligne rejouable. **D11 démontrée au byte près** après destruction/reconstruction : 106 empreintes de contenu identiques, 47/48 URL identiques à l'octet, la 48ᵉ à 1 octet (borne 99/100 d'un compteur, prédite avant mesure). Intégration : **~900 vérifications, 2 échecs bloquants**. Le premier était invisible sans exécution : `est_une_liste()` déclarait le tableau vide « liste », donc **tout `"attributs": {}` était rejeté et 6 pages sur 7 perdues** — 13 occurrences dans les données, 13 avertissements, et la seule page sans occurrence était la seule créée. Revue **BLOQUANTE** puis **OK avec réserves** : un CRITICAL (**13 fichiers, 643 lignes non commités** — dont le fait `noindex` de Placement et `MASTER.md` 1.1 : ce qui avait été mesuré n'était pas ce qu'un push aurait envoyé) et trois HIGH (une fiche décrivant des marqueurs que le code ne produit plus ; **la même clé `_mtb_robots_source` sous deux formes incompatibles**, chaîne contre tableau, les deux documentations affirmant l'alignement ; l'**affixe de Jango** perdu dès qu'un résultat est rattaché à une fiche, contre une liste d'écarts qui se déclarait exhaustive). Tous levés. **`MASTER.md` passe en 1.1** : `break-word` ne comptant pas dans le calcul des tailles min-content, la règle §7.7 était **fausse**, pas contournée — 347,25 px sous `break-word` **comme sous `normal`**, 15,5 px sous `anywhere`. **`MTB_FIXTURES` livré** : le garde de non-mélange de #20 prescrivait un remède (`down -v`) que le provisionnement défaisait aussitôt. | `2018abe` → `9418979`, dont `031e59b`, `01d4489`, `efb8bc2`, `dcac163`, `0430fa8`, `50e37fc` |
 | 7 | 8. Reprise + 9. Contact + dette | #19, #22, #29 | **Les 52 URL de l'ancien site sont archivées** — 309 fichiers, 36 Mo, dont **192 photographies**, sur décision de l'utilisateur de les versionner : la contrainte 4 ne dépend plus de la survie de l'abonnement IONOS. **Formulaire de contact** qui n'écrit rien en base (décision 45), anti-spam sans service tiers, mention d'information adossée ligne à ligne au code (décision 48). **`wp mtb import-fixtures`** enfin livrée : la pile sème 14 contenus. Deux passes correctives : msmtp réparé dans les images (**les deux voies de courrier étaient mortes**) et composition des pages au provisionnement. **Dettes T39 et T41 payées.** Intégration : **≈627 vérifications, 6 échecs, aucun imputable au lot**. Revue **BLOQUANTE** — zéro CRITICAL, deux HIGH : **cinq pages en `noindex` que rien ne signalait** (Q23) et trois livrables non commités. Les deux levés. Le jeton HMAC substitué au nonce est **ratifié** (décision 51). **Cinq questions tranchées par l'utilisateur** dans la session. | `3879b0d` → `a...`, dont `1464a7e`, `ca5e6b7`, `35aa919`, `3c4d047`, `ddaaea4`, `f0d06ff`, `e235160` |
