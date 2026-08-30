@@ -52,8 +52,10 @@ Trois précisions qui évitent une surprise :
 Vous n'avez rien à régler : l'ordre est posé une fois pour toutes.
 
 - **Toutes les portées** : de la **plus récente à la plus ancienne**, selon la **date de naissance** —
-  **exactement l'ordre du site public**. Une portée sans date de naissance se range **en fin de liste**,
-  jamais en tête, et n'est jamais escamotée.
+  **le même ordre que sur le site public**, sauf pour une date abîmée, que cette liste range en fin
+  quand le site la range en tête. Ce cas-là ne peut pas venir de vous : l'écran de saisie refuse une
+  date qu'il ne comprend pas. Une portée sans date de naissance se range **en fin de liste**, jamais
+  en tête, et n'est jamais escamotée.
 - **Tous les chiens** : par **ordre alphabétique** du nom d'usage.
 - **Tous les résultats de travail** : dans **l'ordre de la page Travail**, discipline par discipline.
   Dans une discipline, de l'année la plus récente à la plus ancienne, les résultats sans année en fin
@@ -100,14 +102,20 @@ C'est le geste qui vous fera gagner le plus de temps : **aucune fiche à ouvrir*
 4. Cliquez sur **Appliquer**. Un panneau s'ouvre au-dessus de la liste, avec les portées cochées dans
    un encadré, à gauche.
 5. Dans ce panneau, ouvrez la liste **Disponibilité** et choisissez **Chiots disponibles**,
-   **Tous réservés** ou **Portée passée**.
+   **Tous réservés** ou **Portée passée**. **Ne touchez ni à la liste Modèle ni à la liste État**, les
+   deux autres du panneau : elles sont posées d'avance sur « — Aucun changement — » et ne font rien
+   tant que vous les laissez ainsi, mais **État** retirerait du site toutes les portées cochées d'un
+   seul geste.
 6. Cliquez sur **Mettre à jour**, en bas à gauche du panneau.
 
 ![Le panneau de modification groupée ouvert au-dessus de la liste des portées : à gauche l'encadré des trois portées cochées, à droite la liste Disponibilité posée sur — Pas de changement —, et en bas les boutons Mettre à jour et Annuler](captures/listes-portees-groupee.png)
 
 *(Le mot **Modifier**, dans la liste **Actions groupées**, est celui de WordPress lui-même et non le
 nôtre : nous ne l'avons pas relevé à l'écran. Si vous lisez autre chose à cet endroit, c'est la même
-ligne. La liste **Disponibilité**, elle, est bien la nôtre.)*
+ligne. Il en va de même des noms **Modèle** et **État** cités à l'étape 5 : ce sont les deux autres
+listes du panneau, elles aussi de WordPress, et nous ne les avons pas relevées à l'écran non plus.
+Quel que soit le mot que vous y lisez, la consigne est la même : n'y touchez pas. La liste
+**Disponibilité**, elle, est bien la nôtre.)*
 
 **La liste Disponibilité s'ouvre sur « — Pas de changement — », et c'est votre filet de sécurité.**
 Tant que vous ne touchez pas à cette ligne, **aucune disponibilité n'est modifiée**, quoi que vous
@@ -149,6 +157,12 @@ place selon sa date de naissance. Il n'y a **aucun ordre à tenir à la main**.
   disponibilité d'une portée, et nous n'avons pas voulu la deviner à votre place — une disponibilité
   devinée aurait été un fait inventé. C'est justement ce que la modification groupée ci-dessus permet
   de corriger, en un seul passage.
+- **Des noms de chiens que vous ne connaissez pas apparaissent dans vos listes**, et sur les images de
+  cette fiche : **Rex**, **Luna**, **César**, **Vega** et **Nova**. Ce sont des exemples de test posés
+  pour vérifier que les écrans s'affichent bien ; ils ne viennent pas de votre élevage et
+  disparaîtront à l'installation du site. **Ne supprimez aucune ligne dont vous n'êtes pas sûre** :
+  laissez-la et signalez-la. Voir [Ajouter un chien](chien-ajouter-un-chien.md), dernière section, et
+  [Ajouter un résultat de travail](resultat-ajouter-un-resultat.md), dernière section.
 - **Les nouvelles colonnes ne se cliquent pas pour classer la liste.** C'est voulu, ce n'est pas un
   manque : l'ordre est déjà celui qui a du sens pour l'élevage, et il ne peut pas être mis dans un
   état surprenant.

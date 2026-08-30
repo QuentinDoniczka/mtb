@@ -192,3 +192,19 @@ pour un nom de chien précis. Voir
 [Retrouver un contenu dans vos listes](listes-retrouver-un-contenu.md).
 
 ![La liste Tous les résultats de travail, où une ligne s'intitule Résultat de travail (à compléter) parce qu'aucun de ses champs n'est rempli](captures/resultat-liste-a-completer.png)
+
+---
+
+## Des résultats que vous n'avez pas saisis
+
+Dans **Tous les résultats de travail**, vous verrez peut-être **quelques lignes que vous n'avez pas
+créées**. Ce sont des **exemples de test**, posés là pour vérifier que les écrans s'affichent bien.
+Ils ne viennent pas de votre élevage et ils disparaîtront quand le site sera installé pour de vrai.
+
+**Comment les reconnaître.** Ils citent un chien d'exemple — **Rex**, **César**, **Vega** ou
+**Ubac de Démonstration**. L'un d'eux porte le niveau **Épreuve de démonstration — niveau 1**, un
+autre le conducteur **Conducteur de démonstration**. Aucun de ces noms ne vient de chez vous.
+
+**Ne les supprimez pas vous-même, et ne supprimez aucune ligne dont vous n'êtes pas sûre** : une
+valeur corrigée se retape en dix secondes, un résultat supprimé ne se retrouve pas de la même façon.
+Dans le doute, laissez la ligne et signalez-la — c'est toujours la bonne réponse.

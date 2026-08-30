@@ -149,7 +149,7 @@ fois : calcul de la liste ordonnée des identifiants **en PHP**, puis `post__in`
 
 | Liste | Ordre |
 |---|---|
-| **Portées** | date de naissance **décroissante**, **sans date lisible en fin de liste**, égalités par identifiant — soit **exactement l'ordre du site public** |
+| **Portées** | date de naissance **décroissante**, **sans date lisible en fin de liste**, égalités par identifiant — soit l'ordre du site public, **à une exception près depuis `fa80eb3`** : voir la dette « ordre public sur date illisible » au §13 |
 | **Chiens** | alphabétique du nom d'usage — **natif** (`orderby => 'title'`), rien ne peut disparaître |
 | **Résultats** | disciplines dans l'**ordre gelé**, puis orphelines, puis **les sans-discipline en tout dernier** ; dans un groupe, année décroissante, sans-année en fin |
 
@@ -486,7 +486,7 @@ seulement s'il l'atteint, et la fausse annonce de tri, il ne peut pas la savoir 
 pris après la passe d'intégration, qui a mesuré le défaut.*
 
 Une date de naissance **illisible** (`"pas-une-date"`, injectable seulement par `$wpdb` — l'assainisseur
-la refuse) se rangeait **en tête** de liste, **rang 1 sur 33**, pendant que sa colonne affichait
+la refuse) se rangeait **en tête** de liste, **rang 1 sur 32**, pendant que sa colonne affichait
 « Non renseigné ». `ordonner_portees()` ne testait que la chaîne vide ; une valeur non vide passait
 donc dans `strcmp()`, où les lettres l'emportent sur tout chiffre en ordre décroissant.
 
@@ -502,7 +502,7 @@ toujours par diverger — ici elles divergeaient déjà.
 
 **La réparation, aux deux endroits où la divergence existait** :
 - `ordonner_portees()` normalise à vide toute date que `date_en_toutes_lettres()` refuse. **C'est la
-  seule des deux qui répare un comportement visible** — le rang 1 sur 33.
+  seule des deux qui répare un comportement visible** — le rang 1 sur 32.
 - `valeurs_de_filtre()` ne dérive une année que d'une date **acceptée**. **Celle-ci ne répare aucun
   comportement visible**, et il faut le dire ainsi : `substr( $date, 0, 4 )` produisait bien `pas-`,
   mais **deux gardes en aval l'arrêtaient déjà** — `annees_presentes()` ne retient une valeur comme
@@ -537,6 +537,8 @@ disponibilité, qui est une liste fermée de trois valeurs déjà gelées et dé
 | Réf. | Objet | Pourquoi pas ici |
 |---|---|---|
 | **Nouvelle** | **Réparation à la cause du retour en brouillon** : `wp_untrash_post_status` + `wp_untrash_post_set_previous_status()` (WP 5.6+, vérifié) rendraient à un contenu rétabli **le statut qu'il avait avant la corbeille**, en une ligne — les cinq étapes en deux endroits deviendraient un clic | Rendrait **fausses trois fiches d'aide** que l'empreinte ne permet pas de réécrire, et remettrait du contenu **en ligne sans confirmation** : demande l'accord de l'éleveuse, pas une décision d'agent |
+| **Nouvelle** | **L'ordre public diverge de l'ordre d'administration sur une date illisible.** `query/portee/hydratation.php:144-176` compare la date **brute** et ne teste que la chaîne vide : côté public une date illisible se range **en tête**, là où l'administration la range désormais en fin. Même défaut que celui réparé par l'arbitrage N, resté de l'autre côté de la frontière | `includes/query/**` **hors empreinte**. **Divergence introduite par `fa80eb3`** — avant lui les deux côtés étaient faux de la même façon, et c'est exactement pourquoi elle doit être écrite plutôt que subie. Même réparation : normaliser par `date_en_toutes_lettres()` |
+| **Nouvelle** | **Le libellé des trois disponibilités est déclaré deux fois** — `content/portee/champs.php:26-32` et `query/portee/hydratation.php:57-63`. Vérifié : **identiques aujourd'hui**, au caractère près. Le jour où l'une est retouchée, la colonne d'administration et le badge public diront deux choses différentes **en silence** | Hors empreinte. Ce module ne l'a pas créée et s'en garde — `listes/bootstrap.php:37-39` nomme « la liste jumelle » et lit délibérément celle que consulte l'assainisseur. Aucune dette n'était enregistrée : elle l'est ici |
 | **Nouvelle** | **Modification rapide de la disponibilité**, ligne par ligne — la lecture forte de la promesse de l'issue | Arbitrage C. Exige un JS d'administration et son a11y vérifiée au lecteur d'écran : son propre lot |
 | **Nouvelle** | **« Filtrer sur ce qui reste à compléter »**, transverse aux trois listes | Arbitrage K |
 | **Nouvelle** | **Deux formulations concurrentes** pour une fiche de chien perdue : « Fiche introuvable » (`fields/portee/ecran.php:209`) et « Fiche n° 123 (introuvable) » (`fields/resultat/controle-chien.php:112-114`). La colonne « Chien » dira « Fiche introuvable » alors que **l'écran où ce champ se saisit** dit autre chose | `includes/fields/**` hors empreinte |

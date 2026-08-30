@@ -261,4 +261,8 @@ est un prénom ordinaire, comme celui d'un vrai chien. Le repère est **à l'int
 ouvrez-la, et regardez le **nom complet**, sous le nom d'usage. Celui d'un chien d'exemple **finit
 toujours par « de Démonstration »**. Aucun de vos chiens ne porte cette mention.
 
+**Ces fiches sont au nombre de cinq** : **Rex**, **Luna**, **César**, **Vega** et **Nova**. Aucun de
+ces noms ne vient de votre élevage. **Et si vous hésitez sur une fiche, ne la supprimez pas** : un
+champ corrigé se retape en dix secondes, une fiche supprimée ne se retrouve pas de la même façon.
+
 En cas de doute sur une fiche, **laissez-la et signalez-la** — c'est toujours la bonne réponse.
