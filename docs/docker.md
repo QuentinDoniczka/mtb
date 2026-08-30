@@ -69,18 +69,34 @@ Identifiants de développement définis dans `.env.example` (à copier dans `.en
 ## Diagnostics PHP
 
 `WORDPRESS_DEBUG` (dans `.env`, livré à `1`) pilote **`WP_DEBUG`** et, depuis #31, **`WP_DEBUG_LOG`**,
-qui le suit. **`WP_DEBUG_DISPLAY` est câblé à `false` en toutes circonstances** : aucune combinaison
-de réglages ne peut imprimer une notice dans la page servie à un visiteur. C'est la moitié non
+qui le suit. **Sur le chemin web, `WP_DEBUG_DISPLAY` est câblé à `false`** : aucune combinaison de
+réglages ne peut imprimer une notice dans la page servie à un visiteur. C'est la moitié non
 négociable de la fidélité à un hébergement mutualisé — un mutualisé journalise ses erreurs, il ne les
 montre pas. Ces deux constantes sont posées par `WORDPRESS_CONFIG_EXTRA` dans `compose.yaml`, un bloc
 que `wp-config.php` évalue à chaque requête : le réglage prend sur une stack déjà installée, sans
 `make reset`.
 
-| `WORDPRESS_DEBUG` | `WP_DEBUG` | `WP_DEBUG_LOG` | `WP_DEBUG_DISPLAY` |
+**La restriction au chemin web est littérale, pas une précaution de langage.** Le service `wpcli` ne
+reçoit délibérément pas `WORDPRESS_CONFIG_EXTRA` (voir plus bas), donc `WP_DEBUG_DISPLAY` y vaut
+`true` — la valeur par défaut du cœur. Cela reste sans conséquence : `display_errors` y est `Off`,
+`WP_DEBUG` y est faux donc WordPress ne l'allume jamais, et WP-CLI ne sert aucun visiteur. Ce qui est
+garanti partout, c'est qu'**aucune page servie à un visiteur ne porte de diagnostic**.
+
+La table ci-dessous décrit la variable **telle que le conteneur `wordpress` la reçoit** — ce n'est
+pas la même chose que ce qui est écrit dans `.env` :
+
+| `WORDPRESS_DEBUG` reçue par le conteneur | `WP_DEBUG` | `WP_DEBUG_LOG` | `WP_DEBUG_DISPLAY` |
 |---|---|---|---|
 | `1` (livré) | `true` | `true` | `false` |
 | `0` | `false` | `false` | `false` |
-| absente | `false` | `false` | `false` |
+| absente **du conteneur** | `false` | `false` | `false` |
+
+**Le piège du geste dans `.env`, qui ne donne pas la troisième ligne** : `compose.yaml:43` porte
+`WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-1}`. **Supprimer** la ligne `WORDPRESS_DEBUG=` de `.env` retombe
+donc sur la valeur par défaut `1` et donne `WP_DEBUG=true` — l'inverse de ce qu'on croit faire en
+l'effaçant. Pour éteindre les diagnostics, écrire `WORDPRESS_DEBUG=0` ; ne pas effacer la ligne. La
+troisième ligne de la table ne s'obtient qu'en retirant la variable du **service** dans
+`compose.yaml`. Dans les trois cas, aucun diagnostic n'atteint le visiteur.
 
 Les diagnostics d'une page rendue s'écrivent dans **`wp-content/debug.log`**, à l'intérieur du volume
 `mtb_wp_data` — jamais dans le dépôt. On les lit avec `make debug-log` et on vide le journal avec
