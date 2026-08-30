@@ -10,6 +10,152 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
+**Phase : lot 12 (#30 les commandes base de WP-CLI en TLS, #45 les deux dettes de `hydratation.php`,
+#35 le libellé de la description de photo) livré, testé et revu le 2026-08-30. Les trois issues sont
+fermées.** Trois commits, `7939c42` → `6af2add`. Revue **OK AVEC RÉSERVES — 0 CRITICAL, 0 HIGH**,
+4 MEDIUM, 5 LOW : le push n'a pas été bloqué. C'est le deuxième lot dans ce cas, après le lot 10.
+
+**La leçon du lot est un motif, plus une surprise : deux issues sur trois prescrivaient un remède qui
+ne pouvait pas fonctionner, et dans les deux cas la chaîne l'a mesuré avant de l'appliquer.** C'est le
+troisième lot consécutif où requalifier l'énoncé du donneur d'ordre est le vrai travail. Mais la forme
+est neuve et vaut d'être retenue : au lot 11 les énoncés étaient **faux sur les faits** ; ici ils sont
+**faux sur le mécanisme**. #30 nommait une commande, il y en avait trois ; #35 prescrivait un crochet
+WordPress qui, mesuré, **ne s'exécute jamais là où il faudrait**. Un énoncé peut décrire un vrai défaut
+et se tromper entièrement sur ce qui le répare.
+
+**Ce que #30 livre, et pourquoi le diagnostic est l'essentiel.** Le défaut était réel et vieux du
+lot 2, mais inversé dans l'énoncé : **c'est le client qui exige TLS, pas le serveur qui en manque.** Le
+`mariadb-client 11.4.8` de l'image Alpine `wordpress:cli-php8.1` a `ssl=TRUE` en défaut compilé, face à
+un `mariadb:10.11` en `have_ssl = DISABLED`. Trois commandes tombaient, pas une : `wp db query`,
+`wp db check`, `wp db export`. **Un fichier d'options ne pouvait pas suffire** — WP-CLI 2.12.0 invoque
+toujours son client avec `--no-defaults` en tête de ligne, mesuré : un `[client] ssl=0` répare le client
+nu et **ne répare pas WP-CLI**. Le seul point d'intervention est donc le binaire résolu par le `PATH`.
+Livré : six enrobages `sh` dans `/usr/local/bin/` qui `exec` le binaire réel de `/usr/bin/` — jamais
+déplacé ni masqué — en ajoutant `--skip-ssl` **en fin** de ligne, `--no-defaults` devant rester la
+première option. Avec une **garde de retrait** : si l'appelant passe lui-même `--ssl`, `--tls` ou
+`--skip-ssl`, l'enrobage se retire entièrement, pour qu'aucune intention explicite ne soit contredite en
+silence.
+
+**Le refus le plus important de #30 est d'avoir laissé le serveur en clair.** Activer TLS côté base
+aurait fait taire le message ; c'est exactement pour cela que ça a été écarté. Un hébergement mutualisé
+parle à sa base en clair, et une stack qui s'en éloigne pour se rassurer ne teste plus la cible de
+production. **D9 est un critère de fidélité, pas de confort.**
+
+**Ce que #45 livre, et l'honnêteté de son propre commit est le point à retenir.** Quatre instances
+d'une même faute — recopier au lieu d'appeler — dans un fichier unique : les listes fermées des
+disponibilités **et des sexes** étaient redéclarées mot pour mot alors que `content/portee/champs.php`
+les possède et qu'un assainisseur les y consulte à chaque écriture. Le tri public, lui, comparait la
+date de naissance brute sans le test de lisibilité que `fa80eb3` (#28) avait posé côté administration :
+une date illisible se rangeait **en tête sur le site et en fin en administration**. Mesuré sur portée
+d'essai injectée puis supprimée avec preuve du nettoyage : rang 1 public contre dernier en
+administration **avant**, dernier des deux côtés **après**, total inchangé, suite des portées datées
+identique caractère pour caractère, **0 jointure `postmeta`** avant comme après.
+
+**Mais le commit écrit lui-même ce que le correctif ne fait pas, et c'est ce qui le rend fiable** :
+`assainir_date()` refusant toute date malformée à l'écriture, **aucune portée saisie depuis
+l'administration ne pouvait déclencher cette divergence**. Le défaut n'était atteignable que par
+écriture directe en base. Ce qui est réellement gagné pour l'éleveuse est plus modeste et plus vrai :
+l'unique **option d'année fantôme** que le composant « Liste de portées » pouvait lui proposer
+disparaît. Une chaîne qui borne elle-même la portée de sa victoire est une chaîne à qui on peut se fier.
+
+**Ce que #35 livre : le remède prescrit ne mordait pas, et il était nommé au dossier depuis #6.**
+L'issue imposait `attachment_fields_to_edit`. Une sonde jetable posant une sentinelle sur le libellé de
+`image_alt` **ne la fait apparaître sur aucun des six parcours sondés** — et la cause est dans le cœur
+6.9 : là où le crochet s'exécute (`get_compat_media_markup()`, `media.php:1935`) `image_alt` est absent
+à l'entrée et détruit à la sortie ; là où `image_alt` existe (`media.php:1509`) le site d'appel n'est
+atteint par **aucun écran d'aujourd'hui**. Le bon remède — un filtre `gettext` strictement borné —
+était écrit dans la **dette T16 du contrat #6** depuis le lot 2. **Une dette correctement rédigée a fait
+gagner un lot entier à la chaîne qui l'a lue.**
+
+**Deux refus de #35 méritent d'être gravés.** L'aide sous le champ n'est **pas** remplacée : celle du
+cœur porte un lien vers l'arbre de décision du W3C, que notre phrase ne dit pas — *on ne remplace jamais
+un texte par un autre qui en dit moins*. Et le filtre est borné à **deux chaînes anglaises exactes**,
+dont les 8 émissions sont toutes des étiquettes de description d'image : aucun débordement, vérifié.
+
+**Le guide comptait six fiches, pas trois** — le chiffre de l'issue datait de sa rédaction, comme celui
+de #37 au lot 10. Le nouveau nom crée une collision (la colonne porte désormais **deux** champs
+commençant par « Description »), payée par une désignation ordinale qui a l'avantage de **rester vraie
+si le renommage cessait un jour de mordre**. Le paragraphe qui promettait ce renommage à l'éleveuse a
+été supprimé, pas rafistolé.
+
+**Ce que la passe d'intégration établit : 15 vérifications, 0 échec imputable au lot**, sur une image
+`wpcli` reconstruite **sans cache** — la première reconstruction à froid depuis `690024f`. Elle a de
+nouveau **sondé son propre instrument avant de conclure** (leçon du lot 11) et signalé un **faux positif
+de son détecteur** : un `"Warning: …"` compté comme diagnostic PHP alors qu'il vivait dans un catalogue
+de traduction JS. **Une première instance de cette même passe a tourné ~54 minutes et n'a rien rendu**
+(T64) ; la relance a été faite avec obligation d'écrire le rapport **sur disque au fil de l'eau**, et
+c'est ce qui l'a sauvée. **C'est la parade mécanique à retenir contre T64.**
+
+**Trois écarts consignés hors lot, à ne pas reperdre** : la **page protégée figure dans le sitemap** du
+cœur — aucun crochet `wp_sitemaps` dans `mtb-core` ni dans le thème, à arbitrer avec #23/#24 ;
+`/wp-admin/widgets.php` répond **500**, mais c'est le `wp_die()` normal du cœur pour un thème sans zone
+de widgets, ni fatale ni effet du lot ; et un `datetime="1888-13-45"` **invalide** rendu pendant
+l'injection, pendant que le texte visible dit « Non renseigné » — inatteignable par la saisie.
+
+**Ce que la revue relève, et son constat le plus utile est ergonomique, pas technique.** Le libellé
+figé par `MASTER.md` §10.2 fait **52 caractères**, et il s'affiche dans la colonne gauche du volet
+« Détails du fichier joint », que `media-views.css:409-411` borne à `max-width: 80px` en 12 px. « Texte
+alternatif » (16 caractères) y tenait sur une ligne ; 52 y feront environ **cinq lignes coupées en
+travers des mots**, à côté d'une zone de saisie de trois lignes. **Ce n'est pas une casse prouvée** — la
+revue n'avait aucun navigateur — mais un mécanisme CSS établi, sur l'écran exact où six fiches du guide
+envoient l'éleveuse. À rendre pour de vrai avant de considérer #35 comme close sur le fond.
+
+**Deux MEDIUM sont, une fois de plus, de la prose que le code dément.** Le docbloc du module #35
+affirme que « le cœur échappe et imprime lui-même » : **il n'échappe pas** (`_e( 'Alternative Text' )`
+imprime brut en cinq points, et `{$field['label']}` est interpolé brut en deux autres) — la sûreté tient
+en réalité à l'interdit n°3 du même docbloc, et le contrat le dit correctement là où le module se
+trompe. Et `docker/wpcli/Dockerfile:68` motive un choix par « `core.autocrlf=true` **sans**
+`.gitattributes` racine » : **les deux moitiés sont fausses**, ce fichier existe depuis `73f1ea4` (#47)
+et ne renormalise que `.claude/agents/*.md`. Quatrième lot consécutif où la prose bloque ou entache là
+où le code tient.
+
+**T-#35-b sous-estime sa propre portée, et c'est le piège classique d'une dette mal bornée.** Elle ne
+nomme que le menu « Médias ». Mesuré en session admin réelle : « Médiathèque » ×1, « Médias » ×3,
+« fichier joint » ×12, « URL du fichier » ×5. `MASTER.md` §10.4 interdit la racine « média » ;
+« Médiathèque » tombe sous la même règle **et le guide demande à l'éleveuse de cliquer dessus par son
+nom**. Une chaîne future payant T-#35-b telle qu'écrite laisserait « Médiathèque » debout.
+
+**Ce que la passe n'a pas couvert, à ne pas lire comme vérifié** : **D4 en entier** (aucun contenu repris
+en base, la migration n'a pas été lancée) · **tout D7 pour l'essentiel** — aucun navigateur disponible,
+donc aucune passe axe, aucun contraste calculé, aucun parcours clavier, aucun zoom 200 %, aucun 360 px ·
+**tout ce qui dépend de JavaScript**, dont la fenêtre des photos telle qu'elle se comporte réellement —
+la mesure de #35 porte sur les gabarits **imprimés**, pas sur ce que l'éditrice voit après exécution de
+`wp.media` · **D11**, non testable mécaniquement, jugée par la revue : **tenue** · **D5** (aucun
+mécanisme de redirection n'existe, il appartient à #24 ; 7 URL cartographiées sur 52) · le comportement
+en production · **l'état « avant correctif » de #45, non remesuré** — l'agent a refusé de remettre en
+place l'ancienne version d'un fichier livré, et ne contresigne donc pas la divergence que le commit
+décrit · la divergence de #45 est prouvée sur **5 portées**, pas sur les 32 du lot 10.
+
+**Quatre faits d'infrastructure, dont un qui remplace enfin une approximation.** La contre-épreuve
+Docker a **daté l'écart entre *healthy* et *provisionné*** : le healthcheck `wpcli` passe *healthy* dès
+**~8 s** (juste après `wp core install`), mais `[provision] terminé.` n'apparaît qu'à **6 min 5 s** après
+`up -d` — une première boucle d'attente de 300 s a expiré avant lui. Le lot 11 disait « très avant » ;
+on a maintenant le chiffre, et **une attente de 5 minutes ne suffit pas**. Ensuite : `build --no-cache`
+en **32,6 s**, images de base déjà locales — ce n'est **pas** comparable aux 8 min 42 / 3 min 11 / 2 min 59
+du lot 11, conditions différentes, et l'agent le dit lui-même. Puis un fait à connaître avant d'écrire un
+`up` scripté : **`wordpress` est passé *unhealthy* transitoirement pendant 35 s** au plus fort du
+provisionnement, et est revenu seul — rien dans #30 ne touche ce mécanisme, mais un script qui
+dépendrait strictement de son « healthy » au lieu du marqueur `wpcli` tomberait. Enfin, **T72 est
+confirmée empiriquement** : un septième enrobage déposé dans `docker/wpcli/bin/` est copié, ignoré par
+la boucle, puis jeté — **sans la moindre erreur de build**.
+
+**Prochaine action** : `/lead-mtb #46 #44 #39` — **empreintes disjointes, parallèle sûr**, verdict
+obtenu de `github-boards` le 2026-08-30. #46 (captures du guide), #44 (`MASTER.md` §10.2 seul, aucun
+code), #39 (`includes/blocks/lien-de-recours/**`). **Aucun des trois ne demande quoi que ce soit à
+l'utilisateur ni à l'éleveuse.** **#46 a été amendée avant le lot** : son corps ne couvrait que les
+deux captures manquantes de T57 et ignorait les **deux captures rendues fausses par #35**, que
+`issue-35.md` §10 lui verse pourtant nommément — c'était un vrai trou de couverture.
+
+**Recouvrements à ne pas redécouvrir** : #33 ↔ #40 (`base.css`) · #33 ↔ #34 (l'empreinte élargie de #34
+englobe `assets/css/blocs/*.css`) · #39 ↔ #43 (`includes/blocks/lien-de-recours/**`) · #43 ↔ #44 **et
+toute issue future touchant `design-system/MASTER.md`** · **#35 ↔ #46 est levé, #35 étant livrée** ·
+#32 et #36 ont une empreinte que l'issue elle-même n'a jamais tranchée.
+
+**Bloquées, à exclure de tout lot jusqu'à réponse** : #23 et #24 par **Q1** et **Q4** · #25 par
+transitivité · **#26 et #48 garées** par le report assumé de **Q5** · #42 par **Q14** · **#34 rouverte
+mais doit tourner seule**, hors lot parallèle, comme T15 l'exige.
+
+
 **Phase : lot 11 (#31 les notices PHP, #34 la feuille de la galerie, #41 les écrans de recours de
 `MASTER.md`) livré, testé et revu le 2026-08-30. #31, #41 et #47 sont fermées ; #34 est requalifiée et
 rouverte.** Six commits, `2637429` → `02ff0c1`. Revue **BLOQUANTE — 0 CRITICAL, 2 HIGH**, les deux
@@ -699,6 +845,15 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 
 | # | Dette | Créée par | Payée par |
 |---|-------|-----------|-----------|
+| **T65** | **Le libellé figé par `MASTER.md` §10.2 fait 52 caractères, et il n'a jamais été rendu à aucune largeur.** `media-views.css:409-411` (cœur 6.9) borne la colonne gauche du volet « Détails du fichier joint » à `max-width: 80px`, `min-width: 30%`, `font-size: 12px`, `text-align: right`, `word-wrap: break-word`. « Texte alternatif » (16 caractères) y tenait sur une ligne — visible sur `captures/galerie-description-photo.png` ; **52 caractères y feront environ cinq lignes coupées en travers des mots**, à côté d'une zone de saisie de trois lignes, sur l'écran exact où **six fiches du guide** envoient l'éleveuse. Ce n'est **pas une casse prouvée** (la revue n'avait aucun navigateur) mais un mécanisme CSS établi. Le contrat §9 ne déclare non observés que le 360 px et le zoom 200 % — **le 1280 px ne l'a pas été non plus**. À rendre pour de vrai avant de tenir #35 pour close sur le fond ; si le rendu est mauvais, c'est `MASTER.md` §10.2 qu'il faut rouvrir, pas le module | lot 12, relevée par la revue | une passe de rendu réel, ou une révision `lead-design-mtb` de §10.2 |
+| **T66** | **T-#35-b sous-estime sa propre portée.** La dette ne nomme que le menu « Médias ». Mesuré en session admin réelle sur `post.php?post=14&action=edit` : « Médiathèque » ×1, « Médias » ×3, « fichier joint » ×12, « URL du fichier » ×5. `MASTER.md` §10.4 interdit la racine « média » ; **« Médiathèque » (msgid `Media Library`, distinct de `Media`) tombe sous la même règle**, et le guide demande à l'éleveuse de cliquer dessus **par son nom** (`composant-galerie-photos.md:110`, `portee-ajouter-une-portee.md:190`). Une chaîne future payant T-#35-b **telle qu'écrite** laisserait « Médiathèque » debout. Corriger l'énoncé de la dette avant de la payer | #35, relevée au lot 12 | la chaîne qui paiera T-#35-b |
+| **T67** | **Le docbloc de `admin/description-photo/bootstrap.php:158-160` affirme une sûreté que le cœur ne fournit pas.** Il dit « Ce module N'IMPRIME RIEN : il rend une chaîne que le cœur échappe et imprime lui-même. » **Le cœur n'échappe pas ce libellé** : `_e( 'Alternative Text' )` imprime brut à `media-template.php:516, 768, 1074, 1137` et `media.php:3233`, et `{$field['label']}` est interpolé brut à `media.php:1804` et `:1996`. La sûreté tient en réalité à **l'interdit n°3 du même docbloc** (aucun `%`, `<`, `>`, `&` dans la chaîne de remplacement) — et le contrat §A5 le dit correctement (« ce qui la rend juste que le cœur l'échappe ou non »). Sans conséquence aujourd'hui (libellé sûr, table gelée et non filtrable), mais **un mainteneur lisant le module et non le contrat croirait pouvoir y mettre n'importe quel caractère** | #35, relevée au lot 12 | une correction de phrase, renvoyant à l'interdit n°3 |
+| **T68** | **`docker/wpcli/Dockerfile:68` motive un choix par deux affirmations toutes deux fausses.** Il écrit « `core.autocrlf=true` **sans** `.gitattributes` racine — un `.gitattributes` racine renormaliserait aussi `docs/migration/source/html/*.html` ». Or **un `.gitattributes` racine existe et est suivi** (posé par `73f1ea4`, #47) et **il ne renormalise que `.claude/agents/*.md`** — un motif de chemin ne déborde pas. `docs/docker.md:109` dit la même chose correctement (« sans `.gitattributes` **couvrant ce dossier** »). Le correctif livré fonctionne (enrobages en LF, mesuré) ; **c'est le motif écrit qui est faux, et il décourage une option que le dépôt pratique déjà** | #30, relevée au lot 12 | une correction de commentaire |
+| **T69** | **Trois endroits hors empreinte décident encore « date absente » par la seule chaîne vide.** #45 a fait cesser cette seconde notion **dans son seul fichier** ; les trois autres sont enregistrés au §7 de `docs/contracts/issue-45.md` et non traités. Tant qu'ils vivent, la notion de « date absente » reste double dans l'extension | #45, lot 12 | une passe d'alignement sur `date_en_toutes_lettres()` |
+| **T70** | **La conformité WPCS n'est vérifiable par aucun outil du dépôt.** Ni `composer.json`, ni `phpcs.xml`, ni binaire `phpcs` dans le dépôt ou les conteneurs — #45 le signale dans son propre commit. `CLAUDE.md` impose pourtant les WordPress Coding Standards. **Toutes les revues de conformité du projet ont donc été tenues à la relecture, jamais par un outil** — c'est à savoir avant de s'appuyer sur l'une d'elles | relevée au lot 12 | une issue `infra` |
+| **T71** | **La page protégée par mot de passe figure dans le sitemap du cœur.** `GET /wp-sitemap-posts-page-1.xml` rend `<loc>…/espace-prive/</loc>`. C'est le comportement par défaut de WordPress (il n'exclut pas les contenus protégés) et **rien dans `mtb-core` ni dans le thème ne pose ce filtre** — aucun crochet `wp_sitemaps` ni `has_password` dans les deux. Le reste de la protection est conforme : aucune fuite du corps, ni en recherche, ni au flux. À arbitrer avec **#23** (page protégée) et **#24** (référencement) | relevée au lot 12, hors lot | #23 ou #24 |
+| **T72** | **`docker/wpcli/Dockerfile:74-79` code en dur la liste des six enrobages**, indépendamment du contenu réel de `docker/wpcli/bin/`. Un septième fichier déposé dans le dossier serait copié dans `/tmp` puis **jeté sans un mot**. `for nom in $(ls /tmp/db-client-wrappers)` supprimerait la double source de vérité | #30, lot 12 | une retouche du `Dockerfile` |
+| **T73** | **Un permalien rend une adresse qui répond 404.** `/?post_type=mtb_resultat&p=18` → **404**, alors que `get_permalink()` rend cette adresse : les résultats de travail n'ont pas de page publique individuelle (ils s'affichent par le composant « Tableau de résultats »). Aucune archive publique non plus pour `mtb_chien` ni `mtb_resultat`. Comportement **stable et non touché par le lot 12**, consigné parce que **c'est un piège pour toute passe SEO future** | relevée au lot 12, hors lot | l'issue `seo` #24 |
 | **T64** | **Les sous-agents d'une chaîne ne rendent pas toujours leur rapport, et le lot 11 en donne les deux issues possibles.** Chaîne #31 : `brainstorm31` et `dev31` n'ont jamais rendu — le lead a **refait la démonstration en entier** plutôt que de reprendre une preuve qu'il n'avait pas lue, et l'issue a abouti. Chaîne #34 : **quatre agents lancés, zéro retour en ~90 min**, dont un dont la tâche était une seule commande — et comme un lead n'écrit jamais de code lui-même, la chaîne n'a **rien pu livrer**. Le sous-système n'était pas en panne : #31 et #41 ont abouti pendant ce temps. Symptôme observé : les sous-agents passent *idle/available* sans remettre de résultat, et certains tentent un `SendMessage` vers « lead-issue-mtb », qui **n'est pas une adresse** — un type d'agent n'en est pas une, et l'envoi échoue toujours. **La remise du résultat se fait par la fin d'exécution, pas par message.** | lot 11 | une issue `infra`, ou une consigne d'adressage dans le prompt de `lead-issue-mtb` |
 | **T63** | **`docs/contracts/issue-2.md` exige un commentaire dans `index.html` qui n'a jamais existé.** La ligne 368 demandait que le caractère provisoire de `Aucun contenu à afficher.` soit « signalé en commentaire dans `index.html` ». A8bis a supprimé le commentaire de la ligne 1 au lot 9 ; `templates/index.html` (35 lignes) n'en porte aucun. §9.5 portant désormais le gel et sa provenance (T53), l'instruction est **redondante mais formellement non tenue**. À classer explicitement plutôt qu'à laisser pendante | #2, relevée au lot 11 | classement, ou une ligne de gabarit |
 | **T62** | **Deux renvois internes faux dans `MASTER.md`, préexistants et volontairement non corrigés au lot 11.** `:16` annonce que les révisions s'inscrivent au « §15 » alors que le journal est **§16** (les trois autres renvois à §15 sont justes) ; `§7.6` renvoie à un « §9.6 » **inexistant**, §9 s'arrêtant à 9.5 — déjà noté en `issue-11.md:624`. Relevées par #41, laissées intactes parce que hors de ses quatre points ; la revue a **vérifié octet pour octet** qu'elles n'avaient pas été touchées | antérieures, relevées au lot 11 | une passe `lead-design-mtb` sur `MASTER.md` |
@@ -777,6 +932,7 @@ Vérifiés sur le site source le 2026-08-14. Toute autre donnée d'élevage se l
 
 | Lot | Epic | Issues | Résultat | Commit |
 |-----|------|--------|----------|--------|
+| 12 | 11. Dette technique | #30, #45, #35 | **Deux issues sur trois prescrivaient un remède qui ne pouvait pas fonctionner** — au lot 11 les énoncés étaient faux **sur les faits**, ici ils le sont **sur le mécanisme**. **#30 requalifiée** : trois commandes tombaient et non une (`wp db query`, `db check`, `db export`), et **c'est le client qui exige TLS, pas le serveur qui en manque** (`mariadb-client 11.4.8`, `ssl=TRUE` compilé, face à `have_ssl = DISABLED`). Un fichier d'options ne pouvait pas suffire — WP-CLI invoque son client avec `--no-defaults`, **mesuré** : un `[client] ssl=0` répare le client nu et pas WP-CLI. Six enrobages `sh` avec **garde de retrait** ; **TLS délibérément non activé côté serveur** — D9 est un critère de fidélité au mutualisé, pas de confort. **#35 requalifiée** : `attachment_fields_to_edit`, que l'issue imposait, **ne mord sur aucun des six parcours sondés** (dans le cœur 6.9, `image_alt` est absent à l'entrée et détruit à la sortie là où le crochet s'exécute) — et le bon remède, un filtre `gettext` borné, **était écrit dans la dette T16 du contrat #6 depuis le lot 2** : une dette bien rédigée a fait gagner un lot entier. Guide : **six** fiches et non trois. Deux refus gravés — l'aide du cœur n'est pas remplacée (elle porte un lien W3C que notre phrase ne dit pas), et le filtre reste borné à deux chaînes exactes. **#45 paie T58** et **borne elle-même sa victoire** : `assainir_date()` refusant les dates malformées à l'écriture, **aucune portée saisie en administration ne pouvait déclencher la divergence** — le gain réel pour l'éleveuse est la disparition d'une **option d'année fantôme**. Intégration : **15 vérifications, 0 échec imputable au lot**, sur image `wpcli` reconstruite **sans cache** (première à froid depuis `690024f`), avec un **faux positif de son propre détecteur** signalé. Revue **OK AVEC RÉSERVES** — 0 CRITICAL, 0 HIGH, 4 MEDIUM, 5 LOW. **La leçon** : un énoncé peut décrire un vrai défaut et se tromper entièrement sur ce qui le répare. **Et la parade à T64 est trouvée** — une première passe d'intégration a tourné ~54 min sans rien rendre ; la relance, **obligée d'écrire son rapport sur disque au fil de l'eau**, a survécu. | `7939c42`, `071bc60`, `6af2add` |
 | 11 | 11. Dette technique | #31, #34, #41 (+#47) | **Deux issues sur trois reposaient sur un énoncé faux, et les chaînes l'ont mesuré au lieu de l'exécuter.** **#31 requalifiée** : `WP_DEBUG` n'a jamais valu `false` sur le chemin web (`compose.yaml:43` depuis `c64087c`) ; le vrai défaut était que `debug.log` **n'existait pas** pendant que les diagnostics **s'imprimaient dans la page du visiteur** — **141 octets** mesurés, A/B démontré **deux fois indépendamment**, déduplication levée (5 requêtes → 5 lignes), D9 vérifiée sur trois valeurs **sur le chemin web**. Résultat le plus important : « journal vide » est **devenu falsifiable**, ce qui entame rétroactivement les passes des lots 9 et 10. **#34 n'a rien livré, délibérément** : 3 prémisses fausses sur 3, et déplacer la seule `grid-column` sur 5 déclarations aurait **fabriqué** la seconde source de vérité qu'elle prétendait éviter — requalifiée en T15, hors lot parallèle ; une moitié du motif de refus s'est elle-même révélée fausse et a été retirée. **#41 paie T53** : §9.5 était fausse sur **trois** points, dont « trois liens » là où la production en rend **deux**. **#47 paie T49** et **infirme le correctif du lot 9**. Intégration : **21 vérifications, 0 échec imputable au lot**, un bug trouvé par l'agent **dans son propre extracteur** — première passe du projet exécutée par le vrai `test-integration-mtb`. Revue **BLOQUANTE** — 0 CRITICAL, **2 HIGH, aucun défaut de code** (`git diff -- wp-content/` → 0 fichier) : une clause **normative** de §9.5 qui autorisait la suppression de deux règles AA, et **mon propre message de commit** affirmant une conversion CRLF que git n'avait jamais enregistrée. Les deux levés avant push. **La leçon** : une fausseté qui **donne un ordre** est pire qu'une fausseté qui décrit ; et une mesure d'arbre de travail n'est pas une mesure de dépôt. | `2637429`, `690024f`, `73f1ea4`, `7e7ae07`, `e75b744`, `02ff0c1` |
 | 10 | 11. Dette technique + 10. Guide | #27, #28, #37 | **Premier lot depuis le lot 5 dont la revue n'a bloqué le push sur rien** — 0 CRITICAL, 0 HIGH, 5 MEDIUM, 6 LOW. **#27 paie T6, mais pas le défaut annoncé** : l'empreinte du chargeur observait les *noms* des types, jamais leurs *arguments de réécriture*, si bien qu'un `'slug'` changé ne prenait jamais effet — **pas un 404, un site qui a l'air de marcher avec les mauvaises URL**. Les **deux** approches imposées par l'issue ont été écartées (elles font de `add_rewrite_rule()` un no-op silencieux) et la **tâche 2 refusée à raison** : borner le flush à l'activation aurait livré un site en 404 après une mise en ligne par FTP. Démontré **défaut prouvé avant correctif**, 200 dès la première requête, sans jamais ouvrir `wp-admin`. **#28 met les listes d'administration au service de la règle d'or** — colonnes métier, trois filtres, ordre imposé, modification groupée de la disponibilité — et **D12 est démontrée par contre-exemple sur les trois types** (32→31, 23→22, 67→66), avec **13 requêtes SQL capturées sans une seule jointure de méta**. Sa refacto l'a rattrapée contre son propre arbitrage gelé : le module de corbeille **écrasait 15 phrases justes**. **#37 livre 119 captures et retire 84 encarts « Capture à prendre »** — des consignes de développeur qui vivaient dans le manuel de l'éleveuse. Périmètre requalifié sur le brief §13.1 (huit parcours nommés, pas une capture par composant) ; **seulement 2 promesses abandonnées**, mesurées par différence de commits. Intégration : **391 vérifications, 0 échec imputable au lot**, 2 défauts réparés avant push (une donnée d'essai photographiée, une date illisible classée en tête). **D9 démontrée à froid**, deux cycles, idempotence mesurée. **La leçon du lot** : en mono-branche, **une mesure n'a de valeur que datée d'un commit** — quatre agents s'y sont trompés, dont moi deux fois ; la disjonction des empreintes protège les écritures, **pas les lectures**. | `0c46eeb`, `ad80f45`, `d95fc71`, `cefb203`, `73591c4`, `fa80eb3`, `17d0e01` |
 | 9 | 7. Gabarits et thème (clôture) | #17 | **Le plus petit lot du projet, et aucun de ses blocages n'était du code** : huit lignes de gabarit, **zéro octet de CSS, JS ou PHP**. A8 **levée** — les trois `mtb/lien-de-recours` posés sur l'état vide d'`index.html`, recopiés octet pour octet de `search.html` ; **2 liens rendus et non 3**, « La meute » s'omettant en silence (T30). Exception D1 écrite au guide, Mentions légales vérifiées et **délibérément non harmonisées**, T33 renumérotée. **D8 tranchée par l'utilisateur** : budget lu en **octets réseau** — Accueil 68 749 o, Travail 60 491 o contre 200 000, **T37 fermée**. Intégration : les cinq revendications du contrat reproduites **au chiffre près**, 1 débordement sur **42 combinaisons**, **81 arrêts clavier / 0 sans anneau**, **0 violation axe**, D12 éprouvée sur treize composants mal remplis sous `E_ALL` forcé, **D1 mesurée en session `fabienne` réelle**. Elle **réfute quatre affirmations du contrat**, dont une qui allait faire ouvrir une issue `a11y` pour un `<main>` **déjà focusable**. Revue **BLOQUANTE** — zéro CRITICAL, **deux HIGH tous deux de prose** : une fiche annonçant un lien cassé que le code ne produit jamais, et une section du contrat déclarant l'AA invérifiée sur tout le lot — **cette seconde née de ma propre consigne**, un cran trop large sur un filet décoratif de 6 px. Les deux levés, contre-revus, **aucune régression**. **D9 démontrée à froid** sur deux cycles complets. **T49 a une cause et elle est réparée** : un `: ` non échappé en YAML privait la chaîne de deux agents. **Cinq dettes neuves consignées** (T51-T55) qui ne vivaient que dans le contrat. | `5c7cf34`, `60f36f4`, `072d390`, `e10ca03` |
