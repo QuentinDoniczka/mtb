@@ -6,7 +6,8 @@ Source de vérité visuelle du projet. `dev-ux-mtb` implémente **à la lettre**
 `review-mtb` audite le code livré **contre** ce document. Une décision visuelle qui n'est pas ici
 n'existe pas : c'est une question bloquante, pas une invention.
 
-- **Version** : 1.1 — 28 août 2026 (1.0 du 15 août 2026 ; seul le §7.7 est amendé, cf. §16)
+- **Version** : 1.2 — 30 août 2026 (1.0 du 15 août 2026, 1.1 du 28 août 2026 ; seuls les §7.7 et
+  §9.5 sont amendés, cf. §16)
 - **Décision amont** : `docs/ETAT.md` décision 8 — direction `styles/style5` « Sauge et calcaire »
   conservée, structure entièrement refaite.
 - **Fichier de jetons attendu** : `wp-content/themes/mtb/assets/css/tokens.css`, plus le miroir
@@ -949,14 +950,71 @@ d'élevage (brief §4, D11).
 | Un seul chien dans une grille de 4 colonnes | `repeat(auto-fill, …)` : la carte garde sa largeur de colonne et reste à gauche. Elle ne s'étire pas sur toute la ligne. |
 | Deux parents dont un seul a une fiche | Les deux cartes gardent la même taille ; celle sans fiche n'a simplement pas de bouton. |
 
-### 9.5 Pages d'erreur
+### 9.5 Écrans sans contenu d'élevage
 
-- **404** : `h1` « Page introuvable », un paragraphe, un champ de recherche, et trois liens — Accueil,
-  Les portées, La meute. Fond `--calcaire`, pas d'illustration, pas d'humour.
+Cinq écrans, dont **un seul est une erreur** : la 404. Les quatre autres — page protégée par mot de
+passe, recherche sans résultat, liste sans résultat, confirmation d'envoi — **répondent normalement**
+(HTTP 200). Le critère d'entrée dans cette section n'est donc pas l'erreur, c'est qu'**aucun contenu
+d'élevage n'est affiché**. Un écran neuf y entre à ce titre, quel que soit son code de réponse.
+
+Cette section dit **ce qui est rendu et sur quels écrans**, jamais comment la sortie de secours se
+présente : ni puces, ni alignement, ni fond, ni espacement de la liste. La feuille de style s'en
+abstient délibérément, et doit pouvoir continuer.
+
+#### La sortie de secours
+
+- **404** : `h1` « Page introuvable », un paragraphe, un champ de recherche, et jusqu'à trois liens —
+  Accueil, Les portées, La meute. Fond `--calcaire`, pas d'illustration, pas d'humour.
+- **C'est la seule énumération de ces libellés dans cette section.** Les autres écrans y renvoient —
+  « les mêmes liens de recours » — et ne la recopient pas : une seconde énumération serait une seconde
+  source de vérité, qui divergerait au premier libellé retouché.
+- **L'ordre est celui de cette énumération**, sur tous les écrans qui la portent, sans exception.
+- **Jusqu'à trois, jamais garantis trois.** Un lien dont la destination n'existe pas — l'index des
+  portées si l'extension est absente, la page de la meute tant qu'elle n'est pas créée et publiée — ne
+  se rend **pas du tout** : pas de lien mort, pas de lien désactivé, pas d'élément de liste vide.
+  La sortie de secours compte donc trois, deux ou un élément selon l'installation, et un écran qui en
+  affiche deux est conforme. Ce n'est pas un défaut à corriger : un lien absent vaut mieux qu'un lien
+  mort sur un écran où le visiteur est déjà perdu. L'éleveuse le sait, la fiche
+  **Créer la page « La meute »** le lui écrit.
+
+#### Les écrans qui portent la sortie de secours
+
+La liste est **close** : c'est celle de ce tableau. Un écran capable d'un état vide ne la reçoit pas
+d'office — l'index des portées le prouve, dernière ligne : il ne compte pas parmi les cinq écrans de
+cette section, son état vide appartenant à un composant et au §9.3.
+
+| Écran | Ce qui la précède | Sur quelles adresses |
+|---|---|---|
+| **Page introuvable** | les trois éléments de la puce ci-dessus : titre, paragraphe, champ de recherche | toute adresse inexistante |
+| **Recherche sans résultat** | le titre de recherche, qui reprend le terme cherché, puis « Aucun résultat pour « … ». » | la page de résultats de recherche |
+| **Liste sans résultat** | « Aucun contenu à afficher. » | les archives d'auteur, de date, de catégorie, d'étiquette et l'index des articles — les seules adresses qu'aucun autre écran ne prend |
+| **Index des portées vide** | **ne porte pas la sortie de secours** | son état vide est celui du composant liste de portées, décrit au §9.3 : « Aucune portée pour cette année. » **+** un lien |
+
+**Ce balisage ne se retire pas.** Les trois premiers écrans portent la même sortie de secours, et les
+trois situations sont nommées dans une fiche déjà imprimée pour l'éleveuse ; la retirer d'un seul
+écran rendrait cette fiche fausse et rouvrirait une divergence entre écrans jumeaux qui a été fermée
+sciemment.
+
+**« Aucun contenu à afficher. » est le libellé figé de la liste sans résultat.** Il n'est ni réécrit
+ni remplacé ici : il vient du socle du thème livré par l'issue #2 (`8d2217f`), et le contrat gelé de
+cette issue le classe « pas un fait d'élevage, donc pas une invention interdite par D11 ». Cet écran
+est un **filet de sécurité technique, pas un écran éditorial** : **aucun index d'élevage — chiens,
+portées, résultats de travail — ne tombe dessus**, les chiens et les résultats de travail n'ayant
+pas d'index, et les portées ayant le leur. Que l'accueil soit une page fixe écarte la dernière
+adresse ordinaire, mais c'est un **réglage**, posé au provisionnement : le raisonnement ne repose
+pas dessus. Réserve, au conditionnel d'un acte de l'éleveuse : si un jour des articles étaient
+publiés et une rubrique ajoutée au menu — ce que la question Q6, tranchée le 2026-08-19, laisse
+possible sans coût —, cet écran cesserait d'être un filet technique, et son libellé devrait alors
+être arbitré avec elle.
+
+#### Les écrans qui ne sont pas des recours
+
+Le visiteur n'y est pas perdu : il lui manque une clé, ou il vient de réussir quelque chose. Aucun
+lien de recours, donc.
+
 - **Page protégée par mot de passe** : encart `--calcaire-creux` avec filet double vertical, étiquette
   « Page protégée », phrase « Cette page est réservée. Saisissez le mot de passe communiqué par
   l'élevage. », champ + bouton. Aucun indice sur le contenu.
-- **Recherche sans résultat** : « Aucun résultat pour « … ». » + les mêmes trois liens.
 - **Formulaire de contact envoyé** : encart de confirmation `--calcaire-creux`, filet double vertical
   `--sauge`, préfixe « **Message envoyé.** », pas de coche verte (la couleur seule ne dirait rien).
 
@@ -1355,5 +1413,6 @@ Aucune n'est inventée, aucune n'est comblée en silence (D11).
 
 | Date | Version | Ce qui change | Motif |
 |---|---|---|---|
+| 2026-08-30 | 1.2 | **§9.5 seul.** La section est réécrite en trois temps : la sortie de secours posée une seule fois — dont le fait qu'un lien s'omet en silence quand sa destination n'existe pas, la liste comptant trois, deux ou un élément —, puis le tableau **clos** des écrans qui la portent, où figure aussi l'index des portées, qui ne la porte pas et relève du §9.3, puis les deux écrans qui ne sont pas des recours, texte inchangé. « trois liens » devient « jusqu'à trois liens ». « Aucun contenu à afficher. » est figé avec sa provenance (socle de #2) et sa condition de péremption. Le titre « Pages d'erreur », faux de quatre de ses cinq écrans — un seul, la 404, est une erreur —, est corrigé ; **le numéro 9.5 est conservé**, aucun renvoi ne le citant autrement. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie, mise en page et vocabulaire inchangés — §10.2 et §10.3 ne sont pas touchés, leurs écarts ayant chacun leur propre issue. Aucune ligne de thème ni d'extension n'en découle. | Dette **T53**, relevée au lot 9 par le contrat #17 (arbitrage A8bis) : le thème porte la même sortie de secours sur **trois** écrans, le document n'en décrivait que deux, et la fiche imprimée de l'éleveuse en décrivait déjà trois |
 | 2026-08-28 | 1.1 | **§7.7 seul.** `overflow-wrap: anywhere` devient la valeur par défaut, portée par un sélecteur racine ; `break-word` n'est conservé que sur `th`/`td`, avec sa raison. Les trois mesures qui l'imposent sont écrites dans le document (§7.7.1), ainsi que le fait normatif qui les explique. Le §7.7.2 tranche la valeur de la règle côté éditeur et nomme le préalable d'inspection (D8). Rien d'autre n'est rouvert : palette, typographie, espacement, photographie et vocabulaire inchangés ; le §4.5 reste vrai tel quel. | Trois emplacements livrés contournaient la règle 1.0 avec la même mesure ; débordement à 360 px et 320 px sur de la prose reprise, D7 bloquante |
 | 2026-08-15 | 1.0 | Document initial. Palette et ratios repris de `styles/style5` et recalculés indépendamment ; trois jetons ajoutés (`--pin-creux`, `--calcaire-ombre`, `--oxyde`) ; filet double conservé et réinterprété (vide de 2 px) ; **médaillons ronds abandonnés** ; structure IONOS entièrement remplacée par une grille à trois canaux ; deux polices variables auto-hébergées (Newsreader, Public Sans). | `docs/ETAT.md` décision 8 |
