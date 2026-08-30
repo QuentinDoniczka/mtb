@@ -4,8 +4,15 @@
  *
  * Toute valeur du domaine sort enveloppée — « libelle », « valeur », « affichage » —, forme commune
  * aux trois types de contenu du lot. Le libellé public et la chaîne à imprimer viennent du serveur ;
- * le thème n'en compose aucune. Les libellés repris de « design-system/MASTER.md » sont écrits en
- * toutes lettres dans ce module, qui reste ainsi lisible et indépendant des autres.
+ * le thème n'en compose aucune.
+ *
+ * Les libellés propres aux champs de ce module — « Née le », « Disponibilité », « Père », « Mère »,
+ * les quatre colonnes de chiots — sont écrits en toutes lettres ici : ce ne sont pas des listes
+ * fermées, aucune clé stockée en base n'en dépend et aucun assainisseur ne les consulte. Les listes
+ * fermées, elles, ne le sont jamais : leurs clés sont stockées en base et un assainisseur de
+ * « content/portee/champs.php » décide seul de ce qui y est admis. Ce module les appelle, il n'en
+ * garde aucune copie — deux copies finiraient par dire deux choses différentes, l'une en
+ * administration, l'autre sur le site.
  *
  * @package MTB\Core
  */
@@ -14,9 +21,19 @@ declare(strict_types=1);
 
 namespace MTB\Core\Query\Portee;
 
+use function MTB\Core\Content\Portee\disponibilites;
+use function MTB\Core\Content\Portee\sexes;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/*
+ * Le vocabulaire de la portée appartient au module « content/portee ». On le require_once
+ * plutôt que de compter sur l'ordre de parcours du chargeur : un module ne doit jamais dépendre
+ * de cet ordre, et une seconde inclusion est sans effet.
+ */
+require_once MTB_CORE_DIR . 'includes/content/portee/champs.php';
 
 /**
  * Hydrate une portée et ses parties.
@@ -52,26 +69,27 @@ final class Hydratation {
 	/**
 	 * Les trois états de disponibilité, clé stockée vers libellé affiché.
 	 *
+	 * Passe-plat vers « content/portee/champs.php », qui possède cette liste fermée : les trois
+	 * libellés ne sont pas déclarés ici. C'est cette liste-là que consulte l'assainisseur au moment
+	 * de l'écriture, et une seconde copie finirait par dire autre chose que la base. La méthode
+	 * subsiste parce que « mtb_get_portees() » valide contre elle son argument « disponibilite ».
+	 *
 	 * @return array<string,string> Clés « disponible », « reserve », « passee ».
 	 */
 	public static function disponibilites(): array {
-		return array(
-			'disponible' => 'Chiots disponibles',
-			'reserve'    => 'Tous réservés',
-			'passee'     => 'Portée passée',
-		);
+		return disponibilites();
 	}
 
 	/**
 	 * Les deux sexes d'un chiot, clé stockée vers libellé affiché.
 	 *
+	 * Passe-plat vers « content/portee/champs.php », pour la raison exposée au-dessus : les deux
+	 * libellés ne sont pas déclarés ici.
+	 *
 	 * @return array<string,string> Clés « male », « femelle ».
 	 */
 	private static function sexes(): array {
-		return array(
-			'male'    => 'Mâle',
-			'femelle' => 'Femelle',
-		);
+		return sexes();
 	}
 
 	/**
@@ -133,6 +151,11 @@ final class Hydratation {
 	/**
 	 * Trie des portées sur la date de naissance, les non datées toujours en fin de liste.
 	 *
+	 * « Non datée » recouvre deux cas : la date absente, et la date que « date_en_toutes_lettres() »
+	 * refuse. Cette décision de lisibilité est prise par cette fonction-là et par elle seule, en
+	 * amont du comparateur ; une date illisible n'a pas plus de place chronologique qu'une date
+	 * absente, elle se range donc en fin de liste, jamais en tête, et n'est jamais escamotée.
+	 *
 	 * Une égalité de date est départagée par l'identifiant de contenu, pour que l'ordre soit
 	 * déterministe d'une requête à l'autre.
 	 *
@@ -150,7 +173,7 @@ final class Hydratation {
 				$une   = self::date_de( $premiere );
 				$autre = self::date_de( $seconde );
 
-				// Sans date, en fin de liste dans les deux sens : elle n'a pas de place chronologique.
+				// Sans date lisible, en fin de liste dans les deux sens : pas de place chronologique.
 				if ( '' === $une && '' !== $autre ) {
 					return 1;
 				}
@@ -180,12 +203,47 @@ final class Hydratation {
 	 *
 	 * @param array $element Portée hydratée ou élément de liste.
 	 *
-	 * @return string Date AAAA-MM-JJ, ou chaîne vide.
+	 * @return string Date AAAA-MM-JJ lisible, ou chaîne vide.
 	 */
 	private static function date_de( array $element ): string {
-		$valeur = $element['date_naissance']['valeur'] ?? '';
+		$champ = $element['date_naissance'] ?? array();
 
-		return is_string( $valeur ) ? $valeur : '';
+		return is_array( $champ ) ? self::date_lisible( $champ ) : '';
+	}
+
+	/**
+	 * Date d'un champ enveloppé, ou chaîne vide quand cette date n'est pas lisible.
+	 *
+	 * « Lisible » se décide par « date_en_toutes_lettres() » et par elle seule : refaire ici le
+	 * test de validité fabriquerait une seconde notion de date absente, qui divergerait de la
+	 * première. On lit l'affichage déjà calculé par « champ_date() » plutôt que de rappeler la
+	 * fonction : la décision n'est pas refaite, elle est relue, et aucun appel à wp_date() ne
+	 * s'ajoute. Le repli, quand l'élément ne porte pas d'affichage, interroge la même fonction ;
+	 * il n'est jamais un repli sur la chaîne vide, qui serait une troisième notion de plus.
+	 *
+	 * Cette fonction ne renvoie ni n'écrit jamais une « valeur » modifiée : la donnée brute ne se
+	 * reformate pas. Le tri ignore une date illisible, il ne l'efface pas, et la portée sort de
+	 * « mtb_get_portee() » avec sa « valeur » intacte, pour qu'une réparation future puisse encore
+	 * la lire.
+	 *
+	 * @param array $champ Champ enveloppé « libelle » / « valeur » / « affichage ».
+	 *
+	 * @return string Date brute inchangée si elle est lisible, sinon chaîne vide.
+	 */
+	private static function date_lisible( array $champ ): string {
+		$valeur = $champ['valeur'] ?? '';
+
+		if ( ! is_string( $valeur ) || '' === $valeur ) {
+			return '';
+		}
+
+		$affichage = $champ['affichage'] ?? null;
+
+		if ( ! is_string( $affichage ) ) {
+			$affichage = self::date_en_toutes_lettres( $valeur );
+		}
+
+		return self::ABSENCE === $affichage ? '' : $valeur;
 	}
 
 	/**
@@ -253,6 +311,9 @@ final class Hydratation {
 		$femelles     = self::texte( get_post_meta( $id, '_mtb_femelles', true ) );
 		$chiots       = self::chiots( $id );
 
+		$date_naissance = self::champ_date( 'Née le', $date );
+		$date_lisible   = self::date_lisible( $date_naissance );
+
 		return array(
 			'id'              => $id,
 			'identifiant'     => $identifiant,
@@ -261,8 +322,8 @@ final class Hydratation {
 			'statut'          => (string) $post->post_status,
 			'protege'         => false,
 			'etat'            => 'ok',
-			'annee'           => '' === $date ? '' : substr( $date, 0, 4 ),
-			'date_naissance'  => self::champ_date( 'Née le', $date ),
+			'annee'           => '' === $date_lisible ? '' : substr( $date_lisible, 0, 4 ),
+			'date_naissance'  => $date_naissance,
 			'disponibilite'   => self::champ_liste( 'Disponibilité', self::texte( get_post_meta( $id, '_mtb_disponibilite', true ) ), self::disponibilites() ),
 			'males'           => self::champ_compteur( 'Nombre de mâles', $males, 'mâle', 'mâles' ),
 			'femelles'        => self::champ_compteur( 'Nombre de femelles', $femelles, 'femelle', 'femelles' ),
