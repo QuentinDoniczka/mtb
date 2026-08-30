@@ -149,7 +149,7 @@ fois : calcul de la liste ordonnée des identifiants **en PHP**, puis `post__in`
 
 | Liste | Ordre |
 |---|---|
-| **Portées** | date de naissance **décroissante**, **non datées en fin de liste**, égalités par identifiant — soit **exactement l'ordre du site public** |
+| **Portées** | date de naissance **décroissante**, **sans date lisible en fin de liste**, égalités par identifiant — soit **exactement l'ordre du site public** |
 | **Chiens** | alphabétique du nom d'usage — **natif** (`orderby => 'title'`), rien ne peut disparaître |
 | **Résultats** | disciplines dans l'**ordre gelé**, puis orphelines, puis **les sans-discipline en tout dernier** ; dans un groupe, année décroissante, sans-année en fin |
 
@@ -195,6 +195,7 @@ réponse : « elle a demandé 2019, il n'y a rien en 2019 ».
 | État | Rendu |
 |---|---|
 | `donnee_absente` — champ vide **ou clé hors liste fermée** | **« Non renseigné »** — jamais un tiret, jamais « Aucun », jamais une cellule vide |
+| `date_illisible` — date stockée que `date_en_toutes_lettres()` refuse | **« Non renseigné »**, **rangée en fin de liste avec les non datées**, et **jamais proposée comme option du filtre « Année »** (garde déjà en place dans `annees_presentes()`, antérieure à ce correctif) — voir l'arbitrage N |
 | `fiche_introuvable` — `_mtb_chien_id` ne résout plus vers un `mtb_chien` | **« Fiche introuvable »** (recopié de `fields/portee/ecran.php:209`) |
 | `fiche_sans_titre` — fiche présente, titre vide | **« Fiche n° &lt;id&gt; »** (recopié de `fields/resultat/controle-chien.php:117`) |
 | `chien_en_texte_libre` — `_mtb_chien_id === 0` | `_mtb_chien_nom` **tel qu'il est stocké**, sans reformatage. **C'est le cas de 60 résultats sur 61** |
@@ -480,6 +481,51 @@ lot introduisait**. Aucun n'était visible à l'œil : l'un ne s'entend qu'en sy
 plus. Un module qui **remplace** un contrôle du cœur hérite de ses obligations d'accessibilité, et
 c'est le genre de dette qu'aucun vérificateur automatique ne signale — axe voit un `<select>` sans nom
 seulement s'il l'atteint, et la fausse annonce de tri, il ne peut pas la savoir fausse.
+
+**N — « Sans date » se décide par la fonction qui rend la colonne, et par elle seule.** *Arbitrage
+pris après la passe d'intégration, qui a mesuré le défaut.*
+
+Une date de naissance **illisible** (`"pas-une-date"`, injectable seulement par `$wpdb` — l'assainisseur
+la refuse) se rangeait **en tête** de liste, **rang 1 sur 33**, pendant que sa colonne affichait
+« Non renseigné ». `ordonner_portees()` ne testait que la chaîne vide ; une valeur non vide passait
+donc dans `strcmp()`, où les lettres l'emportent sur tout chiffre en ordre décroissant.
+
+**Ce que cela contredisait** : le §6 de ce contrat (« non datées en fin de liste ») et la phrase que
+la fiche promet à l'éleveuse. **Deux documents gelés que le code démentait sur ce cas** — la classe de
+défaut qui a bloqué le lot 9. C'est le seul motif de la réparation : rien ne disparaissait, la portée
+restait visible et comptée, et **D12 tenait**.
+
+**La cause n'était pas le tri, c'était l'existence de deux notions de « date absente »** : celle de
+`date_en_toutes_lettres()`, qui refuse la chaîne vide **et** la date illisible, et celle de l'ordre,
+qui ne connaissait que la chaîne vide. Deux sources de vérité pour une même question finissent
+toujours par diverger — ici elles divergeaient déjà.
+
+**La réparation, aux deux endroits où la divergence existait** :
+- `ordonner_portees()` normalise à vide toute date que `date_en_toutes_lettres()` refuse. **C'est la
+  seule des deux qui répare un comportement visible** — le rang 1 sur 33.
+- `valeurs_de_filtre()` ne dérive une année que d'une date **acceptée**. **Celle-ci ne répare aucun
+  comportement visible**, et il faut le dire ainsi : `substr( $date, 0, 4 )` produisait bien `pas-`,
+  mais **deux gardes en aval l'arrêtaient déjà** — `annees_presentes()` ne retient une valeur comme
+  option que si elle passe `preg_match( '/^\d{4}$/' )`, et `filtre_actif()` rejette toute valeur
+  d'URL absente des options. **Le filtre n'a jamais proposé `pas-`**, mesuré sur le code d'avant
+  correction et base corrompue : ses **20 options normales**, rien d'autre.
+
+  Ce qu'elle répare réellement, et c'est suffisant : un **docbloc faux** (« les quatre premiers
+  caractères […] **donc l'année ou la chaîne vide** », alors que `pas-` n'est ni l'un ni l'autre) et
+  la **seconde notion de « date absente »** qui subsistait dans le module, désormais alignée sur la
+  source unique.
+
+  *Cette précision est elle-même une rectification.* La consigne reçue et le signalement du dev
+  annonçaient « le filtre proposerait une option `pas-` » : c'était une **déduction lue dans le code,
+  jamais une mesure**. Écrire la réparation sous cette forme aurait mis dans un contrat gelé une
+  affirmation que le code dément — le défaut même que ce contrat combat.
+
+Dans les deux cas, **la fonction est appelée, son test n'est jamais recopié** : ordre, colonne et
+filtre s'accordent désormais **par construction** et non par coïncidence. Recopier le test aurait
+fabriqué une troisième notion — exactement le geste qui a créé le défaut.
+
+*Mesuré* : rang **1 → 32** sur 32 lignes, **total inchangé**, et la suite des 31 portées datées
+**identique caractère pour caractère** avant et après.
 
 **Questions bloquantes : aucune.** Cette issue n'écrit **aucun fait d'élevage** — sauf la
 disponibilité, qui est une liste fermée de trois valeurs déjà gelées et déjà attestées par MASTER.

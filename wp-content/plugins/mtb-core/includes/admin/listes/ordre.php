@@ -159,9 +159,14 @@ function ordonner( string $type, array $identifiants ): array {
  * Ordonne les portées : date de naissance décroissante, non datées en fin de liste.
  *
  * Règle de comparaison recopiée de la lecture publique, pour que l'administration montre exactement
- * la succession du site. Une portée sans date n'a pas de place chronologique : elle se range en fin
- * de liste, jamais en tête, et n'est jamais escamotée. Les égalités se départagent par
+ * la succession du site. Une portée sans date lisible n'a pas de place chronologique : elle se range
+ * en fin de liste, jamais en tête, et n'est jamais escamotée. Les égalités se départagent par
  * l'identifiant, pour que l'ordre soit le même d'une requête à l'autre.
+ *
+ * « Sans date lisible » se décide par la fonction qui rend la colonne, et par elle seule : une date
+ * corrompue affiche « Non renseigné » et doit donc se ranger avec les non datées. Refaire ici le test
+ * de validité fabriquerait une seconde notion de date absente, qui divergerait de la première ; c'est
+ * exactement ce qui rangeait une date illisible en tête de liste.
  *
  * @param int[] $identifiants Identifiants à ordonner.
  *
@@ -171,7 +176,12 @@ function ordonner_portees( array $identifiants ): array {
 	$dates = array();
 
 	foreach ( $identifiants as $identifiant ) {
-		$dates[ $identifiant ] = champ( $identifiant, '_mtb_date_naissance' );
+		$brut = champ( $identifiant, '_mtb_date_naissance' );
+
+		$lisible = \MTB\Core\Query\Portee\Hydratation::ABSENCE
+			!== \MTB\Core\Query\Portee\Hydratation::date_en_toutes_lettres( $brut );
+
+		$dates[ $identifiant ] = $lisible ? $brut : '';
 	}
 
 	usort(
@@ -325,8 +335,13 @@ function ordonner_par_annee( array $identifiants, array $annees ): array {
 /**
  * Valeur sur laquelle porte le filtre de chaque contenu.
  *
- * Portées : les quatre premiers caractères de la date de naissance, donc l'année ou la chaîne vide.
- * Chiens : la clé de statut. Résultats : la clé de discipline, orpheline comprise.
+ * Portées : l'année de la date de naissance, ou la chaîne vide quand cette date est absente ou
+ * illisible. Chiens : la clé de statut. Résultats : la clé de discipline, orpheline comprise.
+ *
+ * « Lisible » se décide par la fonction qui rend la colonne, comme pour l'ordre : le filtre ne
+ * propose que des années déduites des contenus, et les quatre premiers caractères d'une date
+ * corrompue n'en sont pas une. Une date acceptée fait toujours dix caractères, si bien que la
+ * découpe n'a plus besoin d'être gardée en longueur.
  *
  * @param string $type         Nom du type de contenu.
  * @param int[]  $identifiants Identifiants balayés.
@@ -340,7 +355,10 @@ function valeurs_de_filtre( string $type, array $identifiants ): array {
 		if ( 'mtb_portee' === $type ) {
 			$date = champ( $identifiant, '_mtb_date_naissance' );
 
-			$valeurs[ $identifiant ] = 4 <= strlen( $date ) ? substr( $date, 0, 4 ) : '';
+			$lisible = \MTB\Core\Query\Portee\Hydratation::ABSENCE
+				!== \MTB\Core\Query\Portee\Hydratation::date_en_toutes_lettres( $date );
+
+			$valeurs[ $identifiant ] = $lisible ? substr( $date, 0, 4 ) : '';
 
 			continue;
 		}
