@@ -26,8 +26,16 @@ wait_for() {
 
 log "attente de la base de données…"
 # On teste la connexion en PHP pur (mysqli) plutôt que via "wp db check", qui délègue au
-# client mariadb-check. Ce dernier exige TLS par défaut sur les versions récentes du paquet
-# client, alors que le service "db" (mariadb:10.11, développement local) ne l'active pas.
+# client mariadb-check. Versions mesurées sur cette stack (docs/contracts/issue-30.md) :
+# client "mariadb-client 11.4.8-r0" (Alpine 3.21.5) contre serveur "MariaDB 10.11.19"
+# (have_ssl = DISABLED). L'exigence TLS du client 11.4 est un défaut COMPILÉ du paquet, pas
+# un fichier de configuration (mesuré : aucun fichier d'options ne porte "ssl", et
+# "mysql --print-defaults" ne rend aucun argument) — un "[client] ssl=0" ne l'aurait de
+# toute façon pas réparé pour WP-CLI 2.12.0, qui invoque son client avec "--no-defaults" en
+# tête de ligne (§2.d du contrat). C'est pourquoi "wp db query"/"db check"/"db export" sont
+# réparés autrement, par les enrobages de docker/wpcli/bin/ (issue #30) — cette sonde reste
+# volontairement en mysqli pur : elle teste le chemin de connexion que WordPress emploie
+# réellement, distinct de celui du client externe (voir docs/contracts/issue-30.md §6.3).
 db_reachable() {
 	php -r '
 		$link = @mysqli_connect(getenv("WORDPRESS_DB_HOST"), getenv("WORDPRESS_DB_USER"), getenv("WORDPRESS_DB_PASSWORD"), getenv("WORDPRESS_DB_NAME"));
@@ -236,16 +244,21 @@ elif $WP mtb import-fixtures --help >/dev/null 2>&1; then
 		--resultats=/fixtures/resultats.json \
 		|| log "AVERTISSEMENT : l'import des fixtures via mtb-core a échoué (voir sortie ci-dessus)."
 else
-	# mtb-core enregistre bien ses types de contenu (portée, chien, résultat) depuis le lot 2 —
-	# seule la commande WP-CLI d'import reste à livrer (dette technique #29 du board, décrite au
-	# caractère près dans docs/contracts/issue-1.md §"includes/migration/import-fixtures/").
-	log "aucune commande « wp mtb import-fixtures » disponible — mtb-core n'a pas encore livré cette commande (dette #29). Étape ignorée ; les fichiers docker/fixtures/*.json sont prêts et attendent cette commande. Relancer le provisionnement (make provision) une fois livrée."
+	# La dette #29 est payée depuis (docs/docker.md) : "wp mtb import-fixtures" est livrée par
+	# mtb-core. Cette branche ne s'atteint donc plus en fonctionnement normal ; si elle
+	# s'exécute quand même, c'est que la commande a cessé de répondre (extension non chargée,
+	# régression, conteneur wpcli désynchronisé du thème/plugin monté…) — pas qu'elle n'existe
+	# pas encore. Message réécrit en ce sens par l'issue #30.
+	log "AVERTISSEMENT : « wp mtb import-fixtures » ne répond pas (elle est pourtant livrée par mtb-core) — étape ignorée. Les fichiers docker/fixtures/*.json sont prêts et attendent cette commande. Vérifier que l'extension mtb-core est bien active, puis relancer le provisionnement (make provision)."
 fi
 
 log "photo de test portrait (vérification du cadrage vertical, MASTER.md §6.2)…"
-# En attendant "wp mtb import-fixtures", cette image synthétique est déposée directement dans
-# la médiathèque : elle donne un attachement portrait réel à assigner à la main (fiche
-# d'information, photo d'une fiche chien) tant que l'import automatisé n'existe pas.
+# Image synthétique déposée dans la médiathèque sous le slug "portee-demo-portrait-test",
+# celui que les fixtures citent pour rattacher une photo portrait à une fiche de
+# démonstration (docs/docker.md, « Photo de test portrait »). "wp mtb import-fixtures" verse
+# elle-même cette image depuis /fixtures/photos/ : cette étape ne fait donc plus rien quand
+# l'import a tourné (test d'existence ci-dessous), et garde la médiathèque pourvue d'une
+# image portrait quand il ne tourne pas — MTB_FIXTURES=0, ou extension inactive.
 if [ -z "$($WP post list --post_type=attachment --name=portee-demo-portrait-test --field=ID)" ]; then
 	$WP media import /fixtures/photos/portee-demo-portrait-test.png \
 		--title="portee-demo-portrait-test" \
@@ -263,6 +276,19 @@ log "nettoyage du contenu par défaut de WordPress (lien codé en dur vers l'anc
 # pas toute seule au redémarrage. Idempotent : aucune correspondance après la première passe,
 # aucune erreur.
 $WP search-replace 'http://localhost:8080/wp-admin/' '/wp-admin/' wp_posts --precise >/dev/null 2>&1 || true
+
+log "sonde de non-régression : « wp db query » (client externe, issue #30)…"
+# AVERTISSEMENT SEULEMENT — jamais un "exit" : cette sonde teste une commande de confort
+# (docs/contracts/issue-30.md), pas le chemin de connexion de WordPress (voir db_reachable
+# plus haut, qui reste le seul test bloquant). Un "exit" ici casserait le démarrage de
+# TOUTES les chaînes le jour où l'image de base "wordpress:cli-php8.1" rebougerait sous les
+# enrobages de docker/wpcli/bin/ — la stack doit le dire d'elle-même, pas faire échouer le
+# provisionnement pour ça.
+if $WP db query 'SELECT 1' >/dev/null 2>&1; then
+	log "sonde « wp db query » : ok."
+else
+	log "AVERTISSEMENT : « wp db query 'SELECT 1' » échoue dans le conteneur wpcli — les enrobages TLS de docker/wpcli/bin/ (issue #30) ne couvrent peut-être plus le binaire résolu par WP-CLI (image de base rebougée ?). Voir docs/contracts/issue-30.md et docs/docker.md. Sans conséquence sur le site : WordPress et la sonde ci-dessus passent par mysqli, jamais par ce client."
+fi
 
 # La chaîne "[provision] terminé." est le signal de fin de provisionnement attendu par les
 # scripts/agents qui patientent sur les logs (ex. docker-mtb) — elle doit toujours apparaître

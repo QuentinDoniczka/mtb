@@ -65,6 +65,70 @@ Identifiants de développement définis dans `.env.example` (à copier dans `.en
 | `make export-uploads` | Exporte les médias téléversés vers `./export-uploads/`, portables vers la production |
 | `make debug-log` | Affiche le journal des diagnostics PHP (`wp-content/debug.log`, dans le volume) |
 | `make debug-log-reset` | Vide ce journal, avant une mesure « aucune notice » |
+| `make db-sql cmd="…"` | Accès direct à la base via le client du service `db` (outil, pas un repli — voir « Accès à la base et TLS ») |
+| `make db-check` | Recette d'acceptation de #30 : rejoue `wp db query`, `wp db check` et `wp db export`, dit lequel échoue |
+
+## Accès à la base et TLS (#30)
+
+Sur cette stack, `wp db query`, `wp db check` et `wp db export`, invoqués **dans le conteneur `wpcli`**,
+échouaient systématiquement avec :
+
+```
+Error: Failed to get current SQL modes. Reason: ERROR 2026 (HY000): TLS/SSL error: SSL is
+required, but the server does not support it
+```
+
+**Ce n'est pas le serveur qui impose TLS** : `db` (`mariadb:10.11`, `have_ssl = DISABLED`) reste fidèle
+à un hébergement mutualisé standard — texte clair sur socket/hôte, jamais de certificat à
+entretenir. **C'est le client MariaDB Connector/C 11.4** embarqué dans l'image `wordpress:cli-php8.1`
+qui exige TLS par défaut, et c'est un **défaut compilé du paquet** (`ssl=TRUE`,
+`ssl-verify-server-cert=TRUE`), pas un fichier de configuration : aucun fichier d'options ne porte
+`ssl`, et `mysql --print-defaults` ne rend aucun argument.
+
+**Un fichier `[client] ssl=0` posé dans `/etc/my.cnf.d/` est inopérant pour WP-CLI, même s'il répare
+le client nu.** WP-CLI construit sa ligne de commande avec `--no-defaults` en tête, qui ordonne au
+client d'ignorer tout fichier d'options — un tel fichier ne réparerait donc que des invocations
+manuelles du client, jamais `wp db query`/`db check`/`db export`. Mesuré et détaillé dans
+`docs/contracts/issue-30.md`.
+
+**Le correctif** : six enrobages `sh` (`docker/wpcli/bin/mysql`, `mariadb`, `mariadb-dump`,
+`mariadb-check`, `mysqldump`, `mysqlcheck`), posés par `docker/wpcli/Dockerfile` dans
+`/usr/local/bin/`, qui précède `/usr/bin/` (où vivent les binaires réels, jamais déplacés ni
+renommés) dans le `PATH` du conteneur. Chacun ajoute `--skip-ssl` **en fin de ligne** (jamais en
+tête : `--no-defaults` doit rester la première option du client, sans quoi celui-ci répond
+`unknown option '--no-defaults'`) avant d'`exec`er le binaire réel.
+
+**Garde de retrait** : si un argument reçu commence déjà par `--ssl`, `--tls` ou `--skip-ssl`,
+l'enrobage se retire entièrement et transmet les arguments reçus sans y toucher. Sans elle, un
+`mariadb --ssl` tapé à la main recevrait le contraire de ce qu'il demande, en silence (la dernière
+option gagne). Un `mariadb --ssl …` explicite continue donc, volontairement, de rendre l'erreur TLS —
+c'est la preuve que l'enrobage s'efface devant une intention explicite plutôt que de fabriquer une
+magie locale.
+
+Les scripts n'ont **aucune extension** (leur nom est le nom du binaire qu'ils remplacent dans le
+`PATH`) : le dépôt tourne en `core.autocrlf=true`, sans `.gitattributes` couvrant ce dossier, et un
+motif générique comme `*.sh text eol=lf` ne les aurait de toute façon pas couverts. Plutôt qu'un
+`.gitattributes` ciblé au dossier (une option valable, mais un second mécanisme de plus à maintenir),
+`docker/wpcli/Dockerfile` normalise les fins de ligne au moment du `COPY` (`sed 's/\r$//'`), à
+l'identique du geste déjà fait pour `docker/provision/provision.sh` dans `compose.yaml` — sans
+dépendre du réglage Git de la machine qui construit l'image, et sans toucher un octet versionné.
+
+**Ce que ce correctif ne fait pas** : `db` reste sans TLS, et le rester est une exigence, pas un
+oubli (D9 — un mutualisé PHP standard parle à sa base en clair). N'activez jamais TLS sur `db` pour
+faire taire ce message.
+
+`make db-sql cmd="…"` (ex. : `make db-sql cmd="SHOW TABLES"`) exécute le client du service `db`
+directement — client et serveur du même build, TLS jamais en jeu. Ce n'est **pas un repli de
+`wp db query`** : c'est le seul chemin vers la base qui ne charge ni WordPress ni `mtb-core`, donc le
+seul qui reste utilisable le jour où c'est justement `mtb-core` qui est cassé. Le service `db`
+n'exposant aucun port à l'hôte, c'est aujourd'hui la seule porte d'entrée directe. `make db-check`
+rejoue les trois commandes de WP-CLI et dit explicitement laquelle échoue — c'est la recette
+d'acceptation de #30.
+
+Le provisionnement rejoue lui aussi `wp db query 'SELECT 1'` en fin de course, en **avertissement
+seulement** : le jour où l'image de base bougerait sous les enrobages, `docker compose logs wpcli` le
+dirait de lui-même. Cette sonde ne fait jamais échouer le démarrage — c'est une commande de confort,
+pas le chemin de connexion du site (celui-là est testé plus haut dans le même script, en `mysqli`).
 
 ## Diagnostics PHP
 
@@ -149,8 +213,9 @@ la forme et la signature de la commande restent décrites dans `docs/contracts/i
 **`make provision` suffit à semer les fixtures.** Le provisionnement sonde la commande
 (`wp mtb import-fixtures --help`) et l'appelle si elle répond — ce qui est désormais le cas. La
 branche de repli qui journalisait l'absence et passait à la suite sans erreur **existe toujours dans
-`docker/provision/provision.sh`** ; elle n'est plus atteinte en fonctionnement normal, mais son
-message parle encore de la dette #29 (voir « Ce qui reste à corriger » ci-dessous).
+`docker/provision/provision.sh`** ; elle n'est plus atteinte en fonctionnement normal, et son
+message ne renvoie plus à la dette #29 mais à la régression qui la rendrait atteignable (voir
+« Corrigé par #30 » ci-dessous).
 
 La **dette T-#5-c est payée elle aussi** : `docker/fixtures/resultats.json` porte maintenant les
 **clés fermées** attendues par le modèle — `"discipline": "ring"`, `"discipline": "igp_rci"` — et non
@@ -158,11 +223,10 @@ plus les libellés `"RING"` / `"IGP"`. Le fichier documente lui-même le piège 
 `commentaire` : `igp_rci` **ne se déduit pas** du libellé affiché (« IGP / RCI »), et c'est l'entrée
 qui aurait été perdue en silence avec l'ancienne valeur.
 
-**Ce qui reste à corriger** (documentation et journal, sans effet sur le fonctionnement) : le message
-de repli de `docker/provision/provision.sh` annonce encore « `mtb-core` n'a pas encore livré cette
-commande (dette #29) ». Il est devenu inexact ; il n'est émis que si la commande cesse de répondre,
-auquel cas il enverrait sur une fausse piste. À reprendre par l'issue qui touchera la stack —
-ce document ne modifie pas `docker/`.
+**Corrigé par #30** : le message de repli de `docker/provision/provision.sh` annonçait encore
+« `mtb-core` n'a pas encore livré cette commande (dette #29) », devenu inexact depuis que la dette
+est payée. Il ne s'atteint plus qu'en cas de régression (extension inactive, commande qui cesse de
+répondre) ; le message le dit maintenant explicitement, au lieu d'orienter vers une dette soldée.
 
 La page « Contact » et la page protégée par mot de passe, elles, sont créées dès aujourd'hui : ce
 sont des pages WordPress natives, indépendantes du contenu structuré à venir.

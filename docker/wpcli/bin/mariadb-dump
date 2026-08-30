@@ -1,0 +1,37 @@
+#!/bin/sh
+# Enrobage TLS de "mariadb-dump" -- issue #30.
+#
+# Pose dans /usr/local/bin, qui precede /usr/bin dans le PATH du conteneur wpcli : ce script
+# est resolu avant le binaire reel /usr/bin/mariadb-dump, qu'il "exec"e -- jamais deplace,
+# renomme ni masque -- en y ajoutant "--skip-ssl" : le client 11.4 de cette image exige TLS
+# par defaut, que le serveur "db" ne propose pas. C'est le binaire sur lequel "wp db export"
+# atterrit, donc le chemin du jour de la mise en ligne.
+#
+# "--skip-ssl" est ajoute en QUEUE, jamais en tete : "--no-defaults", que WP-CLI place en
+# premiere option, doit le rester (mesure sur "mariadb", contrat section 3). Ce programme
+# prend des positionnels ("base [tables...]"), mais le getopt de MariaDB permute : mesure
+# faite sur ce binaire meme, l'option appendue en queue n'est pas prise pour un nom de table
+# (contrat section 3).
+#
+# Garde de retrait : si l'appelant a lui-meme passe "--ssl", "--tls" ou "--skip-ssl", ce
+# script se retire ENTIEREMENT et transmet "$@" inchange. Il fournit un defaut, il ne decide
+# jamais contre une intention explicite (contrat section 4).
+#
+# Ce script n'ecrit rien sur stdout/stderr avant l'"exec" : sans "--result-file", la sortie
+# standard de "mariadb-dump" EST la sauvegarde, qu'un enrobage bavard corromprait.
+#
+# Cause, mesures et solutions ecartees : docs/contracts/issue-30.md et le commentaire du
+# "COPY docker/wpcli/bin/" dans docker/wpcli/Dockerfile. Ne pas les recopier ici : c'est en
+# six copies de la meme explication qu'une phrase fausse s'est propagee.
+
+reel=/usr/bin/mariadb-dump
+
+for arg in "$@"; do
+	case "$arg" in
+		--ssl*|--tls*|--skip-ssl*)
+			exec "$reel" "$@"
+			;;
+	esac
+done
+
+exec "$reel" "$@" --skip-ssl

@@ -1,5 +1,4 @@
-\
-.PHONY: up provision seed reset down logs ps wp shell export-uploads debug-log debug-log-reset
+.PHONY: up provision seed reset down logs ps wp shell export-uploads debug-log debug-log-reset db-sql db-check
 
 # Démarrage complet depuis zéro : build, lancement, provisionnement automatique par le
 # conteneur wpcli (idempotent — voir docker/provision/provision.sh).
@@ -67,3 +66,33 @@ debug-log:
 debug-log-reset:
 	docker compose exec -T wordpress sh -c ': > /var/www/html/wp-content/debug.log && chown www-data:www-data /var/www/html/wp-content/debug.log'
 	@echo "Journal des diagnostics vidé."
+
+# Accès direct à la base via le client du service "db" — issue #30 (docs/contracts/issue-30.md).
+#
+# CECI N'EST PAS UN REPLI DE "wp db query" : c'est un OUTIL distinct, à ne jamais présenter
+# comme une réparation. Client et serveur sont du même build ("mariadb:10.11"), donc TLS n'est
+# jamais en jeu ici — ce que cette cible contourne n'a rien à voir avec ce que "wp db query"
+# corrige (six enrobages dans docker/wpcli/, voir docker/wpcli/Dockerfile et docker/wpcli/bin/).
+# Sa raison d'être : c'est le SEUL chemin vers la base qui ne charge ni WordPress ni "mtb-core",
+# donc le seul qui reste utilisable le jour où c'est justement "mtb-core" qui est cassé. Le
+# service "db" n'exposant aucun port à l'hôte, c'est aujourd'hui la seule porte d'entrée directe.
+# Exemple : make db-sql cmd="SHOW TABLES"
+# Sans "cmd", ouvre une invite interactive.
+db-sql:
+	docker compose exec -e MTB_DB_SQL_CMD="$(cmd)" db sh -c 'if [ -n "$$MTB_DB_SQL_CMD" ]; then exec mariadb -u"$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE" -e "$$MTB_DB_SQL_CMD"; else exec mariadb -u"$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE"; fi'
+
+# Recette d'acceptation de l'issue #30 : rejoue "wp db query", "wp db check" et "wp db export"
+# dans le conteneur "wpcli" et dit EXPLICITEMENT lequel échoue — les trois passent par les
+# enrobages TLS de docker/wpcli/bin/, jamais par le raccourci de "db-sql" ci-dessus.
+db-check:
+	@printf '== wp db query ==\n'; \
+	docker compose exec -T wpcli wp --path=/var/www/html db query 'SELECT 1' && r1=0 || r1=1; \
+	printf '== wp db check ==\n'; \
+	docker compose exec -T wpcli wp --path=/var/www/html db check && r2=0 || r2=1; \
+	printf '== wp db export ==\n'; \
+	docker compose exec -T wpcli wp --path=/var/www/html db export /tmp/mtb-db-check.sql && r3=0 || r3=1; \
+	echo; \
+	[ "$$r1" -eq 0 ] && echo "OK    : wp db query"  || echo "ECHEC : wp db query"; \
+	[ "$$r2" -eq 0 ] && echo "OK    : wp db check"  || echo "ECHEC : wp db check"; \
+	[ "$$r3" -eq 0 ] && echo "OK    : wp db export" || echo "ECHEC : wp db export"; \
+	if [ "$$r1" -eq 0 ] && [ "$$r2" -eq 0 ] && [ "$$r3" -eq 0 ]; then exit 0; else exit 1; fi

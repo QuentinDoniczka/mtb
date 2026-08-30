@@ -1,0 +1,35 @@
+#!/bin/sh
+# Enrobage TLS de "mysql" -- issue #30.
+#
+# Pose dans /usr/local/bin, qui precede /usr/bin dans le PATH du conteneur wpcli : ce script
+# est resolu avant le binaire reel /usr/bin/mysql, qu'il "exec"e -- jamais deplace, renomme
+# ni masque -- en y ajoutant "--skip-ssl" : le client 11.4 de cette image exige TLS par
+# defaut, que le serveur "db" ne propose pas.
+#
+# "--skip-ssl" est ajoute en QUEUE, jamais en tete : "--no-defaults", que WP-CLI place en
+# premiere option, doit le rester (mesure sur "mariadb", contrat section 3).
+#
+# Garde de retrait : si l'appelant a lui-meme passe "--ssl", "--tls" ou "--skip-ssl", ce
+# script se retire ENTIEREMENT et transmet "$@" inchange. Il fournit un defaut, il ne decide
+# jamais contre une intention explicite (contrat section 4).
+#
+# Ce script n'ecrit rien sur stdout/stderr avant l'"exec", et c'est ici une contrainte dure :
+# get_mysql_binary_path() de WP-CLI execute "mysql --version" et cherche la chaine "MariaDB"
+# dans sa sortie pour decider s'il bascule sur "mariadb". Seul "mysql" est sonde ainsi ; un
+# enrobage bavard casserait cette resolution.
+#
+# Cause, mesures et solutions ecartees : docs/contracts/issue-30.md et le commentaire du
+# "COPY docker/wpcli/bin/" dans docker/wpcli/Dockerfile. Ne pas les recopier ici : c'est en
+# six copies de la meme explication qu'une phrase fausse s'est propagee.
+
+reel=/usr/bin/mysql
+
+for arg in "$@"; do
+	case "$arg" in
+		--ssl*|--tls*|--skip-ssl*)
+			exec "$reel" "$@"
+			;;
+	esac
+done
+
+exec "$reel" "$@" --skip-ssl

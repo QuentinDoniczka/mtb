@@ -1,0 +1,35 @@
+#!/bin/sh
+# Enrobage TLS de "mariadb" -- issue #30.
+#
+# Pose dans /usr/local/bin, qui precede /usr/bin dans le PATH du conteneur wpcli : ce script
+# est resolu avant le binaire reel /usr/bin/mariadb, qu'il "exec"e -- jamais deplace, renomme
+# ni masque -- en y ajoutant "--skip-ssl" : le client 11.4 de cette image exige TLS par
+# defaut, que le serveur "db" ne propose pas. C'est le binaire sur lequel "wp db query"
+# atterrit.
+#
+# "--skip-ssl" est ajoute en QUEUE, jamais en tete : "--no-defaults", que WP-CLI place en
+# premiere option, doit le rester -- mesure faite sur ce binaire meme, qui repond sinon
+# "unknown option '--no-defaults'" (contrat section 3).
+#
+# Garde de retrait : si l'appelant a lui-meme passe "--ssl", "--tls" ou "--skip-ssl", ce
+# script se retire ENTIEREMENT et transmet "$@" inchange. Il fournit un defaut, il ne decide
+# jamais contre une intention explicite (contrat section 4).
+#
+# Ce script n'ecrit rien sur stdout/stderr avant l'"exec" : WP-CLI lit la sortie de "mariadb"
+# telle quelle (invocation "--batch --skip-column-names"), un enrobage bavard la corromprait.
+#
+# Cause, mesures et solutions ecartees : docs/contracts/issue-30.md et le commentaire du
+# "COPY docker/wpcli/bin/" dans docker/wpcli/Dockerfile. Ne pas les recopier ici : c'est en
+# six copies de la meme explication qu'une phrase fausse s'est propagee.
+
+reel=/usr/bin/mariadb
+
+for arg in "$@"; do
+	case "$arg" in
+		--ssl*|--tls*|--skip-ssl*)
+			exec "$reel" "$@"
+			;;
+	esac
+done
+
+exec "$reel" "$@" --skip-ssl
