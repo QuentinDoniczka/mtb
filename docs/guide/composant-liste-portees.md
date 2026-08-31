@@ -199,12 +199,14 @@ entrée : descendez jusqu'au bout, c'est là.*
 
 - **La liste affiche deux lignes**, **Liste de portées** puis « Ce bloc n'affiche rien tant qu'aucune
   portée n'est publiée. » : aucune portée n'est encore en ligne. Publiez-en une par **Portées** →
-  **Ajouter une portée**, et la liste se remplit d'elle-même. Aux visiteurs, une liste dans cet état **n'affiche
-  rien du tout** : ni cadre, ni trou, ni message, et la page reste normale. Ces deux lignes n'existent
-  que pour vous, pendant que vous modifiez.
+  **Ajouter une portée**, et la liste se remplit d'elle-même. Aux visiteurs, une liste dans cet état
+  **n'affiche rien du tout** : ni cadre, ni trou, ni message, et la page reste normale. Ces deux
+  lignes n'existent que pour vous, pendant que vous modifiez.
 
-  **Cet écran n'est pas illustré**, parce qu'il aurait fallu retirer du site toutes vos portées pour
-  l'obtenir. Vous y verriez simplement un cadre gris portant ces deux lignes, à la place de la liste.
+  Sur l'écran, l'étiquette s'écrit en capitales, **LISTE DE PORTÉES** : c'est bien le composant
+  **Liste de portées**, il n'a pas changé de nom.
+
+  ![Le composant dans la page en cours de modification : un cadre beige au contour en tirets, portant l'étiquette LISTE DE PORTÉES en capitales ocre, puis la phrase « Ce bloc n'affiche rien tant qu'aucune portée n'est publiée. »](captures/liste-portees-etat-vide.png)
 
 - **La page affiche « Aucune portée pour cette année. » suivi du lien Toutes les portées.** Vous avez
   choisi une **Année** qui n'a aucune portée, alors que d'autres années en ont. **C'est une réponse, pas

@@ -50,14 +50,26 @@ nouveau à apprendre.
    ![Le cadre vide du composant dans la page : l'étiquette GALERIE PHOTOS, la phrase disant que rien ne s'affiche tant qu'aucune photo n'est choisie, et le bouton Ajouter des photos](captures/galerie-etat-vide.png)
 
 5. La fenêtre **Photos de la galerie** s'ouvre sur l'onglet **Téléverser des fichiers**. Cliquez sur
-   l'onglet **Médiathèque**, juste à côté, pour voir les photos déjà présentes sur le site, puis cochez
-   celles que vous voulez, dans n'importe quel ordre.
-6. Cliquez sur **Sélectionner**, en bas à droite de la fenêtre. Les photos s'ajoutent, et l'aperçu
+   l'onglet **Médiathèque**, juste à côté, pour voir les photos déjà présentes sur le site.
+6. **Cochez chaque photo par la petite case, dans le coin en haut à droite de sa vignette.**
+   Elle apparaît quand vous passez la souris sur la photo, et reste visible tant que la photo est
+   cochée. Recliquez-la pour décocher. Prenez-les dans n'importe quel ordre.
+
+   **Ne cliquez pas au milieu d'une vignette pour en ajouter une deuxième** : ici, un clic au milieu
+   remplace votre choix par cette seule photo. Si cela arrive, rien n'est perdu : reprenez par les
+   cases.
+
+   *Plus rapide, si vous êtes à l'aise :* gardez la touche **Ctrl** enfoncée en cliquant les vignettes
+   (**Cmd** sur un Mac). Les photos s'ajoutent les unes aux autres, sans effacer les précédentes.
+
+   *Dans l'écran d'une portée ou d'un chien, un simple clic sur la vignette ajoute bien la photo. Dans
+   cette fenêtre-ci, non — la case, elle, marche dans les deux.*
+7. Cliquez sur **Sélectionner**, en bas à droite de la fenêtre. Les photos s'ajoutent, et l'aperçu
    se dessine dans la page.
 
    ![La fenêtre Photos de la galerie, l'onglet Médiathèque actif, trois photos cochées, et le bouton Sélectionner en bas à droite](captures/galerie-fenetre-photos.png)
 
-7. Cliquez sur **Mettre à jour**, en haut à droite. C'est en ligne.
+8. Cliquez sur **Mettre à jour**, en haut à droite. C'est en ligne.
 
 **Tant que vous n'avez pas cliqué sur Mettre à jour, rien n'est publié.** Vous pouvez quitter la page
 sans enregistrer : elle reste comme elle était.
@@ -196,8 +208,11 @@ enregistrer.
 
   ![Le cadre du composant sur une page dont les photos ont été supprimées, affichant la phrase « Ce bloc n'affiche rien tant qu'aucune photo choisie n'est disponible. »](captures/galerie-photos-disparues.png)
 
+- **Vous avez cliqué plusieurs photos et une seule s'est ajoutée.** Dans cette fenêtre, un clic au
+  milieu d'une vignette remplace le choix précédent. Reprenez par la petite case en haut à droite
+  de chaque vignette.
 - Une galerie sans photo **n'affiche rien du tout** aux visiteurs : ni cadre, ni trou, ni message. La
-  page reste normale. Le cadre gris n'existe que pour vous, pendant que vous modifiez.
+  page reste normale. Ce cadre n'existe que pour vous, pendant que vous modifiez.
 - Une vignette a disparu de la galerie : la photo a été supprimée de la bibliothèque. La numérotation se
   resserre, et **il n'y a rien à réparer**. Si vous remettez la photo, la galerie se rétablit d'elle-même.
 - **Monter la photo 1** est grisé sur la première photo, **Descendre** sur la dernière.
@@ -213,7 +228,7 @@ enregistrer.
 
 - Les photos s'affichent dans un ordre qui n'est pas celui du panneau **Photos de la galerie**, après un
   **Mettre à jour**.
-- Une photo cochée dans la fenêtre n'apparaît pas dans la liste du panneau.
+- Une photo **cochée par sa case** dans la fenêtre n'apparaît pas dans la liste du panneau.
 - **Dans la fenêtre des photos, le premier des quatre champs porte un autre nom que
   « Description de la photo (pour les personnes aveugles) ».** Rien n'est cassé et rien n'est perdu :
   écrivez votre description dans ce premier champ comme d'habitude, et dites-le-nous. C'est vous qui

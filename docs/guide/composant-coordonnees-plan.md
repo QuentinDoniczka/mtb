@@ -111,11 +111,15 @@ l'ancienne image au lieu de rester à mentir sous la nouvelle.
 
 **Ne l'effacez pas.** Quand une carte vient d'une source extérieure, cette mention est obligatoire.
 
-**Cet écran n'est pas illustré, et voici pourquoi** : il faudrait une image de plan à l'écran, et le
-plan d'accès n'a pas encore été choisi — voir la section suivante. Le champ **Légende** se trouve dans
-la colonne de droite de la fenêtre où vous choisissez l'image, **en troisième position** : d'abord
-**Description de la photo (pour les personnes aveugles)**, puis **Titre**, puis **Légende**, puis
-**Description**.
+Le champ **Légende** se trouve dans la colonne de droite de la fenêtre où vous choisissez l'image,
+**en troisième position** : d'abord **Description de la photo (pour les personnes aveugles)**, puis
+**Titre**, puis **Légende**, puis **Description**.
+
+![La colonne de droite de la fenêtre où l'on choisit une image : une photo de chien y est sélectionnée, et les quatre champs se suivent de haut en bas — Description de la photo (pour les personnes aveugles), Titre, Légende, Description ; le champ Légende est entouré d'un trait rouge et son nom est écrit en rouge gras](captures/coordonnees-legende-image.png)
+
+*La photo de chien visible sur cette image n'est pas un plan : il n'y en a pas encore, voir juste en
+dessous. Elle est là uniquement pour montrer où se trouve le champ **Légende** — cette colonne est la
+même pour n'importe quelle image.*
 
 ---
 
@@ -156,7 +160,7 @@ bandeau de cookies, ni suivi des visiteurs — contrairement à l'ancien site.
 - **Le cadrage du plan ne se règle pas.** L'image est montrée **en entier**, jamais rognée : sur un
   plan, un coin coupé peut être le point d'arrivée.
 - **Le composant n'écrit aucun titre.** Si vous en voulez un — « Nous trouver », « Contact » —, posez un
-  bloc **Titre** juste au-dessus.
+  composant **Titre** juste au-dessus.
 
 **Vous ne pouvez rien casser avec ce composant.** Aucun réglage n'atteint une couleur, une lettre ou une
 largeur. Au pire, un champ vidé fait disparaître une ligne — et il suffit de la retaper.
@@ -227,9 +231,10 @@ entrée : descendez jusqu'au bout, c'est là.*
 - **Dans la page en cours de modification, le composant est plus étroit que sur le site.** C'est normal :
   la page en cours de modification s'affiche dans une fenêtre plus étroite. Cliquez sur **Aperçu**, ou
   ouvrez la page sur le site : c'est le rendu qui compte.
-- **Le composant affiche un cadre gris portant « Ce bloc n'affiche rien tant qu'aucune coordonnée n'est
-  renseignée. »** Les trois champs ont été vidés. Retapez-en au moins un. Ce cadre n'existe que pour
-  vous, pendant que vous modifiez : les visiteurs, eux, ne voient rien du tout à cet endroit.
+- **Le composant affiche un cadre beige au contour en tirets, portant « Ce bloc n'affiche rien tant
+  qu'aucune coordonnée n'est renseignée. »** Les trois champs ont été vidés. Retapez-en au moins un.
+  Ce cadre n'existe que pour vous, pendant que vous modifiez : les visiteurs, eux, ne voient rien du
+  tout à cet endroit.
 
 **Ce n'est pas normal, signalez-le :**
 
