@@ -5,10 +5,11 @@
  * Présentation uniquement : aucune règle métier, aucune interrogation de la base, aucune règle CSS.
  * Les feuilles de style vivent dans `assets/css/` et appartiennent à `dev-ux-mtb`.
  *
- * La mise en file d'attente des feuilles de bloc est générique : il n'y a aucune liste à
- * rallonger quand un composant nouveau arrive, déposer `assets/css/blocs/<espace>-<nom>.css`
- * suffit toujours. C'était le vrai sens de « conçu pour ne plus être rouvert » (décision 9 de
- * `docs/ETAT.md`).
+ * La mise en file d'attente des feuilles de bloc est générique : il n'y a aucune liste à rallonger
+ * quand un composant nouveau arrive, déposer `assets/css/blocs/<espace>-<nom>.css` suffit toujours.
+ * La décision 9 (`docs/ETAT.md:962`) n'interdit ici que deux chaînes du même lot — condition
+ * technique du parallélisme — et prévoit #2 puis #18 ; « conçu pour ne plus être rouvert », formule
+ * de l'ancien en-tête, disait moins. Au lot 14 #36 est dans `fields/portee/`, #43 hors du thème.
  *
  * L'issue #40 a rouvert le fichier en deux points bornés : la bascule vers la feuille minifiée,
  * posée à l'intérieur de `mtb_feuille_a_servir()` et donc héritée par tout appelant de

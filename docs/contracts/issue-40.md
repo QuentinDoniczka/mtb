@@ -106,10 +106,33 @@ Borné à trois endroits :
 - **`:194-252`** — la boucle de blocs (`src`, `path`, `ver`) ;
 - **`:6-12`** — l'amendement du docbloc de tête (voir §7).
 
-Motif de l'élargissement : aucune chaîne parallèle ne touche ce fichier (#36 travaille dans
-`includes/fields/portee/**`, #43 dans `MASTER.md` et `includes/blocks/lien-de-recours/**`). Le
+**Élargissement d'empreinte déclaré, et la condition exacte qui l'autorise.** `functions.php` est hors
+de l'empreinte que l'issue #40 déclare (`assets/css/**`, `docker/**` ou `Makefile`). L'orchestrateur
+l'a accordé, après avoir vérifié **le texte** de la décision 9 plutôt que sa réputation.
+
+**Ce que dit la décision 9 (`docs/ETAT.md:962`)** : « Aucun index central à éditer à la main dans
+`mtb-core` […] **C'est la condition technique du parallélisme.** Un index de blocs édité à la main
+serait touché par presque toute issue visuelle et ferait entrer en collision des chaînes pourtant
+censées être disjointes. Conséquence : un bloc = un dossier auto-enregistré ; `functions.php` **n'est
+touché que par #2 puis #18, jamais dans le même lot**. »
+
+**C'est une contrainte de collision, pas de sacralité.** Elle ne dit nulle part que le fichier ne doit
+plus être rouvert : elle interdit que **deux chaînes d'un même lot** le rouvrent, et elle **prévoit
+explicitement** qu'il le soit, en nommant #2 puis #18. La formule « conçu pour ne plus être rouvert »
+venait de **l'ancien en-tête de ce fichier même**, pas de la décision — elle en disait moins.
+**#40 applique la condition de la décision 9 ; elle ne la révise pas.**
+
+**La condition est vérifiée pour le lot 14, comme un fait et non comme une permission de principe** :
+#36 vit dans `mtb-core/includes/fields/portee/**` (commit `fe7f068`) ; #43 dans
+`design-system/MASTER.md`, `mtb-core/includes/blocks/lien-de-recours/**` et une fiche du guide
+(commits `7d82c0a`, `e0a735b`). **Aucune des deux n'entre dans `wp-content/themes/mtb/`.** Le
 recouvrement est **nul**, et il n'existe aucun autre point d'intervention côté thème sans violer la
 frontière thème/`mtb-core`.
+
+**Conséquence pour le lot suivant** : `functions.php` a été rouvert par #40. Toute issue future qui
+voudrait le rouvrir doit vérifier la même condition — pas de chaîne sœur du même lot sur ce fichier.
+Une empreinte élargie sans trace écrite est une empreinte fausse pour le lot suivant ; c'est le motif
+de ce paragraphe.
 
 **Ajout borné hors des trois plages** : `functions.php:178` écrit « Les **deux** feuilles servies au
 visiteur » ; il y en a **trois** (`:180-182`). Un mot, dans le docbloc immédiatement voisin de ce que
@@ -413,9 +436,15 @@ Un compteur naïf sur le fichier entier se trompe sur **8 des 15 feuilles**, dan
 Le texte actuel — « Ce fichier est conçu pour ne plus être rouvert (décision 9 de `docs/ETAT.md`) » —
 doit dire trois choses, et rien de plus :
 
-1. **Ce qui reste vrai, et qui était le vrai sens de la phrase** : la mise en file des feuilles de bloc
-   est **générique**, il n'y a **aucune liste à rallonger**. Déposer
-   `assets/css/blocs/<espace>-<nom>.css` suffit toujours.
+1. **Ce qui reste vrai** : la mise en file des feuilles de bloc est **générique**, il n'y a **aucune
+   liste à rallonger**. Déposer `assets/css/blocs/<espace>-<nom>.css` suffit toujours.
+   **Et ce que la phrase ne doit surtout pas prétendre** — corrigé le 2026-08-31 sur relecture de
+   l'orchestrateur : le docbloc ne doit **pas** présenter « conçu pour ne plus être rouvert » comme
+   étant « le vrai sens de la décision 9 ». Cette formule venait de l'ancien en-tête de ce fichier ;
+   la décision 9 (`docs/ETAT.md:962`) dit autre chose et dit plus — elle interdit **la collision entre
+   deux chaînes d'un même lot**, motive cet interdit par le parallélisme, et **prévoit** que
+   `functions.php` soit rouvert (« par #2 puis #18 »). Le docbloc cite donc la décision à sa ligne, en
+   donne la vraie raison, et **constate** que la condition est tenue au lot 14 au lieu de l'affirmer.
 2. **Ce qui a changé** : #40 a rouvert le fichier en deux points bornés — la bascule **à l'intérieur de
    `mtb_mettre_feuille_en_file()`** (donc héritée par tout appelant, `enveloppe-fiche.php` compris,
    sans qu'il soit touché), et le `src`/`path`/`ver` de la boucle de blocs.
@@ -786,3 +815,17 @@ porteuse d'un `path`).
 - **`base.css:25-27`** annonce qu'un allègement passé « décale les commentaires d'une centaine de lignes
   de plus ». Le passage reste exact ; **#40 ne décale rien** — signalé pour qu'un relecteur ne le prenne
   pas pour une trace de #40.
+
+- **Dette : le jumeau à tenir en accord.** *Énoncé* — la révision de générateur `"mtb-min/1\n"`, la
+  définition de la forme canonique et le calcul de l'empreinte sont écrits **deux fois** : dans
+  `docker/outils/mtb-minifier-css.php` et dans `wp-content/themes/mtb/functions.php`. Une divergence
+  entre les deux serait **silencieuse** — les artefacts cesseraient simplement d'être servis, sur
+  toutes les pages, sans erreur, sans notice, sans journal ; seul le poids augmenterait.
+  *Provenance* — c'est le coût assumé du §4, retenu **délibérément** contre la factorisation : le
+  thème doit pouvoir vérifier une empreinte **sans dépendre d'un outil de `docker/`**, qui n'est ni
+  déployé chez l'hébergeur ni chargeable par WordPress. Toute divergence dégrade vers « la source est
+  servie », **jamais** vers « un artefact accepté à tort » — la panne est donc conservatrice, ce qui
+  rend la dette tenable, pas inexistante. *Garde-fous en place* — chacun des deux porte un commentaire
+  nommant son jumeau, et `make css-check` détecte la divergence en la faisant apparaître comme 14
+  paires `PÉRIMÉ`. *Ce qui manque* — rien ne **force** la relecture conjointe : la garde est humaine.
+  **Sans numéro : l'orchestrateur numérote à la clôture du lot.**
