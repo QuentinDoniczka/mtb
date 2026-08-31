@@ -136,17 +136,25 @@ testable mécaniquement, jugée par la revue (voir décision 59). La revue concl
 lignes n'est mise en danger par ce lot**, en distinguant « non mesurée » de « menacée ».
 
 **Prochaine action** : `/lead-mtb #36 #40 #43` — **empreintes disjointes, parallèle sûr**, verdict
-obtenu de `github-boards` le 2026-08-31, **sous une réserve à lever au démarrage** : l'empreinte de #36
-n'est pas tranchée par l'issue elle-même (`includes/fields/portee/**` **ou** `includes/admin/**`) ; si
-elle dérivait vers `assets/css/**`, elle chevaucherait #40. À confirmer au `start-issue`, pas en cours
-de chaîne. #43 paie T55 et hérite d'un précédent frais : `MASTER.md` est en 1.3, la numérotation de sa
-propre entrée sera 1.4.
+obtenu de `github-boards` le 2026-08-31, **sans réserve**. La réserve sur #36 est **levée sur preuve** :
+son empreinte n'est pas tranchée par l'issue elle-même (`includes/fields/portee/**` **ou**
+`includes/admin/**`), mais le dépôt porte déjà le précédent exact — `fields/portee/avis.php:170` et
+`fields/portee/ecran.php:237` posent des avertissements d'écran de saisie avec les classes du cœur
+`notice notice-warning` / `notice-<niveau>`, **sans aucune feuille CSS dédiée**. #36 étant un
+avertissement de la même famille (galerie remplie, photo principale vide) au même endroit du code,
+**rien ne la fait sortir vers `assets/css/**`**, donc aucun chevauchement avec #40. #43 paie T55 et
+hérite d'un précédent frais : `MASTER.md` est en 1.3, la numérotation de sa propre entrée sera **1.4**,
+et le recouvrement #39 ↔ #43 est levé.
 
 **Recouvrements à ne pas redécouvrir** : #33 ↔ #40 (`base.css`) · #33 ↔ #34 (l'empreinte élargie de #34
 englobe `assets/css/blocs/*.css`) · **#39 ↔ #43 est levé, #39 étant livrée** · **#43 ↔ #44 est levé,
 #44 étant livrée** — mais #43 touche `design-system/MASTER.md`, donc il rouvre le recouvrement avec
-**toute issue future touchant ce fichier** · #32 et #36 ont une empreinte que l'issue elle-même n'a
-jamais tranchée.
+**toute issue future touchant ce fichier** · **#32** a une empreinte que l'issue elle-même n'a jamais
+tranchée (`assets/css/**` **ou** `includes/admin/**`) — elle chevaucherait #40 dans le premier cas, #36
+dans le second, et **ne peut donc entrer dans aucun lot parallèle avant d'avoir tranché son propre
+périmètre**. Celle de #36 n'était pas tranchée non plus ; elle l'est désormais (voir « Prochaine
+action »). **Vérifier aussi si #32 porte une contrainte de séquencement du genre de T15**, ce qui n'a
+jamais été établi.
 
 **Bloquées, à exclure de tout lot jusqu'à réponse** : #23 et #24 par **Q1** et **Q4** · #25 par
 transitivité · **#26 et #48 garées** par le report assumé de **Q5** · #42 par **Q14** · **#34 rouverte
