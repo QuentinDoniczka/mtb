@@ -1076,7 +1076,7 @@ lien de recours, donc.
 | Couleur | **Couleur** | Couleur | Recopiée. |
 | Masque | **Masque** | Masque | |
 | Génétique de robe | **Génétique de robe** | Génétique de robe | Recopiée à l'identique. |
-| Statut | **Statut** | Statut | Liste fermée : **Reproducteur** · **Retraité** · **Disparu** · **En cours de confirmation**. **L'affichage accorde au féminin** selon le champ Sexe : *Reproductrice*, *Retraitée*, *Disparue*. |
+| Statut | **Statut** | Statut | Liste fermée : **Reproducteur** · **En cours de confirmation** · **Retraité** · **Disparu**. **L'ordre énuméré est celui, gelé, des groupes de la page « La meute »** — fait d'affichage constaté ici ; les libellés, eux, se fixent dans ce tableau. **L'affichage accorde au féminin** selon le champ Sexe : *Reproductrice*, *Retraitée*, *Disparue*. |
 | Dysplasie des hanches | **Dysplasie des hanches (HD)** | Hanches (HD) | Valeur **recopiée**, jamais interprétée. |
 | Dysplasie des coudes | **Dysplasie des coudes (ED)** | Coudes (ED) | Idem. |
 | LTV | **LTV** | LTV | |
