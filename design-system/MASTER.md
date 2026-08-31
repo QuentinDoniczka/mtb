@@ -1159,12 +1159,12 @@ incompétente, et la règle « le plus récent gagne » ne s'y applique pas. *Tr
 libellé** à `docs/contracts/issue-13.md:766`. Ces deux ancres de ligne dérogent **à dessein** à la
 règle « le document nomme les fichiers, jamais les lignes », parce qu'elles pointent un contrat
 **gelé** : un contrat gelé ne bouge plus, donc elles ne dériveront pas. Les remplacer par le seul
-nom du fichier ferait perdre la vérifiabilité sans rien protéger. S'y ajoute la règle de partage écrite au
-§9.5 : **le §9.5 dit quels liens paraissent et dans quel ordre, le §10.3 dit comment ils s'appellent**
-— lus ainsi, les deux sections ne se contredisent plus, et une divergence future se tranche ici.
-Cette note existe pour la raison qui a fermé la dette **T56** au lot 13 : une énumération nue dont
-rien n'explique l'origine reste « réparable à l'envers » par la chaîne suivante, qui croira corriger
-et cassera.
+nom du fichier ferait perdre la vérifiabilité sans rien protéger. S'y ajoute la règle de partage
+écrite au §9.5 : **le §9.5 dit quels liens paraissent et dans quel ordre, le §10.3 dit comment ils
+s'appellent** — lus ainsi, les deux sections ne se contredisent plus, et une divergence future se
+tranche ici. Cette note existe pour la raison qui a fermé la dette **T56** au lot 13 : une
+énumération nue dont rien n'explique l'origine reste « réparable à l'envers » par la chaîne
+suivante, qui croira corriger et cassera.
 
 ### 10.4 Mots interdits à l'écran (site et administration)
 
