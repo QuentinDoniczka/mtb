@@ -177,8 +177,8 @@ restent à leur place.
 Pourquoi : **votre ancien site ne désignait aucune photo comme *la* photo d'une portée.** Ses images
 se suivaient dans la page, et la première n'était pas un portrait — sur les fiches de chiens, c'était
 même une bannière de rubrique, la même sur seize fiches. En élire une à votre place aurait été un
-choix arbitraire. Toutes les photos de vos portées ont donc été rangées, sans exception, dans la
-**Galerie photos** de chaque portée : **elles sont toutes là, et elles sont bien remplies.**
+choix arbitraire. Toutes les photos de vos portées ont donc été rangées dans la **Galerie photos** de
+chaque portée : **rien n'a été laissé de côté.**
 
 **Si la galerie contient des photos et qu'aucune Photo principale n'est choisie**, un encadré jaune
 s'affiche en tête de l'encadré **Galerie photos** : il rappelle que les photos de la galerie
