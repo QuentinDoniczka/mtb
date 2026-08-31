@@ -869,16 +869,71 @@ porteuse d'un `path`).
    incorporés. **R7 doit re-mesurer le décompressé sur le code livré** plutôt qu'hériter de cette
    cellule.
 
-3. **`/travail/` n'existe pas sur cette pile, et ma première explication de la cause était fausse.**
-   R2 et R7 nomment `/travail/` ; la page rend **404** et les mesures ont porté sur `/portees/` à sa
-   place, **sans jamais être présentées comme `/travail/`**. J'avais imputé le 404 à
-   `has_archive => false` : **c'est faux**, et l'orchestrateur l'a corrigé. `mtb_resultat` est
+3. **`/travail/` n'existe pas sur cette pile**, et j'ai dit **deux faussetés successives** à son sujet.
+   R2 et R7 la nomment ; la page rend **404** et les mesures ont porté sur `/portees/` à sa place,
+   **sans jamais être présentées comme `/travail/`**.
+
+   **Première fausseté — la cause.** J'avais imputé le 404 à `has_archive => false`. `mtb_resultat` est
    `public = false`, `publicly_queryable = false`, `rewrite = false` — il n'a donc **aucun slug**, et
-   `has_archive` n'y est pour rien. La vraie cause est que **la page n'existe dans aucun statut** :
-   `wp mtb reprise-resultats-pages` n'a jamais été lancée sur ce volume. Rien n'est perdu ; c'est une
-   commande non jouée, pas un défaut. **Conséquence à ne pas taire : `mtb-tableau-resultats.min.css`
-   n'est attesté servi sur aucune page rendue** — sa fraîcheur l'est par `make css-check`, son service
-   ne l'est pas, faute de page portant ce bloc.
+   `has_archive` n'y est pour rien. La vraie cause : **la page n'existe dans aucun statut**,
+   `wp mtb reprise-resultats-pages` n'ayant jamais été lancée sur ce volume. Commande non jouée, pas un
+   défaut ; rien n'est perdu.
+
+   **Seconde fausseté, et elle est plus instructive — la conséquence que j'en tirais.** J'écrivais que
+   « `mtb-tableau-resultats.min.css` n'est attesté servi sur aucune page rendue ». **C'est faux, mesuré
+   sur les 108 pages en 200** : cette feuille **est servie, incorporée, 325 o**, sur **4 pages** —
+   `/chien/demo-rex/`, `/chien/demo-vega/`, `/chien/demo-cesar/` et leur forme `?p=`. Deux observables
+   indépendants le montrent : les noms de fichier des `<link rel="stylesheet">` **et** le
+   `/*# sourceURL=… */` que le cœur ajoute au bas de chaque feuille incorporée, qui nomme le fichier
+   réellement lu.
+
+   > **La cause de mon erreur, qui vaut plus que le fait corrigé : le composant « Tableau de résultats »
+   > vit sur les fiches de chiens qui portent des résultats de travail, pas seulement sur une page
+   > « Travail ». J'ai raisonné depuis la page absente au lieu de chercher où le bloc est réellement
+   > posé.** Une absence de page ne dit rien de l'emploi d'un bloc ; seul le contenu le dit.
+
+   **Ce qui est vrai a une autre forme et un autre compte** : **trois artefacts sur quatorze** ne sont
+   servis sur aucune page de ce volume — `mtb-bandeau-alerte.min.css`, `mtb-fiche-information.min.css`,
+   `mtb-liste-portees.min.css`. Fraîcheur prouvée par `make css-check`, **service non observé** : trois
+   composants qu'aucun contenu de ce jeu ne place. Ma phrase désignait donc **la mauvaise feuille et
+   sous-comptait le nombre**.
+
+   **Deux constats favorables qui manquaient, mesurés sur les mêmes 108 pages** : **aucune source non
+   minifiée n'est servie sur aucune page**, et les quatre feuilles de socle — `base`, `entete-pied`,
+   `tokens`, `mtb-coordonnees-plan` — sont servies sur **les 108**.
+
+---
+
+## 17. Chiffres définitifs, mesurés après la sixième condition
+
+Les 14 artefacts ayant été réécrits par l'élargissement du marqueur, tous les poids ont été
+**re-mesurés, pas reconduits**. Les valeurs ci-dessous font foi et remplacent celles du §1, qui
+décrivaient le marqueur à deux champs.
+
+| | avant #40 | après, marqueur à 4 champs |
+|---|---:|---:|
+| 14 artefacts, octets canoniques | — | **41 810 o** (contre 41 504 au marqueur à 2 champs : **+306 o, soit +21,9 o par artefact**) |
+| Accueil, réseau gz6 | 66 553 | **10 867 o** |
+| Accueil, décompressé | 185 218 | **43 831 o** |
+| Pire page, `/chien/jango/`, réseau / décompressé | — | **17 936 / 62 932 o** — soit **9,0 % du plafond** de 200 000 |
+| Coût réseau du marqueur élargi, sur l'Accueil | — | **+137 o** |
+
+**Une prévision tenue et une prévision fausse, je donne les deux.** J'avais annoncé 41 826 o
+d'artefacts : c'est **41 810**, seize octets d'écart — sans conséquence, mais **un contrat se cite**,
+donc le chiffre juste est ici. J'avais annoncé 43 839 o décompressés sur l'Accueil par simple
+arithmétique : mesuré **43 831**, soit **8 octets d'écart** — l'arithmétique tenait, et j'avais eu
+raison de laisser le réseau gzippé à la mesure plutôt qu'à mon calcul.
+
+**Le correctif tient, sans réserve : 48 avaries sur 48, zéro écart**, dégradation silencieuse sur les
+48 cas, `debug.log` vide. La corruption à longueur constante est bien couverte. **Les quatre champs
+mordent chacun séparément** — le champ 3 seul ou le champ 4 seul suffit à écarter l'artefact — donc la
+garde **ne tient pas par conjonction**, ce qui la rend robuste à la perte d'un champ. Et l'identité des
+14 paires a été **re-prouvée après la réécriture** : comptes de jetons identiques au jeton près, la
+réécriture n'ayant touché que la ligne du marqueur.
+
+**Un fait établi contre ma propre borne, et à mon crédit** : l'ancienne valeur de **64 perdait le
+marqueur maximal en silence**. Le relèvement à 128 n'était donc pas une précaution, c'était une
+**réparation** — et la garde `P6` refuse pour de vrai, éprouvée en bac à sable.
 
 ---
 
