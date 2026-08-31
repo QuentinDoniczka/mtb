@@ -5,9 +5,19 @@
  * Présentation uniquement : aucune règle métier, aucune interrogation de la base, aucune règle CSS.
  * Les feuilles de style vivent dans `assets/css/` et appartiennent à `dev-ux-mtb`.
  *
- * Ce fichier est conçu pour ne plus être rouvert (décision 9 de `docs/ETAT.md`) : la mise en file
- * d'attente des feuilles de bloc est générique, il n'y a donc aucune liste à rallonger quand un
- * composant nouveau arrive.
+ * La mise en file d'attente des feuilles de bloc est générique : il n'y a aucune liste à
+ * rallonger quand un composant nouveau arrive, déposer `assets/css/blocs/<espace>-<nom>.css`
+ * suffit toujours. C'était le vrai sens de « conçu pour ne plus être rouvert » (décision 9 de
+ * `docs/ETAT.md`).
+ *
+ * L'issue #40 a rouvert le fichier en deux points bornés : la bascule vers la feuille minifiée,
+ * posée à l'intérieur de `mtb_feuille_a_servir()` et donc héritée par tout appelant de
+ * `mtb_mettre_feuille_en_file()` — `enveloppe-fiche.php` compris, sans qu'un octet n'y soit
+ * touché — et le trio `src` / `path` / `ver` de la boucle de blocs.
+ *
+ * Ce que devient la promesse de généricité : un composant nouveau n'exige toujours rien ici, mais
+ * il exige un `make css`. Sans lui sa feuille est servie non minifiée — correcte, plus lourde —
+ * et `make css-check` le dit.
  *
  * @package MTB
  */
@@ -21,7 +31,11 @@ defined( 'ABSPATH' ) || exit;
  *
  * Le garde `file_exists()` permet aux deux moitiés du socle d'être commitées dans le désordre :
  * une feuille encore absente n'émet ni requête inutile ni avertissement, et la page tient debout.
- * La version vaut `filemtime()` : jamais un numéro tenu à la main, qu'on oublierait d'incrémenter.
+ * La version vaut l'empreinte du contenu — jamais un numéro tenu à la main qu'on oublierait
+ * d'incrémenter, jamais une date — et laisse intact le cache du visiteur quand une mise en ligne ne
+ * touche pas la feuille. Elle vient, avec le choix du fichier réellement servi (source ou artefact
+ * minifié), de `mtb_feuille_a_servir()`, écrite en fin de fichier : la bascule vit ici et non chez
+ * les appelants, si bien qu'`enveloppe-fiche.php` en hérite sans qu'un octet n'y soit touché.
  *
  * @param string   $poignee      Poignée gelée par le contrat d'interface.
  * @param string   $relatif      Chemin relatif à la racine du thème.
@@ -34,7 +48,8 @@ function mtb_mettre_feuille_en_file( string $poignee, string $relatif, array $de
 		return;
 	}
 
-	wp_enqueue_style( $poignee, get_theme_file_uri( $relatif ), $dependances, (string) filemtime( $chemin ) );
+	$servie = mtb_feuille_a_servir( $relatif, $chemin );
+	wp_enqueue_style( $poignee, get_theme_file_uri( $servie['relatif'] ), $dependances, $servie['version'] );
 }
 
 /**
@@ -174,7 +189,7 @@ function mtb_retirer_les_variations_interdites( array $metadonnees ): array {
 add_filter( 'block_type_metadata', 'mtb_retirer_les_variations_interdites' );
 
 /**
- * Les deux feuilles servies au visiteur.
+ * Les trois feuilles servies au visiteur.
  */
 function mtb_feuilles_du_site(): void {
 	mtb_mettre_feuille_en_file( 'mtb-jetons', 'assets/css/tokens.css' );
@@ -234,16 +249,18 @@ function mtb_feuilles_de_blocs(): void {
 			continue;
 		}
 
+		$servie = mtb_feuille_a_servir( $relatif, $chemin );
 		wp_enqueue_block_style(
 			$nom_de_bloc,
 			array(
 				'handle' => 'mtb-bloc-' . $base,
-				'src'    => get_theme_file_uri( $relatif ),
-				// `path` autorise le cœur à écrire la feuille en ligne quand elle est courte,
-				// ce qui économise une requête.
-				'path'   => $chemin,
+				'src'    => get_theme_file_uri( $servie['relatif'] ),
+				// `path` autorise le cœur à écrire la feuille en ligne quand elle est courte, ce
+				// qui économise une requête. `src` et `path` désignent toujours le même fichier :
+				// jamais l'artefact d'un côté et la source de l'autre.
+				'path'   => $servie['chemin'],
 				'deps'   => array( 'mtb-jetons' ),
-				'ver'    => (string) filemtime( $chemin ),
+				'ver'    => $servie['version'],
 			)
 		);
 	}
@@ -950,3 +967,98 @@ function mtb_nommer_la_navigation( $contenu ) {
 	return $processeur->get_updated_html();
 }
 add_filter( 'render_block_core/navigation', 'mtb_nommer_la_navigation', 20 );
+
+/**
+ * Décide, pour une feuille du thème, quel fichier est servi et sous quelle version.
+ *
+ * L'artefact `<nom>.min.css` n'est servi que s'il prouve qu'il décrit encore sa source : son
+ * marqueur de tête porte la longueur et l'empreinte de la forme canonique de `<nom>.css`. Dans
+ * tous les autres cas — absent, illisible, vide, tronqué, sans marqueur, marqueur mal formé,
+ * longueur ou empreinte discordantes — c'est la source qui est servie, sans erreur, sans
+ * avertissement, sans notice, sans écriture au journal. Un artefact périmé est un état normal
+ * entre le moment où une feuille change et celui où `make css` est joué ; en faire un diagnostic
+ * remplirait `debug.log` et ruinerait la mesure « aucune notice » dont dépendent plusieurs
+ * recettes gelées. La dégradation est conservatrice : jamais une régression visuelle, seulement
+ * une régression de poids — et elle reste lisible sans outillage, dans le nom du fichier servi.
+ *
+ * **Pourquoi une empreinte de contenu, et jamais `filemtime()`.** Git n'enregistre aucune date de
+ * modification et écrit dans l'ordre lexicographique de son index, où `base.css` précède
+ * `base.min.css`. À un `clone`, les deux dates sont le plus souvent égales et un test
+ * `filemtime( artefact ) >= filemtime( source )` tranche alors pour l'artefact : il ne dégénère
+ * pas en hasard, il dégénère en « toujours l'artefact ». Un envoi FTP produit le même effet.
+ *
+ * **Pourquoi la forme canonique — les fins de ligne ramenées au saut de ligne seul, et rien
+ * d'autre.** Le dépôt tourne en `core.autocrlf=true` sans motif `.gitattributes` sur
+ * `wp-content` : une même feuille pèse 45 914 octets dans Git et 46 927 sur un disque Windows.
+ * Une empreinte calculée sur les octets bruts serait rejetée partout en production, sans que rien
+ * ne le signale, et l'issue #40 y rendrait exactement zéro octet.
+ *
+ * **JUMEAU À TENIR EN ACCORD** — `docker/outils/mtb-minifier-css.php`. La révision `mtb-min/1`,
+ * la forme canonique et le calcul de l'empreinte y sont écrits une seconde fois, et les deux
+ * moitiés doivent s'accorder octet pour octet. Une divergence dégrade vers « la source est
+ * servie », jamais vers « un artefact accepté à tort » — mais elle est silencieuse.
+ *
+ * @param string $relatif Chemin relatif à la racine du thème, terminé par `.css`.
+ * @param string $chemin  Chemin absolu de la source, dont l'existence est déjà acquise.
+ * @return array{relatif:string,chemin:string,version:string}
+ */
+function mtb_feuille_a_servir( string $relatif, string $chemin ): array {
+	/*
+	 * Source illisible : la source reste servie — comportement d'avant #40 — et rien n'est
+	 * inventé, ni empreinte ni date. `wp_enqueue_style()` retombe alors sur sa version par
+	 * défaut.
+	 */
+	$servie = array(
+		'relatif' => $relatif,
+		'chemin'  => $chemin,
+		'version' => '',
+	);
+
+	if ( '.css' !== substr( $relatif, -4 ) || ! is_readable( $chemin ) ) {
+		return $servie;
+	}
+
+	$source = file_get_contents( $chemin );
+
+	if ( ! is_string( $source ) ) {
+		return $servie;
+	}
+
+	$canonique = str_replace( array( "\r\n", "\r" ), "\n", $source );
+	$empreinte = substr( hash( 'sha256', "mtb-min/1\n" . $canonique ), 0, 16 );
+
+	$servie['version'] = $empreinte;
+
+	/*
+	 * Même dossier, obligatoirement : `base.css` porte des `url( "../fonts/…" )` relatifs à
+	 * l'emplacement de la feuille. Un artefact rangé ailleurs mettrait les deux polices en 404,
+	 * et le repli métrique de `base.css` rendrait cette chute invisible à l'œil.
+	 */
+	$artefact_relatif = substr( $relatif, 0, -4 ) . '.min.css';
+	$artefact         = get_theme_file_path( $artefact_relatif );
+
+	if ( ! is_readable( $artefact ) ) {
+		return $servie;
+	}
+
+	// Le marqueur pèse de 31 à 40 octets et est ancré à l'octet 0 : la lecture est toujours
+	// suffisante, et toujours bornée.
+	$tete = file_get_contents( $artefact, false, null, 0, 64 );
+
+	if ( ! is_string( $tete ) ) {
+		return $servie;
+	}
+
+	if ( 1 !== preg_match( '#^/\*!mtb-src:([1-9][0-9]{0,9}):([0-9a-f]{16})\*/#', $tete, $marqueur ) ) {
+		return $servie;
+	}
+
+	if ( $marqueur[1] !== (string) strlen( $canonique ) || $marqueur[2] !== $empreinte ) {
+		return $servie;
+	}
+
+	$servie['relatif'] = $artefact_relatif;
+	$servie['chemin']  = $artefact;
+
+	return $servie;
+}

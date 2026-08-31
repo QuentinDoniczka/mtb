@@ -1,0 +1,68 @@
+/*!mtb-src:6783:6416af855fdb06ef*/
+
+.mtb-coordonnees-plan {
+  margin-block: var(--rythme-section);
+}
+
+.mtb-coordonnees-plan__coordonnees {
+  font-style: normal;
+}
+
+.mtb-coordonnees-plan__etiquette {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+  margin-block-start: var(--e-5);
+}
+
+.mtb-coordonnees-plan__etiquette:first-child {
+  margin-block-start: 0;
+}
+
+.mtb-coordonnees-plan__valeur.mtb-coordonnees-plan__valeur {
+  margin-block-start: var(--e-3);
+}
+
+.mtb-coordonnees-plan__lien {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  overflow-wrap: anywhere;
+}
+
+.mtb-coordonnees-plan__figure.mtb-coordonnees-plan__figure {
+  margin-block-start: var(--e-4);
+}
+
+.mtb-coordonnees-plan__cadre {
+  inline-size: 100%;
+  aspect-ratio: var(--r-paysage);
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+  position: relative;
+}
+
+.mtb-coordonnees-plan__cadre::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-coordonnees-plan__cadre.mtb-coordonnees-plan__cadre > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+.mtb-coordonnees-plan__legende {
+  margin-block-start: var(--e-2);
+}

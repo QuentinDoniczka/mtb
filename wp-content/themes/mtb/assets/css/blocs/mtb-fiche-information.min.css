@@ -1,0 +1,68 @@
+/*!mtb-src:9737:e2eae34bd7cd16b3*/
+
+.mtb-fiche-information {
+  margin-block: var(--rythme-section);
+}
+
+.mtb-fiche-information__titre {
+  overflow-wrap: break-word;
+}
+
+.mtb-fiche-information__prose > ul,
+.mtb-fiche-information__prose > ol {
+  margin-block-end: var(--e-4);
+}
+
+.mtb-fiche-information__figure {
+  margin-block-end: var(--e-4);
+}
+
+.mtb-fiche-information__photo {
+  position: relative;
+  aspect-ratio: var(--r-paysage);
+  background-color: var(--calcaire-creux);
+}
+
+.mtb-fiche-information__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-fiche-information__photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--texte-doux);
+}
+
+.mtb-fiche-information__photo[data-cadrage="haut_gauche"] {
+  --point-interet: left top;
+}
+
+.mtb-fiche-information__photo[data-cadrage="haut"] {
+  --point-interet: center top;
+}
+
+.mtb-fiche-information__photo[data-cadrage="centre"] {
+  --point-interet: 50% 38%;
+}
+
+.mtb-fiche-information__photo[data-cadrage="haut_droite"] {
+  --point-interet: right top;
+}
+
+.mtb-fiche-information__photo[data-cadrage="bas"] {
+  --point-interet: center bottom;
+}
+
+.mtb-fiche-information__legende {
+  margin-block-start: var(--e-2);
+}
+

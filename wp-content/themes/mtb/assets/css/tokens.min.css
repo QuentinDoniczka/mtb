@@ -1,0 +1,96 @@
+/*!mtb-src:10243:3ead99ed7230aa8b*/
+
+:root {
+
+  --serif: "Newsreader", "Newsreader repli", serif;
+  --sans:  "Public Sans", "Public Sans repli", sans-serif;
+
+  --calcaire:       #F2F1EA;
+  --calcaire-creux: #E7E5DA;
+  --blanc:          #FBFAF6;
+  --pin:            #16241C;
+  --pin-creux:      #24382C;
+  --texte:          #22312A;
+  --texte-doux:     #4A5A50;
+  --calcaire-ombre: #BDBCB0;
+  --sauge:          #4A6B57;
+  --sauge-fonce:    #35513F;
+  --laiton:         #9A7B3F;
+  --laiton-texte:   #7A5F2C;
+  --laiton-clair:   #E3CB9C;
+  --filet:          #CFCDBF;
+  --oxyde:          #8C3A28;
+
+  --filet-double: linear-gradient(
+    to bottom,
+    var(--sauge)  0    3px,
+    transparent   3px  5px,
+    var(--laiton) 5px  6px
+  );
+  --filet-double-v: linear-gradient(
+    to right,
+    var(--sauge)  0    3px,
+    transparent   3px  5px,
+    var(--laiton) 5px  6px
+  );
+  --filet-double-h: 6px;
+
+  --t-xs:   clamp(.8125rem, .78rem + .16vw, .875rem);
+  --t-sm:   clamp(.9375rem, .91rem + .14vw, 1rem);
+  --t-base: clamp(1.0625rem, 1.02rem + .2vw, 1.1875rem);
+  --t-md:   clamp(1.1875rem, 1.12rem + .3vw, 1.375rem);
+  --t-lg:   clamp(1.375rem, 1.24rem + .6vw, 1.75rem);
+  --t-xl:   clamp(1.75rem, 1.5rem + 1.1vw, 2.5rem);
+  --t-2xl:  clamp(2.25rem, 1.75rem + 2.2vw, 3.75rem);
+  --t-3xl:  clamp(2.75rem, 1.9rem + 3.6vw, 5rem);
+
+  --e-1: .25rem;
+  --e-2: .5rem;
+  --e-3: .75rem;
+  --e-4: 1rem;
+  --e-5: 1.5rem;
+  --e-6: 2rem;
+  --e-7: 3rem;
+  --e-8: 4.5rem;
+  --e-9: 7rem;
+
+  --rythme-section: clamp(2.5rem, 6vw, 5.5rem);
+  --marge-page:     clamp(1rem, 5vw, 3rem);
+
+  --r-0: 0;
+  --r-1: 2px;
+
+  --bord-fin:    1px solid var(--filet);
+  --bord-actif:  1px solid var(--texte-doux);
+  --bord-fort:   3px solid var(--sauge);
+  --cerne-photo: inset 0 0 0 1px rgb(22 36 28 / .22);
+
+  --ombre-panneau: 0 8px 24px rgb(22 36 28 / .18);
+  --voile-photo: linear-gradient(
+    to top,
+    rgb(22 36 28 / .86)  0%,
+    rgb(22 36 28 / .72) 34%,
+    rgb(22 36 28 / .28) 66%,
+    rgb(22 36 28 / .06) 100%
+  );
+
+  --r-portrait: 4 / 5;
+  --r-paysage:  3 / 2;
+  --r-carre:    1 / 1;
+  --r-bandeau:  4 / 3;
+  --r-libre:    auto;
+
+  --l-texte: 36rem;
+  --l-large: 68rem;
+
+  --bp-tableau: 48rem;
+  --bp-nav:     60rem;
+  --bp-fiche:   64rem;
+}
+
+@media screen and (min-width: 40rem) {
+  :root { --r-bandeau: 16 / 9; }
+}
+@media screen and (min-width: 64rem) {
+  :root { --r-bandeau: 21 / 9; }
+}

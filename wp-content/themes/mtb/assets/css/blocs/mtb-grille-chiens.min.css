@@ -1,0 +1,81 @@
+/*!mtb-src:26333:7a351cc3f76d7469*/
+
+.mtb-canal > .mtb-grille-chiens {
+  grid-column: large-debut / large-fin;
+  inline-size: 100%;
+  max-inline-size: var(--l-large);
+  margin-inline: auto;
+}
+
+
+.mtb-grille-chiens__liste {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: var(--e-6);
+  align-items: start;
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.mtb-grille-chiens__carte {
+  position: relative;
+  min-inline-size: 0;
+}
+
+.mtb-grille-chiens__cadre-photo {
+  aspect-ratio: var(--r-carre);
+  background-color: var(--calcaire-creux);
+  border-radius: var(--r-0);
+  position: relative;
+}
+
+.mtb-grille-chiens__cadre-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-grille-chiens__photo {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+.mtb-grille-chiens__cadre-photo--cadrage-haut-gauche { --point-interet: left top; }
+.mtb-grille-chiens__cadre-photo--cadrage-haut        { --point-interet: center top; }
+.mtb-grille-chiens__cadre-photo--cadrage-haut-droite { --point-interet: right top; }
+.mtb-grille-chiens__cadre-photo--cadrage-bas         { --point-interet: center bottom; }
+
+
+.mtb-grille-chiens__nom-texte {
+  position: relative;
+  z-index: 1;
+  overflow-wrap: break-word;
+}
+
+.mtb-grille-chiens__lien::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+@supports selector(:has(*)) {
+  .mtb-grille-chiens__carte:has(.mtb-grille-chiens__lien:focus-visible) {
+    outline: 2px solid var(--pin);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--calcaire);
+    border-radius: var(--r-1);
+  }
+
+  .mtb-grille-chiens__lien:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+}

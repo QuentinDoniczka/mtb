@@ -1,0 +1,138 @@
+/*!mtb-src:34001:eb8314f3de42c3e5*/
+
+
+.mtb-canal > .mtb-bandeau-ouverture {
+  grid-column: pleine-debut / pleine-fin;
+}
+
+
+.mtb-bandeau-ouverture {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  margin-block: 0 var(--e-9);
+
+  background-color: var(--pin);
+
+  padding-block-end: var(--filet-double-h);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% var(--filet-double-h);
+
+  overflow: hidden;
+  overflow: clip;
+}
+
+.mtb-bandeau-ouverture > * {
+  grid-area: 1 / 1;
+  min-inline-size: 0;
+}
+
+
+.mtb-bandeau-ouverture__photo {
+  align-self: start;
+
+  inline-size: 100%;
+
+  aspect-ratio: var(--r-bandeau);
+  max-block-size: 32rem;
+
+  background-color: var(--calcaire-creux);
+
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+
+  position: relative;
+}
+
+.mtb-bandeau-ouverture__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-bandeau-ouverture__image {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+
+.mtb-bandeau-ouverture__texte {
+  align-self: end;
+  position: relative;
+
+  padding-inline: var(--marge-page);
+  padding-block-end: var(--e-6);
+
+  background-image: var(--voile-photo);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 300%;
+}
+
+.mtb-bandeau-ouverture__texte::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: 200%;
+  background-image: var(--voile-photo);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% 150%;
+  pointer-events: none;
+}
+
+
+.mtb-bandeau-ouverture__titre {
+  margin: 0;
+  padding: 0;
+
+  background: none;
+
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--t-3xl);
+  line-height: 1.02;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  color: var(--calcaire);
+  max-inline-size: 18ch;
+}
+
+.mtb-bandeau-ouverture__titre + .mtb-bandeau-ouverture__accroche {
+  margin-block-start: var(--e-4);
+}
+
+
+.mtb-bandeau-ouverture__accroche {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-md);
+  line-height: 1.45;
+  color: var(--calcaire);
+  max-inline-size: 24ch;
+  overflow-wrap: break-word;
+}
+
+
+.mtb-bandeau-ouverture--sans-photo .mtb-bandeau-ouverture__texte {
+  background-image: none;
+  padding-block: var(--e-8);
+}
+
+.mtb-bandeau-ouverture--sans-photo .mtb-bandeau-ouverture__texte::before {
+  content: none;
+}

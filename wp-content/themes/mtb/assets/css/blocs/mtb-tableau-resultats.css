@@ -2,9 +2,9 @@
  * MTB — Tableau de résultats · bloc `mtb/tableau-resultats` (mtb-core).
  * Raisonnement complet : docs/contracts/issue-15.md.
  *
- * FEUILLE INCORPORÉE : sous 20 000 o le cœur l'écrit EN LIGNE dans le HTML (`path`
- * passé à `wp_enqueue_block_style()`, functions.php). Tout octet ajouté ici,
- * commentaire compris, est facturé sur CHAQUE page portant le bloc.
+ * FEUILLE INCORPORÉE : sous 40 000 o (depuis WordPress 6.9) le cœur l'écrit EN LIGNE
+ * dans le HTML (`path` passé à `wp_enqueue_block_style()`, functions.php). Tout octet
+ * ajouté ici, commentaire compris, est facturé sur CHAQUE page portant le bloc.
  *
  * CE QU'ELLE HABILLE : la place du composant dans la grille (MASTER §7.1), rien
  * d'autre. Seul crochet visé : `.mtb-tableau-resultats`, racine émise par

@@ -1,0 +1,162 @@
+/*!mtb-src:19006:db384ba154e0e02c*/
+
+.mtb-canal > .mtb-liste-portees {
+  grid-column: large-debut / large-fin;
+  inline-size: 100%;
+  max-inline-size: var(--l-large);
+  margin-inline: auto;
+}
+
+
+.mtb-liste-portees__liste {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.mtb-liste-portees__entree {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-3);
+  padding-block: var(--e-4);
+}
+
+.mtb-liste-portees__entree + .mtb-liste-portees__entree {
+  border-block-start: var(--bord-fin);
+}
+
+.mtb-liste-portees__corps {
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+
+
+.mtb-liste-portees__vignette {
+  flex: 0 1 auto;
+  inline-size: 9rem;
+  max-inline-size: 100%;
+  aspect-ratio: var(--r-carre);
+  border-radius: var(--r-0);
+}
+
+.mtb-photo {
+  position: relative;
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+.mtb-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-photo.mtb-photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+}
+
+
+.mtb-liste-portees__lien,
+.mtb-liste-portees__nom {
+  display: block;
+  min-block-size: 44px;
+  padding-block: var(--e-2);
+  overflow-wrap: break-word;
+}
+
+
+.mtb-liste-portees__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-2) var(--e-3);
+  margin-block-end: 0;
+  overflow-wrap: break-word;
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  color: var(--texte-doux);
+}
+
+.mtb-liste-portees__etiquette {
+  font-weight: 600;
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+}
+
+
+.mtb-dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  padding-inline: var(--e-2);
+  padding-block: var(--e-1);
+  border-radius: var(--r-1);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  white-space: normal;
+}
+
+.mtb-dispo::before {
+  content: "";
+  flex: none;
+  inline-size: .6em;
+  block-size: .6em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.mtb-dispo--disponible {
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+.mtb-dispo--disponible::before {
+  background-color: currentColor;
+}
+
+.mtb-dispo--reserve {
+  border: 1px solid var(--laiton);
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+}
+
+.mtb-dispo--reserve::before {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+}
+
+.mtb-dispo--passee {
+  border: var(--bord-actif);
+  background-color: var(--calcaire);
+  color: var(--texte-doux);
+}
+
+
+.mtb-liste-portees__sortie {
+  margin-block-start: var(--e-4);
+}
+
+.mtb-liste-portees__lien-index {
+  display: inline-block;
+  min-block-size: 44px;
+  padding-block: var(--e-2);
+}
+
+.mtb-liste-portees__vide {
+  border-radius: var(--r-0);
+  padding: var(--e-6);
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+}

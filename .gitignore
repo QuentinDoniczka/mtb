@@ -20,3 +20,11 @@ vendor/
 # Bruit éditeur / OS
 .DS_Store
 Thumbs.db
+
+# Feuilles de style minifiées (#40) — NE RIEN AJOUTER ICI.
+# Les artefacts `wp-content/themes/mtb/assets/css/**/*.min.css` sont VERSIONNÉS : la production
+# est un hébergement mutualisé, sans étape de construction, et une feuille absente y serait
+# servie non minifiée. Aucune règle ci-dessus ne les exclut, et ce bloc n'en ajoute aucune : un
+# `.gitignore` ne sait pas « dé-ignorer » ce qui n'est pas ignoré, une ligne de négation ne
+# serait qu'un faux-semblant. Ce commentaire est là pour arrêter la main qui écrirait
+# `*.min.css` par réflexe.

@@ -1,0 +1,7 @@
+/*!mtb-src:2022:ec981d883491b24d*/
+.mtb-canal > .mtb-tableau-resultats {
+  grid-column: large-debut / large-fin;
+  inline-size: 100%;
+  max-inline-size: var(--l-large);
+  margin-inline: auto;
+}

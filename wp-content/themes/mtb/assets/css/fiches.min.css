@@ -1,0 +1,344 @@
+/*!mtb-src:31357:1e1c7cf4cd732001*/
+
+
+.mtb-fiche .mtb-canal > * + * {
+  margin-block-start: var(--rythme-section);
+}
+
+.mtb-fiche .mtb-canal > * > h2:first-child {
+  margin-block-start: 0;
+}
+
+
+.mtb-dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-2) var(--e-3);
+  border-radius: var(--r-1);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.mtb-dispo::before {
+  content: "";
+  flex: none;
+  inline-size: .6em;
+  block-size: .6em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.mtb-dispo--disponible {
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+.mtb-dispo--disponible::before {
+  background-color: currentColor;
+}
+
+.mtb-dispo--reserve {
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+  border: 1px solid var(--laiton);
+}
+
+.mtb-dispo--reserve::before {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+}
+
+.mtb-dispo--passee {
+  background-color: var(--calcaire);
+  color: var(--texte-doux);
+  border: var(--bord-actif);
+}
+
+.mtb-photo {
+  position: relative;
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+.mtb-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-photo.mtb-photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+}
+
+.mtb-etat-doux {
+  color: var(--texte-doux);
+}
+
+.mtb-lien-externe::after {
+  content: "";
+  display: inline-block;
+  flex: none;
+  inline-size: 7px;
+  block-size: 7px;
+  margin-inline-start: var(--e-2);
+  border-block-start: 1px solid var(--laiton);
+  border-inline-end: 1px solid var(--laiton);
+  transform: rotate(45deg);
+  vertical-align: baseline;
+}
+
+.mtb-fiche-portee__etiquette,
+.mtb-carte-portee__etiquette,
+.mtb-carte-parent__role,
+.mtb-fiche-chien__champs > dt,
+.mtb-carte-parent__sante > dt {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+}
+
+.mtb-fiche__valeur,
+.mtb-fiche-portee__date-valeur,
+.mtb-carte-parent__sante > dd {
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: break-word;
+}
+
+
+.mtb-fiche-portee__date,
+.mtb-carte-portee__date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-2);
+}
+
+.mtb-fiche-portee__dispo,
+.mtb-carte-portee__dispo {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+.mtb-cartes-parents {
+  display: grid;
+  gap: var(--e-6);
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+@media screen and (min-width: 64rem) {
+  .mtb-cartes-parents {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mtb-carte-parent,
+.mtb-carte-portee {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blanc);
+  padding: var(--e-5);
+}
+
+.mtb-carte-parent__nom,
+.mtb-carte-portee__titre {
+  margin-block: var(--e-2) var(--e-3);
+  overflow-wrap: break-word;
+}
+
+.mtb-carte-parent__role,
+.mtb-carte-portee__role {
+  margin-block-end: 0;
+}
+
+.mtb-carte-parent__elevage {
+  margin-block-end: var(--e-4);
+}
+
+.mtb-carte-parent__sante {
+  margin-block-end: var(--e-4);
+}
+
+.mtb-carte-parent__sante > dd {
+  margin-inline-start: 0;
+  margin-block-end: var(--e-3);
+}
+
+.mtb-carte-parent__acces {
+  margin-block: auto 0;
+}
+
+.mtb-carte-parent__lien,
+.mtb-carte-portee__lien,
+.mtb-fiche-portee__voisine {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+}
+
+
+.mtb-fiche-portee__commentaire.mtb-fiche-portee__commentaire > :last-child {
+  margin-block-end: 0;
+}
+
+.mtb-fiche-portee__voisines {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-4);
+}
+
+.mtb-fiche-portee__voisine--precedente {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.mtb-fiche-portee__voisine--suivante {
+  grid-column: 2;
+  justify-self: end;
+}
+
+
+.mtb-fiche-chien__nom-complet {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: var(--t-md);
+  line-height: 1.3;
+  color: var(--pin);
+  overflow-wrap: break-word;
+}
+
+@media screen and (max-width: 63.999rem) {
+  .mtb-fiche .mtb-fiche-chien__presentation {
+    max-inline-size: var(--l-texte);
+  }
+}
+
+@media screen and (min-width: 64rem) {
+  .mtb-fiche-chien__presentation {
+    display: grid;
+    grid-template-columns: minmax(16rem, 22rem) 1fr;
+    gap: var(--e-7);
+    align-items: start;
+  }
+}
+
+.mtb-fiche-chien__portrait {
+  aspect-ratio: var(--r-portrait);
+  margin-block-end: var(--e-5);
+}
+
+.mtb-fiche-chien__portrait[data-cadrage="haut_gauche"] { --point-interet: left top; }
+.mtb-fiche-chien__portrait[data-cadrage="haut"]        { --point-interet: center top; }
+.mtb-fiche-chien__portrait[data-cadrage="haut_droite"] { --point-interet: right top; }
+.mtb-fiche-chien__portrait[data-cadrage="bas"]         { --point-interet: center bottom; }
+
+.mtb-fiche-chien__portrait--vide {
+  display: grid;
+  place-items: center;
+  padding-inline: var(--e-4);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% var(--filet-double-h);
+}
+
+.mtb-fiche-chien__portrait-nom {
+  margin-block: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-md);
+  line-height: 1.3;
+  color: var(--texte-doux);
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.mtb-fiche-chien__champs > dd {
+  margin-inline-start: 0;
+  padding-block-end: var(--e-3);
+  border-block-end: var(--bord-fin);
+}
+
+.mtb-fiche-chien__champs > dt {
+  padding-block-start: var(--e-3);
+}
+
+.mtb-fiche-chien__champs > dd:last-child {
+  border-block-end: 0;
+  padding-block-end: 0;
+}
+
+.mtb-fiche-chien__parent-elevage {
+  display: block;
+  margin-block-start: var(--e-3);
+}
+
+.mtb-fiche-chien__autres-tests,
+.mtb-fiche-chien__autres-titres {
+  margin-block-start: var(--e-4);
+}
+
+.mtb-cartes-portees {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: var(--e-6);
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.mtb-carte-portee.mtb-carte-portee > :last-child {
+  margin-block-end: 0;
+}
+
+.mtb-fiche-chien__pedigree > .mtb-lien-externe {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+.mtb-encart-protege {
+  background-color: var(--calcaire-creux);
+  background-image: var(--filet-double-v);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: var(--filet-double-h) 100%;
+  padding: var(--e-6);
+  padding-inline-start: calc(var(--e-6) + var(--filet-double-h));
+}
+
+.mtb-encart-protege__etiquette {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+  margin-block-end: var(--e-2);
+}
+
+.mtb-encart-protege__phrase {
+  margin-block-end: var(--e-5);
+}
+
+.mtb-encart-protege.mtb-encart-protege > :last-child,
+.mtb-encart-protege.mtb-encart-protege .post-password-form > :last-child {
+  margin-block-end: 0;
+}

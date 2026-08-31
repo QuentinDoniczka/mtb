@@ -67,6 +67,8 @@ Identifiants de développement définis dans `.env.example` (à copier dans `.en
 | `make debug-log-reset` | Vide ce journal, avant une mesure « aucune notice » |
 | `make db-sql cmd="…"` | Accès direct à la base via le client du service `db` (outil, pas un repli — voir « Accès à la base et TLS ») |
 | `make db-check` | Recette d'acceptation de #30 : rejoue `wp db query`, `wp db check` et `wp db export`, dit lequel échoue |
+| `make css` | Régénère les 14 feuilles minifiées du thème — voir « Feuilles de style minifiées » |
+| `make css-check` | Vérifie les 14 paires source/artefact sans rien écrire ; sort 1 dès qu'une paire n'est pas à jour |
 
 ## Accès à la base et TLS (#30)
 
@@ -282,6 +284,65 @@ l'expéditeur réel du formulaire de contact reste à définir avec l'issue `con
 Les fichiers téléversés vivent dans le volume nommé `mtb_wp_data` (sous
 `wp-content/uploads/` à l'intérieur), jamais dans l'image ni dans le dépôt. `make export-uploads` les
 copie vers `./export-uploads/` pour transfert vers l'hébergement de production.
+
+## Feuilles de style minifiées (#40)
+
+Les feuilles du thème sont livrées en double : la source `assets/css/<nom>.css`, seule éditée, et
+son artefact `assets/css/<nom>.min.css`, **écrit par un outil et versionné**. La production est un
+hébergement mutualisé sans étape de construction : l'artefact doit donc être dans le dépôt, à côté
+de sa source, **dans le même dossier obligatoirement** — `base.css` porte des `url("../fonts/…")`
+relatifs à l'emplacement de la feuille.
+
+La transformation retire **les commentaires, et rien d'autre** : chaque commentaire devient
+exactement une espace, les espaces de fin de ligne sont rognés, les lignes ainsi vidées
+disparaissent — les lignes vides préexistantes, elles, sont conservées. Aucun autre octet ne
+bouge : aucune indentation rognée, aucune suite d'espaces écrasée, aucun point-virgule retiré,
+aucune couleur réécrite.
+
+| Commande | Effet |
+|----------|-------|
+| `make css` | Régénère les 14 artefacts. Une ligne par feuille, plus un total. Sortie 0, sauf refus. |
+| `make css-check` | N'écrit rien. Rend `à jour`, `PÉRIMÉ`, `ABSENT`, `ORPHELIN` ou `INVALIDE` par paire, et **sort 1 dès qu'une seule paire n'est pas à jour**. |
+
+### Obligation de processus
+
+> **Toute modification d'une feuille sous `wp-content/themes/mtb/assets/css/` s'accompagne d'un
+> `make css` dans le même commit.**
+
+Sans lui, l'artefact ne décrit plus sa source, le thème sert la source, et la page reste **correcte
+mais plus lourde**. Rien ne casse, rien ne s'affiche à l'éleveuse, rien n'est écrit dans
+`debug.log` : c'est `make css-check` qui le dit, et lui seul.
+
+### Comment le thème choisit ce qu'il sert
+
+Chaque artefact porte en tête un marqueur `/*!mtb-src:<longueur>:<empreinte>*/`. À chaque requête,
+`mtb_feuille_a_servir()` (`wp-content/themes/mtb/functions.php`) recalcule la longueur et
+l'empreinte de la **forme canonique** de la source — ses octets avec les fins de ligne ramenées au
+saut de ligne seul — et ne sert l'artefact que si les deux concordent. Dans **tous** les autres cas
+la source est servie, sans erreur ni notice.
+
+Ni `filemtime()` ni la taille du fichier n'entrent dans ce test, et c'est délibéré. Git
+n'enregistre aucune date de modification et écrit dans l'ordre lexicographique de son index, où
+`base.css` précède `base.min.css` : à un `clone`, un test sur les dates tranche **toujours** pour
+l'artefact, même périmé. Et le dépôt tournant en `core.autocrlf=true`, une même feuille pèse 45 914
+octets dans Git et 46 927 sur un disque Windows : une empreinte sur octets bruts serait rejetée
+partout en production. D'où la forme canonique.
+
+`ver` vaut l'empreinte, artefact servi comme source servie : une mise en ligne qui ne touche pas
+une feuille laisse le cache du visiteur intact.
+
+### Deux réserves à connaître
+
+- **Appartenance des fichiers sur hôte Linux.** `docker compose run` entre dans le conteneur en
+  `root` ; les artefacts régénérés appartiendront donc à `root`. Même famille que le `chown` de
+  `make debug-log-reset` (voir le `Makefile`). Sans objet sur Docker Desktop.
+- **`docker/provision/provision.sh` ne peut pas appeler le vérificateur** : le conteneur `wpcli`
+  ne monte pas `docker/outils/`, et le lui ajouter demanderait `compose.yaml`. Limitation écrite,
+  non contournée — `make css-check` reste une commande à jouer à la main, ou depuis la liste de
+  `test-integration-mtb`.
+
+`assets/css/editor.css` n'a **pas** d'artefact : elle n'atteint jamais un visiteur, et
+`assets/css/editor.min.css` ne doit pas exister — son absence est vérifiée par `make css-check`.
 
 ## État du thème et de l'extension
 

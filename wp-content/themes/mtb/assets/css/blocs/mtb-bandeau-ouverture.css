@@ -150,13 +150,13 @@
  *     fournit `path`, donc le cœur PEUT écrire cette feuille EN LIGNE dans le
  *     HTML — poignée `…-inline-css`, constaté sur une version plus courte de ce
  *     fichier. Il ne le fait que tant que le total des feuilles à `path` reste
- *     sous `styles_inline_size_limit` (20 000 octets par défaut) ; au-delà elle
- *     repart en `link`. La règle vaut donc QUELLE QUE SOIT la taille du
- *     fichier, puisque celle-ci décide seule du mode de livraison : dès que la
- *     feuille est en ligne, un chevron de commentaire se retrouve dans le
- *     document, et la recette du contrat §17 — « compter les occurrences de h1
- *     ouvrant dans la page, attendu 1 » — rapporte alors 5 sur une page
- *     parfaitement conforme. Les neuf sœurs héritent de la règle.
+ *     sous `styles_inline_size_limit` (40 000 octets par défaut depuis
+ *     WordPress 6.9) ; au-delà elle repart en `link`. La règle vaut donc QUELLE
+ *     QUE SOIT la taille du fichier, puisque celle-ci décide seule du mode de
+ *     livraison : dès que la feuille est en ligne, un chevron de commentaire se
+ *     retrouve dans le document, et la recette du contrat §17 — « compter les
+ *     occurrences de h1 ouvrant dans la page, attendu 1 » — rapporte alors 5
+ *     sur une page parfaitement conforme. Les neuf sœurs héritent de la règle.
  *   · AUCUNE règle de lien. `--laiton-clair` sur le composé du voile mesure
  *     4,09:1 — ÉCHEC AA pour du texte normal — et MASTER ne définit aucune
  *     encre de lien pour un fond « voile sur photo ». Le contrat interdit donc

@@ -1,0 +1,140 @@
+/*!mtb-src:10087:f567034274b87e57*/
+
+.mtb-derniere-portee--disponible {
+  margin-block-start: var(--e-7);
+  background-image: var(--filet-double);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% var(--filet-double-h);
+  padding-block-start: calc(var(--e-4) + var(--filet-double-h));
+}
+
+.mtb-derniere-portee .mtb-derniere-portee__accroche {
+  background-image: none;
+  padding-block-end: 0;
+  margin-block: 0 var(--e-4);
+}
+
+.mtb-derniere-portee .mtb-derniere-portee__titre {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: var(--t-md);
+  line-height: 1.3;
+  overflow-wrap: break-word;
+}
+
+.mtb-derniere-portee .mtb-derniere-portee__identite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-4);
+}
+
+.mtb-derniere-portee .mtb-derniere-portee__date {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-2);
+}
+
+.mtb-derniere-portee .mtb-derniere-portee__etiquette {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--laiton-texte);
+}
+
+
+.mtb-dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-2) var(--e-3);
+  border-radius: var(--r-1);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.mtb-derniere-portee .mtb-dispo {
+  white-space: nowrap;
+}
+
+.mtb-dispo::before {
+  content: "";
+  flex: none;
+  inline-size: .6em;
+  block-size: .6em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.mtb-dispo--disponible {
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+.mtb-dispo--disponible::before {
+  background-color: currentColor;
+}
+
+.mtb-dispo--reserve {
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+  border: 1px solid var(--laiton);
+}
+
+.mtb-dispo--reserve::before {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+}
+
+.mtb-dispo--passee {
+  background-color: var(--calcaire);
+  color: var(--texte-doux);
+  border: var(--bord-actif);
+}
+
+.mtb-photo {
+  position: relative;
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+.mtb-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-photo.mtb-photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
+}
+
+.mtb-derniere-portee .mtb-derniere-portee__photo {
+  aspect-ratio: var(--r-paysage);
+  max-inline-size: calc(var(--photo-largeur-naturelle, 100%) * 1.5);
+  margin-inline: auto;
+  margin-block-end: var(--e-4);
+}
+
+.mtb-derniere-portee .mtb-derniere-portee__lien {
+  display: inline-flex;
+  padding-block: var(--e-2);
+}
+
+.mtb-derniere-portee > :last-child {
+  margin-block-end: 0;
+}

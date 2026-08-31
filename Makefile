@@ -1,4 +1,4 @@
-.PHONY: up provision seed reset down logs ps wp shell export-uploads debug-log debug-log-reset db-sql db-check
+.PHONY: up provision seed reset down logs ps wp shell export-uploads debug-log debug-log-reset db-sql db-check css css-check
 
 # Démarrage complet depuis zéro : build, lancement, provisionnement automatique par le
 # conteneur wpcli (idempotent — voir docker/provision/provision.sh).
@@ -96,3 +96,27 @@ db-check:
 	[ "$$r2" -eq 0 ] && echo "OK    : wp db check"  || echo "ECHEC : wp db check"; \
 	[ "$$r3" -eq 0 ] && echo "OK    : wp db export" || echo "ECHEC : wp db export"; \
 	if [ "$$r1" -eq 0 ] && [ "$$r2" -eq 0 ] && [ "$$r3" -eq 0 ]; then exit 0; else exit 1; fi
+
+# Feuilles de style minifiées (#40) — régénération des artefacts "*.min.css".
+#
+# TOUTE modification d'une feuille sous "wp-content/themes/mtb/assets/css/" s'accompagne d'un
+# "make css" DANS LE MÊME COMMIT. Sans lui, l'artefact ne décrit plus sa source : le thème
+# rebascule sur la source, la page reste correcte mais plus lourde, et "make css-check" le dit.
+#
+# "docker/outils/" n'est monté par aucun service (compose.yaml ne monte que le thème et
+# l'extension) : le dépôt entier est donc monté à la volée sur "/depot", une seule racine, aucune
+# ambiguïté sur la copie écrite. "--no-deps" parce que l'outil n'ouvre aucune base, et
+# "--entrypoint php" pour court-circuiter docker-entrypoint.sh.
+#
+# MSYS_NO_PATHCONV=1 : sous Git Bash, la couche MSYS réécrit tout argument qui ressemble à un
+# chemin absolu et transformerait "/depot/..." en un chemin Windows. Variable ignorée ailleurs.
+#
+# Sur un hôte Linux, "docker compose run" entre en root et les artefacts appartiendront à root —
+# même famille que le "chown" de "debug-log-reset" ci-dessus. Sans objet sur Docker Desktop.
+css:
+	MSYS_NO_PATHCONV=1 docker compose run --rm --no-deps --entrypoint php -v "$$(pwd):/depot:rw" wordpress /depot/docker/outils/mtb-minifier-css.php --racine=/depot/wp-content/themes/mtb/assets/css
+
+# Vérifie les 14 paires source/artefact sans rien écrire, et sort 1 dès qu'une seule paire n'est
+# pas à jour. À jouer avant tout commit qui touche une feuille de style.
+css-check:
+	MSYS_NO_PATHCONV=1 docker compose run --rm --no-deps --entrypoint php -v "$$(pwd):/depot:rw" wordpress /depot/docker/outils/mtb-minifier-css.php --racine=/depot/wp-content/themes/mtb/assets/css --verifier

@@ -2,11 +2,11 @@
  * MTB — Formulaire de contact · bloc `mtb/formulaire-contact` (mtb-core).
  * Raisonnement complet : docs/contracts/issue-22.md. « § » = design-system/MASTER.md.
  *
- * FEUILLE INCORPORÉE : sous 20 000 o le cœur l'écrit EN LIGNE dans le HTML (`path` passé
- * à `wp_enqueue_block_style()`). Tout octet ajouté ici, COMMENTAIRE COMPRIS, est facturé
- * sur chaque page portant le bloc. Le nom du fichier est contractuel :
- * `mtb_feuilles_de_blocs` (functions.php) le dérive du nom du bloc et `continue` EN
- * SILENCE s'il manque — une lettre d'écart donne un formulaire nu, sans journal.
+ * FEUILLE INCORPORÉE : sous 40 000 o (depuis WordPress 6.9) le cœur l'écrit EN LIGNE dans
+ * le HTML (`path` passé à `wp_enqueue_block_style()`). Tout octet ajouté ici, COMMENTAIRE
+ * COMPRIS, est facturé sur chaque page portant le bloc. Le nom du fichier est contractuel :
+ * `mtb_feuilles_de_blocs` (functions.php) le dérive du nom du bloc et `continue` EN SILENCE
+ * s'il manque — une lettre d'écart donne un formulaire nu, sans journal.
  *
  * CE QU'ELLE NE REDÉCLARE JAMAIS — base.css le sert à tout le site (se repérer AU
  * SÉLECTEUR, les numéros de ligne dérivent) : `input[type=…], select, textarea` (48 px,

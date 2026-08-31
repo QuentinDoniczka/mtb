@@ -1,0 +1,22 @@
+/*!mtb-src:2694:ea207970c7cab6f8*/
+
+.mtb-bandeau-alerte {
+  margin-block: var(--e-7);
+
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+
+  background-image: var(--filet-double-v);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: var(--filet-double-h) 100%;
+
+  padding-block: var(--e-6);
+  padding-inline-end: var(--e-6);
+  padding-inline-start: calc(var(--e-6) + var(--filet-double-h));
+}
+
+.mtb-bandeau-alerte .mtb-bandeau-alerte__message {
+  margin-block-end: 0;
+  overflow-wrap: break-word;
+}

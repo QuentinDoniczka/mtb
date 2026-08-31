@@ -1,0 +1,103 @@
+/*!mtb-src:15384:def22c2081c3a871*/
+
+.mtb-formulaire-contact {
+  margin-block: max(var(--rythme-section), var(--e-7));
+}
+
+.mtb-formulaire-contact__formulaire {
+  display: grid;
+  gap: var(--e-5);
+}
+
+.mtb-formulaire-contact__champ {
+  display: grid;
+  gap: var(--e-2);
+}
+
+.mtb-formulaire-contact__etiquette {
+  font-weight: 600;
+}
+
+.mtb-formulaire-contact__obligatoire,
+.mtb-formulaire-contact__aide {
+  font-size: var(--t-sm);
+  color: var(--texte-doux);
+}
+
+.mtb-formulaire-contact__saisie {
+  inline-size: 100%;
+}
+
+.mtb-formulaire-contact__zone {
+  resize: vertical;
+}
+
+.mtb-formulaire-contact__erreur {
+  color: var(--oxyde);
+}
+
+.mtb-formulaire-contact .mtb-formulaire-contact__mention {
+  margin-block-end: 0;
+  font-size: var(--t-sm);
+  color: var(--texte-doux);
+}
+
+
+.mtb-formulaire-contact__piege {
+  display: none;
+}
+
+.mtb-formulaire-contact__resume,
+.mtb-formulaire-contact__information {
+  margin-block-end: var(--e-6);
+  background-color: var(--calcaire-creux);
+  padding: var(--e-6);
+}
+
+.mtb-formulaire-contact .mtb-formulaire-contact__resume-titre,
+.mtb-formulaire-contact .mtb-formulaire-contact__information-titre {
+  margin-block: 0 var(--e-4);
+  background-image: none;
+  padding-block-end: 0;
+}
+
+.mtb-formulaire-contact__resume li + li {
+  margin-block-start: var(--e-2);
+}
+
+.mtb-formulaire-contact__confirmation {
+  margin-block-end: var(--e-6);
+  background-color: var(--calcaire-creux);
+  background-image: var(--filet-double-v);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: var(--filet-double-h) 100%;
+  padding: var(--e-6);
+  padding-inline-start: calc(var(--e-6) + var(--filet-double-h));
+}
+
+.mtb-formulaire-contact .mtb-formulaire-contact__reprise {
+  margin-block-end: 0;
+}
+
+.mtb-formulaire-contact__resume a,
+.mtb-formulaire-contact__reprise a,
+.mtb-formulaire-contact__information-recours a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  max-inline-size: 100%;
+}
+
+.mtb-formulaire-contact__information-texte {
+  color: var(--oxyde);
+}
+
+.mtb-formulaire-contact__information-recours {
+  overflow-wrap: break-word;
+}
+
+.mtb-formulaire-contact__confirmation.mtb-formulaire-contact__confirmation > :last-child,
+.mtb-formulaire-contact__information.mtb-formulaire-contact__information > :last-child {
+  margin-block-end: 0;
+}
