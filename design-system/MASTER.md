@@ -1137,7 +1137,12 @@ lien de recours, donc.
 d'éditeur) et `liste-portees`. Le thème les imprime ; il ne les compose, ne les abrège et ne les
 réécrit jamais. Le `h1` de `wp-content/themes/mtb/templates/archive-mtb_portee.html`, « Les portées »,
 est un **titre de page** et non un libellé de lien : il relève du contrat gelé de l'issue #16 et
-**n'entre pas** dans ce tableau. Les libellés d'administration du type de contenu Portée
+**n'entre pas** dans ce tableau. Il n'entre pas davantage dans l'arbitrage rendu au lot 5 :
+`docs/contracts/issue-13.md:745` statue sur le **libellé du lien de sortie**, et sur lui seul ; un
+titre de page n'est pas un lien de sortie. Après cette révision, la page s'intitule donc « Les
+portées » pendant que le lien qui y mène dit « Toutes les portées » — **c'est délibéré, ce n'est pas
+une coquille** : les deux chaînes ne répondent pas à la même règle et aucune chaîne future n'a à les
+aligner. Les libellés d'administration du type de contenu Portée
 (`includes/content/portee/`) coïncident aujourd'hui avec « Toutes les portées » sans y être tenus :
 ce sont des entrées de menu du cœur.
 
@@ -1149,8 +1154,12 @@ cette juridiction** — son entrée au §16 écrit « §10.2 et §10.3 ne sont p
 chacun leur propre issue » ; la valeur « Les portées » qu'elle laissait au §9.5 n'était donc pas un
 arbitrage récent, mais une valeur **recopiée en avant** par une révision qui s'était dite
 incompétente, et la règle « le plus récent gagne » ne s'y applique pas. *Trois*, le contrat gelé
-`docs/contracts/issue-13.md` avait tranché dans ce sens dès le **lot 5** (arbitrage 7), ouvert la
-dette **M3** et **interdit au thème de réécrire ce libellé**. S'y ajoute la règle de partage écrite au
+`docs/contracts/issue-13.md` avait tranché dans ce sens dès le **lot 5** — arbitrage 7,
+`docs/contracts/issue-13.md:745` —, ouvert la dette **M3** et **interdit au thème de réécrire ce
+libellé** à `docs/contracts/issue-13.md:766`. Ces deux ancres de ligne dérogent **à dessein** à la
+règle « le document nomme les fichiers, jamais les lignes », parce qu'elles pointent un contrat
+**gelé** : un contrat gelé ne bouge plus, donc elles ne dériveront pas. Les remplacer par le seul
+nom du fichier ferait perdre la vérifiabilité sans rien protéger. S'y ajoute la règle de partage écrite au
 §9.5 : **le §9.5 dit quels liens paraissent et dans quel ordre, le §10.3 dit comment ils s'appellent**
 — lus ainsi, les deux sections ne se contredisent plus, et une divergence future se tranche ici.
 Cette note existe pour la raison qui a fermé la dette **T56** au lot 13 : une énumération nue dont

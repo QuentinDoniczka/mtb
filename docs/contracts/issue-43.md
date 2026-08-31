@@ -195,9 +195,12 @@ débordement n'est attendu à 360 px — mais **aucun rendu n'a été fait**, à
 
 ## Dettes ouvertes par cette issue — à inscrire par `/lead-mtb`
 
-Le registre de `docs/ETAT.md` monte à **T79**. Les numéros ci-dessous sont donc **T80 à T83**.
+**Elles sont volontairement sans numéro.** Le registre de `docs/ETAT.md` monte à **T79**, mais une
+autre chaîne du même lot remonte aussi des dettes mesurées : deux chaînes qui numérotent en parallèle
+sans se voir produisent la collision que ce lot est censé éviter. **`/lead-mtb` attribue les numéros à
+la clôture**, avec les trois rapports sous les yeux.
 
-**T80 — Deux textes du module `lien-de-recours` n'énumèrent que deux des trois écrans qu'il sert.**
+**Deux textes du module `lien-de-recours` n'énumèrent que deux des trois écrans qu'il sert.**
 `block.json` décrit « les pages "introuvable" et "résultats de recherche" », et `bootstrap.php` écrit
 « posé une fois pour toutes dans "404.html" et "search.html" ». Depuis #41 (lot 11), le bloc est aussi
 posé sur l'**état vide de `index.html`** — vérifié, il est dans les **trois** gabarits.
@@ -207,7 +210,7 @@ n'ouvre pas l'éditeur de site — seul un développeur lit ces textes. **Non co
 `block.json` est cité par le contrat gelé `issue-17.md` pour sa ligne 18, et #43 s'est interdit d'en
 déplacer une ligne. *Relevée au lot 14, imputable à #41.*
 
-**T81 — `MTB_CORE_VERSION` est figé à `0.1.0` et rien ne l'incrémente.** `mtb-core.php` définit la
+**`MTB_CORE_VERSION` est figé à `0.1.0` et rien ne l'incrémente.** `mtb-core.php` définit la
 constante ; tous les `wp_register_script()` de l'extension la passent en version. L'URL servie reste
 `?ver=0.1.0` d'une livraison à l'autre : un navigateur ayant déjà chargé un `editeur.js` peut afficher
 un **aperçu périmé**. **Constaté à #43**, qui modifie `lien-de-recours/editeur.js` sans changer l'URL
@@ -219,13 +222,7 @@ du catalogue. Remède à arbitrer : incrémenter la constante à chaque livraiso
 dériver la version d'un `filemtime()` — la seconde supprime la discipline humaine mais ajoute un accès
 disque par actif et par écran d'administration. *Relevée au lot 14.*
 
-**T82 — L'en-tête de `MASTER.md` renvoie au mauvais numéro de section pour son propre journal.** La
-puce « Historique » écrit qu'une révision « ajoute une entrée datée au **§15** » ; le journal des
-révisions est le **§16**, le §15 portant les questions remontées. **Non corrigé par #43** : le défaut
-n'est pas causé par ce commit, et la règle du lot est de rapporter les divergences préexistantes plutôt
-que de les corriger. Un caractère. *Relevée au lot 14.*
-
-**T83 — Des contrats gelés enregistrent « Les portées » comme libellé du lien de recours.**
+**Des contrats gelés enregistrent « Les portées » comme libellé du lien de recours.**
 `docs/contracts/issue-16.md` (tableau `cible → libellé`, et sa liste des chaînes françaises) et
 `docs/contracts/issue-18.md` (« Les trois liens du §9.5 sont Accueil, Les portées, La meute »). **Non
 modifiés — ce sont des contrats gelés**, et le précédent du dépôt est explicite (T59, T60 : « contrat
@@ -235,14 +232,44 @@ d'être vu** : `issue-16.md` justifie le `h1` de l'archive par « aligné sur le
 Une chaîne future qui relira cette justification pourrait en conclure qu'il faut aligner le `h1` : c'est
 exactement contre cela que l'interdit 3 ci-dessus et la note du §10.3 sont écrits. *Relevée au lot 14.*
 
-**Dette voisine, ni payée ni aggravée** : **T75** (`issue-16.md` décrit le rendu de
-`mtb/lien-de-recours` comme s'il n'en existait qu'une forme) et **T79** (`MASTER.md` §9.1 écrit « les
-**dix** composants du catalogue », décompte périmé d'une unité) — hors empreinte, non touchées.
+### Dettes déjà au registre, croisées et **délibérément non payées**
+
+**T62 — les deux renvois internes faux de `MASTER.md`.** L'un des deux est dans l'en-tête, donc
+techniquement dans l'empreinte de #43 : la puce « Historique » dit qu'une révision s'inscrit au
+« **§15** » quand le journal est le **§16**. **Non corrigé**, pour deux raisons dont la seconde est la
+plus forte : le défaut n'est pas causé par ce commit ; et **T62 a deux moitiés** — l'autre est le renvoi
+du §7.6 à un « §9.6 » inexistant, hors empreinte. Le lot 13 les a laissées **toutes les deux** intactes
+délibérément. En payer une seule au passage laisserait au registre une dette dont la moitié est réglée
+sans que rien ne le dise : **un registre qui ment coûte plus cher qu'un caractère faux dans un
+pointeur.** T62 reste entière.
+
+**T79 — le décompte « dix composants du catalogue », périmé d'une unité (ils sont onze).** Elle aussi a
+deux moitiés, et **l'une d'elles est dans l'empreinte de #43** : `blocks/lien-de-recours/bootstrap.php`
+écrit « les **dix** autres modules de ce dossier ». **Non corrigée**, même raisonnement que pour T62.
+**Point à router** : le registre désigne comme réparateur « la prochaine passe `lead-design-mtb` sur
+`MASTER.md`, avec T62 » — cette passe vient d'avoir lieu (révision 1.4) et a décliné, l'empreinte de
+#43 ne la couvrant pas. Le renvoi de T79 pointe donc désormais vers un rendez-vous manqué.
+
+**T75** (`issue-16.md` décrit le rendu de `mtb/lien-de-recours` comme s'il n'en existait qu'une forme) —
+hors empreinte, non touchée, non aggravée.
 
 ## Observation, à ne pas transformer en dette sans arbitrage
 
-La règle de rédaction retenue ici — **le document nomme les fichiers, le code nomme la section, ni l'un
-ni l'autre ne nomme un numéro de ligne** — est respectée par tout ce que #43 ajoute. Mais `MASTER.md`
-**cite déjà** des numéros de ligne de feuilles de style ailleurs (§7.7 et §9.5). La règle **ne
-rétroagit pas** et #43 n'a rien corrigé de tel. Si le projet veut la rendre générale, c'est une
-décision de `/lead-mtb`, pas un effet de bord de cette issue.
+La règle de rédaction retenue ici est : **le document nomme les fichiers, le code nomme la section, ni
+l'un ni l'autre ne nomme un numéro de ligne** — parce que les numéros dérivent. Tout ce que #43 écrit
+dans le code la respecte.
+
+**Elle souffre exactement deux dérogations, toutes deux dans la note du §10.3, et elles sont
+motivées** : `docs/contracts/issue-13.md:745` et `:766`. Ces ancres pointent un contrat **gelé**, qui
+par définition ne bouge plus — le dépôt tient d'ailleurs pour acquis que **les numéros de ligne cités
+dans un contrat gelé sont un contrat**, à la différence de ceux du cœur WordPress. Les remplacer par le
+seul nom du fichier ferait perdre la vérifiabilité sans rien protéger, et la note le dit sur place pour
+qu'aucune passe future ne les « corrige ».
+
+**Ce que la règle n'est pas** : générale. `MASTER.md` cite déjà des numéros de ligne de feuilles de
+style à **sept** endroits au moins, tous antérieurs à #43 — §7.7 (`entete-pied.css:216` et sa reprise
+`l. 227`, `mtb-coordonnees-plan.css:75`, `base.css:323`, deux lignes du tableau de mesures) et §9.5
+(`base.css:954-962`). Mesuré, pas supposé. Ceux-là visent du **code**, qui bouge, et sont donc de
+vraies péremptions en puissance. **#43 n'en a corrigé aucun** : la règle ne rétroagit pas, et
+l'étendre au document entier est une décision de `/lead-mtb`, pas un effet de bord de cette issue.
+Consigné comme observation, **pas comme dette** — l'ouvrir en dette préjugerait de cet arbitrage.
