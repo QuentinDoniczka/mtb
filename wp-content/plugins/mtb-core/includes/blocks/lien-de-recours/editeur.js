@@ -20,10 +20,13 @@
 	var el = wp.element.createElement;
 	var useBlockProps = wp.blockEditor.useBlockProps;
 
-	// Mêmes libellés qu'en PHP, écrits en toutes lettres des deux côtés : le serveur reste l'autorité.
+	// Recopie des libellés de « rendu.php ». L'autorité n'est pourtant ni ce fichier ni le PHP :
+	// ce sont MASTER.md §10.3 (« Toutes les portées », « La meute ») et §9.5 (« Accueil »). Une passe
+	// qui les resynchronise part de là — jamais du titre de l'archive des portées, jamais des
+	// libellés du menu d'administration, qui leur ressemblent sans être régis par §10.3.
 	var LIBELLES = {
 		accueil: 'Accueil',
-		portees: 'Les portées',
+		portees: 'Toutes les portées',
 		meute: 'La meute'
 	};
 

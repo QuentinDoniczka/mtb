@@ -6,8 +6,8 @@ Source de vérité visuelle du projet. `dev-ux-mtb` implémente **à la lettre**
 `review-mtb` audite le code livré **contre** ce document. Une décision visuelle qui n'est pas ici
 n'existe pas : c'est une question bloquante, pas une invention.
 
-- **Version** : 1.3 — 31 août 2026 (1.0 du 15 août 2026, 1.1 du 28 août 2026, 1.2 du 30 août 2026 ;
-  seuls les §7.7, §9.5 et §10.2 sont amendés, cf. §16)
+- **Version** : 1.4 — 31 août 2026 (1.0 du 15 août 2026, 1.1 du 28 août 2026, 1.2 du 30 août 2026,
+  1.3 du 31 août 2026 ; seuls les §7.7, §9.3, §9.5, §10.2 et §10.3 sont amendés, cf. §16)
 - **Décision amont** : `docs/ETAT.md` décision 8 — direction `styles/style5` « Sauge et calcaire »
   conservée, structure entièrement refaite.
 - **Fichier de jetons attendu** : `wp-content/themes/mtb/assets/css/tokens.css`, plus le miroir
@@ -933,8 +933,15 @@ Cette apparence est identique pour les dix composants du catalogue. Elle n'exist
 | Une discipline sans aucune ligne | Ni titre ni tableau |
 | Une portée sans liste de chiots | « Liste des chiots non renseignée. » en `--texte-doux`, canal texte |
 | Une galerie vide | Le bloc n'est pas rendu |
-| Une liste de portées filtrée sans résultat | « Aucune portée pour cette année. » **+** un lien « Voir toutes les portées » |
+| Une liste de portées filtrée sans résultat | « Aucune portée pour cette année. » **+** un lien « Toutes les portées » |
 | Un parent sans fiche (étalon extérieur) | Nom et élevage en clair, sans lien, sans carte grisée |
+
+**Provenance du libellé de ce lien.** « Toutes les portées » est le libellé figé au **§10.3** ; cette
+cellule le **recopie** et ne le fixe pas. Il est **émis par le composant `liste-portees` de
+`mtb-core`** ; le thème l'imprime et ne le compose jamais. L'arbitrage ne date pas de cette révision :
+il remonte au contrat gelé `docs/contracts/issue-13.md`, qui l'avait tranché au lot 5 et ouvert la
+dette **M3** sans que le présent document en soit averti — ce qui a laissé subsister ici, jusqu'à la
+révision 1.4, un « Voir toutes les portées » qu'**aucun émetteur du dépôt ne rendait**.
 
 **« Non renseigné » n'est jamais remplacé par « Aucun », « Non testé » ou « Néant ».** Une donnée absente
 n'est pas une donnée négative : écrire « Aucun » à la place d'un champ vide inventerait un fait
@@ -968,10 +975,14 @@ De tout le reste, la feuille s'abstient délibérément, et doit pouvoir continu
 #### La sortie de secours
 
 - **404** : `h1` « Page introuvable », un paragraphe, un champ de recherche, et jusqu'à trois liens —
-  Accueil, Les portées, La meute. Fond `--calcaire`, pas d'illustration, pas d'humour.
+  Accueil, Toutes les portées, La meute. Fond `--calcaire`, pas d'illustration, pas d'humour.
 - **C'est la seule énumération de ces libellés dans cette section.** Les autres écrans y renvoient —
   « les mêmes liens de recours » — et ne la recopient pas : une seconde énumération serait une seconde
   source de vérité, qui divergerait au premier libellé retouché.
+  **Cette section dit quels liens paraissent, sur quels écrans et dans quel ordre ; le §10.3 dit
+  comment ils s'appellent.** « Toutes les portées » et « La meute » y sont figés, et cette énumération
+  les **recopie** ; « Accueil » n'a pas d'entrée au §10.3 et se fixe donc ici. Une divergence entre les
+  deux listes se tranche **toujours** en faveur du §10.3 : ici, l'ordre fait foi ; là-bas, le nom.
 - **L'ordre est celui de cette énumération**, sur tous les écrans qui la portent, sans exception.
 - **Jusqu'à trois, jamais garantis trois.** Un lien dont la destination n'existe pas ne se rend
   **pas du tout** : pas de lien mort, pas de lien désactivé, pas d'élément de liste vide. L'index
@@ -1120,6 +1131,31 @@ lien de recours, donc.
 | Galerie, compteur | **3 / 12** |
 | Page protégée | **Page protégée** |
 | 404 | **Page introuvable** |
+
+**Où ces libellés sont émis, et ce qui leur ressemble sans l'être.** « Toutes les portées » et
+« La meute » sont écrits par `mtb-core` — composants `lien-de-recours` (rendu public et aperçu
+d'éditeur) et `liste-portees`. Le thème les imprime ; il ne les compose, ne les abrège et ne les
+réécrit jamais. Le `h1` de `wp-content/themes/mtb/templates/archive-mtb_portee.html`, « Les portées »,
+est un **titre de page** et non un libellé de lien : il relève du contrat gelé de l'issue #16 et
+**n'entre pas** dans ce tableau. Les libellés d'administration du type de contenu Portée
+(`includes/content/portee/`) coïncident aujourd'hui avec « Toutes les portées » sans y être tenus :
+ce sont des entrées de menu du cœur.
+
+**Pourquoi « Toutes les portées » l'emporte — l'écart a été arbitré, pas oublié.** Trois appuis, dans
+cet ordre. *Un*, le préambule du §10 déclare le **§10.3 arbitre** du vocabulaire d'interface, et sa
+ligne « Vers l'index des portées » écrivait **déjà** ce libellé : elle n'a pas changé en 1.4, ce sont
+les §9.3 et §9.5 qui ont été recopiées sur elle. *Deux*, la révision 1.2 avait **explicitement décliné
+cette juridiction** — son entrée au §16 écrit « §10.2 et §10.3 ne sont pas touchés, leurs écarts ayant
+chacun leur propre issue » ; la valeur « Les portées » qu'elle laissait au §9.5 n'était donc pas un
+arbitrage récent, mais une valeur **recopiée en avant** par une révision qui s'était dite
+incompétente, et la règle « le plus récent gagne » ne s'y applique pas. *Trois*, le contrat gelé
+`docs/contracts/issue-13.md` avait tranché dans ce sens dès le **lot 5** (arbitrage 7), ouvert la
+dette **M3** et **interdit au thème de réécrire ce libellé**. S'y ajoute la règle de partage écrite au
+§9.5 : **le §9.5 dit quels liens paraissent et dans quel ordre, le §10.3 dit comment ils s'appellent**
+— lus ainsi, les deux sections ne se contredisent plus, et une divergence future se tranche ici.
+Cette note existe pour la raison qui a fermé la dette **T56** au lot 13 : une énumération nue dont
+rien n'explique l'origine reste « réparable à l'envers » par la chaîne suivante, qui croira corriger
+et cassera.
 
 ### 10.4 Mots interdits à l'écran (site et administration)
 
@@ -1420,6 +1456,7 @@ Aucune n'est inventée, aucune n'est comblée en silence (D11).
 
 | Date | Version | Ce qui change | Motif |
 |---|---|---|---|
+| 2026-08-31 | 1.4 | **Le libellé de tout lien menant à l'index des portées est « Toutes les portées ».** §9.3 et §9.5 sont **recopiées sur le §10.3, dont la ligne de tableau était déjà juste** et ne change pas : la cellule « liste de portées filtrée sans résultat » du §9.3 perd son « Voir toutes les portées », qu'aucun émetteur du dépôt ne rendait, et la sortie de secours du §9.5 énumère désormais Accueil, Toutes les portées, La meute. La **règle de partage** est écrite : le **§9.5 dit quels liens paraissent, sur quels écrans et dans quel ordre**, le **§10.3 dit comment ils s'appellent** ; une divergence se tranche toujours en faveur du §10.3. « Accueil » reste fixé au §9.5, faute d'entrée au §10.3, **et le document le dit** — aucune ligne n'est ajoutée au tableau du §10.3. Le §9.3 gagne une ligne de provenance, le §10.3 le **pointeur inverse** vers ses deux composants émetteurs (`lien-de-recours`, `liste-portees`) et l'exclusion nommée du `h1` de l'archive des portées (titre de page, contrat gelé #16) et des libellés d'administration du type de contenu Portée. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie, mise en page et **§10.2** inchangés. **Deux lignes d'extension en découlent et elles seules**, dans `lien-de-recours/rendu.php` et `lien-de-recours/editeur.js`, déjà livrées. | Trois appuis : le préambule du §10 fait du **§10.3 l'arbitre** du vocabulaire, et il écrivait déjà « Toutes les portées » ; la révision **1.2 avait décliné cette juridiction** (« §10.2 et §10.3 ne sont pas touchés »), si bien que le « Les portées » du §9.5 n'était pas un arbitrage récent mais une valeur recopiée en avant ; le contrat gelé `docs/contracts/issue-13.md` avait tranché dès le **lot 5** et interdit au thème de réécrire ce libellé. S'y ajoute que la divergence était **publique** : le même lien s'appelait « Toutes les portées » depuis l'accueil et « Les portées » depuis une page introuvable. Dettes payées : **T55** (relevée au lot 9 sur le contrat #16) et **M3** (contrat gelé #13, arbitrée au lot 5 et jamais portée au document) |
 | 2026-08-31 | 1.3 | **§10.2 seul.** La ligne **Statut** du tableau de vocabulaire énumère désormais les quatre valeurs dans l'ordre **Reproducteur · En cours de confirmation · Retraité · Disparu**, au lieu de Reproducteur · Retraité · Disparu · En cours de confirmation. Les quatre libellés sont **recopiés à l'identique** ; seul leur ordre d'énumération change. La cellule porte maintenant la **provenance** de cet ordre : celui, gelé, des groupes de la page publique « La meute » — fait d'affichage que le document enregistre, les libellés, eux, restant fixés ici. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie et mise en page inchangés ; **§10.3 n'est pas touchée, son écart ayant sa propre issue (#43)**. Aucune ligne de thème ni d'extension n'en découle : le code était déjà juste, c'est le document qui était périmé. | Dette **T56**, relevée à la clôture du **lot 10** : l'ordre des quatre statuts est celui, **gelé**, des groupes de « La meute », porté par le code de l'extension et **déjà imprimé dans le manuel de l'éleveuse** ; une chaîne future qui « réparerait » le code d'après l'ancien ordre de `MASTER.md` casserait à la fois la page publique et des fiches d'aide déjà livrées |
 | 2026-08-30 | 1.2 | **§9.5 seul.** La section est réécrite en trois temps : la sortie de secours posée une seule fois — dont le fait qu'un lien s'omet en silence quand sa destination n'existe pas, la liste comptant trois, deux ou un élément —, puis le tableau **clos** des écrans qui la portent, où figure aussi l'index des portées, qui ne la porte pas et relève du §9.3, puis les deux écrans qui ne sont pas des recours, texte inchangé. « trois liens » devient « jusqu'à trois liens ». « Aucun contenu à afficher. » est figé avec sa provenance (socle de #2) et sa condition de péremption — ce qui **clôt la ligne de `docs/contracts/issue-2.md`** qui l'annonçait « provisoire, remplacée par les formulations MASTER §9.5 à l'epic Gabarits » : le remplacement n'aura pas lieu, le libellé est retenu tel quel, et ce contrat gelé n'attend plus rien. Le titre « Pages d'erreur », faux de quatre de ses cinq écrans — un seul, la 404, est une erreur —, est corrigé ; **le numéro 9.5 est conservé**, aucun renvoi ne le citant autrement. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie, mise en page et vocabulaire inchangés — §10.2 et §10.3 ne sont pas touchés, leurs écarts ayant chacun leur propre issue. Aucune ligne de thème ni d'extension n'en découle. | Dette **T53**, relevée au lot 9 par le contrat #17 (arbitrage A8bis) : le thème porte la même sortie de secours sur **trois** écrans, le document n'en décrivait que deux, et la fiche imprimée de l'éleveuse en décrivait déjà trois |
 | 2026-08-28 | 1.1 | **§7.7 seul.** `overflow-wrap: anywhere` devient la valeur par défaut, portée par un sélecteur racine ; `break-word` n'est conservé que sur `th`/`td`, avec sa raison. Les trois mesures qui l'imposent sont écrites dans le document (§7.7.1), ainsi que le fait normatif qui les explique. Le §7.7.2 tranche la valeur de la règle côté éditeur et nomme le préalable d'inspection (D8). Rien d'autre n'est rouvert : palette, typographie, espacement, photographie et vocabulaire inchangés ; le §4.5 reste vrai tel quel. | Trois emplacements livrés contournaient la règle 1.0 avec la même mesure ; débordement à 360 px et 320 px sur de la prose reprise, D7 bloquante |

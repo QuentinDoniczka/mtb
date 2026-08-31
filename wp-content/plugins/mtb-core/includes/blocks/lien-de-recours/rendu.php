@@ -37,6 +37,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Résout une cible en adresse et en libellé, ou constate qu'il n'y a pas de destination.
  *
+ * LES LIBELLÉS SONT FIGÉS AILLEURS, ET L'ÉCART APPARENT EST ARBITRÉ, PAS OUBLIÉ. « Toutes les
+ * portées » et « La meute » viennent de MASTER.md §10.3 « Vocabulaire figé », arbitre déclaré du
+ * vocabulaire ; « Accueil » vient du §9.5, qui n'a pas d'entrée correspondante au §10.3. Les deux
+ * sections se lisent ensemble et ne se contredisent pas : §9.5 dit QUELS liens paraissent et dans
+ * quel ORDRE, §10.3 dit COMMENT ils s'appellent. Ne réaligner ces trois chaînes ni sur l'énumération
+ * du §9.5, ni sur le « h1 » de l'archive des portées — un titre de page n'est pas un libellé de
+ * lien —, ni sur les libellés d'administration du type Portée. L'arbitrage est écrit à la révision
+ * 1.4 de MASTER.md, avec son motif. Le même libellé d'index est émis par le composant
+ * « liste-portees » : les deux se retouchent ensemble, ou pas du tout.
+ *
  * L'absence de destination n'est pas une erreur : c'est un cas normal, et le seul rendu correct est
  * alors le vide (décision 26 — un composant sans contenu ne s'affiche pas au visiteur). Un lien de
  * recours mort sur une page d'erreur serait une seconde impasse offerte à un visiteur déjà perdu.
@@ -68,7 +78,7 @@ function destination( string $cible ): ?array {
 		return is_string( $adresse ) && '' !== $adresse
 			? array(
 				'url'     => $adresse,
-				'libelle' => 'Les portées',
+				'libelle' => 'Toutes les portées',
 			)
 			: null;
 	}
@@ -198,9 +208,14 @@ function destination( string $cible ): ?array {
  * - le bloc unique auto-contenu, qui rendrait la liste entière : exigerait de réécrire les trois
  *   gabarits, hors empreinte.
  *
- * T51 est payée par ce module seul. T55 — l'écart entre le libellé « Les portées » et MASTER.md
- * §10.3 — est l'objet de l'issue #43, hors de ce lot : cette garde est structurelle, pas lexicale, et
- * ne touche aucun libellé.
+ * T51 est payée par ce module seul. T55 est payée par la MÊME issue (#43), mais pas par ce module
+ * seul : il n'en porte que la moitié code — le libellé de l'index des portées est passé de « Les
+ * portées » à « Toutes les portées », ici même dans destination() et dans « editeur.js ». L'autre
+ * moitié est documentaire et ne vit pas ici : T55 est d'abord une contradiction interne de
+ * MASTER.md, que seule sa révision 1.4 lève, en recopiant les sections dissidentes sur celle qui
+ * arbitre le vocabulaire. Cette garde-ci n'a touché aucun libellé — elle est structurelle et non
+ * lexicale, elle n'enveloppe qu'un « li ». Le motif du libellé, avec le renvoi à cette section, est
+ * en tête de destination() et n'est pas recopié ici : une seconde copie divergerait.
  */
 
 /**

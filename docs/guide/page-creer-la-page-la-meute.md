@@ -10,8 +10,8 @@ n'en met simplement pas, et personne ne voit qu'il en manque un.
 
 Ces liens de secours s'affichent quand un visiteur arrive sur une adresse introuvable, quand une
 recherche ne donne aucun résultat, ou quand il atterrit sur une liste vide. Aujourd'hui il y en a
-**deux** — **Accueil** et **Les portées**. Le jour où vous créerez **La meute** et la publierez, il y
-en aura **trois**, sans que vous ayez quoi que ce soit d'autre à faire.
+**deux** — **Accueil** et **Toutes les portées**. Le jour où vous créerez **La meute** et la
+publierez, il y en aura **trois**, sans que vous ayez quoi que ce soit d'autre à faire.
 
 Une fois créée, elle se remplit toute seule à partir de vos fiches de chien. **Vous n'y écrirez plus
 jamais un nom ni ne poserez plus jamais une photo.**
