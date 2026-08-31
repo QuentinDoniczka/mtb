@@ -66,3 +66,12 @@ function enregistrer(): void {
 
 	register_block_type( __DIR__ );
 }
+
+/*
+ * Le constat « ce bloc n'a pas de conteneur de liste pour parent » ne peut se faire qu'ici : le cœur
+ * ne transmet le bloc parent qu'aux filtres de rendu, jamais au fichier de rendu lui-même. Le
+ * troisième argument est indispensable — « add_filter() » n'en passe QU'UN par défaut, et c'est
+ * précisément le parent, arrivé en troisième, qui est lu. Motif complet en tête de la fonction, dans
+ * « rendu.php ».
+ */
+add_filter( 'render_block_context', __NAMESPACE__ . '\\signaler_l_absence_de_conteneur_de_liste', 10, 3 );

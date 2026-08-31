@@ -41,6 +41,24 @@ if ( null === $mtb_recours_destination ) {
 }
 
 /*
+ * SIGNAL POSÉ PAR « signaler_l_absence_de_conteneur_de_liste() » (rendu.php) : vrai quand le parent
+ * immédiat de ce bloc n'est pas un conteneur de liste. La comparaison est STRICTE à « true » — ni
+ * « 1 », ni une chaîne, ni un tableau non vide n'enveloppent quoi que ce soit. Signal absent : le
+ * rendu d'aujourd'hui, à l'octet près. C'est le repli sûr, motivé en tête de la fonction de garde.
+ *
+ * Rien de ceci ne peut se placer avant le « return » ci-dessus : un « ul » ouvert là produirait une
+ * liste vide quand la destination manque, et trahirait la doctrine de silence du composant.
+ */
+$mtb_recours_hors_liste = $block instanceof \WP_Block
+	&& isset( $block->context['mtb/hors-liste'] )
+	&& true === $block->context['mtb/hors-liste'];
+
+if ( $mtb_recours_hors_liste ) {
+	// Un « ul » NU : ni classe ni attribut. Les attributs d'enveloppe restent sur le « li ».
+	echo '<ul>';
+}
+
+/*
  * Le « li » est la racine du bloc : c'est lui qui porte les attributs d'enveloppe. Le composant
  * n'active aucun réglage d'apparence, la seule classe émise est donc le crochet du thème, et
  * l'extension n'écrit ici aucune règle visuelle.
@@ -51,3 +69,7 @@ printf(
 	esc_url( $mtb_recours_destination['url'] ),
 	esc_html( $mtb_recours_destination['libelle'] )
 );
+
+if ( $mtb_recours_hors_liste ) {
+	echo '</ul>';
+}
