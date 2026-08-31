@@ -421,36 +421,138 @@ function rangee_chiot( string $index, string $numero, array $chiot ): string {
 }
 
 /**
- * Boîte « Galerie photos » : une liste ordonnée d'identifiants de photos.
+ * Photos de la galerie que la boîte s'apprête à afficher.
  *
- * @param mixed $post Contenu en cours de modification.
+ * Le critère est celui de la boucle de rendu, et rien de plus : une entrée compte si elle est
+ * scalaire et si « absint() » en tire un entier strictement positif.
+ *
+ * LA FONCTION N'ATTESTE PAS QUE LE FICHIER JOINT EXISTE ENCORE, et c'est délibéré : une photo
+ * effacée de la bibliothèque occupe malgré tout une ligne à l'écran, sous « Photo introuvable ».
+ * Un critère plus sévère ferait mentir la mention posée au-dessus d'une liste que l'éleveuse voit
+ * non vide.
+ *
+ * @param int $post_id Identifiant de la portée.
+ *
+ * @return array<int,int> Identifiants de fichiers joints, réindexés depuis 0, dans l'ordre stocké.
  */
-function boite_galerie( $post ): void {
-	$post_id = identifiant_du_contenu( $post );
-
-	$photos = $post_id > 0 ? get_post_meta( $post_id, '_mtb_galerie', true ) : array();
-
-	if ( ! is_array( $photos ) ) {
-		$photos = array();
+function photos_affichables( int $post_id ): array {
+	if ( $post_id <= 0 ) {
+		return array();
 	}
 
-	echo '<p class="description">Les photos s’affichent sur le site dans l’ordre de cette liste. Retirer une photo d’ici ne la supprime jamais du site.</p>';
+	$stockees = get_post_meta( $post_id, '_mtb_galerie', true );
 
-	echo '<ul id="mtb-portee-galerie-liste" class="mtb-portee-galerie">';
+	if ( ! is_array( $stockees ) ) {
+		return array();
+	}
 
-	$rang = 0;
+	$photos = array();
 
-	foreach ( $photos as $valeur ) {
+	foreach ( $stockees as $valeur ) {
 		$identifiant = is_scalar( $valeur ) ? absint( $valeur ) : 0;
 
 		if ( 0 === $identifiant ) {
 			continue;
 		}
 
-		++$rang;
+		$photos[] = $identifiant;
+	}
 
+	return $photos;
+}
+
+/**
+ * Mention posée au-dessus de la galerie quand la portée n'a pas de Photo principale.
+ *
+ * LE POINT DE CONTRAT DE CETTE FONCTION EST SON SECOND PARAMÈTRE. « $photos » est la liste que la
+ * boîte s'apprête à afficher, jamais la valeur stockée brute. La mention se pose sur ce que
+ * l'éleveuse VOIT, pas sur ce que la base CONTIENT : c'est ce qui interdit de l'afficher au-dessus
+ * d'une liste vide, et ce qui évite de filtrer la galerie deux fois.
+ *
+ * RÈGLE, OPPOSABLE : ON N'AVERTIT QUE LÀ OÙ L'ÉCRAN CONTIENT DÉJÀ LE REMÈDE. La photo à élire est
+ * sous ses yeux, et la commande qui l'élit est à trente centimètres, colonne de droite du même
+ * écran. Les trois états symétriques se taisent, et ce n'est pas un oubli : avertir sur un écran
+ * vierge démentirait la fiche d'aide qui lui promet de publier à moitié rempli, et avertir sur une
+ * portée qui a une Photo principale mais pas de galerie inventerait une obligation qui n'existe
+ * dans aucun document du projet. Aucun autre champ n'entre dans la condition — statut, date,
+ * disponibilité, nombre de photos, existence des fichiers joints. Y ajouter un critère, c'est
+ * ajouter un cas et non une règle.
+ *
+ * LIMITE : LA MENTION DÉCRIT L'ÉTAT ENREGISTRÉ, lu en base au moment du rendu de la boîte. Elle
+ * n'observe pas le formulaire et ne s'abonne à rien.
+ *
+ * ET C'EST LE BON SENS, POUR UNE RAISON CONTRE-INTUITIVE MESURÉE DANS LA PILE, CŒUR 6.9 : POSER une
+ * photo principale depuis l'éditeur classique N'ÉCRIT RIEN EN BASE.
+ * « wp.media.featuredImage.set() » (« wp-includes/js/media-editor.js:619-635 ») appelle l'action
+ * « get-post-thumbnail-html », et « wp_ajax_get_post_thumbnail_html() »
+ * (« wp-admin/includes/ajax-actions.php:2774 ») ne fait que rendre du HTML — aucune écriture ; la
+ * persistance passe par le champ caché « _thumbnail_id » (« wp-admin/includes/post.php:1694 »),
+ * soumis avec le formulaire. LA RETIRER, en revanche, écrit immédiatement : « WPRemoveThumbnail »
+ * (« wp-admin/js/post.js:137-157 ») appelle l'action « set-post-thumbnail »
+ * (« ajax-actions.php:2761 »).
+ *
+ * Conséquence : la mention n'est JAMAIS en avance sur le site, seulement parfois en retard AU
+ * RETRAIT — le sens le moins dommageable, puisqu'une mention en retard fait rouvrir un écran quand
+ * une mention en avance ferait croire un travail fait. C'est aussi ce qui disqualifie un effacement
+ * par script : il effacerait la mention alors que le site continue de n'afficher aucune photo.
+ *
+ * TOUS LES NUMÉROS DE LIGNE DU CŒUR CITÉS ICI SONT DES REPÈRES DE LECTURE, PAS UN CONTRAT.
+ * « docker/wordpress/Dockerfile:5 » tire une étiquette flottante et le dépôt ne contient pas le
+ * cœur : un « build --pull » peut les décaler sans que rien ne le signale. Le livrable, c'est le
+ * MÉCANISME décrit — pose différée, retrait immédiat —, et il se revérifie en relisant les fichiers
+ * nommés.
+ *
+ * @param int   $post_id Identifiant de la portée.
+ * @param array $photos  Liste des photos que la boîte s'apprête à afficher.
+ *
+ * @return string Balisage échappé de la mention, chaîne vide quand il n'y a rien à dire.
+ */
+function mention_photo_principale_absente( int $post_id, array $photos ): string {
+	if ( $post_id <= 0 || array() === $photos ) {
+		return '';
+	}
+
+	// Le cœur rend 0 quand aucune photo principale n'est posée, et « false » si le contenu n'existe plus : l'entier couvre les deux.
+	if ( 0 !== (int) get_post_thumbnail_id( $post_id ) ) {
+		return '';
+	}
+
+	/*
+	 * La phrase dit d'abord ce qui fonctionne : sans sa première proposition, elle laisserait croire
+	 * que le travail de galerie déjà fait ne sert à rien. La dernière est une porte de sortie, non une
+	 * politesse — dix-huit portées sur trente et une la portent en permanence, et sans elle l'écran
+	 * sermonnerait des fiches qui remontent aux années 1990. Ce compte est daté du dépôt, pas un
+	 * invariant : il bouge dès qu'une galerie se remplit ou qu'une Photo principale est choisie.
+	 */
+	$phrase = 'Les photos de cette galerie s’affichent bien sur la page de la portée. Il manque seulement la « Photo principale » : c’est elle, et elle seule, qui apparaît dans la liste des portées et dans l’encart de la dernière portée. Pour en choisir une, allez dans la colonne de droite, encadré « Photo principale », puis cliquez sur « Choisir la photo principale ». Ou laissez ainsi : la liste et l’encart restent justes.';
+
+	return '<div class="notice notice-warning inline"><p>' . esc_html( $phrase ) . '</p></div>';
+}
+
+/**
+ * Boîte « Galerie photos » : une liste ordonnée d'identifiants de photos.
+ *
+ * La mention est le premier contenu de la boîte, avant la ligne d'aide : c'est la place qu'occupe
+ * déjà l'avertissement de fiche perdue au-dessus du champ qu'il concerne, et elle est ainsi
+ * rencontrée avant les vignettes dans l'ordre du DOM comme au lecteur d'écran.
+ *
+ * @param mixed $post Contenu en cours de modification.
+ */
+function boite_galerie( $post ): void {
+	$post_id = identifiant_du_contenu( $post );
+
+	$photos = photos_affichables( $post_id );
+
+	// Balisage déjà échappé par mention_photo_principale_absente().
+	echo mention_photo_principale_absente( $post_id, $photos ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+	echo '<p class="description">Les photos s’affichent sur le site dans l’ordre de cette liste. Retirer une photo d’ici ne la supprime jamais du site.</p>';
+
+	echo '<ul id="mtb-portee-galerie-liste" class="mtb-portee-galerie">';
+
+	foreach ( $photos as $rang => $identifiant ) {
 		// Balisage déjà échappé par element_galerie().
-		echo element_galerie( (string) $identifiant, (string) $rang, apercu_photo( $identifiant ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo element_galerie( (string) $identifiant, (string) ( $rang + 1 ), apercu_photo( $identifiant ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	echo '</ul>';
