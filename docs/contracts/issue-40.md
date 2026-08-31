@@ -249,32 +249,47 @@ L = strlen( $canonique_de_la_source )
   sources n'ont pas bougé ; sans révision, **une correction de bug ne serait jamais distribuée**. En la
   mettant dans l'entrée du hachage, un changement de révision périme **tous** les artefacts d'un coup —
   conduite voulue : tant qu'ils ne sont pas régénérés, les sources sont servies.
-  **Couplage assumé** : ce littéral est écrit à deux endroits (le générateur et `functions.php`). Toute
-  divergence dégrade vers « la source est servie », jamais vers « un artefact accepté à tort ». Chacun
-  des deux **porte un commentaire nommant son jumeau**.
+  **Couplage assumé** : ce littéral est écrit à deux endroits (le générateur et `functions.php`). Une
+  divergence **de ce littéral-là** dégrade vers « la source est servie » — les empreintes cessant de
+  concorder — et non vers « un artefact accepté à tort ». Chacun des deux **porte un commentaire
+  nommant son jumeau**. **La portée de cette phrase est le jumeau, et rien d'autre** : elle ne dit
+  rien de la corruption d'un artefact, que les conditions 1 à 5 ne voyaient pas — voir « La sixième
+  condition » plus bas, où une formule trop large de ce contrat a été mesurée fausse.
 
 ### Marqueur, en tête d'artefact
 
 ```
-/*!mtb-src:<L>:<E>*/\n
+/*!mtb-src:<L>:<E>:<A>:<F>*/\n
 ```
 
 | Position | Contenu |
 |---|---|
 | octet 0 | `/*!mtb-src:` (`2F 2A 21 6D 74 62 2D 73 72 63 3A`) |
-| suite | `<L>`, base 10 ASCII, `[1-9][0-9]{0,9}`, sans zéro de tête |
-| suite | `:` (`3A`) |
-| suite | `<E>`, **exactement** `[0-9a-f]{16}` |
+| suite | `<L>`, longueur de la forme canonique de **la source**, `[1-9][0-9]{0,9}` |
+| suite | `:` · `<E>`, empreinte de la source, **exactement** `[0-9a-f]{16}` |
+| suite | `:` · `<A>`, longueur de la forme canonique du **corps de l'artefact**, `[1-9][0-9]{0,9}` |
+| suite | `:` · `<F>`, empreinte de ce corps, **exactement** `[0-9a-f]{16}` |
 | suite | `*/` (`2A 2F`) |
 | suite | `\n` — **hors marqueur au sens de la vérification** |
 
-Longueur du marqueur : **31 à 40 octets**. Le `/*!` porte la convention universelle « commentaire à
-préserver ».
+`<F> = substr( hash( 'sha256', "mtb-min/1\n" . $corps_canonique ), 0, 16 )`, même révision de
+générateur que `<E>`.
 
-**Lecture à l'exécution** : `file_get_contents( $artefact, false, null, 0, 64 )` puis
-`preg_match( '#^/\*!mtb-src:([1-9][0-9]{0,9}):([0-9a-f]{16})\*/#', $tete, $m )`.
-64 ≥ 40 : la lecture est toujours suffisante et bornée. **Ancrée à l'octet 0** — aucun espace, aucun
-BOM, aucune ligne avant.
+**Aucune circularité** : le corps est tout ce qui suit la ligne du marqueur, donc `<A>` et `<F>`
+portent sur un texte que le marqueur ne modifie pas. Vérifié par reconstruction, et non supposé — un
+cas de la table P6 le rejoue à chaque exécution.
+
+Longueur du marqueur : **50 à 68 octets** (borne arithmétique : `11 + 10 + 1 + 16 + 1 + 10 + 1 + 16 + 2`).
+Le `/*!` porte la convention universelle « commentaire à préserver ».
+
+**Lecture à l'exécution** : `file_get_contents( $artefact, false, null, 0, 128 )` puis
+`preg_match( '#^/\*!mtb-src:([1-9][0-9]{0,9}):([0-9a-f]{16}):([1-9][0-9]{0,9}):([0-9a-f]{16})\*/#', $tete, $m )`.
+**128 > 68**, marge de 60 octets. **Ancrée à l'octet 0** — aucun espace, aucun BOM, aucune ligne avant.
+
+**Cette borne est un invariant vérifié par la machine, pas par la relecture** : `MTB_MIN_MARQUEUR_MAX`
+et `MTB_MIN_BORNE_LECTURE` sont des constantes de l'outil, et **P6 refuse si `BORNE <= MAX`**. Une
+borne trop courte tronquerait le marqueur et ferait rejeter **tous** les artefacts en silence — c'est
+le piège le plus probable de toute évolution du format.
 
 ### Règle de bascule — sans ambiguïté
 
@@ -287,9 +302,13 @@ BOM, aucune ligne avant.
 > 4. le groupe 1 vaut **exactement** `L` ;
 > 5. le groupe 2 vaut **exactement** `E`.
 >
-> **Dans tous les autres cas — absent, illisible, vide, tronqué, sans marqueur, marqueur mal formé,
-> longueur discordante, empreinte discordante, source illisible — la source `<X>.css` est servie**, sans
-> erreur PHP, sans avertissement, sans notice, sans écriture au journal.
+> **6.** le **corps** de l'artefact, sous forme canonique, a **exactement** la longueur `<A>` et
+>    l'empreinte `<F>`.
+>
+> **Dans tous les autres cas — absent, illisible, vide, tronqué en tête, tronqué en queue, corrompu à
+> longueur constante, sans marqueur, marqueur mal formé, longueur discordante, empreinte discordante,
+> source illisible — la source `<X>.css` est servie**, sans erreur PHP, sans avertissement, sans
+> notice, sans écriture au journal.
 >
 > **`src` et, pour une feuille de bloc, `path` désignent toujours le même fichier.** Jamais l'un sur
 > l'artefact et l'autre sur la source.
@@ -299,9 +318,62 @@ entre le moment où une chaîne modifie une source et celui où elle joue `make 
 remplirait `wp-content/debug.log` et ruinerait la mesure « aucune notice » dont dépendent plusieurs
 recettes gelées (`docs/docker.md`, décision 29).
 
-**La dégradation est conservatrice** : une feuille périmée ne produit jamais une régression visuelle,
-seulement une régression de poids — le site revient exactement à son état d'avant #40. Et elle reste
+**La dégradation est conservatrice** : la source étant toujours servie à sa place, une feuille écartée
+ne produit qu'une régression de poids — le site revient exactement à son état d'avant #40. Elle reste
 observable à tout instant, sans outillage, par le **nom du fichier dans le source de la page**.
+
+### La sixième condition — ce que le contrat affirmait à tort, et comment on le sait
+
+**Cette phrase, dans sa version du gel initial, était fausse, et c'est une mesure qui l'a établi.**
+Le contrat écrivait « toute divergence dégrade vers *la source est servie*, **jamais** vers *un
+artefact accepté à tort* » et « la panne est conservatrice — **jamais une régression visuelle** ». La
+passe d'intégration l'a réfuté sur **17 avaries fabriquées**, dont une passait :
+
+> **Artefact tronqué en queue, marqueur intact.** Attendu : la source est servie. **Obtenu :
+> l'artefact est servi** — `base.min.css` amputé à **5 307 o au lieu de 10 579**, **107 déclarations
+> perdues sur 255**, page rendue en **200**, aucune notice. Les 16 autres avaries dégradaient bien.
+
+**La cause est celle que le gel initial avait nommée sans en tirer la conséquence : les cinq premières
+conditions attestent la SOURCE, jamais l'ARTEFACT.** Un artefact amputé de sa moitié passait les cinq.
+Le résultat n'était donc pas une régression de poids mais une **régression visuelle silencieuse** —
+l'inverse exact de ce que le contrat promettait, et sur la promesse la plus rassurante du dossier.
+
+**Le scénario n'est pas théorique** : la cible de D9 est un hébergement mutualisé, où l'on dépose par
+FTP, où un transfert s'interrompt, où un disque se remplit. Ce contrat écartait d'ailleurs déjà
+`filemtime()` en observant qu'« un envoi FTP produit le même effet » — la garde couvrait ce cas pour
+la source et pas pour l'artefact.
+
+**Pourquoi `<A>` et `<F>`, et pas un simple `filesize()`** — deux motifs, tous deux mesurés :
+
+1. **Un `filesize()` brut serait discordant partout en production.** L'artefact est écrit en LF et
+   rendu en **CRLF** après un `git checkout` (`core.autocrlf=true`) : `base.min.css` passe de 10 602 à
+   11 102 o sur disque. Vérifié : avec la forme canonique, **il reste servi**. Avec un `filesize()`
+   brut, #40 aurait rendu **zéro octet en production**, silencieusement — exactement le mode de panne
+   que l'arbitrage 4 avait écarté pour la source.
+2. **Un `filesize()` seul manquerait une corruption à longueur constante.** Rétrécir la garde de
+   l'artefact à ce qui a été refusé pour la source (arbitrage 4, voie `filesize`) aurait été
+   incohérent. Vérifié : un caractère hexadécimal changé dans `tokens.min.css`, **longueur inchangée**,
+   dégrade désormais vers la source.
+
+**Preuve que la borne de lecture n'est pas devenue le nouveau trou.** Le marqueur passe de 31-40 à
+**50-68 octets** ; la lecture bornée passe de 64 à **128**. Une borne trop courte tronquerait le
+marqueur et ferait rejeter **tous** les artefacts, en silence. `MTB_MIN_MARQUEUR_MAX = 68` et
+`MTB_MIN_BORNE_LECTURE = 128` sont des constantes, et **P6 refuse à chaque exécution si
+`BORNE <= MAX`** : le piège est devenu une panne bruyante de `make css`.
+
+**Coût mesuré, en octets et non en supposition.** L'artefact est désormais lu en plus de la source :
+sur l'Accueil, **218 917 → 254 329 o lus par requête (× 1,16)** et **213 962 → 247 795 o hachés
+(× 1,16)**. Nuance qui réduit le supplément réel : les 10 artefacts de blocs portent un `path`, donc
+`wp_maybe_inline_styles()` **les lisait déjà** intégralement — le supplément inédit se limite aux 3
+feuilles de site, soit **16 973 o**. Le temps **n'est pas mesurable de façon fiable ici** (variance du
+montage lié Windows, min 76 ms / max 421 ms sur 40 tirages) ; sur un système de fichiers local au
+conteneur, médiane **1,318 → 1,531 ms, soit +0,213 ms par page** — reproductible, mais ne disant rien
+de l'hébergement de production.
+
+**Ce que la correction ne coûte pas** : `mtb_feuille_a_servir()` étant en **fin de fichier** depuis le
+remède R10, elle grossit de 36 lignes sans en pousser aucune. **La première ligne modifiée est la
+975 ; la citation `functions.php:NNN` la plus haute du dépôt vise `:861-869`. Cette passe ne périme
+donc pas une seule citation.** C'est le bénéfice direct de R10, et il n'était pas prévu.
 
 ### Invariant de nommage — non négociable
 
@@ -425,7 +497,8 @@ Un compteur naïf sur le fichier entier se trompe sur **8 des 15 feuilles**, dan
 | `artefact_perime` | `L` ou `E` discordant | la **source** ; `make css-check` dit `PÉRIMÉ` |
 | `artefact_illisible` | lecture en échec | la **source** |
 | `artefact_vide` | 0 octet | la **source** |
-| `artefact_marqueur_invalide` | regex non ancrée / mal formée | la **source** ; `make css-check` dit `INVALIDE` |
+| `artefact_marqueur_invalide` | regex non ancrée / mal formée / tronquée en tête | la **source** ; `make css-check` dit `INVALIDE` |
+| `artefact_corps_corrompu` | `<A>` ou `<F>` discordant — **tronqué en queue, corrompu à longueur constante, réécrit** | la **source** ; `make css-check` dit `INVALIDE — le marqueur ne décrit plus le corps de l'artefact`. **Ajouté après réfutation par la passe d'intégration** : cet état était auparavant servi, avec 107 déclarations perdues sur 255 |
 | `artefact_orphelin` | `*.min.css` sans `*.css` de même racine | **signalé, jamais supprimé automatiquement** |
 | `source_illisible` | `file_exists()` faux sur la source | **rien n'est mis en file** — comportement **actuel** de `:33-35`, inchangé |
 
@@ -796,6 +869,17 @@ porteuse d'un `path`).
    incorporés. **R7 doit re-mesurer le décompressé sur le code livré** plutôt qu'hériter de cette
    cellule.
 
+3. **`/travail/` n'existe pas sur cette pile, et ma première explication de la cause était fausse.**
+   R2 et R7 nomment `/travail/` ; la page rend **404** et les mesures ont porté sur `/portees/` à sa
+   place, **sans jamais être présentées comme `/travail/`**. J'avais imputé le 404 à
+   `has_archive => false` : **c'est faux**, et l'orchestrateur l'a corrigé. `mtb_resultat` est
+   `public = false`, `publicly_queryable = false`, `rewrite = false` — il n'a donc **aucun slug**, et
+   `has_archive` n'y est pour rien. La vraie cause est que **la page n'existe dans aucun statut** :
+   `wp mtb reprise-resultats-pages` n'a jamais été lancée sur ce volume. Rien n'est perdu ; c'est une
+   commande non jouée, pas un défaut. **Conséquence à ne pas taire : `mtb-tableau-resultats.min.css`
+   n'est attesté servi sur aucune page rendue** — sa fraîcheur l'est par `make css-check`, son service
+   ne l'est pas, faute de page portant ce bloc.
+
 ---
 
 ## 16. Dettes ouvertes par ce contrat, non payées ici
@@ -823,9 +907,19 @@ porteuse d'un `path`).
   toutes les pages, sans erreur, sans notice, sans journal ; seul le poids augmenterait.
   *Provenance* — c'est le coût assumé du §4, retenu **délibérément** contre la factorisation : le
   thème doit pouvoir vérifier une empreinte **sans dépendre d'un outil de `docker/`**, qui n'est ni
-  déployé chez l'hébergeur ni chargeable par WordPress. Toute divergence dégrade vers « la source est
-  servie », **jamais** vers « un artefact accepté à tort » — la panne est donc conservatrice, ce qui
-  rend la dette tenable, pas inexistante. *Garde-fous en place* — chacun des deux porte un commentaire
-  nommant son jumeau, et `make css-check` détecte la divergence en la faisant apparaître comme 14
-  paires `PÉRIMÉ`. *Ce qui manque* — rien ne **force** la relecture conjointe : la garde est humaine.
-  **Sans numéro : l'orchestrateur numérote à la clôture du lot.**
+  déployé chez l'hébergeur ni chargeable par WordPress. Une divergence **du jumeau** dégrade vers « la
+  source est servie » — les empreintes cessant de concorder — et non vers « un artefact accepté à
+  tort » ; **cette garantie porte sur le jumeau seul**, et ne s'étend à aucun autre mode de panne (la
+  formule large qui figurait ici a été mesurée fausse, voir « La sixième condition »). *Garde-fous en
+  place* — chacun des deux porte un commentaire nommant son jumeau, et `make css-check` rend la
+  divergence visible en 14 paires `PÉRIMÉ`. *Ce qui manque* — rien ne **force** la relecture conjointe :
+  la garde reste humaine. **Sans numéro : l'orchestrateur numérote à la clôture du lot.**
+
+  **Première mise à l'épreuve, réussie.** L'ajout de la sixième condition a fait bouger le marqueur, donc
+  **les deux moitiés ensemble**. Le jumeau porte désormais **cinq** points et non trois — révision,
+  forme canonique, motif à quatre champs, borne de lecture, condition 6 — et les commentaires croisés
+  les énumèrent. Deux garde-fous **machine** sont nés de cette passe, qui ne dépendent plus d'une
+  relecture : P6 refuse si la borne de lecture n'excède pas la longueur maximale du marqueur, et le
+  générateur **refuse d'écrire** un artefact dont le marqueur ne vérifie pas son propre motif (cas d'un
+  corps vide, où `<A>` vaudrait 0 et où l'artefact serait écrit puis ignoré à jamais). La dette reste
+  ouverte — la garde de fond est toujours humaine — mais elle est **moins nue qu'à son inscription**.

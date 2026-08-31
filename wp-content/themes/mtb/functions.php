@@ -972,15 +972,20 @@ add_filter( 'render_block_core/navigation', 'mtb_nommer_la_navigation', 20 );
 /**
  * Décide, pour une feuille du thème, quel fichier est servi et sous quelle version.
  *
- * L'artefact `<nom>.min.css` n'est servi que s'il prouve qu'il décrit encore sa source : son
- * marqueur de tête porte la longueur et l'empreinte de la forme canonique de `<nom>.css`. Dans
- * tous les autres cas — absent, illisible, vide, tronqué, sans marqueur, marqueur mal formé,
- * longueur ou empreinte discordantes — c'est la source qui est servie, sans erreur, sans
- * avertissement, sans notice, sans écriture au journal. Un artefact périmé est un état normal
- * entre le moment où une feuille change et celui où `make css` est joué ; en faire un diagnostic
- * remplirait `debug.log` et ruinerait la mesure « aucune notice » dont dépendent plusieurs
- * recettes gelées. La dégradation est conservatrice : jamais une régression visuelle, seulement
- * une régression de poids — et elle reste lisible sans outillage, dans le nom du fichier servi.
+ * L'artefact `<nom>.min.css` n'est servi que s'il prouve qu'il décrit encore sa source ET qu'il
+ * est lui-même intact : son marqueur de tête porte quatre champs, la longueur et l'empreinte de
+ * la forme canonique de `<nom>.css`, puis celles du corps qu'il précède. Les deux derniers ont
+ * été ajoutés après mesure : avec les deux premiers seuls, rien ne regardait l'artefact, et un
+ * artefact amputé de sa moitié — marqueur intact — était servi tel quel, 107 déclarations
+ * perdues sur 255, page en 200, aucun signal. Dans tous les autres cas — absent, illisible,
+ * vide, tronqué en tête ou en queue, corrompu à longueur constante, sans marqueur, marqueur mal
+ * formé, longueur ou empreinte discordantes d'un côté ou de l'autre — c'est la source qui est
+ * servie, sans erreur, sans avertissement, sans notice, sans écriture au journal. Un artefact
+ * périmé est un état normal entre le moment où une feuille change et celui où `make css` est
+ * joué ; en faire un diagnostic remplirait `debug.log` et ruinerait la mesure « aucune notice »
+ * dont dépendent plusieurs recettes gelées. La dégradation est enfin conservatrice pour de bon :
+ * jamais une régression visuelle, seulement une régression de poids — et elle reste lisible sans
+ * outillage, dans le nom du fichier servi.
  *
  * **Pourquoi une empreinte de contenu, et jamais `filemtime()`.** Git n'enregistre aucune date de
  * modification et écrit dans l'ordre lexicographique de son index, où `base.css` précède
@@ -995,9 +1000,11 @@ add_filter( 'render_block_core/navigation', 'mtb_nommer_la_navigation', 20 );
  * ne le signale, et l'issue #40 y rendrait exactement zéro octet.
  *
  * **JUMEAU À TENIR EN ACCORD** — `docker/outils/mtb-minifier-css.php`. La révision `mtb-min/1`,
- * la forme canonique et le calcul de l'empreinte y sont écrits une seconde fois, et les deux
- * moitiés doivent s'accorder octet pour octet. Une divergence dégrade vers « la source est
- * servie », jamais vers « un artefact accepté à tort » — mais elle est silencieuse.
+ * la forme canonique, le calcul de l'empreinte, les quatre champs du marqueur et la borne de
+ * lecture y sont écrits une seconde fois, et les deux moitiés doivent s'accorder octet pour
+ * octet. Une divergence dégrade vers « la source est servie », jamais vers « un artefact accepté
+ * à tort » — mais elle est silencieuse. L'outil vérifie à chaque exécution que sa borne excède
+ * strictement la plus longue forme du marqueur ; changer l'une sans l'autre rejetterait tout.
  *
  * @param string $relatif Chemin relatif à la racine du thème, terminé par `.css`.
  * @param string $chemin  Chemin absolu de la source, dont l'existence est déjà acquise.
@@ -1042,19 +1049,48 @@ function mtb_feuille_a_servir( string $relatif, string $chemin ): array {
 		return $servie;
 	}
 
-	// Le marqueur pèse de 31 à 40 octets et est ancré à l'octet 0 : la lecture est toujours
-	// suffisante, et toujours bornée.
-	$tete = file_get_contents( $artefact, false, null, 0, 64 );
+	// Le marqueur pèse de 50 à 68 octets et est ancré à l'octet 0 : 128 dépasse strictement ce
+	// maximum, donc la lecture est toujours suffisante, et toujours bornée. Une borne trop
+	// courte tronquerait le marqueur et ferait rejeter TOUS les artefacts, en silence.
+	$tete = file_get_contents( $artefact, false, null, 0, 128 );
 
 	if ( ! is_string( $tete ) ) {
 		return $servie;
 	}
 
-	if ( 1 !== preg_match( '#^/\*!mtb-src:([1-9][0-9]{0,9}):([0-9a-f]{16})\*/#', $tete, $marqueur ) ) {
+	$motif = '#^/\*!mtb-src:([1-9][0-9]{0,9}):([0-9a-f]{16}):([1-9][0-9]{0,9}):([0-9a-f]{16})\*/#';
+
+	if ( 1 !== preg_match( $motif, $tete, $marqueur ) ) {
 		return $servie;
 	}
 
 	if ( $marqueur[1] !== (string) strlen( $canonique ) || $marqueur[2] !== $empreinte ) {
+		return $servie;
+	}
+
+	/*
+	 * Condition 6 : le marqueur atteste aussi le corps qu'il précède. Sans elle, les cinq
+	 * conditions précédentes ne regardaient que la source — un artefact amputé de sa moitié
+	 * gardait un marqueur exact et se faisait servir tel quel. C'est le seul cas où la panne
+	 * cessait d'être conservatrice ; sur un dépôt déposé par FTP, une troncature en queue est
+	 * un incident ordinaire.
+	 */
+	$octets = file_get_contents( $artefact );
+
+	if ( ! is_string( $octets ) ) {
+		return $servie;
+	}
+
+	$corps = substr( str_replace( array( "\r\n", "\r" ), "\n", $octets ), strlen( $marqueur[0] ) );
+
+	if ( "\n" !== substr( $corps, 0, 1 ) ) {
+		return $servie;
+	}
+
+	$corps = substr( $corps, 1 );
+
+	if ( $marqueur[3] !== (string) strlen( $corps )
+		|| $marqueur[4] !== substr( hash( 'sha256', "mtb-min/1\n" . $corps ), 0, 16 ) ) {
 		return $servie;
 	}
 

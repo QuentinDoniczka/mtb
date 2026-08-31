@@ -315,21 +315,60 @@ mais plus lourde**. Rien ne casse, rien ne s'affiche à l'éleveuse, rien n'est 
 
 ### Comment le thème choisit ce qu'il sert
 
-Chaque artefact porte en tête un marqueur `/*!mtb-src:<longueur>:<empreinte>*/`. À chaque requête,
-`mtb_feuille_a_servir()` (`wp-content/themes/mtb/functions.php`) recalcule la longueur et
-l'empreinte de la **forme canonique** de la source — ses octets avec les fins de ligne ramenées au
-saut de ligne seul — et ne sert l'artefact que si les deux concordent. Dans **tous** les autres cas
-la source est servie, sans erreur ni notice.
+Chaque artefact porte en tête un marqueur à **quatre champs** : `/*!mtb-src:<L>:<E>:<A>:<F>*/`.
+`<L>` et `<E>` sont la longueur et l'empreinte de la **forme canonique de la source** — ses octets
+avec les fins de ligne ramenées au saut de ligne seul ; `<A>` et `<F>` sont celles du **corps de
+l'artefact lui-même**, c'est-à-dire tout ce qui suit le marqueur et le saut de ligne qui le termine.
 
-Ni `filemtime()` ni la taille du fichier n'entrent dans ce test, et c'est délibéré. Git
-n'enregistre aucune date de modification et écrit dans l'ordre lexicographique de son index, où
+À chaque requête, `mtb_feuille_a_servir()` (`wp-content/themes/mtb/functions.php`) lit les 128
+premiers octets de l'artefact et ne le sert que si **les six conditions** sont vraies :
+
+1. la source est lisible ;
+2. l'artefact est lisible ;
+3. les octets lus portent le marqueur, **ancré à l'octet 0** ;
+4. la forme canonique de la source a exactement la longueur `<L>` ;
+5. elle a exactement l'empreinte `<E>` ;
+6. le corps de l'artefact, sous forme canonique, a exactement la longueur `<A>` **et** l'empreinte
+   `<F>`.
+
+Dans **tous** les autres cas — artefact absent, illisible, vide, tronqué, sans marqueur, marqueur
+mal formé, longueur ou empreinte discordante d'un côté ou de l'autre, source illisible — la source
+est servie, sans erreur, sans avertissement, sans notice, sans écriture dans `debug.log`.
+
+### Pourquoi le marqueur atteste aussi l'artefact
+
+Les deux premiers champs attestent la source, et **ils n'attestaient jamais l'artefact**. La passe
+d'intégration a mesuré ce que ce trou laissait passer : un artefact **tronqué en queue, marqueur
+intact, était servi tel quel** — `base.min.css` amputé à 5 307 o au lieu de 10 579, **107
+déclarations perdues sur 255**, page rendue en 200, aucune notice, aucun signe. Ce n'était donc pas
+la régression de poids que #40 accepte, mais une **régression visuelle silencieuse**.
+
+Ce n'est pas une précaution de conception : c'est un défaut mesuré, puis corrigé. La cible du projet
+est un hébergement mutualisé où l'on dépose par FTP, et où un transfert s'interrompt. Les champs
+`<A>` et `<F>` ferment le trou — un artefact incomplet, ou modifié après son écriture, cesse d'être
+servi, et la source reprend sa place.
+
+### Pourquoi ni `filemtime()` ni `filesize()`
+
+Git n'enregistre aucune date de modification et écrit dans l'ordre lexicographique de son index, où
 `base.css` précède `base.min.css` : à un `clone`, un test sur les dates tranche **toujours** pour
-l'artefact, même périmé. Et le dépôt tournant en `core.autocrlf=true`, une même feuille pèse 45 914
-octets dans Git et 46 927 sur un disque Windows : une empreinte sur octets bruts serait rejetée
-partout en production. D'où la forme canonique.
+l'artefact, même périmé.
 
-`ver` vaut l'empreinte, artefact servi comme source servie : une mise en ligne qui ne touche pas
-une feuille laisse le cache du visiteur intact.
+Les longueurs `<L>` et `<A>` sont celles de la **forme canonique**, jamais un `filesize()` brut, et
+c'est ce qui les rend utilisables en production. Le dépôt tourne en `core.autocrlf=true` : une même
+feuille pèse 45 914 octets dans Git et 46 927 sur un disque Windows, et l'artefact écrit en LF par
+l'outil est rendu en CRLF par un `git checkout`. Mesuré : `base.min.css` converti en CRLF passe de
+10 602 à 11 102 octets sur le disque et **reste servi** — un `filesize()` brut, lui, l'aurait rejeté
+partout en production, sans que rien ne le signale. Une longueur seule manquerait par ailleurs une
+corruption à longueur constante ; mesuré aussi, ce cas dégrade bien vers la source, parce que
+l'empreinte l'attrape.
+
+> Les deux tailles de `base.min.css` citées ci-dessus ne se contredisent pas : la mesure de
+> troncature date d'avant l'ajout des deux champs, et le marqueur a grossi de 23 octets en passant
+> de deux à quatre champs.
+
+`ver` vaut l'empreinte de la source, artefact servi comme source servie : une mise en ligne qui ne
+touche pas une feuille laisse le cache du visiteur intact.
 
 ### Deux réserves à connaître
 

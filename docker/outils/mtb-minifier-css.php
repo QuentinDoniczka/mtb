@@ -11,9 +11,9 @@
  * dépôt.
  *
  * JUMEAU À TENIR EN ACCORD — `wp-content/themes/mtb/functions.php`, fonction
- * `mtb_feuille_a_servir()`. La forme canonique, la révision `mtb-min/1` et le calcul de
- * l'empreinte y sont écrits une seconde fois, et les deux moitiés doivent s'accorder octet pour
- * octet. Toute divergence dégrade vers « la source est servie », jamais vers « un artefact
+ * `mtb_feuille_a_servir()`. La forme canonique, la révision `mtb-min/1`, le calcul de
+ * l'empreinte, les quatre champs du marqueur et la borne de lecture y sont écrits une seconde
+ * fois, et les deux moitiés doivent s'accorder octet pour octet. Toute divergence dégrade vers « la source est servie », jamais vers « un artefact
  * accepté à tort » — mais elle est silencieuse, et c'est pourquoi les deux moitiés sont écrites
  * d'une seule main (`docs/contracts/issue-40.md` §4 et §11).
  *
@@ -46,8 +46,30 @@ declare(strict_types=1);
  */
 const MTB_MIN_REVISION = "mtb-min/1\n";
 
-/** Motif du marqueur, ancré à l'octet 0 de l'artefact. Jumeau dans `functions.php`. */
-const MTB_MIN_MOTIF = '#^/\*!mtb-src:([1-9][0-9]{0,9}):([0-9a-f]{16})\*/#';
+/**
+ * Motif du marqueur, ancré à l'octet 0 de l'artefact. Jumeau dans `functions.php`.
+ *
+ * Quatre champs : longueur et empreinte de la forme canonique de la SOURCE, puis longueur et
+ * empreinte de la forme canonique du CORPS de l'artefact. Les deux derniers ont été ajoutés
+ * parce que les deux premiers, seuls, n'attestaient rien de l'artefact : un artefact amputé de
+ * sa moitié en gardait un marqueur exact et se faisait servir tel quel, soit une régression
+ * visuelle silencieuse — mesurée, 107 déclarations perdues sur 255. Aucune circularité : le
+ * corps commence après le marqueur, donc le marqueur ne modifie pas le texte qu'il décrit.
+ */
+const MTB_MIN_MOTIF = '#^/\*!mtb-src:([1-9][0-9]{0,9}):([0-9a-f]{16}):([1-9][0-9]{0,9}):([0-9a-f]{16})\*/#';
+
+/**
+ * Longueur maximale possible du marqueur, et borne de la lecture que le thème lui consacre.
+ *
+ * 11 (l'ouverture jusqu'aux deux-points) + 10 (`<L>`) + 1 + 16 (`<E>`) + 1 + 10 (`<A>`) + 1 +
+ * 16 (`<F>`) + 2 (la fermeture) = 68, les deux longueurs étant bornées par `[1-9][0-9]{0,9}`,
+ * et la longueur minimale valant 50. La borne de lecture doit
+ * dépasser STRICTEMENT ce maximum : si elle le rognait, le marqueur serait tronqué à la lecture
+ * et TOUS les artefacts seraient rejetés, sans qu'aucun signal ne le dise. Le rapport est
+ * vérifié par la table de cas, et la borne est le jumeau du `128` de `functions.php`.
+ */
+const MTB_MIN_MARQUEUR_MAX   = 68;
+const MTB_MIN_BORNE_LECTURE  = 128;
 
 /** États du balayeur. */
 const MTB_MIN_CODE        = 0;
@@ -72,14 +94,14 @@ function mtb_min_canonique( string $octets ): string {
 }
 
 /**
- * Empreinte de la source, 16 hexadécimaux.
+ * Empreinte d'un texte canonique, 16 hexadécimaux. Sert à la source comme au corps.
  *
  * `sha256` et jamais `xxh3` : le générateur tourne en PHP 8.1 dans le conteneur, le vérificateur
  * tourne sur l'hébergement, dont la version n'est pas tranchée. Choisir l'algorithme selon sa
  * disponibilité ferait dépendre l'empreinte du PHP qui l'a écrite. Seize hexadécimaux ne sont
  * pas une frontière de sécurité : c'est un détecteur de modification accidentelle.
  *
- * @param string $canonique Forme canonique de la source.
+ * @param string $canonique Forme canonique d'une source ou d'un corps d'artefact.
  * @return string
  */
 function mtb_min_empreinte( string $canonique ): string {
@@ -89,11 +111,18 @@ function mtb_min_empreinte( string $canonique ): string {
 /**
  * Marqueur écrit en tête d'artefact, sans son saut de ligne.
  *
+ * Il atteste les DEUX côtés : la source qu'il décrit, et le corps qu'il précède. Une empreinte
+ * du seul côté source laissait passer toute corruption de l'artefact survenue après sa
+ * génération — troncature d'un transfert FTP interrompu, disque plein — et c'est le mode de
+ * panne ordinaire de la cible d'hébergement mutualisé.
+ *
  * @param string $canonique Forme canonique de la source.
+ * @param string $corps     Corps de l'artefact, déjà en forme canonique.
  * @return string
  */
-function mtb_min_marqueur( string $canonique ): string {
-	return '/*!mtb-src:' . strlen( $canonique ) . ':' . mtb_min_empreinte( $canonique ) . '*/';
+function mtb_min_marqueur( string $canonique, string $corps ): string {
+	return '/*!mtb-src:' . strlen( $canonique ) . ':' . mtb_min_empreinte( $canonique )
+		. ':' . strlen( $corps ) . ':' . mtb_min_empreinte( $corps ) . '*/';
 }
 
 /**
@@ -703,14 +732,39 @@ function mtb_min_jouer_la_table_de_cas(): array {
 		$echecs[] = 'P6 « empreinte » : deux fins de ligne rendent deux empreintes';
 	}
 
-	if ( 1 !== preg_match( MTB_MIN_MOTIF, mtb_min_marqueur( $lf ) ) ) {
+	$marqueur = mtb_min_marqueur( $lf, mtb_min_depouiller( $lf )['corps'] );
+
+	if ( 1 !== preg_match( MTB_MIN_MOTIF, $marqueur ) ) {
 		$echecs[] = 'P6 « marqueur » : le marqueur produit ne vérifie pas son propre motif';
 	}
 
-	$longueur = strlen( mtb_min_marqueur( $lf ) );
+	$longueur = strlen( $marqueur );
 
-	if ( $longueur < 31 || $longueur > 40 ) {
-		$echecs[] = 'P6 « marqueur » : longueur ' . $longueur . ' hors des bornes 31 à 40';
+	if ( $longueur < 50 || $longueur > MTB_MIN_MARQUEUR_MAX ) {
+		$echecs[] = 'P6 « marqueur » : longueur ' . $longueur . ' hors des bornes 50 à ' . MTB_MIN_MARQUEUR_MAX;
+	}
+
+	/*
+	 * Le piège le plus probable de la bascule : une borne de lecture qui n'excède pas la plus
+	 * longue forme du marqueur le ferait tronquer à la lecture, et TOUS les artefacts seraient
+	 * rejetés en silence. La borne est donc comparée au maximum, ici, à chaque exécution.
+	 */
+	if ( MTB_MIN_BORNE_LECTURE <= MTB_MIN_MARQUEUR_MAX ) {
+		$echecs[] = 'P6 « borne de lecture » : ' . MTB_MIN_BORNE_LECTURE
+			. ' ne dépasse pas la longueur maximale du marqueur, ' . MTB_MIN_MARQUEUR_MAX;
+	}
+
+	/*
+	 * L'artefact reconstruit doit se relire lui-même : marqueur retrouvé, corps retrouvé, et
+	 * les deux derniers champs décrivant ce corps. C'est la condition 6 de la règle de bascule,
+	 * jouée sur le générateur avant de l'attendre du thème.
+	 */
+	$reconstruit = $marqueur . "\n" . mtb_min_depouiller( $lf )['corps'];
+	$relu        = mtb_min_corps_de( $reconstruit );
+
+	if ( null === $relu || 1 !== preg_match( MTB_MIN_MOTIF, $reconstruit, $champs )
+		|| $champs[3] !== (string) strlen( $relu ) || $champs[4] !== mtb_min_empreinte( $relu ) ) {
+		$echecs[] = 'P6 « marqueur » : les deux derniers champs ne décrivent pas le corps qui suit';
 	}
 
 	return $echecs;
@@ -835,11 +889,25 @@ function mtb_min_generer( string $racine ): int {
 			return 1;
 		}
 
+		$contenu = mtb_min_marqueur( $lu['canonique'], $resultat['corps'] ) . "\n" . $resultat['corps'];
+
+		/*
+		 * Un corps vide rendrait un `<A>` à zéro, que le motif refuse : l'artefact ne serait
+		 * servi par personne. Le cas ne se présente pas aujourd'hui — aucune de nos feuilles
+		 * n'est faite que de commentaires — mais il vaut mieux un refus bruyant qu'un artefact
+		 * écrit puis ignoré à jamais.
+		 */
+		if ( 1 !== preg_match( MTB_MIN_MOTIF, $contenu ) ) {
+			fwrite( STDERR, "REFUS : {$nom} — le marqueur produit ne vérifie pas son propre motif\n" );
+
+			return 1;
+		}
+
 		$prets[] = array(
 			'source'   => $source,
 			'artefact' => mtb_min_artefact_de( $source ),
 			'avant'    => strlen( $lu['canonique'] ),
-			'contenu'  => mtb_min_marqueur( $lu['canonique'] ) . "\n" . $resultat['corps'],
+			'contenu'  => $contenu,
 		);
 	}
 
@@ -999,6 +1067,12 @@ function mtb_min_verifier( string $racine ): int {
 		}
 
 		$defauts = array();
+
+		// Condition 6 de la règle de bascule : le marqueur atteste aussi le corps qu'il précède.
+		// C'est ce que le thème vérifiera ; le lire ici fait apparaître une divergence de jumeau.
+		if ( $trouve[3] !== (string) strlen( $corps ) || $trouve[4] !== mtb_min_empreinte( $corps ) ) {
+			$defauts[] = 'le marqueur ne décrit plus le corps de l\'artefact';
+		}
 
 		// P1 — les deux côtés en forme canonique : un dépôt fraîchement cloné rend l'artefact
 		// avec les fins de ligne de sa plate-forme, jamais avec celles du générateur.
