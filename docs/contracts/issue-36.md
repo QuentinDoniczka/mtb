@@ -4,11 +4,17 @@
 Aucune surface publique n'est ajoutée, modifiée ni retirée.
 
 > **Les numéros de ligne cités ici sont des repères de lecture, jamais un contrat** — ceux de
-> `ecran.php` comme ceux du cœur WordPress. Ils ont déjà bougé une fois pendant cette chaîne : une
-> phrase ajoutée à un docbloc a décalé de **+1** toutes les ancres ≥ 526, et elles ont été
-> revérifiées une à une contre le fichier avant d'être réécrites. **Ce qui est gelé, ce sont les
-> noms, la condition, la phrase et les interdits — pas les adresses.** Une chaîne future qui trouve
-> une ancre fausse corrige l'ancre, elle ne conclut pas que le contrat a changé.
+> `ecran.php` comme ceux du cœur WordPress. Ils ont bougé **deux fois** pendant cette seule chaîne :
+> une phrase ajoutée à un docbloc a décalé de **+1** les ancres ≥ 526, puis le re-gel de la phrase les
+> a décalées de **+15**. À chaque fois elles ont été **revérifiées une à une contre le fichier** —
+> `sed -n Np` — avant d'être réécrites, jamais recalculées. **Ce qui est gelé, ce sont les noms, la
+> condition, la phrase et les interdits — pas les adresses.** Une chaîne future qui trouve une ancre
+> fausse corrige l'ancre ; elle n'en conclut pas que le contrat a changé.
+>
+> **Le seul contrôle qui vaut sur la phrase n'est pas son adresse mais son contenu** : elle a été
+> comparée au bloc « Phrase, gelée verbatim » **caractère pour caractère** — 531 caractères, même
+> SHA-256, 7 × U+2019, 0 apostrophe ASCII, 0 espace insécable. C'est ce contrôle qu'une revue doit
+> refaire, pas la lecture d'un numéro.
 
 > **Ce contrat n'a pas réconcilié deux plans.** L'issue ne touche que l'extension : un seul plan,
 > `leaddev-back-mtb`. Le contrat existe malgré tout, parce que c'est lui que lira une chaîne future —
@@ -82,7 +88,7 @@ l'éleveuse **voit**, jamais sur ce que la base **contient**. C'est ce qui inter
 d'une liste vide, et c'est pourquoi le filtrage sort de la boucle au lieu d'être compté deux fois.
 
 **Contrepartie nommée** : une galerie ne contenant que des lignes « Photo introuvable »
-(`ecran.php:609`) déclenche la mention. Elle reste juste — le remède est disponible quoi qu'il arrive —
+(`ecran.php:624`) déclenche la mention. Elle reste juste — le remède est disponible quoi qu'il arrive —
 et un critère plus sévère ferait mentir la mention devant une liste non vide.
 
 ---
@@ -125,8 +131,19 @@ actionnable.
 > Les photos de cette galerie s’affichent bien sur la page de la portée. Il manque seulement la
 > « Photo principale » : c’est elle, et elle seule, qui apparaît dans la liste des portées et dans
 > l’encart de la dernière portée. Pour en choisir une, allez dans la colonne de droite, encadré
-> « Photo principale », puis cliquez sur « Choisir la photo principale ». Ou laissez ainsi : la liste
-> et l’encart restent justes.
+> « Photo principale », cliquez sur « Choisir la photo principale », puis enregistrez la portée :
+> tant qu’elle n’est pas enregistrée, la photo n’est pas en ligne et cette ligne reste affichée.
+> Ou laissez ainsi : la liste et l’encart restent justes.
+
+> **Re-gel du 2026-08-31, sur mesure — la troisième phrase a changé, et ce n'était pas un ajout de
+> confort.** La version d'abord gelée s'arrêtait à « cliquez sur « Choisir la photo principale ». »
+> **Ce geste était incomplet, donc faux par omission** : la mesure ci-dessous établit que choisir une
+> photo n'écrit **rien** en base. La colonne de droite affiche pourtant la vignette immédiatement — le
+> cœur y remplace le balisage côté navigateur. L'éleveuse voyait donc sa photo apparaître à droite et
+> la ligne jaune rester à gauche, sans que rien ne lui dise pourquoi : **elle en aurait conclu que
+> son geste avait échoué, et l'aurait recommencé.** La phrase dit désormais ce qu'il reste à faire et
+> pourquoi. Le défaut a été relevé par le lead orchestrateur à partir de la mesure du cœur ; il ne
+> l'aurait été par aucune relecture de l'écran.
 
 Apostrophes typographiques `’`, guillemets français `« »` avec des espaces **ASCII** `0x20` — comme
 partout dans le module, qui ne contient **aucune** espace insécable. `esc_html()` au rendu, par
@@ -137,7 +154,7 @@ discipline, la phrase étant un littéral sans interpolation.
 > module (`ecran.php` : 18 × U+2019, zéro apostrophe ASCII dans ses chaînes affichées). `dev-back-mtb`
 > a suivi la clause plutôt que les octets, et l'a **signalé au lieu de le taire** — c'était le bon
 > choix. Le bloc est désormais aligné sur le code : hors apostrophes, il lui était déjà identique à
-> l'octet près. **Une revue peut comparer ce bloc à `ecran.php:527` caractère pour caractère.**
+> l'octet près. **Une revue peut comparer ce bloc à `ecran.php:542` caractère pour caractère.**
 
 | Exigence | Où elle est tenue |
 |---|---|
@@ -185,7 +202,7 @@ Trois classes du **cœur**, **aucune classe `mtb-`**, **aucun fichier CSS**, **a
 Strictement le balisage de `ecran.php:237`.
 
 Position : **premier élément** de la boîte « Galerie photos », **avant** le `<p class="description">`
-existant de `ecran.php:549` — symétrie exacte de `ecran.php:236-238`, où la notice précède le champ
+existant de `ecran.php:564` — symétrie exacte de `ecran.php:236-238`, où la notice précède le champ
 qu'elle concerne.
 
 - **Pas de `is-dismissible`** : la mention décrit un **état persistant**, pas un événement. Le rejet du
@@ -272,25 +289,54 @@ Le seul décalage réel est donc **au retrait**, pas à la pose — et c'est le 
 une mention **en retard** fait rouvrir un écran, une mention **en avance** ferait croire un travail
 fait.
 
-### Lecture officielle de la tâche 3 de l'issue
+### Le parcours complet du bouton, mesuré maillon par maillon
+
+Ce qui suit est la chaîne exacte du geste que la fiche d'aide enseigne, lue dans le cœur 6.9 :
+
+1. Clic sur **Choisir la photo principale** → `media-editor.js:706-710` : `#postimagediv` délègue le
+   clic sur `#set-post-thumbnail` vers `wp.media.featuredImage.frame().open()`.
+2. Clic sur **Utiliser comme photo principale** dans la fenêtre → `media-editor.js:690-697`, le rappel
+   `select` de l'état `featured-image`, qui appelle `wp.media.featuredImage.set( id )`.
+3. `wp.media.featuredImage.set()` → `media-editor.js:619-635` : il appelle
+   **`get-post-thumbnail-html`**, puis fait `$( '.inside', '#postimagediv' ).html( html )`.
+4. `wp_ajax_get_post_thumbnail_html()` → `ajax-actions.php:2774` : il **rend du balisage et rien
+   d'autre**. Aucun `set_post_thumbnail()`, **aucune écriture**.
+
+**Il n'existe aucun chemin d'écriture à la pose.** L'unique appelant de l'action écrivante
+`set-post-thumbnail` dans le cœur administratif est `WPRemoveThumbnail` (`post.js:137-157`) — le
+**retrait**. `WPSetAsThumbnail` (`set-post-thumbnail.min.js`) sert le lien du volet de détail d'un
+fichier, **pas** ce parcours.
+
+**Conséquence exacte, et c'est le fait qui a fait changer la phrase** : à l'étape 3, la colonne de
+droite **affiche la vignette immédiatement**, côté navigateur, alors que la base **n'a pas bougé**.
+L'écran montre donc simultanément une photo à droite et, à gauche, une mention qui dit qu'il n'y en a
+pas. **Les deux sont vraies** — l'une parle de ce qui est en cours de saisie, l'autre de ce qui est
+enregistré — mais rien ne le disait à l'éleveuse. C'est ce trou que la troisième phrase comble.
+
+### Lecture officielle de la tâche 3 de l'issue — requalifiée
 
 La tâche 3 dit « vérifier que l'avertissement disparaît **dès qu'**une photo principale est choisie ».
 
-> **Elle se lit : « au prochain affichage de l'écran »**, c'est-à-dire après « Mettre à jour », ou en
-> rouvrant la portée.
+> **Telle qu'écrite, elle n'est pas réalisable, et elle ne devrait pas l'être.** Elle se lit :
+> **« la mention disparaît au premier affichage de l'écran qui suit l'enregistrement »**, et
+> **la mention dit elle-même à l'éleveuse que c'est ce qui va se passer.**
 
-Ce n'est pas un affaiblissement de l'exigence : **la mesure ci-dessus établit que le choix d'une photo
-n'est pas acquis avant l'enregistrement.** Il n'existe aucun instant où la photo serait « choisie » au
-sens du site sans que l'écran ait été rechargé. La lecture est la seule que le parcours admette.
+Ce n'est pas un affaiblissement de l'exigence, c'est sa correction. **Il n'existe aucun instant où la
+photo serait « choisie » au sens du site sans enregistrement** : avant celui-ci, le site continue de
+n'afficher aucune photo, sur la page d'accueil comme dans la liste des portées. Une mention qui
+s'effacerait au clic annoncerait donc un résultat qui n'existe pas.
 
-**Écrit explicitement, parce qu'appliqué en silence une revue future lirait « dès que » et déclarerait
-l'issue non tenue.** Toute recette doit **recharger avant de conclure**.
+**Ce que l'issue visait réellement est tenu** : l'éleveuse n'est pas laissée devant un écran qui la
+contredit sans explication. Elle l'est par la **phrase**, pas par un effacement.
+
+**Écrit explicitement, parce qu'une revue qui lirait « dès que » sans lire ceci déclarerait l'issue non
+tenue.** Toute recette doit **enregistrer, puis recharger, avant de conclure**.
 
 ### Le refus du JavaScript, pour qu'il ne soit pas reproposé
 
 1. **Cet écran est délibérément conçu pour fonctionner sans script** : `ecran.php:339` (trois rangées
    de chiots de secours « pour que l'écran reste utilisable quand le JavaScript ne s'exécute pas »),
-   `ecran.php:369` et `:563` (outils rendus masqués, dévoilés par le script). Un avertissement dont
+   `ecran.php:369` et `:578` (outils rendus masqués, dévoilés par le script). Un avertissement dont
    l'effacement dépendrait du script romprait cette ligne pour la première fois.
 2. **Il s'accrocherait aux identifiants internes du cœur** — `#postimagediv`, `#_thumbnail_id` — sur une
    étiquette d'image **flottante**. Le jour où le cœur renomme un conteneur, l'avertissement cesserait
@@ -312,7 +358,7 @@ l'issue non tenue.** Toute recette doit **recharger avant de conclure**.
    que le projet a refusé d'élire une photo à sa place — « **En élire une à votre place aurait été un
    choix arbitraire.** » — et `:137-139` **mesure** que la première image d'une fiche reprise était
    souvent une bannière de rubrique identique sur seize fiches. Trois raisons de plus : l'ordre de
-   `_mtb_galerie` est un ordre d'affichage (`ecran.php:634-635` lui donne des boutons Monter/Descendre)
+   `_mtb_galerie` est un ordre d'affichage (`ecran.php:649-650` lui donne des boutons Monter/Descendre)
    et ne porte aucune intention de portrait ; la commande « Retirer la photo principale »
    (`content/portee/bootstrap.php:95`, livrée et documentée) serait annulée au prochain enregistrement,
    ce qui est pire qu'une commande absente ; et toute la doctrine de `sauvegarde.php:268-271` est que
@@ -372,6 +418,8 @@ l'issue non tenue.** Toute recette doit **recharger avant de conclure**.
 | 8 | JavaScript pour effacer la mention à la volée ? | **Non.** | Cinq raisons, section *Limite connue*. La mesure du cœur retourne l'argument : un effacement JS **mentirait**. |
 | 9 | Le mécanisme AJAX du cœur devait-il être mesuré ? | **Mesuré, par le lead.** | L'option retenue n'en dépendait pas, mais la mesure a **corrigé l'hypothèse des deux plans amont**. Elle est consignée plus haut avec ses citations. |
 | 10 | `docs/guide/contenu-repris-de-l-ancien-site.md` §4 est hors empreinte, et c'est la fiche qui décrit exactement cette situation aux 27 portées reprises. | **Remontée au lead orchestrateur**, non tranchée en chaîne. | C'est une extension d'empreinte, pas une décision de chaîne — même si le risque de collision est **nul** (#40 tient `assets/css/**` et `docker/**` ; #43 tient `MASTER.md` et `includes/blocks/lien-de-recours/**` ; **aucune ne touche `docs/guide/`**). Voir le rapport final pour l'issue de cette question. |
+| 11 | **La mention trompe l'éleveuse** : elle choisit sa photo, la vignette apparaît à droite, la ligne jaune reste, rien ne dit pourquoi. Trois remèdes possibles — la mention s'efface au clic (JavaScript) ; elle reste mais **dit** qu'elle partira à l'enregistrement ; on requalifie la tâche 3 en l'expliquant. | **Le deuxième, et il rend le troisième vrai** : la phrase porte désormais le fait. | **Le JavaScript n'est pas seulement plus cher ici, il est plus faux.** Mesuré : au clic, la base n'a pas bougé et le site continue de n'afficher aucune photo, ni sur l'accueil ni dans la liste. Une mention qui s'effacerait là **annoncerait un résultat qui n'existe pas** : si l'éleveuse quitte l'écran sans enregistrer, elle est partie convaincue que c'était fait, et rien ne la détrompera. **Les deux erreurs ne se valent pas** — la mention qui reste fait recommencer un geste (agaçant, rattrapable) ; la mention qui s'efface trop tôt fait partir (silencieux, non rattrapable). Le remède retenu supprime l'agacement **sans** créer le silence. Les cinq raisons du refus du JavaScript tiennent par ailleurs, et la mesure en **renforce** la troisième. |
+| 12 | La phrase doit-elle nommer le bouton d'enregistrement, « **Mettre à jour** » ? | **Non** — « puis enregistrez la portée ». | Le libellé du cœur **change avec le statut** : « Mettre à jour » sur une portée en ligne, « Publier » ou « Enregistrer le brouillon » sur un brouillon. Or la mention s'affiche sur les deux — le contrat pose explicitement que le statut n'entre pas dans la condition. Nommer un seul de ces boutons enseignerait **un libellé faux à une partie des écrans**. La fiche d'aide, elle, peut nommer « Mettre à jour », parce qu'elle décrit un parcours situé. **Ne « corrigez » pas cette phrase en y remettant un nom de bouton** : c'est une omission délibérée, et elle est mesurable en ouvrant une portée en brouillon. |
 
 ---
 
@@ -395,3 +443,43 @@ l'issue non tenue.** Toute recette doit **recharger avant de conclure**.
 de choix de photos en `multiple: 'add'` là où `blocks/galerie-photos/editeur.js:190` l'ouvre en
 `multiple: true`, et deux de ces fenêtres portent un titre identique. #36 ne passe pas par `ecran.js` et
 n'y prescrit **aucun** changement.
+
+### Dette neuve A — la pose d'une photo principale n'écrit rien, son retrait écrit tout de suite
+
+**Fait, mesuré dans le cœur 6.9, à verser à `ETAT.md`.** Dans l'éditeur classique, le parcours
+« Choisir la photo principale » → « Utiliser comme photo principale » ne touche **pas** la base :
+`media-editor.js:706-710` ouvre la fenêtre, `:690-697` appelle `wp.media.featuredImage.set()`, et
+`:619-635` appelle l'action **`get-post-thumbnail-html`**, dont le gestionnaire
+(`ajax-actions.php:2774`) **rend du balisage et rien d'autre**. La persistance passe par le champ caché
+`_thumbnail_id` (`post.php:1694`), écrit par `wp_insert_post()` (`post.php:5043-5055`) **avant** que
+`save_post_{type}` (`:5183`) et `save_post` (`:5194`) ne se déclenchent. En regard, l'action
+**écrivante** `set-post-thumbnail` (`ajax-actions.php:2761`) n'a pour appelants du cœur que
+`WPRemoveThumbnail` (`post.js:137-157`) — le **retrait** — et `WPSetAsThumbnail` du volet de détail.
+
+**Pourquoi c'est une dette et pas une note** : l'asymétrie est **invisible à l'écran**. La colonne de
+droite affiche la vignette dans les deux cas, aussi vite. Toute chaîne future qui raisonnera sur cet
+écran — un contrôle à l'enregistrement, un état dérivé de `_thumbnail_id`, une recette — se trompera si
+elle suppose la symétrie. #36 s'en sort par le texte ; une issue qui aurait besoin du **fait** devra le
+remesurer, ou lire ceci.
+
+*Réserve, du même registre que `blocks/lien-de-recours/rendu.php:132-136`* : `docker/wordpress/Dockerfile:5`
+tire une **étiquette flottante**. Les numéros ci-dessus sont des **repères de lecture**. Le livrable
+est le **mécanisme**, pas l'adresse.
+
+### Dette neuve B — la reprise n'écrit aucune photo principale de portée
+
+**Fait mesuré, sans jugement, et hors empreinte de #36.**
+
+- `migration/portees-chiens/portees.php:70-90` **n'a aucun chemin d'écriture de `_thumbnail_id`**.
+- `migration/portees-chiens/chiens.php:163-177` **en a un** (`portrait_possible()` → `$metas['_thumbnail_id']`).
+- Compte dans la pile au 2026-08-31 : **0 portée sur 31** possède une photo principale.
+- Ce que l'éleveuse voit : l'encart d'accueil et la liste des portées sont **sans image pour toutes les
+  portées reprises**, et le resteront jusqu'à ce qu'elle en désigne une à la main, portée par portée.
+
+**#36 rend ce défaut visible ; elle ne le répare pas, et ce n'est pas son objet.**
+
+**Ce qui n'est pas établi, et que personne ne doit supposer** : rien n'a été vérifié quant à savoir si
+l'ancien site désignait une photo principale pour une portée. `docs/guide/contenu-repris-de-l-ancien-site.md:177-181`
+dit au contraire que « votre ancien site ne désignait aucune photo comme *la* photo d'une portée ».
+Trancher si c'est une **perte** au sens de la contrainte 4 ou une **notion que l'ancien site n'avait
+pas** est une question à remonter à l'utilisateur — **jamais une invention de chaîne.**

@@ -481,26 +481,38 @@ function photos_affichables( int $post_id ): array {
  * LIMITE : LA MENTION DÉCRIT L'ÉTAT ENREGISTRÉ, lu en base au moment du rendu de la boîte. Elle
  * n'observe pas le formulaire et ne s'abonne à rien.
  *
- * ET C'EST LE BON SENS, POUR UNE RAISON CONTRE-INTUITIVE MESURÉE DANS LA PILE, CŒUR 6.9 : POSER une
- * photo principale depuis l'éditeur classique N'ÉCRIT RIEN EN BASE.
- * « wp.media.featuredImage.set() » (« wp-includes/js/media-editor.js:619-635 ») appelle l'action
- * « get-post-thumbnail-html », et « wp_ajax_get_post_thumbnail_html() »
+ * C'EST LA RAISON D'ÊTRE DE SA TROISIÈME PHRASE, ET ELLE TIENT À UN FAIT CONTRE-INTUITIF MESURÉ
+ * DANS LA PILE, CŒUR 6.9 : POSER une photo principale depuis l'éditeur classique N'ÉCRIT RIEN EN
+ * BASE. « wp.media.featuredImage.set() » (« wp-includes/js/media-editor.js:619-635 ») appelle
+ * l'action « get-post-thumbnail-html », et « wp_ajax_get_post_thumbnail_html() »
  * (« wp-admin/includes/ajax-actions.php:2774 ») ne fait que rendre du HTML — aucune écriture ; la
  * persistance passe par le champ caché « _thumbnail_id » (« wp-admin/includes/post.php:1694 »),
  * soumis avec le formulaire. LA RETIRER, en revanche, écrit immédiatement : « WPRemoveThumbnail »
  * (« wp-admin/js/post.js:137-157 ») appelle l'action « set-post-thumbnail »
  * (« ajax-actions.php:2761 »).
  *
- * Conséquence : la mention n'est JAMAIS en avance sur le site, seulement parfois en retard AU
- * RETRAIT — le sens le moins dommageable, puisqu'une mention en retard fait rouvrir un écran quand
- * une mention en avance ferait croire un travail fait. C'est aussi ce qui disqualifie un effacement
- * par script : il effacerait la mention alors que le site continue de n'afficher aucune photo.
+ * CE QUE CELA DONNE À L'ÉCRAN : au clic, la colonne de droite affiche la vignette immédiatement,
+ * côté navigateur, alors que la base n'a pas bougé — une photo à droite, et à gauche une mention
+ * qui dit qu'il n'y en a pas. Les deux sont vraies, l'une parlant de la saisie en cours et l'autre
+ * de l'enregistré, mais rien ne le disait à l'éleveuse : elle en concluait que son geste avait
+ * échoué et le recommençait. LA PHRASE DEMANDE DONC D'ENREGISTRER, et annonce que la mention
+ * restera tant que ce n'est pas fait. Elle ne nomme délibérément aucun bouton d'enregistrement :
+ * le libellé du cœur change avec le statut — « Mettre à jour » en ligne, « Publier » ou
+ * « Enregistrer le brouillon » en brouillon — et la mention s'affiche sur les deux, le statut
+ * n'entrant pas dans la condition ; en nommer un enseignerait un libellé faux sur une partie des
+ * écrans.
+ *
+ * Conséquence sur sa justesse : la mention n'est JAMAIS en avance sur le site, seulement parfois en
+ * retard AU RETRAIT — le sens le moins dommageable, puisqu'une mention en retard fait rouvrir un
+ * écran quand une mention en avance ferait croire un travail fait. C'est aussi ce qui disqualifie
+ * un effacement par script : il effacerait la mention alors que le site continue de n'afficher
+ * aucune photo, et l'éleveuse partirait convaincue que c'était fait.
  *
  * TOUS LES NUMÉROS DE LIGNE DU CŒUR CITÉS ICI SONT DES REPÈRES DE LECTURE, PAS UN CONTRAT.
  * « docker/wordpress/Dockerfile:5 » tire une étiquette flottante et le dépôt ne contient pas le
  * cœur : un « build --pull » peut les décaler sans que rien ne le signale. Le livrable, c'est le
- * MÉCANISME décrit — pose différée, retrait immédiat —, et il se revérifie en relisant les fichiers
- * nommés.
+ * MÉCANISME décrit — pose différée, retrait immédiat —, et il se revérifie en relisant les
+ * fichiers nommés.
  *
  * @param int   $post_id Identifiant de la portée.
  * @param array $photos  Liste des photos que la boîte s'apprête à afficher.
@@ -519,12 +531,15 @@ function mention_photo_principale_absente( int $post_id, array $photos ): string
 
 	/*
 	 * La phrase dit d'abord ce qui fonctionne : sans sa première proposition, elle laisserait croire
-	 * que le travail de galerie déjà fait ne sert à rien. La dernière est une porte de sortie, non une
-	 * politesse — dix-huit portées sur trente et une la portent en permanence, et sans elle l'écran
-	 * sermonnerait des fiches qui remontent aux années 1990. Ce compte est daté du dépôt, pas un
-	 * invariant : il bouge dès qu'une galerie se remplit ou qu'une Photo principale est choisie.
+	 * que le travail de galerie déjà fait ne sert à rien. Elle demande ensuite d'enregistrer parce
+	 * que choisir une photo principale n'écrit rien en base : la vignette apparaît à droite, la
+	 * mention reste à gauche, et sans cette précision le geste passerait pour un échec. La dernière
+	 * proposition est une porte de sortie, non une politesse — dix-huit portées sur trente et une la
+	 * portent en permanence, et sans elle l'écran sermonnerait des fiches qui remontent aux années
+	 * 1990. Ce compte est daté du dépôt, pas un invariant : il bouge dès qu'une galerie se remplit
+	 * ou qu'une Photo principale est choisie.
 	 */
-	$phrase = 'Les photos de cette galerie s’affichent bien sur la page de la portée. Il manque seulement la « Photo principale » : c’est elle, et elle seule, qui apparaît dans la liste des portées et dans l’encart de la dernière portée. Pour en choisir une, allez dans la colonne de droite, encadré « Photo principale », puis cliquez sur « Choisir la photo principale ». Ou laissez ainsi : la liste et l’encart restent justes.';
+	$phrase = 'Les photos de cette galerie s’affichent bien sur la page de la portée. Il manque seulement la « Photo principale » : c’est elle, et elle seule, qui apparaît dans la liste des portées et dans l’encart de la dernière portée. Pour en choisir une, allez dans la colonne de droite, encadré « Photo principale », cliquez sur « Choisir la photo principale », puis enregistrez la portée : tant qu’elle n’est pas enregistrée, la photo n’est pas en ligne et cette ligne reste affichée. Ou laissez ainsi : la liste et l’encart restent justes.';
 
 	return '<div class="notice notice-warning inline"><p>' . esc_html( $phrase ) . '</p></div>';
 }

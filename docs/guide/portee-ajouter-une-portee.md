@@ -187,17 +187,21 @@ s'affiche en tête de l'encadré **Galerie photos** :
 > Les photos de cette galerie s'affichent bien sur la page de la portée. Il manque seulement la
 > « Photo principale » : c'est elle, et elle seule, qui apparaît dans la liste des portées et dans
 > l'encart de la dernière portée. Pour en choisir une, allez dans la colonne de droite, encadré
-> « Photo principale », puis cliquez sur « Choisir la photo principale ». Ou laissez ainsi : la liste
-> et l'encart restent justes.
+> « Photo principale », cliquez sur « Choisir la photo principale », puis enregistrez la portée :
+> tant qu'elle n'est pas enregistrée, la photo n'est pas en ligne et cette ligne reste affichée. Ou
+> laissez ainsi : la liste et l'encart restent justes.
 
 **Ce n'est pas une erreur, et rien n'est bloqué.** La portée s'enregistre, se publie et reste juste.
 C'est un rappel, posé là où la photo à choisir est sous vos yeux. Vous le verrez sur une bonne partie
 des portées reprises de l'ancien site : leur galerie est pleine et aucune n'a de photo principale. Les
 deux réponses sont bonnes — en choisir une, ou laisser ainsi.
 
-**L'encadré part quand vous enregistrez** : choisissez la photo dans la colonne de droite, puis cliquez
-sur **Mettre à jour**. Il s'en va au retour de la page, et pas avant — tant que vous n'avez pas
-enregistré, le site n'affiche pas encore votre photo, et l'encadré a donc raison de rester là.
+**L'encadré part quand vous enregistrez, pas au moment où vous choisissez la photo.** Dès que vous
+cliquez sur **Utiliser comme photo principale**, la vignette apparaît dans la colonne de droite : c'est
+normal, et ce n'est pas encore enregistré. L'encadré jaune reste donc à gauche, et il a raison — le
+site n'affiche toujours rien. Cliquez sur **Mettre à jour** : l'encadré part au retour de la page.
+**Inutile de recommencer le choix de la photo** ; c'est l'enregistrement qui manque, et l'encadré le
+dit lui-même.
 
 **Galerie photos**, dans un encadré à part : toutes les autres photos de la portée.
 
@@ -295,7 +299,9 @@ réécrit toute seule au prochain enregistrement.
   galerie s'affichent bien sur la page de la portée. » : la galerie est remplie et aucune
   **Photo principale** n'est choisie. Rien n'a échoué. Choisissez-en une dans la colonne de droite,
   encadré **Photo principale**, puis cliquez sur **Mettre à jour** : l'encadré part au retour de la
-  page. Ou laissez ainsi : la liste des portées et l'encart de la dernière portée restent justes.
+  page. Il reste affiché entre le choix de la photo et l'enregistrement, même si la vignette est déjà
+  visible à droite — c'est ce que sa dernière phrase vous annonce. Ou laissez ainsi : la liste des
+  portées et l'encart de la dernière portée restent justes.
 
 **Pour retrouver une portée.** La liste **Toutes les portées** affiche une colonne **Date de
 naissance** et une colonne **Disponibilité**, elle se range de la portée la plus récente à la plus

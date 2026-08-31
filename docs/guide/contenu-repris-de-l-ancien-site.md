@@ -180,6 +180,12 @@ même une bannière de rubrique, la même sur seize fiches. En élire une à vot
 choix arbitraire. Toutes les photos de vos portées ont donc été rangées, sans exception, dans la
 **Galerie photos** de chaque portée : **elles sont toutes là, et elles sont bien remplies.**
 
+En ouvrant une de ces portées, un encadré jaune s'affiche en tête de **Galerie photos** : il rappelle
+que les photos de la galerie s'affichent bien sur la page de la portée, et qu'il manque seulement la
+**Photo principale**. **Ce n'est toujours pas un défaut** : c'est le même vide, signalé à l'endroit où
+la photo à choisir est sous vos yeux. Les étapes ci-dessous sont une réponse ; laisser la portée telle
+quelle en est une autre, tout aussi juste.
+
 ### Les étapes, pour chaque portée
 
 1. Ouvrez la portée : **Portées** → **Toutes les portées** → l'identifiant de la portée.
