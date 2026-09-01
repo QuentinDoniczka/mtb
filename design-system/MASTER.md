@@ -6,8 +6,9 @@ Source de vérité visuelle du projet. `dev-ux-mtb` implémente **à la lettre**
 `review-mtb` audite le code livré **contre** ce document. Une décision visuelle qui n'est pas ici
 n'existe pas : c'est une question bloquante, pas une invention.
 
-- **Version** : 1.4 — 31 août 2026 (1.0 du 15 août 2026, 1.1 du 28 août 2026, 1.2 du 30 août 2026,
-  1.3 du 31 août 2026 ; seuls les §7.7, §9.3, §9.5, §10.2 et §10.3 sont amendés, cf. §16)
+- **Version** : 1.5 — 1er septembre 2026 (1.0 du 15 août 2026, 1.1 du 28 août 2026, 1.2 du 30 août
+  2026, 1.3 et 1.4 du 31 août 2026 ; seuls les §5.1, §7.7, §9.3, §9.5, §10.2 et §10.3 sont amendés,
+  cf. §16)
 - **Décision amont** : `docs/ETAT.md` décision 8 — direction `styles/style5` « Sauge et calcaire »
   conservée, structure entièrement refaite.
 - **Fichier de jetons attendu** : `wp-content/themes/mtb/assets/css/tokens.css`, plus le miroir
@@ -352,8 +353,8 @@ Base 4 px. Échelle discrète pour les composants, échelle fluide pour le rythm
 
 | Jeton | Valeur | Usage |
 |---|---|---|
-| `--e-1` | `.25rem` (4) | interlettre visuel, ajustement de pastille |
-| `--e-2` | `.5rem` (8) | **écart minimal entre deux cibles tactiles** |
+| `--e-1` | `.25rem` (4) | interlettre visuel, ajustement de pastille — dont l'écart pastille ↔ libellé et le rembourrage **vertical** d'un badge (§5.1.1) |
+| `--e-2` | `.5rem` (8) | **écart minimal entre deux cibles tactiles** ; par ailleurs, rembourrage **horizontal** d'un badge (§5.1.1) |
 | `--e-3` | `.75rem` (12) | gouttière de galerie, padding de cellule |
 | `--e-4` | `1rem` (16) | padding standard, espace après un paragraphe |
 | `--e-5` | `1.5rem` (24) | espace avant un `h3`, padding de carte |
@@ -367,6 +368,74 @@ Base 4 px. Échelle discrète pour les composants, échelle fluide pour le rythm
 **Règle** : l'espace *au-dessus* d'un titre est toujours plus grand que l'espace *au-dessous* — un titre
 appartient à ce qui le suit. Rapport appliqué : `--e-7` dessus / `--e-4` dessous pour `h2`,
 `--e-5` / `--e-3` pour `h3`.
+
+### 5.1.1 Le rembourrage du badge de disponibilité
+
+Chiffré à la **révision 1.5**. Jusque-là, le tableau ci-dessus nommait un padding de cellule, de carte
+et d'encart, mais **aucun padding de badge** : les trois feuilles du thème qui déclarent `.mtb-dispo`
+proposaient chacune une valeur, faute de pouvoir en lire une ici. Le tableau suivant tranche.
+
+| Propriété de `.mtb-dispo` | Valeur retenue | Rendu (à `--t-sm`) |
+|---|---|---|
+| `gap` — pastille ↔ libellé | `--e-1` | 4 px |
+| `padding-block` | `--e-1` | 4 px, soit une boîte de **26 px** à 360 px et **27 px** à 1440 px |
+| `padding-inline` | `--e-2` | 8 px |
+
+Écriture attendue : `gap: var(--e-1); padding: var(--e-1) var(--e-2);`. Le reste de la composition du
+badge est déjà fixé ailleurs et ne change pas : typographie au **§4.5** (Public Sans 700, `--t-sm`,
+1.2, majuscules, `.12em`), rayon `--r-1` au **§5.2**, états, libellés et pastille au **§3.3**.
+
+**Pourquoi `--e-1`, et non `--e-2`, entre la pastille et le mot.** Le tableau du §5.1 nomme lui-même
+`--e-1` « ajustement de pastille » et `--e-2` « écart minimal entre deux **cibles tactiles** ». L'écart
+en cause n'est pas entre deux cibles : le badge n'est cliquable nulle part — le §3.3 en fait un `<p>`
+ou un `<span>` lisible —, et la pastille n'est pas un objet voisin du mot mais un `::before` de
+l'élément **qui porte le texte**, héritant de `currentColor` précisément pour que son contraste soit
+celui du libellé. Elle doit donc se lire comme un signe **du** mot, jamais comme un objet posé **à côté
+du** mot. L'arithmétique va dans le même sens : à `--t-sm`, l'interlettre de `.12em` imposée au badge
+par le §4.5 vaut ≈ 1,8 px ; `--e-1` pose la pastille à 2,2 interlettres du premier caractère —
+attachée et distincte —, tandis que `--e-2` l'en écarte de 4,4 et la détache en second objet. `--e-1`
+est donc à la fois le jeton **nommé** pour cet usage et le jeton **juste**. Ce verdict renverse deux
+des trois écritures du thème : il ne compte pas les voix, il lit le tableau.
+
+**Pourquoi le rembourrage passe sous `--e-3`.** Deux appuis, dont l'un est décisif.
+
+1. *L'ordre de l'échelle.* Le §5.1 range ses paddings par taille de conteneur : cellule `--e-3`,
+   standard `--e-4`, carte `--e-5`, encart `--e-6`. Le badge est **la plus petite boîte fermée du
+   système**, plus petite qu'une cellule de tableau : son rembourrage se range donc **sous** celui de
+   la cellule, pas à son niveau.
+2. *Un badge ne doit pas se lire comme un bouton.* Le §4.5 lui donne déjà la typographie du bouton et
+   le §5.2 son rayon `--r-1` ; s'il en prenait aussi la boîte, la seule différence restante serait le
+   curseur — c'est-à-dire un signal de survol, que le §12.10 refuse comme distinction unique. Le §8.4
+   fixe le bouton à **≥ 48 px** de haut. Aux valeurs retenues, le badge mesure **26 → 27 px** (cadratin
+   de ligne `1.2 × --t-sm`, plus deux fois `--e-1`), soit un peu plus de la moitié : la différence se
+   voit d'un coup d'œil, sans survol. À `--e-2`/`--e-3` il mesurerait 34 → 35 px et se lirait comme une
+   petite commande désactivée.
+
+**Pourquoi la boîte est anisotrope.** L'interligne fait déjà une partie du travail vertical : à `1.2`,
+il reste ≈ 3,7 px de demi-interligne au-dessus et au-dessous des capitales. Le rembourrage vertical
+**optique** vaut donc `--e-1` + 3,7 ≈ 7,7 px, contre 8 px à l'horizontale : un badge déclaré
+anisotrope est optiquement carré. Un rembourrage égal sur les quatre côtés produirait, lui, un badge
+visiblement trop haut.
+
+**Ce que cette révision ne compense pas, et le dit.** L'interlettre de `.12em` s'applique aussi
+**après** la dernière capitale : ≈ 1,9 px sont ajoutés à l'intérieur du rembourrage droit, qui vaut
+donc optiquement ≈ 9,9 px contre 8 px à gauche. Ce document **ne le compense pas** : l'écart est
+inférieur à 2 px sur un corps de 15 px, et toute compensation serait une marge négative — une règle
+fragile pour un gain sous le seuil perceptif. C'est écrit ici pour qu'aucune chaîne ne le « répare »
+en inventant une valeur : si une mesure sur le site rendu montre le contraire, c'est une question, pas
+une invention.
+
+**Rapport aux cibles tactiles.** `--e-2` est retenu ici comme rembourrage horizontal, **non** comme
+application de la règle « écart minimal entre deux cibles tactiles ». Le badge n'est pas une cible :
+les 44 px du §12.10 ne le concernent pas, et sa hauteur de 26 px n'est pas une non-conformité. Le
+§12.10 continue de citer le §5.1 pour le seul écart entre deux cibles réelles.
+
+**Ce qui en découle dans le thème.** La valeur retenue est celle qu'écrit déjà
+`assets/css/blocs/mtb-liste-portees.css` ; `assets/css/blocs/mtb-derniere-portee.css` et
+`assets/css/fiches.css` s'y alignent, ces deux-là ne comptant que pour **une** proposition, la seconde
+déclarant recopier la première. Aucune mesure déjà consignée dans le code n'est invalidée : le badge
+de l'encart d'accueil, relevé à 238 px dans un canal de 324 px à 360 px, **rétrécit** de 12 px. Ce
+document ne tranche pas le `white-space` de la primitive, qui n'est pas une question d'espacement.
 
 ### 5.2 Rayons
 
@@ -1465,6 +1534,7 @@ Aucune n'est inventée, aucune n'est comblée en silence (D11).
 
 | Date | Version | Ce qui change | Motif |
 |---|---|---|---|
+| 2026-09-01 | 1.5 | **§5.1 seul.** Le rembourrage du badge de disponibilité `.mtb-dispo` est **chiffré** dans un §5.1.1 neuf : `gap: --e-1`, `padding: --e-1 --e-2`. Les cellules « Usage » de `--e-1` et `--e-2` nomment désormais cet emploi et renvoient au §5.1.1. Le document écrit **pourquoi**, en quatre appuis opposables : l'écart pastille ↔ libellé est un « ajustement de pastille » (`--e-1`) et **non** un « écart entre deux cibles tactiles » (`--e-2`), le badge n'étant cliquable nulle part (§3.3) et la pastille étant un `::before` de l'élément qui porte le texte, donc un signe **du** mot ; à `--t-sm`, `--e-1` place la pastille à 2,2 interlettres du premier caractère quand `--e-2` l'en écarte de 4,4 et la détache ; le rembourrage se range **sous** le padding de cellule `--e-3` parce que le badge est la plus petite boîte fermée du système ; et surtout, le badge partageant déjà la typographie du bouton (§4.5) et son rayon `--r-1` (§5.2), prendre aussi sa boîte ne laisserait pour distinction que le **curseur**, signal de survol que le §12.10 refuse comme unique — d'où une boîte de 26 → 27 px contre les **≥ 48 px** du bouton (§8.4). Deux points sont écrits comme **non compensés à dessein** : l'interlettre de `.12em` qui court après la dernière capitale rend le rembourrage droit optiquement plus large de ≈ 1,9 px ; et `--e-2` est retenu ici **hors** de la règle des cibles tactiles, la hauteur de 26 px n'étant pas une non-conformité. Rien d'autre n'est rouvert : palette, typographie, photographie, mise en page et vocabulaire inchangés ; **§9.1, §10.2 et §10.3 ne sont pas touchés**, leurs écarts ayant chacun leur propre dette. La valeur retenue est celle qu'écrit déjà `mtb-liste-portees.css` ; **deux feuilles s'y alignent**, `mtb-derniere-portee.css` et `fiches.css`. | Trou **non numéroté** — il n'a jamais eu d'entrée propre au tableau des dettes de `docs/ETAT.md` —, relevé par le code lui-même sur trois lots et **bloquant pour T18 / #33**, qui doit hisser `.mtb-dispo` en primitive commune et ne peut pas le faire tant que les feuilles proposent des valeurs différentes : `mtb-derniere-portee.css:95` (« proposé, signalé à lead-design-mtb ») et `mtb-liste-portees.css:280` (« les deux feuilles PROPOSENT au lieu de lire MASTER ») déclaraient l'un et l'autre attendre ce chiffre. Les propositions divergeaient, et **le vote par fréquence était un artefact** : `fiches.css:117-119` déclare avoir recopié `mtb-derniere-portee.css:96` pour rester littéralement identique, si bien qu'il n'y avait pas trois écritures indépendantes mais **une proposition écrite deux fois contre une autre**. Le trancher par la majorité aurait reconduit exactement le défaut que #33 répare. La justification est écrite **avec** la valeur, leçon de la dette **T56** close au lot 13 : une valeur nue dont rien n'explique l'origine se « répare » à l'envers par la chaîne suivante |
 | 2026-08-31 | 1.4 | **Le libellé de tout lien menant à l'index des portées est « Toutes les portées ».** §9.3 et §9.5 sont **recopiées sur le §10.3, dont la ligne de tableau était déjà juste** et ne change pas : la cellule « liste de portées filtrée sans résultat » du §9.3 perd son « Voir toutes les portées », qu'aucun émetteur du dépôt ne rendait, et la sortie de secours du §9.5 énumère désormais Accueil, Toutes les portées, La meute. La **règle de partage** est écrite : le **§9.5 dit quels liens paraissent, sur quels écrans et dans quel ordre**, le **§10.3 dit comment ils s'appellent** ; une divergence se tranche toujours en faveur du §10.3. « Accueil » reste fixé au §9.5, faute d'entrée au §10.3, **et le document le dit** — aucune ligne n'est ajoutée au tableau du §10.3. Le §9.3 gagne une ligne de provenance, le §10.3 le **pointeur inverse** vers ses deux composants émetteurs (`lien-de-recours`, `liste-portees`) et l'exclusion nommée du `h1` de l'archive des portées (titre de page, contrat gelé #16) et des libellés d'administration du type de contenu Portée. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie, mise en page et **§10.2** inchangés. **Deux lignes d'extension en découlent et elles seules**, dans `lien-de-recours/rendu.php` et `lien-de-recours/editeur.js`, déjà livrées. | Trois appuis : le préambule du §10 fait du **§10.3 l'arbitre** du vocabulaire, et il écrivait déjà « Toutes les portées » ; la révision **1.2 avait décliné cette juridiction** (« §10.2 et §10.3 ne sont pas touchés »), si bien que le « Les portées » du §9.5 n'était pas un arbitrage récent mais une valeur recopiée en avant ; le contrat gelé `docs/contracts/issue-13.md` avait tranché dès le **lot 5** et interdit au thème de réécrire ce libellé. S'y ajoute que la divergence était **publique** : le même lien s'appelait « Toutes les portées » depuis l'accueil et « Les portées » depuis une page introuvable. Dettes payées : **T55** (relevée au lot 9 sur le contrat #16) et **M3** (contrat gelé #13, arbitrée au lot 5 et jamais portée au document) |
 | 2026-08-31 | 1.3 | **§10.2 seul.** La ligne **Statut** du tableau de vocabulaire énumère désormais les quatre valeurs dans l'ordre **Reproducteur · En cours de confirmation · Retraité · Disparu**, au lieu de Reproducteur · Retraité · Disparu · En cours de confirmation. Les quatre libellés sont **recopiés à l'identique** ; seul leur ordre d'énumération change. La cellule porte maintenant la **provenance** de cet ordre : celui, gelé, des groupes de la page publique « La meute » — fait d'affichage que le document enregistre, les libellés, eux, restant fixés ici. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie et mise en page inchangés ; **§10.3 n'est pas touchée, son écart ayant sa propre issue (#43)**. Aucune ligne de thème ni d'extension n'en découle : le code était déjà juste, c'est le document qui était périmé. | Dette **T56**, relevée à la clôture du **lot 10** : l'ordre des quatre statuts est celui, **gelé**, des groupes de « La meute », porté par le code de l'extension et **déjà imprimé dans le manuel de l'éleveuse** ; une chaîne future qui « réparerait » le code d'après l'ancien ordre de `MASTER.md` casserait à la fois la page publique et des fiches d'aide déjà livrées |
 | 2026-08-30 | 1.2 | **§9.5 seul.** La section est réécrite en trois temps : la sortie de secours posée une seule fois — dont le fait qu'un lien s'omet en silence quand sa destination n'existe pas, la liste comptant trois, deux ou un élément —, puis le tableau **clos** des écrans qui la portent, où figure aussi l'index des portées, qui ne la porte pas et relève du §9.3, puis les deux écrans qui ne sont pas des recours, texte inchangé. « trois liens » devient « jusqu'à trois liens ». « Aucun contenu à afficher. » est figé avec sa provenance (socle de #2) et sa condition de péremption — ce qui **clôt la ligne de `docs/contracts/issue-2.md`** qui l'annonçait « provisoire, remplacée par les formulations MASTER §9.5 à l'epic Gabarits » : le remplacement n'aura pas lieu, le libellé est retenu tel quel, et ce contrat gelé n'attend plus rien. Le titre « Pages d'erreur », faux de quatre de ses cinq écrans — un seul, la 404, est une erreur —, est corrigé ; **le numéro 9.5 est conservé**, aucun renvoi ne le citant autrement. Rien d'autre n'est rouvert : palette, typographie, espacement, photographie, mise en page et vocabulaire inchangés — §10.2 et §10.3 ne sont pas touchés, leurs écarts ayant chacun leur propre issue. Aucune ligne de thème ni d'extension n'en découle. | Dette **T53**, relevée au lot 9 par le contrat #17 (arbitrage A8bis) : le thème porte la même sortie de secours sur **trois** écrans, le document n'en décrivait que deux, et la fiche imprimée de l'éleveuse en décrivait déjà trois |
