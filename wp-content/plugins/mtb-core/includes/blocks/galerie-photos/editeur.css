@@ -3,17 +3,23 @@
  *
  * Servie par la poignée déclarée en `"editorStyle"` dans block.json : elle
  * n'atteint JAMAIS le visiteur. La grille, le cadre, le cerne et le cadrage
- * vivent dans `galerie.css`, qui habille la page ET la toile — cette feuille ne
- * les recopie pas (ce serait la dette T9 sur le rendu dont dépend D7).
+ * sont l'affaire du THÈME, dans sa feuille de composant
+ * `assets/css/blocs/mtb-galerie-photos.css`, mise en file d'attente par
+ * `mtb_feuilles_de_blocs()` (`themes/mtb/functions.php`) pour la page publique
+ * ET pour la toile de l'éditeur ; cette feuille-ci ne les recopie pas (ce serait
+ * la dette T9 sur le rendu dont dépend D7).
  *
  * --- L'ÉTAT VIDE N'EST PAS ICI ----------------------------------------------
  * `MASTER.md` §9.1 déclare une apparence d'état vide IDENTIQUE POUR LES DIX
  * COMPOSANTS et la loge explicitement dans `editor.css`. Cette feuille-ci ne la
  * définit donc pas : l'apparence du cadre `.mtb-etat-vide` et celle de son
  * étiquette `.mtb-etat-vide__nom` appartiennent à
- * `themes/mtb/assets/css/editor.css` (dette T13).
- * `.mtb-etat-vide__phrase` n'a de règle nulle part, et c'est conforme : §9.1 ne
- * lui donne pas d'apparence propre, elle hérite du cadre (contrat #8 §19.12).
+ * `themes/mtb/assets/css/editor.css`.
+ * `.mtb-etat-vide__phrase` y a elle aussi sa règle — s'y repérer AU SÉLECTEUR,
+ * jamais à un numéro de ligne. Ce n'est pas une apparence PROPRE pour autant :
+ * c'est une remise à zéro de marge, mécanique et non décorative. Le contrat #8
+ * §20.3 l'établit sur l'arbre et périme son §19.12, qui tenait cette phrase pour
+ * sans règle nulle part.
  * `editeur.js` émet ces trois crochets partagés, plus le crochet local
  * `.mtb-galerie-photos__vide` sur la même racine — ce dernier est disponible
  * pour un ajustement PROPRE à la galerie, jamais pour porter l'apparence
@@ -21,33 +27,48 @@
  * une seule apparence, c'est exactement la divergence que ce partage évite.
  *
  * Il ne reste donc qu'une chose, propre à la galerie dans la toile : la règle de
- * masquage de `__rang`, COPIE À L'IDENTIQUE de `galerie.css`. Elle est
- * volontairement dans les deux feuilles : elle est porteuse d'accessibilité, et
- * son mode de panne dans l'aperçu — « Photo 3 sur 12 » imprimé sous chaque
- * vignette — ferait croire à l'éleveuse que le bloc est cassé. Contrat #8 §6 et
- * §7.6.
+ * masquage de `__rang`, COPIE À L'IDENTIQUE de celle que porte la feuille du
+ * thème. Elle est volontairement dans les deux feuilles : elle est porteuse
+ * d'accessibilité, et son mode de panne dans l'aperçu — « Photo 3 sur 12 »
+ * imprimé sous chaque vignette — ferait croire à l'éleveuse que le bloc est
+ * cassé. Contrat #8 §6 et §7.6.
  *
- * --- Dérogation ------------------------------------------------------------
+ * --- LA JUMELLE TRAVERSE LA FRONTIÈRE THÈME / EXTENSION ---------------------
+ * Depuis #34, l'autre exemplaire de cette règle n'est plus dans l'extension : il
+ * vit dans `themes/mtb/assets/css/blocs/mtb-galerie-photos.css`, DONC CHEZ UN
+ * AUTRE PROPRIÉTAIRE. Les deux copies doivent rester identiques, et AUCUN
+ * CONTRÔLE DU DÉPÔT NE DIRAIT LEUR DIVERGENCE : `make css-check` ne balaie que
+ * les feuilles du thème et ne voit jamais celle-ci, et une relecture d'empreinte
+ * n'ouvre qu'un seul des deux côtés. Qui touche l'une ouvre l'autre. C'est
+ * l'énoncé de la dette T15-bis, consignée au contrat #8 §22.3.
+ *
+ * --- La dérogation résiduelle, dans ses nouvelles bornes --------------------
  * Le contrat #1 §8 gèle que l'extension n'émet aucune règle visuelle ; cette
- * feuille en est une dérogation, tracée avec sa jumelle en tête de
- * `galerie.css` (dette T15, ouverte). Le couplage aux jetons du thème décrit
- * là-bas ne concerne PAS cette feuille : elle ne lit aucun `var(--…)`, l'état
- * vide étant le seul à en avoir eu besoin.
+ * feuille en est la dérogation résiduelle. Elle est nommée, bornée et justifiée ;
+ * elle n'est pas absente. #34 l'a ramenée de SEPT sélecteurs à UN, de ~35
+ * déclarations à QUATRE, de NEUF jetons du thème lus à ZÉRO, et elle n'est
+ * JAMAIS SERVIE AU VISITEUR. Ce qui rend son maintien cohérent plutôt que
+ * résiduel : c'est désormais le seul masquage de `__rang` qui NE DÉPENDE PAS DU
+ * THÈME. Elle ne lit aucun `var(--…)`, l'état vide étant le seul à en avoir eu
+ * besoin.
  *
  * Valeurs brutes, liste close du contrat #8 §7 amendée par son §19.6 :
  * `inset(50%)`, la géométrie de masquage que `MASTER.md` §7.6 écrit lui-même.
  * Ne comptent pas comme valeurs brutes : 0, 100 % et les mots-clés CSS
- * (convention de `base.css:25-26`).
+ * (convention énoncée dans l'en-tête de `base.css` : « Ne comptent pas : 0,
+ * 100 % et les mots-clés CSS »).
  */
 
 /* =====================================================================
- * Le nom accessible de la vignette — copie conforme de `galerie.css`
+ * Le nom accessible de la vignette — copie conforme de la règle jumelle de
+ * `themes/mtb/assets/css/blocs/mtb-galerie-photos.css`
  *
  * Technique de MASTER §7.6 : ni `display: none`, ni `visibility: hidden` (qui
  * retirent l'élément de l'arbre d'accessibilité), ni `overflow: hidden` sur un
  * conteneur de texte (§7.8 ; la liste des interdits du §13 ne mentionne pas
- * `overflow`). Deux classes du balisage gelé, comme dans `galerie.css`, pour
- * que les deux copies ne puissent pas se départager autrement qu'à l'identique.
+ * `overflow`). Deux classes du balisage gelé, comme dans la feuille du thème,
+ * pour que les deux copies ne puissent pas se départager autrement qu'à
+ * l'identique.
  * ================================================================== */
 .mtb-galerie-photos .mtb-galerie-photos__rang {
   position: absolute;

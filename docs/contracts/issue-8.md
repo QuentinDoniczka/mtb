@@ -1372,3 +1372,108 @@ aucun PHP — ni `render_block()`, ni une fonction de composant. La galerie d'un
 plus difficile du lot, parce que son bloc prend un attribut `photos` explicite qu'un gabarit ne peut
 pas connaître. Point ouvert consigné dans l'amendement 1 du contrat #1, **à trancher au brainstorm de
 #16/#17**, pas ici.
+
+---
+
+## 22. Amendement du 2026-09-01 — `galerie.css` n'existe plus, sa présentation est rendue au thème
+
+Issue **#34**, dette **T15**, commit `a171034`. Cette section est ajoutée **en fin de fichier, sans
+qu'aucune ligne existante soit modifiée** : les énoncés ci-dessous restent tels qu'ils ont été gelés,
+leur fausseté au présent étant une trace de ce qui a été cru, pas un défaut à effacer. Le lead a borné
+l'autorisation à ce document parce que **c'est lui qui porte la convention** — les §19, §20 et §21 sont
+déjà des amendements datés ajoutés après gel, et le **§20.5 anticipait explicitement #34** (« son
+déplacement futur reste une copie plus la suppression du `"style"` »).
+
+### 22.1 Ce qui a changé
+
+`includes/blocks/galerie-photos/galerie.css` est **supprimée**, et non vidée : ses 6 règles, 6
+sélecteurs et 31 déclarations étaient visuelles à 100 %, il n'en serait rien resté. Le précédent est
+dans ce contrat même, `:1226-1231` : `editeur.css` n'a survécu **que parce qu'il lui restait une
+règle**.
+
+La présentation vit désormais dans `wp-content/themes/mtb/assets/css/blocs/mtb-galerie-photos.css`,
+**au seul nom que le chargeur dérive** — `mtb-galerie-photos.css` et non `galerie-photos.css`. La clé
+`"style"` de `block.json` et le `wp_register_style` de `includes/blocks/galerie-photos/bootstrap.php`
+sont retirés ensemble : les traiter séparément donne soit un double chargement, soit une feuille
+enregistrée pointant vers un fichier absent.
+
+### 22.2 Les énoncés de ce contrat que #34 rend faux au présent — non modifiés
+
+Ils décrivent un fichier et une poignée qui n'existent plus. **Aucun n'est corrigé sur place ;** cette
+liste est le seul correctif.
+
+| Où | Ce que le texte gelé affirme | Ce qui est vrai depuis `a171034` |
+|----|------------------------------|----------------------------------|
+| §2, l. 92 | la clé `style` du bloc vaut `mtb-galerie-photos-style` | la clé `"style"` est **retirée** de `block.json` ; la poignée servie est `mtb-bloc-mtb-galerie-photos`, dérivée par le chargeur du thème |
+| §3, §3.1, §3.2, §3.3 | tiennent la variante P, adossée à `galerie.css` | le fichier n'existe plus ; la variante vit dans la feuille du thème |
+| §20.5 | « son déplacement futur reste une copie plus la suppression du `"style"` » | **exact, et exécuté** — cette ligne a anticipé #34 et n'est pas démentie |
+| l. 186, 952, 1340 | décrivent `galerie.css` au présent | idem : fichier supprimé |
+
+### 22.3 Ce qui subsiste côté extension, nommé plutôt que caché
+
+**Une** feuille demeure : `includes/blocks/galerie-photos/editeur.css`, servie par `"editorStyle"`,
+qui **n'atteint jamais le visiteur**. Elle porte **quatre déclarations** — `position: absolute`,
+`clip-path`, `inline-size`, `block-size` — soit la copie de la règle de masquage de `__rang`, réduite
+de **7 sélecteurs à 1**.
+
+Elle n'est pas supprimée, et c'est délibéré : la règle est **porteuse d'accessibilité**, et son mode de
+panne dans l'aperçu — « Photo 3 sur 12 » imprimé sous chaque vignette — ferait croire à l'éleveuse que
+le bloc est cassé. Trancher si une règle servie à l'éditeur seul relève ou non de la frontière du
+contrat #1 §8 est un arbitrage de `MASTER.md`, **pas un effet de bord d'un rangement** : hors sujet de
+#34.
+
+**La tâche 4 de l'issue #34 était donc infaisable au sens littéral**, et elle n'a pas été rétrécie pour
+la faire passer : un `--glob '!editeur.css'` aurait fabriqué un `grep` vert qui ne prouve plus rien.
+Elle est reformulée en « aucune règle visuelle côté extension **sur le chemin du visiteur** ».
+
+**Dette T15-bis** : la règle de masquage existe désormais dans la feuille du thème **et** dans
+`editeur.css`, vérifiées identiques déclaration pour déclaration — mais **aucun contrôle du dépôt ne
+dirait leur divergence**. L'énoncé de la dette n'est pas « il reste du CSS dans l'extension », c'est
+« il en existe deux copies et rien ne surveille leur écart ».
+
+Deux endroits qu'aucun `grep` de frontière ne verra jamais, nommés ici pour la même raison :
+`galerie-photos/rendu.php:37` (`LARGEURS_PAR_DEFAUT`, de l'arithmétique de grille écrite dans
+l'extension — **irréductible**, un attribut `sizes` ne peut pas vivre dans une feuille) et
+`derniere-portee/render.php:157` (largeur de fichier mesurée, hors périmètre de #34).
+
+### 22.4 Pourquoi §3.1 était caduque AVANT #34 — une prédiction, puis une mesure
+
+§3.1 est le pivot de l'arbitrage 1. Son mécanisme : « `wp_enqueue_block_style()` est côté visiteur
+uniquement », donc « en variante T, la toile ne reçoit rien », donc l'aperçu de l'éleveuse serait « une
+colonne d'images brutes ». C'est une **prédiction**, tirée d'une lecture du cœur — et elle a été
+**réfutée par une sonde**. `issue-6.md:627` (dette T11) établit que `_wp_get_iframed_editor_assets()`
+déclenche bien `enqueue_block_assets` et que le rappel s'exécute dans la toile ; la panne réelle était
+ailleurs — `mtb-jetons` n'était pas enregistré en administration, et `WP_Dependencies::all_deps()`
+abandonnait l'élément **en silence**. Le §20.5 de ce contrat en avait déjà tiré la conséquence : T15
+« n'est plus une dette technique mais une dette d'alignement ». **#34 n'a donc pas renversé §3.1 ; il a
+exécuté ce que §20.5 avait déjà acté.**
+
+**Mesuré le 1er septembre 2026 sur la pile vivante** (port 3005, administrateur connecté, éditeur de la
+page 6), en comptant les occurrences de chaque poignée de feuille de bloc dans la réponse — payload de
+la toile **plus** page éditeur :
+
+```
+mtb-bloc-mtb-bandeau-alerte-css       2    mtb-bloc-mtb-formulaire-contact-css   2
+mtb-bloc-mtb-bandeau-ouverture-css    2    mtb-bloc-mtb-galerie-photos-css       2
+mtb-bloc-mtb-coordonnees-plan-css     2    mtb-bloc-mtb-grille-chiens-css        2
+mtb-bloc-mtb-derniere-portee-css      2    mtb-bloc-mtb-liste-portees-css        2
+mtb-bloc-mtb-encart-appel-css         2    mtb-bloc-mtb-tableau-resultats-css    2
+mtb-bloc-mtb-fiche-information-css    2
+
+mtb-galerie-photos-style              0    ← l'ancienne poignée de l'extension
+```
+
+**Onze feuilles, deux occurrences chacune : la toile est symétrique.** Les dix sœurs y étaient déjà
+avant #34 ; la galerie les a rejointes, et la poignée que servait l'extension a disparu. La variante T
+que §3.1 jugeait impraticable **est l'état livré**, et elle ne prive la toile de rien.
+
+**Ce que cette mesure ne prouve pas**, et qu'il faut dire plutôt que taire : que l'éleveuse *voit* la
+grille. La présence d'une poignée dans le payload de la toile n'est pas un rendu. Aucun navigateur n'a
+rendu ce site, et #34 ne change pas cela.
+
+### 22.5 Ce que #34 ne ferme pas
+
+La copie de la règle de masquage de `__rang` reste dans `includes/blocks/galerie-photos/editeur.css`,
+servie par `"editorStyle"` et **jamais au visiteur**. Ce ne sont pas des restes : **les §6 et §7.6 de ce
+contrat la commandent** — c'est de l'accessibilité, pas de la décoration — et #34 n'y touche pas. Son
+état, ses bornes chiffrées et sa dette **T15-bis** sont en §22.3.
