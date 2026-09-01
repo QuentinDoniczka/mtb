@@ -551,7 +551,34 @@ contrat gelé.
    renvoient à un **fichier supprimé**. **Ce n'est pas T88**, qui est une dérive de numéros : c'est une
    **cible qui disparaît**. *Provenance : #34, lot 15.*
 
-## 20. T85 — ce que #34 en paie, et une correction à son énoncé
+## 20. Une erreur de raisonnement de cette chaîne, consignée parce qu'elle se répétera
+
+Pendant la seconde passe, `HEAD` a avancé de deux commits. J'ai conclu que l'agent qui travaillait alors
+en était l'auteur, et je l'ai écrit comme un fait établi. **C'était faux : les deux commits étaient ceux
+du lead**, entré dans l'arbre pendant que la chaîne tournait.
+
+**Ce qui rend l'erreur intéressante, c'est que le raisonnement était correct et la méthode mauvaise.**
+J'avais trois observations — le commit ne touche que les deux fichiers accordés à cet agent, il est
+horodaté pendant son exécution, l'auteur git est celui du dépôt. Les trois **corroborent** l'hypothèse
+« c'est lui ». **Aucune ne la distingue de l'hypothèse « c'est le lead »** : le lead éditait exactement
+les mêmes deux fichiers, au même moment, sous la même identité git — ce dépôt n'ayant qu'un auteur.
+J'ai pris de la **corroboration** pour de la **discrimination**.
+
+Et la prémisse qui portait tout — « aucune autre chaîne ne tourne » — était vraie **des chaînes** et
+fausse **du lead**. Un raisonnement rigoureux sur un modèle incomplet du monde produit une conclusion
+fausse **avec l'assurance d'une mesure**.
+
+**La règle, qui généralise l'arbitrage 7** : celui-ci dit qu'une citation `fichier:ligne` exacte prouve
+qu'on a lu, pas qu'on a compris. Celle-ci l'étend à toute inférence — **une observation qui s'accorde
+avec mon hypothèse ne la démontre pas tant que je n'ai pas cherché l'hypothèse concurrente qu'elle
+accorderait aussi bien.** Avant de conclure sur la provenance d'un changement, énumérer **qui d'autre a
+la main sur l'arbre** — le lead en fait partie.
+
+**Corollaire d'orchestration** : sur un projet mono-branche sans isolation, **une écriture non annoncée
+dans l'empreinte d'une chaîne vivante est indiscernable d'une faute de cette chaîne**. Rien n'a été
+perdu ici parce que la chaîne a amendé au lieu d'écraser — mais c'est de la chance, pas de la méthode.
+
+## 21. T85 — ce que #34 en paie, et une correction à son énoncé
 
 **#34 en paie une part, et une seule.** `MTB_CORE_VERSION` vaut `'0.1.0'` et `mtb-core.php` est
 **interdit à toute issue** (contrat #1 §13) : personne ne peut l'incrémenter, donc tout ce qui est
