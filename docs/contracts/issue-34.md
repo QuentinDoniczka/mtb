@@ -280,13 +280,53 @@ passer.** Elle prescrit un `grep` prouvant qu'« aucune règle visuelle ou de mi
 côté extension ». `editeur.css` porte `position: absolute` et `clip-path` : c'est de la mise en page.
 Écrire `--glob '!editeur.css'` pour obtenir zéro serait la faute exacte refusée au lot 14.
 
-**Formulation gelée du contrôle** :
+**Formulation gelée du contrôle — reformulation ACCORDÉE par le lead le 1er septembre 2026** :
 
-> Il subsiste **une** feuille côté extension, `includes/blocks/galerie-photos/editeur.css` : **un**
-> sélecteur, **quatre** déclarations, **zéro** `var(--…)`, zéro couleur, zéro typographie, zéro règle
-> de mise en page du site, servie par `"editorStyle"` et **jamais au visiteur**. C'est la dérogation
-> résiduelle au contrat #1 §8, **réduite par #34 de sept sélecteurs à un**. Elle est nommée, bornée et
-> justifiée ; **elle n'est pas absente.**
+> **Aucune règle visuelle côté extension sur le chemin du visiteur ; subsiste la copie de masquage
+> servie à l'éditeur seul.**
+
+**La borne est écrite, pas sous-entendue** — exigence du lead, parce qu'une revendication rétrécie qui
+ne nomme pas sa borne est précisément celle qui trompe. Ce qui subsiste est **une** feuille,
+`includes/blocks/galerie-photos/editeur.css`, **un** sélecteur, et **ces quatre déclarations et pas une
+de plus** :
+
+```css
+.mtb-galerie-photos .mtb-galerie-photos__rang {
+  position: absolute;
+  clip-path: inset(50%);
+  inline-size: 100%;
+  block-size: 0;
+}
+```
+
+Servies par `"editorStyle"`, donc **dans la toile de l'éditeur uniquement, jamais au visiteur**. Zéro
+`var(--…)`, zéro couleur, zéro typographie, zéro règle de mise en page du site.
+
+**Le `grep` des deux côtés — celui qui passe, et celui qui montre ce qui reste.** Les deux sont dus :
+donner le premier seul serait la revendication rétrécie.
+
+```bash
+# (1) chemin du VISITEUR — passe, et c'est la revendication de #34
+rg -n '"style"' wp-content/plugins/mtb-core --glob 'block.json'          → 0
+# aucun block.json du catalogue ne déclare plus de feuille de site
+
+# (2) ce qui RESTE côté extension — ne passe pas, et ne doit pas prétendre passer
+rg --files wp-content/plugins/mtb-core -g '*.css'
+  → wp-content/plugins/mtb-core/includes/blocks/galerie-photos/editeur.css     (1 ligne)
+rg -n 'wp_register_style|wp_enqueue_style|wp_add_inline_style|add_editor_style' \
+     wp-content/plugins/mtb-core --glob '*.php'
+  → …/galerie-photos/bootstrap.php:50: wp_register_style(     ← la feuille d'ÉDITEUR
+```
+
+**Aucun `--glob '!editeur.css'`, jamais.** Un `grep` qu'on ajuste jusqu'à ce qu'il soit vert ne prouve
+plus rien : c'est le défaut de la passe du lot 11, qui concluait « D6 vert » sur **zéro feuille
+inspectée**. C'est la dérogation résiduelle au contrat #1 §8, **réduite par #34 de sept sélecteurs à
+un**. Elle est nommée, bornée et justifiée ; **elle n'est pas absente.**
+
+**Le sort de cette copie n'appartient pas à #34** — position du lead, portée ici : son mode de panne
+(« Photo 3 sur 12 » imprimé sous chaque vignette dans l'aperçu) est un **service rendu**, et trancher
+si une règle servie à l'éditeur seul relève ou non de la frontière est un **arbitrage de `MASTER.md`**,
+pas un effet de bord d'un rangement.
 
 **Deux endroits que le `grep` ne verra jamais, nommés ici plutôt que tus :**
 
@@ -443,7 +483,7 @@ faire sur cette issue** — et si cela devait changer, la bijection du guide est
 | 4 | **Où vit le compte d'artefacts** : la consigne de lot dit `Makefile:116`, le plan front dit `:119` | **`:119`** | Mesuré. `:116` est la cible `css:`, sans nombre |
 | 5 | **Combien de lignes portent le compte** : la consigne dit `docker.md:70-71` **et** `:304-305` | **`:70`, `:71`, `:304`** | Mesuré : `:305` ne porte aucun nombre. **Quatre** lignes au total avec le `Makefile`, pas six |
 | 6 | **Taille de `galerie.css`** : le plan back dit « ~30 déclarations », le front dit 31 | **6 règles / 6 sélecteurs / 31 déclarations** | Compté sur le fichier décommenté |
-| 7 | **Port de la pile** : le plan front dit 8080 (`compose.yaml:78`) | **3005** | `compose.yaml` lit `${WP_PORT:-8080}` — le plan a pris le **défaut** pour la valeur. La pile écoute sur 3005, où toutes les mesures de ce contrat ont été faites |
+| 7 | **Port de la pile** : le plan front dit 8080 (`compose.yaml:78`) | **3005** | `compose.yaml` lit `${WP_PORT:-8080}` — le plan a pris le **défaut** pour la valeur. La pile écoute sur 3005, où toutes les mesures de ce contrat ont été faites. **C'est le plus instructif des trois défauts de chiffre du lot, et il est consigné à la demande du lead** : une ligne `:78` était citée, le fichier avait bien été ouvert, et la lecture était pourtant fausse. **Une citation `fichier:ligne` exacte n'est pas une mesure** — elle prouve qu'on a lu, pas qu'on a compris ce qu'on lisait. C'est exactement le genre de lecture qui **paraît sourcée et ne l'est pas** |
 | 8 | **La toile de l'éditeur est-elle atteinte par une feuille du thème ?** `issue-7.md:576-582` dit non, `issue-6.md:627` dit oui | **OUI, mesuré** | §1. Prédiction contre sonde : la sonde gagne, et la mesure du 1er septembre 2026 la confirme sur les dix sœurs |
 | 9 | **Faut-il supprimer `editeur.css`** puisque son doublon devient redondant ? | **NON** | Hors sujet de #34, et la règle reste le seul masquage de `__rang` **indépendant du thème**. Sa présence devient **plus** cohérente, pas moins |
 | 10 | **Numérotation de la dette résiduelle** : `T15-b` (ma proposition) ou `T15-bis` (plan back) | **`T15-bis`**, si dette il y a | Le seul précédent de dette dérivée du dépôt est **`T16-bis`**. `T15-b` ouvrirait une seconde convention pour un cas unique |
@@ -452,12 +492,53 @@ faire sur cette issue** — et si cela devait changer, la bijection du guide est
 
 ---
 
-## 17. Élargissements d'empreinte — état au gel
+## 17. Élargissements d'empreinte — état final
 
-| Objet | État | Repli si refusé |
-|---|---|---|
-| `Makefile:119`, `docs/docker.md:70,71,304` — **le seul compte** | **ACCORDÉ d'avance** par le lead | — |
-| `includes/blocks/galerie-photos/editeur.css` — **docbloc seul**, aucune déclaration CSS touchée | **DEMANDÉ**, réponse en attente | Ne pas ouvrir le fichier. Inscrire **T15-bis** au rapport : cinq renvois vers un fichier supprimé (l. 6, 24, 33, 44, 49), plus deux affirmations **déjà** fausses avant #34 — « dette T13 » (l. 14), payée selon `issue-8.md:1233` ; et « `.mtb-etat-vide__phrase` n'a de règle nulle part » (l. 15-16), démentie par `themes/mtb/assets/css/editor.css:160` |
-| `docs/contracts/issue-8.md` — **§22 ajouté en fin**, aucune ligne existante modifiée | **DEMANDÉ**, réponse en attente | Ne pas ouvrir. Inscrire au rapport que §2 l. 92, §3, §3.1, §3.2, §3.3 et §20.5 d'un **contrat gelé** deviennent fausses au présent |
-| `themes/mtb/assets/css/blocs/mtb-grille-chiens.css:129`, `mtb-liste-portees.css:89`, `assets/css/fiches.css:104` | **NON DEMANDÉ — confiés à #33** | #33 balaie déjà `assets/css/blocs/*.css` et `fiches.css`, et passe juste après. Les rouvrir ici recouvrirait son empreinte pour trois lignes |
-| `docs/ETAT.md` — T15 barrée | **NON DEMANDÉ** | Propriété de `/lead-mtb` (`CLAUDE.md`). **T15 est payée par ce commit** ; l'inscription appartient au lead |
+Les trois demandes ont été **accordées** par le lead le 1er septembre 2026.
+
+| Objet | État |
+|---|---|
+| `Makefile:119`, `docs/docker.md:70,71,304` — **le seul compte** | **ACCORDÉ d'avance** |
+| `includes/blocks/galerie-photos/editeur.css` — **docbloc seul**, aucune déclaration CSS touchée | **ACCORDÉ.** Motif du lead : supprimer `galerie.css` en laissant cinq renvois vers un fichier disparu, c'est **fabriquer la péremption au moment même où l'on range**. Étendu par lui à la l. 14 (« dette T13 », payée) — « le même geste et la même famille » |
+| `docs/contracts/issue-8.md` — **§22 ajouté en fin**, aucune ligne existante modifiée | **ACCORDÉ**, sur la distinction du §18 ci-dessous |
+| `themes/mtb/assets/css/blocs/mtb-grille-chiens.css:129`, `mtb-liste-portees.css:89`, `assets/css/fiches.css:104` | **CONFIÉS À #33**, le lead s'engageant à les porter dans son mandat. Motif : la règle `make css` fait que **toute feuille touchée entraîne son artefact** — les rouvrir ici élargirait l'empreinte pour trois commentaires |
+| `docs/ETAT.md` | **NON OUVERT.** Propriété de `/lead-mtb`. **T15 est payée par ce commit** ; l'inscription lui appartient |
+
+## 18. La distinction sur les contrats gelés — gravée par le lead, citée ici
+
+« Ne pas éditer les contrats gelés » **reste la règle**, et le lead a statué ainsi deux fois la veille
+(T86 pour `issue-16/17/18`, T91 pour `issue-2/7/12/13`).
+
+**Ce qui est interdit** : **réécrire un énoncé gelé**. Sa fausseté est une **trace historique, pas un
+bug** — la corriger efface la preuve de ce qui a été cru.
+
+**Ce qui est permis ici, et pourquoi** : **ajouter une section d'amendement datée, en fin de fichier,
+dans un document qui porte déjà cette convention**. `issue-8.md` a §19, §20 et §21, et **§20.5
+anticipait explicitement #34**. Rien d'existant n'est modifié, donc **aucune citation par numéro n'est
+périmée** — leçon de `issue-17.md:412`, où une correction de dette avait décalé une ligne citée par un
+contrat gelé.
+
+**Cette autorisation ne se généralise pas** : elle vaut pour `issue-8.md` **parce que ce document porte
+§19-§21**. Un contrat sans convention d'amendement ne s'ouvre pas de cette façon.
+
+## 19. Dettes rendues au lead — sans numéro, il numérote à la clôture
+
+**T15 est payée** par `a171034`. Trois dettes neuves, avec leur énoncé et leur provenance :
+
+1. **La jumelle traverse désormais la frontière thème/extension.** La règle `__rang` (quatre
+   déclarations) existe dans `themes/mtb/assets/css/blocs/mtb-galerie-photos.css` **et** dans
+   `mtb-core/includes/blocks/galerie-photos/editeur.css`. Duplication **volontaire** (contrat #8 §6,
+   §7.6) et vérifiée identique déclaration pour déclaration — mais **aucun contrôle du dépôt ne dirait
+   leur divergence** : `make css-check` ne balaie que les feuilles du thème et ne voit jamais celle-ci,
+   et une relecture d'empreinte n'ouvre qu'un côté. *Provenance : #34, lot 15.*
+2. **`docker/outils/mtb-minifier-css.php:406` — « vert sur les quinze feuilles ».** **Ambigu avant même
+   #34** : le pré-vol balaie 14 sources, quand `issue-40.md:401` titre « 14 artefacts sur 15 sources ».
+   Les deux lectures : « quinze » = le **corpus CSS** du thème (14 + `editor.css`), ou « quinze » = le
+   **pré-vol**. Après #34, corpus à 16 et pré-vol à 15 : **la phrase est fausse dans les deux**.
+   Indésambiguïsable par cette chaîne — il faudrait deviner ce que #40 voulait dire. *Provenance :
+   livrable de #40, rendue fausse par #34.*
+3. **Deux renvois pendants et une poignée renommée, confiés à #33** — et la distinction compte :
+   `fiches.css:104` cite une **poignée qui change de nom** (`mtb-galerie-photos-style` →
+   `mtb-bloc-mtb-galerie-photos`), tandis que `mtb-grille-chiens.css:129` et `mtb-liste-portees.css:89`
+   renvoient à un **fichier supprimé**. **Ce n'est pas T88**, qui est une dérive de numéros : c'est une
+   **cible qui disparaît**. *Provenance : #34, lot 15.*
