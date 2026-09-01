@@ -116,7 +116,7 @@ db-check:
 css:
 	MSYS_NO_PATHCONV=1 docker compose run --rm --no-deps --entrypoint php -v "$$(pwd):/depot:rw" wordpress /depot/docker/outils/mtb-minifier-css.php --racine=/depot/wp-content/themes/mtb/assets/css
 
-# Vérifie les 14 paires source/artefact sans rien écrire, et sort 1 dès qu'une seule paire n'est
+# Vérifie les 15 paires source/artefact sans rien écrire, et sort 1 dès qu'une seule paire n'est
 # pas à jour. À jouer avant tout commit qui touche une feuille de style.
 css-check:
 	MSYS_NO_PATHCONV=1 docker compose run --rm --no-deps --entrypoint php -v "$$(pwd):/depot:rw" wordpress /depot/docker/outils/mtb-minifier-css.php --racine=/depot/wp-content/themes/mtb/assets/css --verifier

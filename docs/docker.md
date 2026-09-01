@@ -67,8 +67,8 @@ Identifiants de développement définis dans `.env.example` (à copier dans `.en
 | `make debug-log-reset` | Vide ce journal, avant une mesure « aucune notice » |
 | `make db-sql cmd="…"` | Accès direct à la base via le client du service `db` (outil, pas un repli — voir « Accès à la base et TLS ») |
 | `make db-check` | Recette d'acceptation de #30 : rejoue `wp db query`, `wp db check` et `wp db export`, dit lequel échoue |
-| `make css` | Régénère les 14 feuilles minifiées du thème — voir « Feuilles de style minifiées » |
-| `make css-check` | Vérifie les 14 paires source/artefact sans rien écrire ; sort 1 dès qu'une paire n'est pas à jour |
+| `make css` | Régénère les 15 feuilles minifiées du thème — voir « Feuilles de style minifiées » |
+| `make css-check` | Vérifie les 15 paires source/artefact sans rien écrire ; sort 1 dès qu'une paire n'est pas à jour |
 
 ## Accès à la base et TLS (#30)
 
@@ -301,7 +301,7 @@ aucune couleur réécrite.
 
 | Commande | Effet |
 |----------|-------|
-| `make css` | Régénère les 14 artefacts. Une ligne par feuille, plus un total. Sortie 0, sauf refus. |
+| `make css` | Régénère les 15 artefacts. Une ligne par feuille, plus un total. Sortie 0, sauf refus. |
 | `make css-check` | N'écrit rien. Rend `à jour`, `PÉRIMÉ`, `ABSENT`, `ORPHELIN` ou `INVALIDE` par paire, et **sort 1 dès qu'une seule paire n'est pas à jour**. |
 
 ### Obligation de processus

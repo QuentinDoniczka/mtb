@@ -26,6 +26,5 @@
 	},
 	"render": "file:./render.php",
 	"editorScript": "mtb-galerie-photos-editeur",
-	"editorStyle": "mtb-galerie-photos-editeur-style",
-	"style": "mtb-galerie-photos-style"
+	"editorStyle": "mtb-galerie-photos-editeur-style"
 }
