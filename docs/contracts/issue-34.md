@@ -521,16 +521,24 @@ contrat gelé.
 **Cette autorisation ne se généralise pas** : elle vaut pour `issue-8.md` **parce que ce document porte
 §19-§21**. Un contrat sans convention d'amendement ne s'ouvre pas de cette façon.
 
-## 19. Dettes rendues au lead — sans numéro, il numérote à la clôture
+## 19. Dettes rendues au lead
 
-**T15 est payée** par `a171034`. Trois dettes neuves, avec leur énoncé et leur provenance :
+**T15 est payée** par `a171034`. Trois dettes, avec leur énoncé et leur provenance :
 
-1. **La jumelle traverse désormais la frontière thème/extension.** La règle `__rang` (quatre
-   déclarations) existe dans `themes/mtb/assets/css/blocs/mtb-galerie-photos.css` **et** dans
-   `mtb-core/includes/blocks/galerie-photos/editeur.css`. Duplication **volontaire** (contrat #8 §6,
-   §7.6) et vérifiée identique déclaration pour déclaration — mais **aucun contrôle du dépôt ne dirait
-   leur divergence** : `make css-check` ne balaie que les feuilles du thème et ne voit jamais celle-ci,
-   et une relecture d'empreinte n'ouvre qu'un côté. *Provenance : #34, lot 15.*
+1. **T15-bis** — nom retenu par le lead sur le seul précédent de dette dérivée du dépôt (`T16-bis`).
+   **Énoncé, dans la forme que le lead a arrêtée** : ce n'est pas « il reste du CSS côté extension »,
+   c'est **« il en reste deux copies, et rien ne surveille leur écart »**. La dette porte donc deux
+   choses et pas une :
+   - la **dérogation résiduelle** — les quatre déclarations de `.mtb-galerie-photos
+     .mtb-galerie-photos__rang`, servies par `"editorStyle"`, **à l'éditeur seul, jamais au visiteur** ;
+   - la **divergence possible entre les deux copies** de cette règle, l'une dans
+     `themes/mtb/assets/css/blocs/mtb-galerie-photos.css`, l'autre dans
+     `mtb-core/includes/blocks/galerie-photos/editeur.css`. Duplication **volontaire** (contrat #8 §6,
+     §7.6) et vérifiée identique déclaration pour déclaration au 1er septembre 2026 — mais **aucun
+     contrôle du dépôt ne dirait leur divergence** : `make css-check` ne balaie que les feuilles du
+     thème et **ne voit jamais celle-ci**, et une relecture d'empreinte n'ouvre qu'un seul côté.
+   Depuis #34, la duplication **traverse la frontière thème/extension** : les deux copies ont des
+   propriétaires différents. *Provenance : #34, lot 15.*
 2. **`docker/outils/mtb-minifier-css.php:406` — « vert sur les quinze feuilles ».** **Ambigu avant même
    #34** : le pré-vol balaie 14 sources, quand `issue-40.md:401` titre « 14 artefacts sur 15 sources ».
    Les deux lectures : « quinze » = le **corpus CSS** du thème (14 + `editor.css`), ou « quinze » = le
@@ -542,3 +550,30 @@ contrat gelé.
    `mtb-bloc-mtb-galerie-photos`), tandis que `mtb-grille-chiens.css:129` et `mtb-liste-portees.css:89`
    renvoient à un **fichier supprimé**. **Ce n'est pas T88**, qui est une dérive de numéros : c'est une
    **cible qui disparaît**. *Provenance : #34, lot 15.*
+
+## 20. T85 — ce que #34 en paie, et une correction à son énoncé
+
+**#34 en paie une part, et une seule.** `MTB_CORE_VERSION` vaut `'0.1.0'` et `mtb-core.php` est
+**interdit à toute issue** (contrat #1 §13) : personne ne peut l'incrémenter, donc tout ce qui est
+versionné par elle garde son URL quel que soit son contenu. En déplaçant `galerie.css`, #34 retire de
+ce régime **la seule feuille de style que l'extension servait au visiteur** ; elle passe au
+versionnement par **empreinte de contenu** (`mtb_feuille_a_servir()`).
+
+**Ce que #34 ne paie pas, et il faut le dire ainsi.** Il reste dans l'extension **1** seul
+`wp_register_style` — celui de `editeur.css`, servi à l'éditeur seul — et **15** `wp_register_script`,
+tous encore versionnés par la constante gelée. **#34 ne touche aucun script.** C'est donc une part de
+la cause, pas une part du périmètre que T85 se donne.
+
+**Et l'énoncé de T85 porte un nombre faux, antérieur à #34.** `docs/ETAT.md:1169` écrit « vaut pour les
+**onze** `editeur.js` de l'extension ». Il y en a **douze** :
+
+```
+bandeau-alerte · bandeau-ouverture · coordonnees-plan · derniere-portee · encart-appel
+fiche-information · formulaire-contact · galerie-photos · grille-chiens · lien-de-recours
+liste-portees · tableau-resultats
+```
+
+**Ce n'est pas #34 qui l'a périmé** : `git ls-tree` à `5103bd6` — le commit de clôture du lot 14, celui
+qui **inscrit** T85 — en rend déjà **douze**. Le compte était faux le jour où il a été écrit ;
+`lien-de-recours`, livré par #39 au lot 13, a vraisemblablement été oublié derrière « les dix
+composants du catalogue ». **Signalé, non corrigé** : `docs/ETAT.md` appartient à `/lead-mtb`.
