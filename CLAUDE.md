@@ -136,6 +136,14 @@ elle constitue un lot de 3 issues, lance **3 chaînes complètes en parallèle**
   par `commit-scoped` avec une liste de fichiers explicite.
 - **Commits** : Conventional Commits en français, scope = domaine fonctionnel, référence d'issue en
   fin de sujet (`feat(portees): saisie d'une portée en un seul écran (closes #12)`).
+- **CSS** : toute issue qui modifie une feuille sous `wp-content/themes/mtb/assets/css/` **joue `make css`
+  dans le même commit**, et les artefacts `*.min.css` régénérés font partie de son empreinte fichiers.
+  Le thème sert la version minifiée d'une feuille **seulement** si un marqueur atteste qu'elle décrit
+  encore sa source ; sinon il sert la source, sans erreur et **sans rien écrire au journal**. Oublier
+  `make css` ne casse donc rien de visible — la page est correcte, seulement plus lourde — et **rien ne
+  le signale**. `make css-check` est le seul témoin : il rend 0 quand les paires sont à jour.
+  Conséquence sur les lots : deux issues qui touchent chacune une feuille CSS **se recouvrent**, même
+  quand leurs sources diffèrent, puisqu'elles régénèrent les mêmes artefacts.
 - **PHP** : WordPress Coding Standards, préfixe `mtb_` / namespace `MTB\`, `declare(strict_types=1)`,
   échappement systématique en sortie (`esc_html`, `esc_attr`, `esc_url`, `wp_kses_post`),
   assainissement systématique en entrée, `$wpdb->prepare` pour toute requête, nonces sur toute écriture.
