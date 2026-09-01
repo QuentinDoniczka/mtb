@@ -191,6 +191,8 @@ s'affiche en tête de l'encadré **Galerie photos** :
 > tant qu'elle n'est pas enregistrée, la photo n'est pas en ligne et cette ligne reste affichée. Ou
 > laissez ainsi : la liste et l'encart restent justes.
 
+![L'encadré Galerie photos, avec en tête un encadré jaune bordé à gauche d'un trait jaune, qui commence par Les photos de cette galerie s'affichent bien sur la page de la portée ; dessous viennent la ligne d'aide habituelle, puis les photos numérotées Photo 1, Photo 2 et Photo 3, et le bouton Ajouter des photos en bas](captures/portee-mention-photo-principale.png)
+
 **Ce n'est pas une erreur, et rien n'est bloqué.** La portée s'enregistre, se publie et reste juste.
 C'est un rappel, posé là où la photo à choisir est sous vos yeux. Vous le verrez sur une bonne partie
 des portées reprises de l'ancien site : leur galerie est pleine et aucune n'a de photo principale. Les
