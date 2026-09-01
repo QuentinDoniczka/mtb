@@ -29,7 +29,15 @@
  * celui qui emportait les dix composants du catalogue à la fois avant #6 : si
  * `mtb-jetons` n'est pas enregistré, `WP_Dependencies::all_deps()` abandonne
  * l'élément ENTIER — ni erreur, ni avertissement — et grille, ratio, fond, cerne
- * et cadrage disparaissent d'un coup ; page en 200, `debug.log` vide. Couvert sur
+ * et cadrage disparaissent d'un coup ; page en 200, `debug.log` vide.
+ *
+ * ET LA PANNE N'EST PAS QU'ESTHÉTIQUE : la section 6 tombe avec le reste,
+ * `all_deps()` n'abandonnant pas règle par règle. Le masquage de `__rang` cesse,
+ * donc « Photo 3 sur 12 » s'imprime sous chaque vignette SUR LA PAGE PUBLIQUE —
+ * exactement le défaut que la copie jumelle de `editeur.css` existe pour éviter,
+ * sauf qu'elle ne couvre que la toile, jamais le visiteur. Sur l'ancien chemin la
+ * question ne se posait pas : la feuille de l'extension avait `deps => array()`,
+ * cette règle-là ne pouvait pas être emportée ainsi. Couvert sur
  * le site par `mtb_feuilles_du_site()`, et en administration par
  * l'enregistrement de secours que porte `mtb_feuilles_de_blocs()` elle-même. Ne
  * pas retirer la `deps` pour « durcir » : ce serait perdre la garantie d'ordre
