@@ -159,9 +159,10 @@ correction automatique.
 - **Galerie photos** — cliquez sur **Ajouter des photos**. La fenêtre **Photos de la galerie** s'ouvre
   sur l'onglet **Téléverser des fichiers** : cliquez sur l'onglet **Médiathèque**, juste à côté, pour
   voir les photos déjà présentes sur le site. Choisissez vos photos, puis cliquez sur
-  **Ajouter à la galerie**, en bas à droite. Elles s'affichent sur la fiche dans l'ordre de la liste. Sous chaque
-  photo, trois boutons : **Retirer la photo 1**, **Monter la photo 1**, **Descendre la photo 1**. Le
-  numéro suit le rang de la photo : montez celle que vous voulez voir en premier.
+  **Ajouter à la galerie**, en bas à droite. Elles s'affichent sur la fiche dans l'ordre de la liste.
+  À droite de chaque photo, alignés sur son bord supérieur, trois boutons : **Retirer la photo 1**,
+  **Monter la photo 1**, **Descendre la photo 1**. Le numéro suit le rang de la photo : montez celle
+  que vous voulez voir en premier.
 - **Lien pedigree (LOF Select)** — collez l'adresse de la page du chien sur LOF Select, copiée depuis
   la barre du navigateur. C'est ce lien qui remplace un arbre généalogique sur le site : le visiteur y
   trouve l'ascendance complète.
@@ -183,7 +184,7 @@ dans la même colonne : il ne sert à rien ici. Deux champs de cette colonne com
 *Si ce premier champ porte un jour un autre nom, dites-le-nous : rien ne sera cassé, mais nous voulons
 le savoir. Écrivez votre description dedans en attendant, c'est bien le bon.*
 
-![La section Photos et pedigree : la liste Galerie photos avec ses photos et, sous chacune, les boutons Retirer la photo, Monter la photo et Descendre la photo, puis le bouton Ajouter des photos et le champ Lien pedigree (LOF Select)](captures/chien-photos.png)
+![La section Photos et pedigree : la liste Galerie photos avec ses photos et, à droite de chacune, les boutons Retirer la photo, Monter la photo et Descendre la photo, puis le bouton Ajouter des photos et le champ Lien pedigree (LOF Select)](captures/chien-photos.png)
 
 ---
 
