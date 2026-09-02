@@ -10,6 +10,169 @@ Il ne remplace pas le board : le board porte le détail des issues, ce fichier p
 
 ## Où on en est
 
+**Phase : lot 17 (#32, habillage des écrans de saisie — personne ne le porte) livré, testé et revu
+le 2026-09-03. L'issue est fermée.** Trois commits, `3667745` → `fe699ba`, dont **un seul porte du
+code**. Intégration : **28 vérifications, 28 passées, 0 échec, 3 non couvertes**. Revue **BLOQUANTE
+au premier passage — 0 CRITICAL, 1 HIGH**, levé avant le push ; restent 4 MEDIUM et 6 LOW.
+
+**La leçon du lot : la tâche 1 de l'issue posait une alternative, et la bonne réponse était de
+refuser les deux termes.** L'énoncé demandait *où vit le CSS d'administration* — feuille servie par
+le thème, ou dérogation écrite au contrat de #5. La chaîne a répondu **nulle part**, et l'a fondé sur
+un fait que l'issue ignorait : **des trois écrans de saisie, celui dont le contrat lui imposait le
+balisage du cœur (Résultat de travail) n'a aucun défaut à aucune largeur ; les deux qui ont inventé
+des crochets de classes en ont trois.** Le défaut n'était pas « il manque une feuille », c'était
+« deux écrans ont quitté le balisage du cœur et personne n'a payé la facture ». Écrire la feuille
+aurait payé la facture ; rendre le balisage annule la dette. **Aucune feuille n'est créée, aucun des
+quatre contrats gelés qui interdisent le visuel dans l'extension n'est amendé**, et l'extension garde
+son unique CSS, la dérogation historique d'`editeur.css`.
+
+**Le terme B est mort sur un fait que ni le brainstorm ni les leaddev n'avaient vu** : l'interdit est
+gelé dans **quatre** contrats, et `issue-4.md:513` **ne porte aucune convention d'amendement** (il
+s'arrête au §11). Par décision 65, un contrat sans cette convention ne s'ouvre pas. **La dérogation
+n'aurait pas pu être écrite là où l'interdit vit.**
+
+**Ce que #32 livre, mesuré au Chrome réel.** Trois corrections, toutes en balisage :
+`regular-text` → `widefat` sur les trois champs **et le `<select>`** de `rangee_chiot()` ; un `<p>`
+par choix radio dans `rendre_radios()` et `rendre_statut()` ; `button-link` → `button` sur les trois
+commandes de galerie, **des deux côtés**, PHP et JS.
+
+| | Avant | Après |
+|---|---|---|
+| `scrollWidth` portée à 1440 | 1520 (déborde) | **1425** |
+| `scrollWidth` portée à 360 | 1511 | **355** |
+| Bord droit de la case « Retirer ce chiot » | **1485 — hors d'un écran de 1440** | **998,2** |
+| Écart des 14 choix radio | **0 px** | **34,5 px** (1440) · **36,4 px** (360), seuil SC 2.5.8 = 24 |
+| Cibles des commandes de galerie | 17 px, soudées | 30 px (40 px sous 782 px) |
+
+**Le défaut le plus grave de l'écran n'était dans aucune des trois classes de la checklist, et il
+frappait au bureau** : la case qui retire un chiot tombait **hors de l'écran à 1440 px**, le document
+entier défilant latéralement. Violation directe du BRIEF §11 (« 360 px sans défilement horizontal »)
+et de D7, **absente de l'énoncé**, qui ne parlait que de galeries.
+
+**Le remède des radios a failli créer le manquement qu'il prétendait réparer, et c'est une mesure qui
+l'a arrêté.** Le `<br />` du cœur (`options-reading.php:186-187`) donne **19,8 px à 1440 et 21,3 px à
+360**, sous le seuil de 24 : il échoue à SC 2.5.8, **là où l'état initial le passait** (choix sur une
+même ligne, écart horizontal de 85 à 130 px). Le `<p>`, forme **déjà employée par
+`portee/ecran.php:227-232`**, donne 34,5 et 36,4. **La parité avec le cœur n'est pas une excuse
+recevable** : le brief impose AA sur ce que nous livrons, pas sur ce que WordPress livre. Le `<br />`
+avait été retenu par mimétisme **contre** l'argument d'accessibilité qui l'avait fait écarter.
+
+**Deux options écartées par décision d'usage de l'utilisateur, ni oubli ni dette — voir décisions 67
+et 68.** La **planche-contact** de vignettes pour les galeries : il a choisi une ligne par photo en
+sachant que dix photos font dix lignes à faire défiler, et cela **contre la tâche 2 de l'énoncé**, qui
+réclamait « une disposition en grille ». Le **repli responsive `wp-list-table`** sur le tableau des
+chiots : à 360 px les champs restent étroits (sélecteur Sexe à 37 px, texte à 28–52 px), le repli les
+rendrait lisibles à 184 px mais masquerait **quatre colonnes sur cinq** derrière un dépliage par
+rangée — dix chiots, dix dépliages. Les deux sont consignées dans le code avec leurs chiffres et leur
+motif, pour qu'aucune issue future ne les rouvre en croyant réparer un oubli. Le guide écrit
+désormais la contrepartie : « **Remplissez ce tableau sur un ordinateur.** »
+
+**L'énoncé de #32 était faux sur six points, et il a été amendé au board plutôt que coché** : trois
+écrans → **deux** ; « liste à puces verticale » → **aucune puce**, `ul { list-style-type: none }` est
+posé par le cœur, le défaut réel étant une commande dissociée de son objet ; « ne garantit pas le
+focus visible » → **faux**, sept contrôles mesurés `matchesFocusVisible: true`, 249 tabbables sur
+l'écran Portée ; « `mtb-core` ne contient aucun CSS » → il en contient **un** ; ancres fausses
+(`mtb-portee-galerie` est à `portee/ecran.php:566`, pas 439 ; l'interdit de #5 est aux l. 405-411, pas
+§387-390 ; le thème **est** chargé en administration, ce sont ses feuilles qui n'y entrent pas) ; et
+la tâche 2 nommait `mtb-champ` et `mtb-champ__etiquette`, **qui n'avaient besoin de rien**, en
+omettant `mtb-champ__choix` et le débordement du tableau.
+
+**Séquencement établi, et personne ne l'avait jamais fait : #32 avant #25.** #25 assemble le guide
+**à partir de** `docs/guide/captures/` — il ne les refait pas. Sans la reprise de ce lot, il aurait
+illustré le guide des défauts que #32 venait de supprimer. #32 est **indépendante** de #48, #42, #26,
+#24 et #23 : aucune empreinte commune. Le motif d'urgence écrit dans l'énoncé (« avant la reprise de
+contenu ») est **périmé** — cette reprise a eu lieu au lot 8. Le vrai motif est plus fort et il est
+neuf : `docs/migration/portees-chiens.md` déclare **2 textes alternatifs renseignés sur 136
+photographies**, dette d'accessibilité que **seule l'éleveuse peut solder**, galerie par galerie, sur
+ces écrans-là.
+
+**Une dette de la chaîne, pas de l'issue, et elle se reproduira à chaque lot visuel.** Le HIGH de la
+revue n'était pas une erreur d'exécution : la chaîne avait **correctement identifié les quatre
+captures comme périmées et l'avait déclaré**. Mais **aucun agent de la chaîne ne sait produire une
+capture** — `doc-client-mtb` écrit les fiches, pas les images. Déclarer une capture périmée et la
+laisser dans l'arbre revient à livrer un guide qui **se contredit** : `portee-ajouter-une-portee.md:158`
+affirmait ce que l'image de `:175` démentait douze lignes plus bas. Il a fallu un agent hors chaîne
+pour les refaire. **Tant que ce trou existe, toute issue qui change un écran livrera ce défaut.**
+Nouvelle dette : **T103**.
+
+**Trois mesures ont réfuté trois affirmations, dont deux étaient de moi.** Le « plancher
+incompressible de 384 px » du tableau n'existait pas — le `<select>` n'avait pas été traité ; les
+boutons de galerie prétendus inertes **fonctionnent**, `dessiner()` détruisant le balisage serveur au
+chargement ; et **j'ai imposé à tort la portée #196 pour la capture du tableau**, en supposant qu'une
+portée à deux chiots rendrait « deux lignes remplies, une vide » sans ouvrir l'écran — `boite_chiots()`
+ajoute **inconditionnellement trois** rangées de secours, donc **aucune portée existante** ne peut le
+rendre ; seule une portée neuve le peut. La capture a été reprise une troisième fois. **Le remède
+retenu est meilleur que la vigilance** : la prise **avorte** si la composition n'est pas deux remplies
+et une vide, ou si le tableau dépasse le cadre blanc.
+
+**L'écart de 15 px entre le contrat gelé et le test d'intégration est élucidé, et ce n'est pas une
+erreur de mesure : c'est une mention manquante — voir décision 68.** C'est la **barre de défilement
+verticale**, prélevée sur le viewport de mise en page. La revue a produit **les deux séries dans le
+même navigateur** en ne changeant qu'un drapeau : barres visibles → 1425 / 897 / 187,8 / 998,2, soit
+les cinq valeurs du contrat **au dixième de pixel** ; barres masquées → 1440 / 912 / 191,2 / 1011,2,
+soit celles du test, dont l'outil passe `--hide-scrollbars` d'office. Les deux relevés sont justes et
+reproductibles ; ce qui manquait, c'est que le contrat dise dans quel état il avait mesuré.
+
+**Un piège d'outillage consigné en mémoire de projet** : le gabarit d'un `<input type="date">` est
+écrit par la **langue d'interface du navigateur**, pas par la locale de la page. Le Chromium de
+Playwright n'embarque pas les ressources françaises et rend `dd/mm/yyyy` quoi qu'on lui passe —
+`locale`, `--lang` et `--accept-lang` sont sans effet. Toute capture d'écran de saisie se prend avec
+le **Chrome installé** en `--lang=fr-FR`. L'ancienne `chien-identite.png` portait déjà ce défaut : elle
+montrait à l'éleveuse un écran que **personne n'a jamais vu dans ce projet**. Corrigé par ricochet.
+Corollaire mesuré : **le guide n'a pas d'échelle de capture unique** — douze largeurs distinctes sur
+122 fichiers, 608 pour 23 d'entre eux, 806 pour 8 seulement. Chaque capture est cadrée sur sa boîte ;
+« harmoniser » les largeurs serait une fausse bonne idée.
+
+**Lignes de DoD non vérifiées par ce lot, à ne jamais présenter autrement** : **D4** et **D5** sans
+objet (ni migration ni réécritures touchées) · **D9** non vérifiée — pile **non redémarrée à froid**,
+risque jugé trop élevé sur une pile partagée avec plusieurs chaînes actives, même choix qu'au lot 16 ·
+**PHPCS non passé**, absent de la pile (pas de `composer`, pas de `vendor/bin`, pas de `phpcs.xml`) —
+remplacé par `php -l` (136 fichiers, 0 erreur) et `node --check`, **ce qui n'en tient pas lieu** ·
+**D11** jugée par la revue, non mécanisable.
+
+**Stack Docker vérifiée à volume conservé** : `build` en cache (aucun Dockerfile touché), les 4
+services `healthy`, accueil et portées en **200** — dont `demo3-1995`, à moitié remplie —, fiche chien
+en 200, `debug.log` **vide** avant et après une série de rendus **façade et administration**, les deux
+écrans d'édition touchés compris. `make css-check` **exit 0 sur 15 paires**, extension à **un seul**
+`.css`, thème sans aucun `admin*.css`. Volumes `mtb_db_data` et `mtb_wp_data` intacts. **T94 reste
+ouverte et sa cause intacte** : trois conteneurs `mtb-wpcli-run-*` orphelins trouvés, laissés par
+d'autres chaînes.
+
+**Constats de revue restants** — 4 MEDIUM, 6 LOW ; sept introduits par #32, trois antérieurs :
+**M1** la décision d'usage écartant la planche-contact n'est consignée nulle part dans le code alors
+que sa jumelle l'est (`chien/ecran.php:600-673`) · **M2** le §9 du contrat porte encore « (Complété
+après implémentation) » et six captures « candidates » (`issue-32.md:545-551`) · **M3** *antérieur,
+déjà corrigé par `317f1e5`* · **M4** *antérieur* — le BRIEF §209 exige « cibles ≥ 44 px » sans
+restreindre au site public, le contrat requalifie la barre à 24 px pour l'administration
+(`issue-32.md:573-574`) : **tension de doctrine à trancher, portée en Q15 et Q16** · **L1** le contrat
+écrit « 0 débordants » à 360 px puis en nomme un, la mesure en donne deux, tous du cœur
+(`issue-32.md:323`) · **L2** la section « rectification d'ancres » porte elle-même une ancre fausse,
+645 au lieu de 646 (`issue-32.md:109`) · **L3** un commentaire annonce 36,3 px là où les quatre
+groupes mesurent 36,4 (`chien/ecran.php:149`) · **L4** les noms longs sont désormais **tronqués à
+l'affichage**, valeur intacte en base, contrepartie assumée mais écrite nulle part
+(`portee/ecran.php:411`) · **L5** `'button '` écrit **cinq fois dans deux langages** sans rien qui les
+tienne ensemble, et une divergence serait **invisible à l'écran** puisque `dessiner()` détruit le
+balisage serveur — nouvelle dette **T104** · **L6** *antérieur* — 44 lignes > 120 caractères dans
+`portee/ecran.php`, 15 dans `chien/ecran.php`, aucun PHPCS pour les mesurer.
+
+**Prochaine action : le projet est désormais entièrement bloqué sur des réponses.** Des **6 issues
+restantes**, cinq sont bloquées par une question ouverte et la sixième en dépend par transitivité.
+**Aucun lot ne peut partir avant que l'utilisateur ne tranche.**
+
+- **#23** bloquée par **Q1** · **#24** par **Q4** · **#26** et **#48** par **Q5** · **#42** par **Q14**
+- **#25** (assemblage du guide) ne porte aucune question bloquante mais **suit #23 et #24**, dont elle
+  documentera les livrables — et désormais **#32**, qui est livrée.
+
+**Quatre réponses débloqueraient les six issues.** C'est le goulot du projet, devant toute
+considération technique, et il n'y a plus rien à faire en parallèle.
+
+**Questions en attente pour l'utilisateur** : les quatre du §15 (Q1, Q4, Q5, Q14) · le **badge de
+disponibilité du lot 16**, à juger à l'œil sur l'accueil et une fiche portée, toujours sans réponse ·
+et **deux questions neuves nées de ce lot**, portées au §15 : **Q24** — la barre de 44 px du BRIEF
+§209 vaut-elle pour l'administration, ou seulement pour le site public ? **Q25** — les 134 textes
+alternatifs manquants sur 136 photographies sont une saisie que seule l'éleveuse peut faire :
+quand et comment ?
+
 **Phase : lot 16 (#33, hisser `.mtb-dispo`, `.mtb-photo` et l'`object-position` dans une feuille
 partagée — dette T18) livré, testé et revu le 2026-09-02. L'issue est fermée.** Quatre commits,
 `92f3202` → `242d603`. Intégration : **42 vérifications, 42 passées, 0 échec**. Revue **OK avec
@@ -1261,6 +1424,8 @@ Attrape-courriels Mailpit sur http://localhost:8025.
 
 | # | Décision | Date | Pourquoi |
 |---|----------|------|----------|
+| 68 | **Un contrat qui gèle une largeur dit dans quel état de navigateur elle a été relevée** | 2026-09-03 | Arbitrage rendu au lot 17 sur l'écart de 15 px entre `docs/contracts/issue-32.md` §4.1 et la passe d'intégration. **Ce n'était pas une erreur de mesure, c'était une mention manquante** : la barre de défilement verticale est prélevée sur le viewport de mise en page. La revue a produit **les deux séries dans le même navigateur** en ne changeant qu'un drapeau — barres visibles → 1425 / 897 / 187,8 / 998,2, soit les cinq valeurs du contrat **au dixième de pixel** ; barres masquées → 1440 / 912 / 191,2 / 1011,2, soit celles du test, dont l'outil passe `--hide-scrollbars` d'office. **Les deux relevés sont justes et reproductibles à la demande** : il n'y a pas un chiffre vrai et un faux, il y a deux états du navigateur. Erreur de raisonnement à ne pas refaire, elle est de moi : j'ai écrit que les mesures de la revue « concordaient avec le contrat et pas avec le test » — elles concordent avec **les deux**, selon le drapeau. **Règle** : toute valeur de largeur gelée dans un contrat porte l'état de barre de défilement de son relevé. Sans cette mention, l'écart est illisible et la chaîne suivante citera de travers — ce projet a déjà payé la dérive d'ancres (T88) |
+| 67 | **Où vit le CSS d'administration : nulle part — on rend le balisage au cœur plutôt que de l'habiller** | 2026-09-03 | Arbitrage rendu au lot 17, **en refusant les deux termes de la tâche 1 de #32** (feuille servie par le thème, ou dérogation écrite au contrat de #5). Le fait qui tranche était dans le dépôt et l'issue l'ignorait : **des trois écrans de saisie, celui dont son contrat lui imposait le balisage du cœur n'a aucun défaut à aucune largeur ; les deux qui ont inventé des crochets de classes en ont trois.** Le défaut n'était donc pas « il manque une feuille » mais « deux écrans ont quitté le balisage du cœur ». Écrire la feuille payait la facture, rendre le balisage annule la dette. **Second motif, décisif et vérifié** : l'interdit du visuel dans l'extension est gelé dans **quatre** contrats, et `issue-4.md:513` **ne porte aucune convention d'amendement** — par décision 65, il ne s'ouvre pas ; **la dérogation n'aurait pas pu être écrite là où l'interdit vit**. Troisième motif, mesuré : `design-system/MASTER.md` ne décrit **aucune** apparence d'administration (il n'en fixe que le vocabulaire, §10.2 et §10.4) — il n'y a rien de propre au projet à préserver à travers un changement de thème, seulement une régression à ne pas s'infliger. **Portée** : ne se généralise pas en « l'administration ne s'habille jamais », mais en **« un écran qui emploie le balisage du cœur n'a pas besoin d'être habillé »** — le critère n'est pas la liste des classes, c'est leur origine (`issue-5.md:405-411`). Corollaire d'accessibilité appris dans le même geste : le `<br />` du cœur donne 19,8 px entre deux cibles et **échoue** à SC 2.5.8 là où l'état initial le passait — **la parité avec WordPress n'est pas une excuse recevable**, le brief impose AA sur ce que nous livrons |
 | 66 | **Un contrat gelé que la mesure réfute n'est pas corrigé : son erratum est écrit ici, daté, et la mesure prime sur lui** | 2026-09-02 | Arbitrage rendu au lot 16, et il **complète la décision 65 sur le cas qu'elle ne couvrait pas**. La 65 autorise l'amendement daté d'un contrat qui porte déjà cette convention ; `docs/contracts/issue-33.md` ne la porte pas, et ses **§5, §8(3) et §10** reposent sur une prémisse fausse : « la toile de l'éditeur préfixe `base.css` par `.editor-styles-wrapper` et pas les feuilles de blocs ». **La toile est une iframe, le cœur n'y préfixe rien** — mesuré par la chaîne #33, qui a livré `a8bec34` contre son propre contrat, puis **indépendamment** par la passe d'intégration au Chrome réel : 0 sélecteur préfixé sur les 11 présents dans la toile, et retirer la règle 13.10 du CSSOM n'y change aucun pixel. **Ce qui est gelé, c'est la décision, pas sa justification** : quand les deux se séparent, la décision peut survivre à sa raison. Ici elle survit — le doublage (0,3,0) **reste en place**, il gagne dans les trois contextes avec ou sans préfixe, et l'inertie d'un motif n'est pas une raison de le retirer. **Le remède appliqué au code est la note de solde datée** — cinq posées dans l'empreinte de #33, sur la forme validée de `mtb-bandeau-ouverture.css:54-57`, chacune renvoyant au §13 point 4 de `base.css` plutôt que de recopier l'argument. **Le risque que cela ferme est nommé par la chaîne elle-même** : « une garde dont la justification est démentie se fait supprimer par la chaîne suivante ». **Ce qui reste dû** : les occurrences de la même prémisse **hors empreinte de #33** n'ont pas été soldées — voir T101 |
 | 65 | **Un contrat gelé s'amende par ajout daté en fin de fichier — mais seulement s'il porte déjà cette convention** | 2026-09-01 | Arbitrage rendu au lot 15 sur remontée de la chaîne #34, et il **borne** la règle « ne pas éditer les contrats gelés » sans la renverser. Ce qui reste interdit : **réécrire un énoncé gelé**. Sa fausseté au présent est une **trace de ce qui a été cru**, pas un défaut ; la corriger sur place efface la preuve. Ce qui est autorisé : **ajouter une section d'amendement datée en fin de fichier**, quand le document porte déjà cette convention — `issue-8.md` a ses §19, §20 et §21, ajoutés après gel, et son **§20.5 anticipait explicitement #34** (« son déplacement futur reste une copie plus la suppression du `"style"` »). Le contrat attendait l'issue, comme `MASTER.md` attendait #44 au lot 13 (décision 58). **Deux garde-fous** : l'ajout en **fin de fichier** ne périme aucune citation par numéro — leçon de `issue-17.md:412` —, et la condition a été **vérifiée trois fois** (par la chaîne, par moi, par la passe d'intégration **depuis les objets git**) : `105 ajouts, 0 suppression`, les 1 374 lignes existantes de même hash des deux côtés. **Ne se généralise pas** : un contrat sans convention d'amendement ne s'ouvre pas ainsi. Piste ouverte, non vérifiée : si les cibles de **T86** et **T91** portent la même convention, ces dettes se paient par ajout daté au lieu d'attendre une passe d'alignement hypothétique |
 | 64 | **La disjonction des empreintes protège les chaînes entre elles ; elle ne dit rien du lead** | 2026-09-01 | **Trou de ma propre méthode, nommé par la chaîne #34 après que je l'ai commis.** Au lot 15, j'ai édité `editeur.css` et `issue-8.md` — dans l'empreinte d'une chaîne **encore vivante** — parce que mes messages ne lui parvenaient plus et que je voulais éviter un aller-retour de plus. Rien n'a été perdu, la chaîne ayant **amendé au lieu d'écraser** : c'est de la chance, pas de la méthode. Le corollaire qu'elle en tire vaut au-delà du cas : **sur un mono-branche sans isolation, une écriture non annoncée dans l'empreinte d'une chaîne vivante est indiscernable d'une faute de cette chaîne** — et elle l'a effectivement prise pour telle, accusant à tort un de ses agents d'avoir menti sur la provenance de deux commits qui étaient les miens. **Règle** : le lead n'écrit pas dans l'empreinte d'une chaîne tant qu'elle n'a pas rendu son rapport final ; s'il doit le faire, il l'annonce **avant**, et le `reflog` ne suffit pas à réparer après coup. Corollaire de raisonnement, que la chaîne a formulé mieux que moi : ses trois « preuves » (mêmes fichiers, même horodatage, même auteur git) **corroboraient** son hypothèse sans jamais la **distinguer** de l'hypothèse concurrente — ce dépôt n'ayant qu'un seul auteur git. **Prendre de la corroboration pour de la discrimination est une faute de raisonnement, pas une lacune d'information** ; avant de conclure sur la provenance d'un changement, **énumérer qui d'autre a la main sur l'arbre — le lead en fait partie** |
@@ -1333,6 +1498,8 @@ Attrape-courriels Mailpit sur http://localhost:8025.
 Reprises du §15 du brief. Aucune ne bloque le bootstrap ; chacune bloque une issue précise.
 
 | # | Question | Bloque | État |
+| Q24 | **La barre de « cibles tactiles ≥ 44 px » du BRIEF §209 vaut-elle aussi pour l'administration, ou seulement pour le site public ?** Le contrat de #32 l'a requalifiée à 24 px (SC 2.5.8, exception d'espacement) pour les écrans de saisie, faute de doctrine écrite. À 44 px, aucun contrôle natif du cœur de WordPress ne passe — la question engage donc bien plus que #32 | toute issue future qui touche un écran de saisie | ⏳ **pour l'utilisateur** |
+| Q25 | **Les 134 textes alternatifs manquants sur 136 photographies : quand et comment l'éleveuse les saisit-elle ?** `docs/migration/portees-chiens.md` en déclare **2 renseignés sur 136**. C'est une dette d'accessibilité que **personne d'autre qu'elle** ne peut solder, galerie par galerie, sur les écrans que #32 vient de réparer. Ce n'est pas une question de conception mais de charge de travail et de calendrier | l'atteinte réelle de D7 sur le contenu repris | ⏳ **pour l'éleveuse** |
 |---|----------|--------|------|
 | Q23 | **Pourquoi cinq pages du site source sont-elles à la fois retirées des menus et marquées « ne pas indexer », alors que le plan du site les déclare ?** `chien-halan`, `chien-ray-ban`, `chien-roxane`, `chien-youry`, `placement`. Mesuré au lot 7 : **58 balises `robots` sur 54 fichiers** — les cinq portent le `noindex, nofollow` **en tête de `<head>`** et l'`index,follow` bien plus loin, donc la contradiction est **à l'intérieur d'un même `<head>`**. **Aucune hypothèse n'est avancée** : le site énonce le fait, jamais son motif, et le motif est un fait d'élevage. | **Tranchée au lot 8 pour l'import, ouverte pour le rendu.** L'utilisateur ayant demandé de « reprendre ce qu'il y a sur le site actuel », les cinq pages sont **importées en recopiant le statut de la source** — sans inventer le motif ni contredire l'intention. Les cinq portent la méta `_mtb_robots_source` (`valeur` / `source` / `extrait`, l'extrait montrant **les deux** balises dans l'ordre du document), homogène sur les cinq, vérifiée en base. **Le fait est stocké et documenté, il n'est pas honoré** : les cinq sont publiées, indexables et au plan du site. **#24** doit poser le filtre `wp_robots`, **#23** l'exclusion du plan du site. Le volet « hors menus » tient **par construction** — aucun menu n'existe. | ⏳ **le motif reste pour l'éleveuse** ; le rendu est dû par **#23 et #24** |
 | Q20 | **Une image de plan d'accès : qui la fournit, sous quelle licence, avec quelle mention exacte en légende ?** Le composant #11 est livré et fonctionne sans elle (l'emplacement n'existe pas tant qu'aucune image n'est posée, §9.2). Format attendu : paysage, ~1200 × 800 px, **téléversé par la médiathèque** — jamais déposé dans le thème — et **après** le module d'images de #8, sinon pas de format moderne (dette T12). | rien — le composant est complet sans plan | ⏳ **pour l'éleveuse** |
@@ -1365,6 +1532,8 @@ Ne pas les redécouvrir dans trois lots. Chacune est déjà écrite dans le cont
 
 | # | Dette | Créée par | Payée par |
 |---|-------|-----------|-----------|
+| **T104** | **`'button '` est écrit cinq fois dans deux langages sans rien qui les tienne ensemble.** `chien/ecran.php:646,650,655,671` et `chien/galerie.js:45`. Le jour où l'un des deux change, **l'écart est invisible à l'écran** : `dessiner()` détruit le balisage serveur au chargement, donc seul le cas dégradé — JavaScript coupé — révélerait la divergence, et personne ne le regarde. Vérifié aligné au 2026-09-03 (21 boutons servis, 0 `button-link` restant). Le partager demande `wp_localize_script` ou une constante exportée, donc **un mécanisme nouveau et une décision de contrat** — hors périmètre d'une issue d'habillage. Écarté sciemment par le refacto du lot 17, pas oublié | #32 (lot 17) | — |
+| **T103** | **Aucun agent de la chaîne ne sait produire une capture d'écran, donc toute issue qui change un écran livre un guide qui se contredit.** `doc-client-mtb` écrit les fiches, pas les images. Au lot 17 la chaîne a **correctement identifié quatre captures comme périmées et l'a déclaré** — puis les a laissées dans l'arbre, `portee-ajouter-une-portee.md:158` affirmant ce que l'image de `:175` démentait douze lignes plus bas. **La revue a bloqué le push là-dessus**, et il a fallu un agent hors chaîne pour les refaire. Ce n'est pas une erreur d'exécution mais un trou d'outillage : **il se reproduira à chaque lot visuel**. Remède connu et éprouvé au lot 17 : Chrome installé en `--lang=fr-FR`, attente de stabilisation des métaboîtes, largeur vérifiée **dans la page**, et **assertion d'échec** sur ce que l'image doit prouver — la prise avorte au lieu de mentir. Se paie en dotant la chaîne de cette capacité, pas en y repensant à chaque lot | chaîne (constat du lot 17) | — |
 | **T102** | **Le jeu de démonstration ne rend que cinq des neuf porteurs du badge et de la photo.** Une **seule image** sur tout le site, et la portée la plus récente n'a ni photo ni disponibilité : les porteurs 1, 2, 3 et 6 du recensement `issue-33.md` §2 ne sont **affichés par aucune page**. La passe du lot 16 les a couverts par **sonde DOM injectée** au point d'ancrage exact, avec la liste de classes exacte du PHP — et l'a **dit comme tel** plutôt que de maquiller. Le banc a été validé (les 10 mesures d'émetteurs naturellement présents sont identiques au centième de pixel entre sonde et site vivant), donc la couverture est honnête ; elle n'est pas un rendu. **Ce n'est pas une dette de code mais de fixtures, et elle affaiblira toute passe visuelle à venir**, pas seulement celle-ci. La chaîne a **refusé de fabriquer de la donnée d'élevage** pour verdir le test : c'est le bon refus (D11), et il rend la dette inévitable tant que les fixtures ne portent pas de photos | lot 16, passe d'intégration et revue | `docker-mtb`, ou l'issue qui enrichira le jeu de démonstration |
 | **T101** | **La prémisse de préfixage réfutée survit hors de l'empreinte de #33.** Les cinq occurrences **dans** l'empreinte portent leur note de solde datée (décision 66). Restent au moins `mtb-bandeau-ouverture.css:48`, qui porte **en plus** la citation `functions.php:56` — instance de **T88**, corrigée dans `base.css` au lot 16 et non ici. **Le risque est nommé** : une garde dont la justification est démentie se fait supprimer par la chaîne suivante, qui croira retirer du mort. Toute issue qui rouvre une feuille de blocs solde ses occurrences **au passage** | lot 16, #33 | au fil de l'eau, par l'issue qui rouvre la feuille |
 | **T100** | **Le renvoi `base.css:NNN` dérive dans tout le thème — même classe que T88, autre cible.** Relevé par #33 au-delà des trois cas qu'elle a corrigés : `mtb-bandeau-alerte.css:26` et `:52`, `editor.css:163` (tous trois vers `base.css:241`), plus `base.css:465`, `:477`, `:515`, `:522`, `:369`, `:324` cités depuis quatre feuilles et **tombant en plein commentaire ou sur un en-tête de section**. **Les décalages sont incohérents entre eux — +3, +6, +17, +18** : c'est de l'accumulation commit après commit, pas un décalage unique, donc **aucune reprise mécanique n'est possible**, contrairement à T88 qui porte sa table de correspondance. La solder dans #33 aurait été un ré-audit de cinq feuilles, hors empreinte | lot 16, #33 | une passe d'alignement, avec T88 |
