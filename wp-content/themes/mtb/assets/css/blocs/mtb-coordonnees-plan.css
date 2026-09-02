@@ -128,10 +128,16 @@
    §4.4b : §6 s'intitule « Photographies » et parle de chiens ; un plan
    est un DOCUMENT, et le rogner peut COUPER LE POINT D'ARRIVÉE. NE PAS
    « CORRIGER » EN `cover`.
-   AUCUN `object-position` : la déclaration existe déjà cinq fois (T18) et
-   diverge (T16-bis) ; `50% 38%` tient à la tête d'un chien. Ne rien
-   écrire donne l'initiale `50% 50%`, le centre géométrique, seul ancrage sensé
-   sur un plan.
+   AUCUN `object-position` : la déclaration existe déjà quatre fois (T18 — sept
+   avant #33, qui en a hissé trois dans `base.css` §13) et diverge (T16-bis) ;
+   `50% 38%` tient à la tête d'un chien. Ne rien écrire donne l'initiale
+   `50% 50%`, le centre géométrique, seul ancrage sensé sur un plan.
+   ET SURTOUT, DEPUIS #33 : NE JAMAIS ÉMETTRE `mtb-photo` SUR CE CADRE. Le
+   cadrage commun vit désormais dans `base.css` §13, sous
+   `.mtb-photo.mtb-photo > img`, à (0,2,1) — exactement le poids de la règle
+   ci-dessous. Le `cover` hissé et le `contain` délibéré seraient à ÉGALITÉ,
+   l'ordre d'enfilage trancherait, et un plan rogné peut COUPER LE POINT
+   D'ARRIVÉE. Vérifié sur le rendu servi : la classe n'y est pas émise.
    Classe DOUBLÉE (0,2,1) : `img { block-size: auto }` (base.css:131) pèse
    (0,1,1) dans la toile ; à sélecteur simple, ÉGALITÉ tranchée par un ordre
    inconnu. */

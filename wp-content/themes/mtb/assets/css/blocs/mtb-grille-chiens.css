@@ -80,7 +80,7 @@
  *   · AUCUNE règle `@media print`. Le « §9.6 » auquel MASTER §7.6 renvoie
  *     n'existe pas dans le document, et le contrat #2 l'a déjà consigné. En
  *     écrire serait une invention visuelle ; et une feuille d'impression doit
- *     être GLOBALE, pas dix règles recopiées dans dix feuilles de blocs.
+ *     être GLOBALE, pas onze règles recopiées dans onze feuilles de blocs.
  *   · AUCUNE apparence d'état vide (`--vide`, `mtb-etat-vide*`). Une seule raison
  *     désormais, et elle suffit : MASTER §9.1 exige UNE SEULE apparence pour les
  *     dix composants du catalogue, qui vit dans editor.css, hors empreinte — la
@@ -126,7 +126,11 @@
  * le canal, sur la classe racine du composant, depuis la feuille du bloc. Ni
  * classe `alignwide` émise par l'extension (contrat #1 §8 le lui interdit, et
  * la liste de portées vient de s'en défaire), ni règle de canal écrite dans une
- * feuille de l'extension. Forme reprise telle quelle de `galerie.css:73`.
+ * feuille de l'extension. FORME D'ORIGINE reprise telle quelle de la feuille de
+ * la galerie, alors portée par l'extension, au 2026-08-18. Ce fichier a été rendu
+ * au thème au lot 15 : l'origine se DATE, elle ne se repointe pas. Rediriger ce
+ * renvoi vers une ligne de `mtb-galerie-photos.css` fabriquerait une dérive de
+ * numéros (T88) — rien ne garantit qu'elle y porte encore la même règle.
  *
  * SPÉCIFICITÉ — base.css est imprimée APRÈS cette feuille, l'ordre de source ne
  * peut donc rien : `.mtb-canal > *` (base.css:515) affecte le canal texte à
@@ -287,11 +291,26 @@
    qu'à une classe utilitaire partagée `.mtb-photo` : le plugin n'émet que
    `mtb-<bloc>` et `mtb-<bloc>__<element>` (contrat §11, arbitrage 5). Dette
    T-#14-g : elle disait « à hisser dans un crochet mutualisé du thème AVANT que
-   cette règle existe en cinq exemplaires ». C'EST FAIT, et pas dans le bon sens —
-   `object-position: var(--point-interet, 50% 38%)` est aujourd'hui écrit cinq
-   fois, ici et dans mtb-fiche-information.css, mtb-liste-portees.css,
-   mtb-derniere-portee.css, mtb-bandeau-ouverture.css. La dette n'est donc plus
-   préventive mais constatée. La divergence qu'elle annonçait n'a pas eu lieu :
+   cette règle existe en cinq exemplaires ». LE COMPTE ÉTAIT FAUX DES DEUX CÔTÉS
+   et #33 l'a refait : `object-position: var(--point-interet, 50% 38%)` était
+   écrit SEPT fois, pas cinq, et l'énumération qui tenait cette place oubliait
+   mtb-galerie-photos.css et fiches.css. #33 en a hissé TROIS dans base.css §13,
+   avec la primitive `.mtb-photo.mtb-photo > img` ; il en reste QUATRE : ici, et
+   dans mtb-bandeau-ouverture.css, mtb-fiche-information.css,
+   mtb-galerie-photos.css. La dette T18 est soldée, celle-ci l'est avec elle.
+   POURQUOI CES QUATRE SONT CONSERVÉES — la justification tient en DEUX temps, et
+   les résumer en un seul serait faux :
+     · TROIS par DISJONCTION D'ÉLÉMENT — celle-ci, mtb-fiche-information.css et
+       mtb-galerie-photos.css : aucun des éléments qu'elles ciblent ne porte
+       `mtb-photo` dans le balisage produit. La primitive ne les atteint donc
+       pas, et sans elles ces trois cadres n'auraient AUCUN cadrage ;
+     · UNE par SPÉCIFICITÉ ET VALEURS IDENTIQUES — mtb-bandeau-ouverture.css, qui
+       EST atteinte par la primitive, le rendu du bandeau posant `mtb-photo` sur
+       le cadre parent. Elle perd la cascade, et c'est SANS EFFET : les cinq
+       valeurs sont littéralement identiques. Ne pas écrire « aucune ne vise le
+       même élément » — ce serait faux pour celle-là, et la revue le reprendrait.
+   Les fusionner demanderait de refondre trois feuilles de blocs : hors
+   empreinte. La divergence que cette dette annonçait n'a pas eu lieu :
    l'arbitrage du contrat #14 tranche que « Centre » vaut `50% 38%`, pas le
    centre géométrique, et `mtb-fiche-information.css` s'y est aligné le
    2026-08-18. Les deux composants lisent donc désormais `centre` comme

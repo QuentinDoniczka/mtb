@@ -1,4 +1,4 @@
-/*!mtb-src:45914:255b426899312387:10543:720d7b39b3a04b12*/
+/*!mtb-src:65494:37aa602ab196c68e:11980:dc5ba11415b21392*/
 
 
 @font-face {
@@ -497,4 +497,78 @@ textarea[aria-invalid="true"] {
 .mtb-fiche-chien__commentaire,
 .entry-content {
   overflow-wrap: anywhere;
+}
+
+
+.mtb-dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  padding: var(--e-1) var(--e-2);
+  border-radius: var(--r-1);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  white-space: normal;
+}
+
+.mtb-dispo::before {
+  content: "";
+  flex: none;
+  inline-size: .6em;
+  block-size: .6em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.mtb-dispo--disponible {
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+.mtb-dispo--disponible::before {
+  background-color: currentColor;
+}
+
+.mtb-dispo--reserve {
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+  border: 1px solid var(--laiton);
+}
+
+.mtb-dispo--reserve::before {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+}
+
+.mtb-dispo--passee {
+  background-color: var(--calcaire);
+  color: var(--texte-doux);
+  border: var(--bord-actif);
+}
+
+.mtb-photo {
+  position: relative;
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+.mtb-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+.mtb-photo.mtb-photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
 }

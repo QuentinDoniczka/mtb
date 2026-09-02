@@ -9,6 +9,14 @@
  * PREMIÈRE FEUILLE DE BLOC DU CATALOGUE. Neuf composants sœurs copieront ces
  * conventions ; elles sont donc écrites, pas seulement suivies :
  *
+ * DEUX COMPTES DIFFÉRENTS COHABITENT DANS CE FICHIER, ET LES CONFONDRE EST LA
+ * DETTE T99. « Composants du catalogue » vaut DIX, et c'est resté vrai. « Feuilles
+ * de blocs » vaut ONZE depuis le lot 15, la onzième habillant le formulaire de
+ * contact, qui n'est pas un composant du catalogue. Une phrase qui compte des
+ * composants ne se corrige donc PAS, une phrase qui compte des feuilles se
+ * corrige : #33 a repris les sept lignes concernées une à une, jamais par
+ * substitution automatique — un `sed` sur « dix » corromprait onze phrases vraies.
+ *
  *   1. UNE FEUILLE PAR BLOC, nommée `[espace]-[nom].css` — ici
  *      `mtb-bandeau-ouverture.css` pour `mtb/bandeau-ouverture`. Le nom est
  *      MÉCANIQUE : `mtb_feuilles_de_blocs()` (themes/mtb/functions.php:194-224)
@@ -42,6 +50,10 @@
  * lisible et modifiable, mais pas ce que verra le visiteur. Correctif d'UNE
  * LIGNE — enregistrer `mtb-jetons` aussi en administration — dans functions.php,
  * hors empreinte. Ne pas partir sur un reversement dans `add_editor_style()`.
+ * NOTE DE SOLDE, ajoutée par #33 le 2026-09-02 : le constat ci-dessus est PÉRIMÉ
+ * depuis #6, qui a appliqué ce correctif d'une ligne (`functions.php:230-236`,
+ * enregistrement sous garde `is_admin()`) — cette feuille atteint donc la toile,
+ * et l'analyse de cascade de `base.css` §13 repose sur cette prémisse inverse.
  *
  * LARGEUR : UNE SEULE RÈGLE, celle de la section 0 — contrat, amendement 3, qui
  * REMPLACE le §7 (« refus motivé, repli acté »). Le §7 constatait que
@@ -146,7 +158,7 @@
  *     signe « inférieur à » : on écrit `h1`, jamais h-un-entre-chevrons, et
  *     « Safari 15 et antérieurs » plutôt que le signe. La règle est ainsi
  *     vérifiable d'une seule recherche, ce qui est tout son intérêt pour les
- *     neuf feuilles sœurs. Ce n'est pas une coquetterie. `functions.php`
+ *     dix feuilles sœurs. Ce n'est pas une coquetterie. `functions.php`
  *     fournit `path`, donc le cœur PEUT écrire cette feuille EN LIGNE dans le
  *     HTML — poignée `…-inline-css`, constaté sur une version plus courte de ce
  *     fichier. Il ne le fait que tant que le total des feuilles à `path` reste
@@ -156,7 +168,7 @@
  *     livraison : dès que la feuille est en ligne, un chevron de commentaire se
  *     retrouve dans le document, et la recette du contrat §17 — « compter les
  *     occurrences de h1 ouvrant dans la page, attendu 1 » — rapporte alors 5
- *     sur une page parfaitement conforme. Les neuf sœurs héritent de la règle.
+ *     sur une page parfaitement conforme. Les dix sœurs héritent de la règle.
  *   · AUCUNE règle de lien. `--laiton-clair` sur le composé du voile mesure
  *     4,09:1 — ÉCHEC AA pour du texte normal — et MASTER ne définit aucune
  *     encre de lien pour un fond « voile sur photo ». Le contrat interdit donc
@@ -175,15 +187,15 @@
  *     §12.8), et cette feuille n'écrit aucun `outline: none`.
  *   · AUCUNE règle `@media print`. Le « §9.6 » auquel MASTER renvoie n'existe
  *     pas dans le document — lacune déjà consignée par le contrat #2,
- *     amendement 5 — et une feuille d'impression doit être GLOBALE, pas dix
- *     fragments recopiés dans dix feuilles de blocs.
+ *     amendement 5 — et une feuille d'impression doit être GLOBALE, pas onze
+ *     fragments recopiés dans onze feuilles de blocs.
  *   · AUCUNE apparence d'état vide. Côté public, un bandeau sans photo, sans
  *     titre et sans accroche ne rend RIEN (contrat §8, règle transverse du
  *     §9) : il n'y a pas de balisage à habiller. Côté éditeur, l'état vide est
  *     un balisage écrit à la main portant les trois crochets gelés au niveau du
  *     lot — `mtb-etat-vide`, `__nom`, `__phrase` — et son apparence, IDENTIQUE
  *     POUR LES DIX COMPOSANTS, vit dans `editor.css` (§9.1, amendement 1 du
- *     contrat). Ni cette feuille ni ses neuf sœurs ne la redéclarent.
+ *     contrat). Ni cette feuille ni ses dix sœurs ne la redéclarent.
  *   · AUCUNE dépendance à `mtb-photo`, que l'extension émet pourtant sur
  *     `__photo` (contrat §9, arbitrage 2). L'absence est MAINTENUE, et sa raison
  *     a changé : `.mtb-photo` existe désormais, mais dans les feuilles des

@@ -789,7 +789,7 @@ textarea[aria-invalid="true"] {
 
 /* 9.2-3  Toute frontière composant/composant vaut `--rythme-section` — §7.3, un
    composant du catalogue étant une section de page. (0,6,0) : bat les (0,1,0)
-   des dix feuilles de composants quel que soit l'ordre d'enfilage. */
+   des onze feuilles de composants quel que soit l'ordre d'enfilage. */
 .mtb-canal.mtb-canal > [class*="mtb-"]:not(.mtb-canal) + [class*="mtb-"]:not(.mtb-canal) {
   margin-block-start: var(--rythme-section);
 }
@@ -1010,4 +1010,331 @@ textarea[aria-invalid="true"] {
 .mtb-fiche-chien__commentaire,
 .entry-content {
   overflow-wrap: anywhere;
+}
+
+/* =====================================================================
+ * 13. Les deux primitives partagées — `.mtb-dispo` et `.mtb-photo`
+ *     MASTER §3.3, §4.5, §5.1.1 (révision 1.5), §5.2, §5.3, §6.1, §6.2,
+ *     §6.6, §9.2, §12.9. Dette T18, payée par #33.
+ *     Contrat gelé : docs/contracts/issue-33.md.
+ *
+ * AJOUT EN FIN DE FICHIER, JAMAIS UNE LIGNE AU-DESSUS (cf. §7, §8 et §9).
+ *
+ * --- 1. POURQUOI CES PRIMITIVES VIVENT ICI --------------------------
+ * Décision 30, gelée à docs/contracts/issue-16.md:519-520 : « une primitive
+ * nommée par MASTER s'écrit en classe NUE, une seule fois, dans base.css ».
+ * `.mtb-dispo::before` et `.mtb-photo > img` sont LITTÉRALEMENT écrites par le
+ * document (§3.3 l. 211, §6.2 l. 496) : ce ne sont pas des crochets inventés
+ * par le thème, ce sont deux noms que MASTER emploie lui-même.
+ * Le §10 ci-dessus (`.mtb-tableau`) est le même cas à la virgule près : un
+ * consommateur qui n'est le rendu d'AUCUN bloc, donc qu'aucune feuille de
+ * composant ne couvre. base.css est par ailleurs déjà passée à
+ * `add_editor_style()` (functions.php:56) : une feuille neuve n'y serait pas,
+ * elle exigerait de rouvrir functions.php (hors empreinte, décision 9) et
+ * ferait passer `make css-check` de 15 à 16 paires.
+ * AVANT #33, CES DIX RÈGLES ÉTAIENT ÉCRITES TROIS FOIS — `fiches.css`,
+ * `blocs/mtb-derniere-portee.css`, `blocs/mtb-liste-portees.css` — et l'identité
+ * de leurs jeux de déclarations a été vérifiée ENSEMBLE PAR ENSEMBLE, jamais par
+ * comparaison de textes : deux de ces feuilles écrivaient les mêmes
+ * déclarations dans un ORDRE différent. C'est la dette que ce §13 solde.
+ *
+ * --- 2. LE RELEVÉ QUI L'IMPOSE — déplacé de fiches.css:96-114 -------
+ * Ce paragraphe vient de `fiches.css`, où il disait « pourquoi ces règles sont
+ * écrites ICI » ; il dit désormais pourquoi elles sont écrites LÀ, et il part
+ * avec les règles qu'il explique plutôt que de rester à côté d'un vide.
+ * RELEVÉ SUR UNE FICHE CHIEN RENDUE, DATÉ DU 2026-08-20 (chaîne de l'issue #16,
+ * commit 682d51c) — feuilles imprimées dans le `head` : `mtb-jetons`,
+ * `mtb-base`, `mtb-entete-pied`, `mtb-galerie-photos-style`,
+ * `mtb-bloc-mtb-coordonnees-plan` ; NI `mtb-derniere-portee`, NI
+ * `mtb-liste-portees`. LE RELEVÉ N'EST PAS RÉÉCRIT : la poignée
+ * `mtb-galerie-photos-style` a été renommée `mtb-bloc-mtb-galerie-photos` au
+ * lot 15, mais corriger ce nom dans un relevé ANTIDATERAIT une observation que
+ * personne n'a refaite. Le renommage est noté, la mesure reste celle du jour où
+ * elle a été prise.
+ * Le fait porteur, lui, est intact, et c'est l'argument le plus fort en faveur
+ * du hissage : sur une fiche, `wp_enqueue_block_style()` ne sert NI la feuille
+ * du composant #12 NI celle du #13. Sans les règles ci-dessous, le portrait d'un
+ * chien n'aurait ni cerne, ni `object-fit` — l'image dicterait sa hauteur, ce
+ * que le §6 interdit en tête —, l'emplacement structurant du §9.2 n'aurait
+ * aucune dimension, et le badge perdrait sa pastille, l'un de ses trois signaux
+ * du §3.3.
+ *
+ * --- 3. `white-space: normal` — LA PREUVE VOYAGE AVEC LA RÈGLE ------
+ * `normal` est la valeur INITIALE du CSS : la déclarer n'est pas une décision
+ * visuelle mais une GARDE D'HÉRITAGE, `white-space` étant une propriété héritée
+ * — un ancêtre en `nowrap` la donnerait au badge sans que personne l'ait voulu.
+ * MESURE D7, TRANSPORTÉE MOT POUR MOT depuis `blocs/mtb-liste-portees.css`
+ * avant la suppression de la règle qui la portait : `nowrap` MESURÉ à 360 px sur
+ * une Page portant les deux blocs, `scrollWidth` 400 pour `clientWidth` 360,
+ * défilement horizontal, ÉCHEC AA. Elle ne devait pas disparaître avec sa règle.
+ * D'où `normal` dans la primitive, et JAMAIS `nowrap` : un repli vaut toujours
+ * mieux qu'un débordement. Le seul `nowrap` survivant est scopé à l'encart
+ * d'accueil (`blocs/mtb-derniere-portee.css`), où il a été mesuré sans
+ * débordement dans SON contexte. Les deux mesures sont vraies ; elles ne portent
+ * pas sur la même page.
+ *
+ * --- 4. TABLE DE CASCADE — trois contextes, neuf porteurs -----------
+ * LES TROIS CONTEXTES : (a) gabarit de blocs, base.css enfilée AVANT les
+ * feuilles de blocs ; (b) gabarit de fiche, base.css APRÈS elles ; (c) toile de
+ * l'éditeur, où le cœur préfixe `.editor-styles-wrapper` aux feuilles passées à
+ * `add_editor_style()` — donc à base.css — et PAS aux feuilles de blocs. Ce
+ * modèle de préfixage est une prémisse du dépôt, REPRISE ET NON RE-MESURÉE ici :
+ * elle est écrite au §10.5.3 ci-dessus et dans quatre feuilles de blocs.
+ * LES NEUF PORTEURS, tous relevés dans le code : bandeau-ouverture/render.php:150
+ * · derniere-portee/render.php:159 et :105 · liste-portees/rendu.php:273 et :393
+ * · single-mtb_chien.php:173, :182 et :383 · single-mtb_portee.php:100. Celui de
+ * derniere-portee/render.php:105 n'a AUCUNE classe d'élément : l'ancêtre est le
+ * seul crochet possible pour ce badge, et c'est ce qui donne sa forme au crochet
+ * scopé qui subsiste.
+ * AUCUNE RÈGLE DU §13 NE DÉPEND DE L'ORDRE D'ENFILAGE, et voici pourquoi :
+ *   · un SEUL crochet scopé les contredit encore, le `white-space: nowrap` de
+ *     `.mtb-derniere-portee.mtb-derniere-portee .mtb-dispo`, à (0,3,0) : il bat
+ *     13.1 dans les trois contextes, y compris la toile où 13.1 pèse (0,2,0) ;
+ *   · les cinq autres règles scopées voisines — `.mtb-liste-portees__vignette`,
+ *     `.mtb-derniere-portee__photo`, `.mtb-fiche-chien__portrait`,
+ *     `.mtb-fiche-chien__portrait--vide`, `.mtb-fiche-portee__dispo` /
+ *     `.mtb-carte-portee__dispo` — ont des jeux de propriétés DISJOINTS de ces
+ *     dix règles : aucun ordre ne peut mordre ;
+ *   · `.mtb-bandeau-ouverture__photo` et son `::after` sont à ÉGALITÉ de
+ *     spécificité avec 13.8 et 13.9, l'ordre décide donc — et ne change RIEN :
+ *     leurs déclarations ont été comparées propriété par propriété et valeur par
+ *     valeur avant l'écriture de ce §13, elles sont identiques ;
+ *   · `.mtb-bandeau-ouverture__image` (0,1,0) perd contre 13.10, (0,2,1) sur le
+ *     site et (0,3,1) dans la toile. ZÉRO PIXEL sur le site, les cinq valeurs
+ *     partagées étant identiques ; ses `color` et `font-size`, absents de 13.10,
+ *     survivent. DANS LA TOILE, 13.10 CORRIGE UN DÉFAUT LATENT :
+ *     `blocs/mtb-bandeau-ouverture.css` justifie `__image` par « (0,1,0) contre
+ *     (0,0,1) à `img` » en oubliant le préfixage, or le `img` de la l. 124
+ *     ci-dessus y pèse (0,1,1) et battait son `block-size: 100%` — la photo du
+ *     bandeau y dictait donc la hauteur de son cadre. DÉDUIT DU MODÈLE DE
+ *     PRÉFIXAGE, NON MESURÉ : personne dans ce projet n'a rendu ce site dans un
+ *     navigateur.
+ *
+ * DETTE RENDUE, DÉLIBÉRÉMENT NON PAYÉE ICI : les trois états n'ont pas la même
+ * boîte. Le §3.3 donne 1 px de bordure à « Tous réservés » et à « Portée
+ * passée », et AUCUNE à « Chiots disponibles », qui est donc 2 px plus court et
+ * plus étroit. NE PAS ÉGALISER : un `border: 1px solid transparent` rouvrirait
+ * le §3.3, hors de l'empreinte de cette issue.
+ *
+ * VALEURS BRUTES — LISTE CLOSE, sur le modèle du §10. Aucune n'est nouvelle :
+ * toutes sont déplacées telles quelles avec leur règle, et aucune ne dispose
+ * d'un jeton. Ne comptent pas : `0`, `100%`, les mots-clés, la chaîne vide de
+ * `content`.
+ *   · `.6em` deux fois — diamètre de la pastille, admis à 0,6 em par le §3.3 ;
+ *   · `2px` — épaisseur de l'anneau de la pastille (§3.3) ;
+ *   · `50%` du `border-radius` — la SEULE exception d'arrondi du site (§5.2),
+ *     interdite sur toute image (§2.2) ;
+ *   · `linear-gradient(to right, currentColor 50%, transparent 50%)` — le §3.3
+ *     dessine lui-même ainsi la demi-pastille : seule exception admise à
+ *     l'interdit de dégradé du §13 de MASTER ;
+ *   · `1px` — le bord de « Tous réservés » (§3.3) ;
+ *   · `700`, `1.2`, `.12em` — composition « Bouton, badge » du §4.5 ;
+ *   · `50% 38%` — le repli de cadrage du §6.2, employé quand `--point-interet`
+ *     n'est posée par personne.
+ * ================================================================== */
+
+/* 13.1  LE BADGE — §3.3, §4.5, §5.1.1, §5.2, §12.9. Trois signaux, jamais la
+   couleur seule : le mot, la forme de la pastille, la couleur.
+
+   `gap: var(--e-1)` ET `padding: var(--e-1) var(--e-2)` VIENNENT DE MASTER
+   §5.1.1, RÉVISION 1.5, qui chiffre ce rembourrage pour la première fois. Ce
+   n'est PAS la valeur majoritaire des trois feuilles fusionnées : c'est la
+   MINORITAIRE, celle qu'écrivait déjà `blocs/mtb-liste-portees.css` ; les deux
+   autres s'y alignent, et deux badges sur trois changent donc de boîte — 8 vers
+   4 px d'écart, 8/12 vers 4/8 px de rembourrage. C'est voulu, c'est la promesse
+   même de l'issue, et le badge de l'index des portées ne bouge pas d'un pixel.
+   LE VOTE PAR FRÉQUENCE ÉTAIT UN ARTEFACT : `fiches.css` déclarait avoir recopié
+   `blocs/mtb-derniere-portee.css` pour rester littéralement identique. Il n'y
+   avait donc pas trois écritures indépendantes, mais UNE proposition écrite deux
+   fois contre une autre — et trancher par la majorité aurait reconduit
+   exactement le défaut que #33 répare.
+   LES QUATRE APPUIS DU DOCUMENT, écrits ici pour qu'aucune chaîne ne « répare »
+   ces deux valeurs à l'envers :
+     1. le tableau du §5.1 nomme lui-même `--e-1` « ajustement de pastille » et
+        `--e-2` « écart minimal entre deux CIBLES TACTILES ». L'écart de la
+        pastille au libellé n'est pas un écart entre deux cibles : le badge n'est
+        cliquable NULLE PART, le §3.3 en faisant un paragraphe ou un `<span>`
+        lisible ;
+     2. la pastille est un `::before` de l'élément QUI PORTE LE TEXTE, héritant
+        de `currentColor` précisément pour que son contraste SOIT celui du
+        libellé : elle se lit comme un signe DU mot, jamais comme un objet posé
+        À CÔTÉ DU mot ;
+     3. à `--t-sm`, l'interlettre de `.12em` valant environ 1,8 px, `--e-1` place
+        la pastille à 2,2 interlettres du premier caractère — attachée et
+        distincte — quand `--e-2` l'en écarte de 4,4 et la détache en second
+        objet ;
+     4. le badge partage DÉJÀ la typographie du bouton (§4.5) et son rayon
+        `--r-1` (§5.2) ; s'il en prenait aussi la BOÎTE, la seule distinction
+        restante serait le CURSEUR — un signal de survol, que le §12.10 refuse
+        comme distinction unique. D'où une boîte de 26 px à 360 px et de 27 px à
+        1440 px, face aux 48 px minimum du bouton (§8.4).
+   DEUX POINTS SONT NON COMPENSÉS À DESSEIN ; CE NE SONT PAS DES OUBLIS :
+     · l'interlettre de `.12em` court APRÈS la dernière capitale, si bien que le
+       rembourrage droit vaut optiquement environ 9,9 px contre 8 px à gauche,
+       soit environ 1,9 px d'asymétrie. MASTER décide de NE RIEN COMPENSER :
+       n'inventez AUCUNE marge négative. Une mesure contraire sur le site rendu
+       est une question au lead, pas un correctif ;
+     · `--e-2` est retenu ici HORS de la règle des cibles tactiles — c'est un
+       rembourrage, pas une application de cette règle. Les 44 px du §12.10 ne
+       concernent pas le badge, et sa hauteur de 26 px N'EST PAS une
+       non-conformité.
+
+   `font-family: var(--sans)` appartient à la primitive : le §4.5 l. 334 impose
+   Public Sans au badge et `--sans` vaut bien Public Sans (tokens.css:26). Une
+   primitive hissée ne doit pas dépendre d'un ancêtre `body` (l. 104 de ce
+   fichier) qui n'est garanti dans aucune toile.
+   `white-space: normal` : garde d'héritage, preuve D7 au point 3 de l'en-tête. */
+.mtb-dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  padding: var(--e-1) var(--e-2);
+  border-radius: var(--r-1);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  white-space: normal;
+}
+
+/* 13.2  La pastille, en CSS pur : ni image, ni SVG, ni police d'icônes (§13 de
+   MASTER), donc aucune requête. Elle hérite de `currentColor`, si bien que son
+   contraste EST celui du libellé par construction — c'est la raison pour
+   laquelle `.mtb-dispo` est posée sur l'élément qui porte le texte. */
+.mtb-dispo::before {
+  content: "";
+  flex: none;
+  inline-size: .6em;
+  block-size: .6em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+/* 13.3  Disque PLEIN — `--sauge` / `--calcaire` : 5,25:1, AA (§12.4).
+   `--calcaire` est la seule encre que le §3.2 autorise sur `--sauge`. Sans
+   bordure (§3.3) : cet état est donc 2 px plus court que les deux autres, écart
+   relevé et délibérément non compensé (en-tête, dette rendue). */
+.mtb-dispo--disponible {
+  background-color: var(--sauge);
+  color: var(--calcaire);
+}
+
+/* 13.4  Le disque plein n'est pas une couleur de plus : c'est le remplissage de
+   l'anneau du 13.2, et il hérite de `currentColor` comme lui. */
+.mtb-dispo--disponible::before {
+  background-color: currentColor;
+}
+
+/* 13.5  Disque À MOITIÉ PLEIN — `--calcaire-creux` / `--texte` : 10,78:1, AAA
+   (§12.3) ; bordure `--laiton` à 3,15:1, admise parce que NON TEXTUELLE
+   (§12.3). */
+.mtb-dispo--reserve {
+  background-color: var(--calcaire-creux);
+  color: var(--texte);
+  border: 1px solid var(--laiton);
+}
+
+/* 13.6  Le dégradé est l'unique écart apparent à l'interdit du §13 de MASTER :
+   c'est le §3.3 lui-même qui dessine ainsi la demi-pastille, et on suit §3.3. */
+.mtb-dispo--reserve::before {
+  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+}
+
+/* 13.7  Anneau VIDE — `--calcaire` / `--texte-doux` : 6,47:1, AA (§12.1).
+   `--bord-actif` EST nommément le jeton que le §5.3 destine au « bord d'un badge
+   Portée passée ». L'anneau vide est déjà le défaut du `::before` du 13.2. */
+.mtb-dispo--passee {
+  background-color: var(--calcaire);
+  color: var(--texte-doux);
+  border: var(--bord-actif);
+}
+
+/* 13.8  LE CADRE PHOTO — §6.1, §6.2, §6.6. `.mtb-photo` porte le TRAITEMENT
+   commun à toute photo — fond, encre, cerne, cadrage de l'image ; la BOÎTE d'un
+   emplacement — dimension, ratio, rayon, marges — reste scopée à chaque
+   composant, MASTER ne l'attribuant pas à la primitive partagée.
+   `--calcaire-creux` sert à la fois de fond au PNG détouré (jamais de damier,
+   jamais de trou) et à l'image qui ne charge pas, l'emplacement gardant alors
+   son ratio, sans pictogramme cassé. `--texte-doux` et `--t-sm` habillent le
+   texte alternatif que le navigateur imprime lui-même à la place de l'image
+   (5,79:1, §12.3). `position: relative` n'est là QUE comme bloc conteneur du
+   cerne ci-dessous : sans décalage, il ne déplace aucun pixel.
+   Aucun `overflow: hidden` — le §7.8 l'interdit sur un conteneur qui peut porter
+   du texte. Aucun `filter` — le §6.6 les interdit tous, un filtre falsifierait
+   la robe, qui est une donnée d'élevage. */
+.mtb-photo {
+  position: relative;
+  background-color: var(--calcaire-creux);
+  color: var(--texte-doux);
+  font-size: var(--t-sm);
+}
+
+/* 13.9  LE CERNE — le §6.6 l'exige sur TOUTE photo : le bord d'une image existe
+   même sur un ciel blanc. Ce n'est pas une ombre portée, que le §13 de MASTER
+   interdit ; `--cerne-photo` est un jeton défini par le §5.3.
+   NE « SIMPLIFIEZ » PAS CETTE RÈGLE EN PORTANT L'OMBRE SUR LE CADRE OU SUR
+   L'`<img>` : elle DISPARAÎT. MESURE REPRISE DE LA CHAÎNE DU COMPOSANT #12,
+   DÉPLACÉE SANS ÊTRE REJOUÉE (Chrome sans interface, pixels lus, cadre
+   120 × 80, image magenta) : sur le CADRE, `--cerne-photo` étant `inset`
+   (tokens.css:118), l'ombre intérieure se peint au-dessus du fond mais SOUS les
+   descendants, et l'`<img>` remplit exactement la boîte du cadre (100 % × 100 %,
+   ni rembourrage ni bordure) — bord relevé à (255, 0, 255), le pixel brut, cerne
+   NUL ; sur l'`<img>`, invisible AUSSI, l'ombre intérieure d'un élément remplacé
+   se peignant sous le contenu remplacé (capture identique au bit près) ; sur
+   CETTE surcouche positionnée, qui se peint après le contenu en flux, bord à
+   (204, 8, 205) = `rgb(22 36 28 / .22)` sur le magenta, valeur prédite, et cadre
+   sans image inchangé au bit près, donc aucun doublement d'ombre. Le
+   pseudo-élément est OBLIGATOIRE. Ce qui n'est PAS démontrable et ne l'a jamais
+   été ici : que le cerne soit VISIBLE à l'oeil sur le site rendu.
+   `border-radius: inherit` est RETENU, et ce n'est PAS un arbitrage de valeur :
+   sur un cadre droit — `--r-0` vaut 0 — la déclaration est INERTE, et sur le
+   cadre arrondi de l'index des portées elle empêche un cerne à angles droits de
+   déborder. Superset inerte, donc la mise en commun était une SUPPRESSION et
+   jamais un arbitrage — ce que `blocs/mtb-bandeau-ouverture.css` avait
+   explicitement prévu en l'écrivant lui aussi.
+   `pointer-events: none` : le pseudo couvre toute la photo et ne doit jamais
+   intercepter un clic ni un survol destiné à ce qui est au-dessous. */
+.mtb-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--cerne-photo);
+  pointer-events: none;
+}
+
+/* 13.10  LE CADRAGE — §6.2 mot pour mot, avec le rognage voulu du §6.3 : le
+   CADRE gagne toujours, ni bande noire, ni déformation, ni hauteur variable
+   selon la source. Une photo portrait servie dans un emplacement paysage est
+   rognée en haut et en bas ; c'est la règle, pas un accident.
+   `--point-interet` est le seul réglage photographique laissé à l'éleveuse : il
+   est posé par les cinq cadrages de la liste fermée du §6.2, sur l'élément
+   PORTEUR, et `50% 38%` n'est que le repli employé quand personne ne le pose.
+   AUCUN JETON `--cadrage-photo` NE DOIT ÊTRE CRÉÉ pour « factoriser » ce repli :
+   une propriété personnalisée est substituée sur l'élément OÙ ELLE EST DÉCLARÉE
+   — posée sur `:root`, où `--point-interet` n'existe pas, elle se FIGERAIT à
+   `50% 38%`, valeur ensuite héritée par tous les descendants, et les cinq
+   cadrages cesseraient de fonctionner EN SILENCE.
+   LA CLASSE EST RÉPÉTÉE, et le doublage est CONSERVÉ au hissage : une fois ici,
+   cette règle et le `img` de la l. 124 sont préfixées ENSEMBLE par
+   `.editor-styles-wrapper`, soit (0,3,1) contre (0,1,1) dans la toile et (0,2,1)
+   contre (0,0,1) sur le site. Dé-doublée en `.mtb-photo > img`, elle donnerait
+   (0,1,1) contre (0,1,1) dans la toile : ÉGALITÉ tranchée par l'ordre, contre le
+   `block-size: auto` de la l. 128. Le doublage coûte onze octets et ferme le
+   sujet.
+   `display: block` : restée en ligne, l'image dépasserait le bas du cadre de la
+   profondeur de ses jambages.
+   LIMITE NOMMÉE, NON TENUE : le §6.6 veut qu'une source trop petite ne soit pas
+   agrandie au-delà de 1,5 fois sa largeur naturelle. Cela demande la largeur
+   naturelle du fichier, que CSS seul ne connaît pas ; les composants qui la
+   reçoivent du serveur la plafonnent sur LEUR cadre
+   (`--photo-largeur-naturelle`), les autres n'imposent aucun plafond. */
+.mtb-photo.mtb-photo > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--point-interet, 50% 38%);
 }

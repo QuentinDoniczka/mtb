@@ -84,123 +84,55 @@
 
 /* __valeur et __effectif ne portent rien : corps hérité, aucune encre nommée par MASTER. */
 
-/* 5. Badge — §3.3, contrat §10.4. .mtb-dispo est une PRIMITIVE PARTAGÉE nommée par
-   MASTER, laissée NUE : déplaçable vers une feuille commune SANS RENOMMAGE (dette
-   T-#12-a). Trois signaux, jamais la couleur seule (§12.9) : le mot, la forme de la
-   pastille (plein / demi / vide), la couleur. */
-.mtb-dispo {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--e-2);
-  /* §5.1 ne chiffre pas ce rembourrage : proposé, signalé à lead-design-mtb. */
-  padding: var(--e-2) var(--e-3);
-  border-radius: var(--r-1);
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: var(--t-sm);
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-}
+/* 5. Badge — §3.3, §5.1.1, §12.9. LA PRIMITIVE `.mtb-dispo` N'EST PLUS ÉCRITE
+   ICI : l'issue #33 l'a hissée dans base.css §13, où elle est écrite UNE SEULE
+   FOIS pour les neuf porteurs du thème et de l'extension (dette T-#12-a, dette
+   T18 : soldées). Elle y prend le rembourrage que MASTER §5.1.1 chiffre depuis
+   sa révision 1.5 — gap: --e-1, padding: --e-1 --e-2 —, soit une boîte PLUS
+   COMPACTE que celle qu'écrivait cette feuille : 8 vers 4 px d'écart entre la
+   pastille et le libellé, 8/12 vers 4/8 px de rembourrage. Le badge de l'encart
+   d'accueil change donc d'apparence ; c'est la décision de MASTER, pas un effet
+   de bord, et « restaurer » l'ancienne boîte ici rouvrirait la dette.
+   Ce qui reste ci-dessous n'est PAS un duplicata mais du CONTEXTE : white-space
+   est une propriété de la page où le badge se trouve, pas de la primitive.
 
-/* white-space est une propriété du CONTEXTE, pas de la primitive : il est donc scopé
-   ici, pas dans la règle nue ci-dessus (contrat §10.4a). MESURÉ à 360 px, iframe de
-   même origine : badge 238 px dans un canal de 324 px, aucun débordement. La feuille
-   sœur mtb-liste-portees.css a mesuré l'inverse DANS SON contexte — badge à côté
-   d'une vignette de 144 px, où nowrap déborde et rompt le 360 px. Les deux mesures
-   sont vraies ; nowrap n'appartient donc qu'à cet encart. (0,2,0) bat la primitive
-   nue (0,1,0) sans dépendre de l'ordre du registre de blocs.
-   Au hissage de la primitive (T-#12-a) : elle prendra normal, JAMAIS nowrap — un
-   repli est toujours préférable à un débordement. */
-.mtb-derniere-portee .mtb-dispo {
+   MESURÉ à 360 px, iframe de même origine : badge 238 px dans un canal de
+   324 px, aucun débordement. LA MESURE N'EST PAS REJOUÉE, ELLE DEVIENT UN
+   MAJORANT : elle a été prise AVEC L'ANCIEN REMBOURRAGE, et le nouveau retire
+   8 px horizontaux — le badge ne peut que rétrécir, la marge que grandir. La
+   feuille sœur mtb-liste-portees.css avait mesuré l'inverse DANS SON contexte,
+   badge à côté d'une vignette de 144 px, où nowrap déborde et rompt le 360 px
+   (scrollWidth 400 pour clientWidth 360, échec AA). Les deux mesures sont
+   vraies ; nowrap n'appartient qu'à cet encart, et la primitive porte normal.
+
+   SÉLECTEUR DOUBLÉ, ET C'EST LE HISSAGE LUI-MÊME QUI L'EXIGE — ne pas le
+   « simplifier ». Avant #33, ce crochet n'avait pas d'adversaire ; depuis, c'est
+   .mtb-dispo DANS base.css, qui porte white-space: normal. Sur le site, (0,2,0)
+   contre (0,1,0) suffirait. DANS LA TOILE, NON : le cœur préfixe
+   .editor-styles-wrapper aux feuilles passées à add_editor_style() — donc à
+   base.css — et PAS aux feuilles de blocs ; la primitive y pèse alors (0,2,0),
+   un crochet non doublé aussi, ÉGALITÉ tranchée par un ordre d'enfilage inconnu.
+   La convention « deux classes minimum » de l'en-tête de cette feuille
+   (l. 11-15) a été écrite contre un h2 — (0,0,1) préfixé en (0,1,1) — et CESSE
+   D'ÊTRE SUFFISANTE dès que base.css porte un sélecteur de CLASSE sur le même
+   élément. Ce serait donc le défaut même que #33 ferme, réintroduit par #33. Le
+   dépôt documente déjà ce remède pour cette raison exacte : base.css:761-763, et
+   base.css:900-903 qui note « aucun sélecteur doublé nécessaire, contrairement à
+   une feuille de bloc ». (0,3,0) gagne dans les trois contextes, sans
+   !important et sans dépendre de l'ordre. */
+.mtb-derniere-portee.mtb-derniere-portee .mtb-dispo {
   white-space: nowrap;
 }
 
-/* Pastille en CSS pur, ni image ni police (§13) ; le 50% est la seule exception
-   d'arrondi du site (§5.2), admise à 0,6 em. */
-.mtb-dispo::before {
-  content: "";
-  flex: none;
-  inline-size: .6em;
-  block-size: .6em;
-  border: 2px solid currentColor;
-  border-radius: 50%;
-}
-
-/* Disque plein — 5,25:1 AA (§12.4) ; --calcaire, seule encre du §3.2 sur --sauge. */
-.mtb-dispo--disponible {
-  background-color: var(--sauge);
-  color: var(--calcaire);
-}
-
-.mtb-dispo--disponible::before {
-  background-color: currentColor;
-}
-
-/* Demi-disque — 10,78:1 AAA (§12.3) ; --laiton en bord non textuel, autorisé par
-   §12.3. Le dégradé vient du §3.3 malgré l'interdit du §13 : tranché au §10.4. */
-.mtb-dispo--reserve {
-  background-color: var(--calcaire-creux);
-  color: var(--texte);
-  border: 1px solid var(--laiton);
-}
-
-.mtb-dispo--reserve::before {
-  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
-}
-
-/* Anneau vide — 6,47:1 AA (§12.1) ; --bord-actif EST le bord que §5.3 destine à
-   « Portée passée ». L'anneau vide est déjà le défaut du ::before. */
-.mtb-dispo--passee {
-  background-color: var(--calcaire);
-  color: var(--texte-doux);
-  border: var(--bord-actif);
-}
-
-/* 6. Cadre photo — §6.1, §6.2, §6.6. .mtb-photo est la seconde PRIMITIVE PARTAGÉE
-   nommée par MASTER, également NUE et déplaçable sans renommage (T-#12-a) : elle
-   porte le commun à toute photo, __photo le seul ratio de l'emplacement. Fond du
-   PNG détouré et de l'image qui ne charge pas, encre du texte alt dans le cadre
-   (5,79:1 AA) ; relative n'est là que comme bloc conteneur du cerne ci-dessous. */
-.mtb-photo {
-  position: relative;
-  background-color: var(--calcaire-creux);
-  color: var(--texte-doux);
-  font-size: var(--t-sm);
-}
-
-/* §6.6, LE CERNE — mesure écrite ICI SEULEMENT : ne « simplifiez » pas cette règle
-   en portant l'ombre sur le cadre ou sur l'<img>, elle DISPARAÎT, donc le
-   pseudo-élément est OBLIGATOIRE. MESURÉ (Chrome sans interface, pixels lus, cadre
-   120 × 80, image magenta) : sur le CADRE, une ombre « inset » se peint au-dessus
-   du fond mais SOUS les descendants, et l'<img> remplit exactement sa boîte de
-   bordure (100 % × 100 %) — bord relevé à (255, 0, 255), le pixel brut, cerne nul ;
-   sur l'<img>, invisible AUSSI, l'ombre intérieure d'un élément remplacé se peignant
-   sous le contenu remplacé (capture identique au bit près) ; sur CETTE surcouche,
-   bord à (204, 8, 205) = rgb(22 36 28 / .22) sur le magenta, valeur prédite, et
-   cadre sans image inchangé au bit près — aucun doublement d'ombre.
-   pointer-events: none : jamais un clic pris au cadre. */
-.mtb-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  box-shadow: var(--cerne-photo);
-  pointer-events: none;
-}
-
-/* §6.2 mot pour mot ; la photo portrait rognée haut et bas est voulue (§6.3), et
-   --point-interet n'est posée par personne aujourd'hui (forme à coût nul).
-   LA CLASSE EST RÉPÉTÉE (précédent base.css:553) pour peser (0,2,1) contre le
-   « img » de base.css — (0,1,1) une fois préfixé dans la toile — qui impose
-   block-size: auto ; le doublement garde la règle déplaçable telle quelle.
-   display: block : restée en ligne, l'image dépasserait du cadre de ses jambages. */
-.mtb-photo.mtb-photo > img {
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  object-fit: cover;
-  object-position: var(--point-interet, 50% 38%);
-}
+/* 6. Cadre photo — §6.1, §6.2, §6.6. LA PRIMITIVE `.mtb-photo` N'EST PLUS
+   ÉCRITE ICI non plus : #33 l'a hissée dans base.css §13 avec son cerne et son
+   cadrage. La mesure au pixel du cerne, écrite ici et nulle part ailleurs
+   (Chrome sans interface, cadre 120 × 80, image magenta), y a été DÉPLACÉE SANS
+   ÊTRE REJOUÉE, avec la conclusion qu'elle porte : le pseudo-élément est
+   obligatoire, l'ombre ne survit ni sur le cadre ni sur l'image.
+   Cette feuille garde la BOÎTE de l'emplacement — le ratio et son plafond —,
+   décision propre à l'encart d'accueil que MASTER n'attribue pas à la primitive
+   partagée. */
 
 /* Ratio 3/2 du §6.1, porté par le CADRE : rien ne se déplace au chargement (§6.9).
    Le plafond de 1,5 × la largeur naturelle (§6.6), impossible en CSS seul, tient à

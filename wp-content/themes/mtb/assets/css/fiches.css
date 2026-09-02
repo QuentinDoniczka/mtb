@@ -54,9 +54,10 @@
  * (§6.8 verbatim) · `14rem` (largeur minimale de carte, que MASTER ne chiffre
  * pas : alignée sur `blocs/mtb-grille-chiens.css:188`, seule convention de carte
  * du thème — ÉCART SIGNALÉ) · `44px` (§12.10) · `7px`/`1px`/`45deg` (chevron
- * §8.6) · `.6em`/`2px`/`50%`/`1px` et le dégradé de la pastille (§3.3 verbatim) ·
- * `50% 38%` (repli d'`object-position`, §6.2) · les graisses, interlignes et
- * interlettres du tableau du §4.5.
+ * §8.6) · les graisses, interlignes et interlettres du tableau du §4.5.
+ * SIX LITTÉRAUX ONT QUITTÉ CETTE LISTE AVEC #33 — `.6em`, `2px`, `50%`, le
+ * dégradé de la pastille, le `1px` du bord de badge et `50% 38%` : ils sont
+ * partis avec les anciens §2.1 et §2.2 dans `base.css` §13, qui les réénumère.
  *
  * ABSENTS À DESSEIN : aucune règle de bouton, champ, `h1`, `h2`, `p`, `a`,
  * `table`, `th`, `td` — `base.css` les livre, primitive `.mtb-tableau` comprise ·
@@ -94,128 +95,23 @@
 }
 
 /* =====================================================================
- * 2. Primitives partagées — décision 30, MASTER §3.3, §6.2, §6.6, §9.3
+ * 2. Primitives des fiches — décision 30, MASTER §4.5, §7.5, §8.6, §9.3
  *
- * POURQUOI `.mtb-photo` ET `.mtb-dispo` SONT ÉCRITES ICI — MESURE, PAS
- * PRÉFÉRENCE. Elles vivent aussi dans `blocs/mtb-derniere-portee.css` et
- * `blocs/mtb-liste-portees.css`, servies par `wp_enqueue_block_style()`, donc
- * seulement sur les pages qui rendent ces blocs. RELEVÉ SUR UNE FICHE CHIEN
- * RENDUE, feuilles imprimées dans le `head` : `mtb-jetons`, `mtb-base`,
- * `mtb-entete-pied`, `mtb-galerie-photos-style`, `mtb-bloc-mtb-coordonnees-plan`
- * — NI `mtb-derniere-portee`, NI `mtb-liste-portees`. Sans les règles ci-dessous
- * le portrait n'aurait ni ratio, ni cerne, ni `object-fit` (l'image dicterait la
- * hauteur, ce que §6 interdit en tête), l'emplacement structurant du §9.2
- * n'aurait aucune dimension, et le badge perdrait sa pastille, l'un de ses trois
- * signaux du §3.3.
- * Écrites NUES (décision 30) et à l'identique de leurs sœurs : au jour du hissage
- * dans un domicile commun (dette T-#12-a), ce §2 est une SUPPRESSION, jamais un
- * arbitrage. Sur une fiche, aucune feuille sœur n'étant servie, il n'existe aucun
- * conflit de cascade — mesuré, pas espéré.
+ * LES DEUX PREMIÈRES SONT PARTIES, ET C'ÉTAIT LE BUT. `.mtb-dispo` (ancien 2.1)
+ * et `.mtb-photo` (ancien 2.2) vivaient ici en TROISIÈME exemplaire, à
+ * l'identique de `blocs/mtb-derniere-portee.css` et de
+ * `blocs/mtb-liste-portees.css`. L'issue #33 les a hissées dans `base.css` §13
+ * — la seule feuille servie sur TOUTES les pages —, avec les valeurs de
+ * rembourrage que MASTER §5.1.1 chiffre depuis sa révision 1.5, et avec le
+ * relevé qui justifiait leur présence ici. Ne pas les réécrire : ce serait
+ * rouvrir la dette T18 que #33 a soldée.
+ * LA NUMÉROTATION 2.3 À 2.6 N'EST PAS DÉCALÉE. Renuméroter périmerait tous les
+ * renvois qui citent ces sections, pour un gain nul.
+ * Ce qui suit est de même nature — des classes nues, écrites une seule fois —
+ * mais MASTER ne les NOMME pas, aucune feuille de bloc ne les redéclare, et les
+ * deux gabarits de fiche en sont les seuls consommateurs (vérifié :
+ * `single-mtb_chien.php`, `single-mtb_portee.php`, `parts/enveloppe-fiche.php`).
  * ================================================================== */
-
-/* 2.1  Le badge — §3.3, §12.9. Trois signaux, jamais la couleur seule : le mot,
-   la forme de la pastille, la couleur. Le rembourrage n'est pas chiffré par
-   §5.1 : valeur reprise telle quelle de `blocs/mtb-derniere-portee.css:96` pour
-   que les deux écritures restent littéralement identiques. */
-.mtb-dispo {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--e-2);
-  padding: var(--e-2) var(--e-3);
-  border-radius: var(--r-1);
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: var(--t-sm);
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-}
-
-/* Pastille en CSS pur, ni image ni police d'icônes (§13) ; le `50%` est la seule
-   exception d'arrondi du site (§5.2), admise à 0,6 em. Elle hérite de
-   `currentColor` : son contraste est celui du libellé, par construction. */
-.mtb-dispo::before {
-  content: "";
-  flex: none;
-  inline-size: .6em;
-  block-size: .6em;
-  border: 2px solid currentColor;
-  border-radius: 50%;
-}
-
-/* Disque plein — 5,25:1 (§12.4) ; `--calcaire` est la seule encre que §3.2
-   autorise sur `--sauge`. */
-.mtb-dispo--disponible {
-  background-color: var(--sauge);
-  color: var(--calcaire);
-}
-
-.mtb-dispo--disponible::before {
-  background-color: currentColor;
-}
-
-/* Demi-disque — 10,78:1 (§12.3) ; `--laiton` en bord non textuel, 3,15:1,
-   autorisé par §12.3. Le dégradé vient du §3.3 lui-même, seule exception à
-   l'interdit de dégradé du §13. */
-.mtb-dispo--reserve {
-  background-color: var(--calcaire-creux);
-  color: var(--texte);
-  border: 1px solid var(--laiton);
-}
-
-.mtb-dispo--reserve::before {
-  background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
-}
-
-/* Anneau vide — 6,47:1 (§12.1) ; `--bord-actif` EST le bord que §5.3 destine
-   nommément à « Portée passée ». L'anneau vide est déjà le défaut du `::before`. */
-.mtb-dispo--passee {
-  background-color: var(--calcaire);
-  color: var(--texte-doux);
-  border: var(--bord-actif);
-}
-
-/* 2.2  Le cadre photo — §6.1, §6.2, §6.6. `--calcaire-creux` est à la fois le
-   fond du PNG détouré, celui de l'image qui ne charge pas et celui de
-   l'emplacement structurant du §9.2 ; `--texte-doux` est l'encre du texte `alt`
-   affiché dans le cadre quand l'image échoue (5,79:1, §12.3). `relative` n'est
-   là que comme bloc conteneur du cerne. */
-.mtb-photo {
-  position: relative;
-  background-color: var(--calcaire-creux);
-  color: var(--texte-doux);
-  font-size: var(--t-sm);
-}
-
-/* §6.6, LE CERNE. NE « SIMPLIFIEZ » PAS CETTE RÈGLE EN PORTANT L'OMBRE SUR LE
-   CADRE OU SUR L'`<img>` : elle disparaît. Mesuré sur pixels lus par la feuille
-   sœur (`blocs/mtb-derniere-portee.css:183`) — sur le cadre, une ombre « inset »
-   se peint sous les descendants et l'`<img>` remplit sa boîte ; sur l'`<img>`,
-   l'ombre intérieure d'un élément remplacé se peint sous le contenu remplacé. Le
-   pseudo-élément est OBLIGATOIRE. Ce n'est pas une ombre portée : l'interdit du
-   §13 vise les ombres sous les cartes, pas ce cerne que §5.3 définit en jeton.
-   `pointer-events: none` : jamais un clic pris par le cadre. */
-.mtb-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  box-shadow: var(--cerne-photo);
-  pointer-events: none;
-}
-
-/* §6.2 mot pour mot. SIXIÈME ÉCRITURE d'`object-position: var(--point-interet,
-   50% 38%)` dans ce thème — dette T18 AGGRAVÉE, signalée à lead-design-mtb.
-   LA CLASSE EST RÉPÉTÉE pour peser (0,2,1) contre le `img` de `base.css:130`,
-   qui impose `block-size: auto` et qui, dans la toile de l'éditeur, y pèse
-   (0,1,1). `display: block` : restée en ligne, l'image dépasserait du cadre de
-   la hauteur de ses jambages. */
-.mtb-photo.mtb-photo > img {
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  object-fit: cover;
-  object-position: var(--point-interet, 50% 38%);
-}
 
 /* 2.3  Le vocabulaire de l'absence — §9.3. 6,47:1 sur `--calcaire` et 7,01:1 sur
    `--blanc`, les deux seuls fonds où cette classe apparaît. La chaîne vient
