@@ -42,7 +42,7 @@
 		var element = document.createElement( 'button' );
 
 		element.type = 'button';
-		element.className = 'button-link ' + classe;
+		element.className = 'button ' + classe;
 		element.textContent = texte;
 		element.setAttribute( 'data-mtb-position', String( position ) );
 

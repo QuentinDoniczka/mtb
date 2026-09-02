@@ -391,13 +391,27 @@ function rangee_chiot( string $index, string $numero, array $chiot ): string {
 	$champ   = 'chiots[' . $index . ']';
 	$prefixe = 'mtb-portee-chiot-' . $index;
 
+	/*
+	 * Les trois champs texte et le sélecteur épousent leur cellule, ils ne lui imposent pas leur
+	 * largeur. « regular-text » vaut 25 em : ces quatre contrôles alignés dans une même rangée
+	 * rendaient le tableau incompressible et faisaient défiler la page entière de côté — jusqu'à
+	 * mettre la case « Retirer ce chiot » hors de l'écran sur un écran de bureau. Le sélecteur
+	 * compte autant que les champs : sans lui, le tableau ne descend pas sous 384 px.
+	 *
+	 * À 360 px les contrôles deviennent étroits — 28 à 52 px pour les champs, 37 px pour le
+	 * sélecteur, dont l'option choisie n'est alors plus lisible. Le repli responsive des tableaux
+	 * du cœur les ramènerait à 184 px ; il a été mesuré puis écarté par décision d'usage, parce
+	 * qu'il cache quatre colonnes sur cinq derrière un dépliage par rangée sous 782 px et ne fait
+	 * rien au-dessus. Ni oubli ni dette : saisir dix chiots au téléphone n'est pas l'usage, et
+	 * c'est le confort sur ordinateur qui a été préféré.
+	 */
 	$html = '<tr class="mtb-portee-chiot">';
 
 	$html .= '<td><label for="' . esc_attr( $prefixe ) . '-nom" class="screen-reader-text">Nom du chiot ' . esc_html( $numero ) . '</label>';
-	$html .= '<input type="text" id="' . esc_attr( $prefixe ) . '-nom" name="' . esc_attr( $champ ) . '[nom]" value="' . esc_attr( $nom ) . '" class="regular-text"></td>';
+	$html .= '<input type="text" id="' . esc_attr( $prefixe ) . '-nom" name="' . esc_attr( $champ ) . '[nom]" value="' . esc_attr( $nom ) . '" class="widefat"></td>';
 
 	$html .= '<td><label for="' . esc_attr( $prefixe ) . '-sexe" class="screen-reader-text">Sexe du chiot ' . esc_html( $numero ) . '</label>';
-	$html .= '<select id="' . esc_attr( $prefixe ) . '-sexe" name="' . esc_attr( $champ ) . '[sexe]">';
+	$html .= '<select id="' . esc_attr( $prefixe ) . '-sexe" name="' . esc_attr( $champ ) . '[sexe]" class="widefat">';
 	$html .= '<option value="">Non renseigné</option>';
 
 	foreach ( Champs\sexes() as $cle => $libelle ) {
@@ -407,10 +421,10 @@ function rangee_chiot( string $index, string $numero, array $chiot ): string {
 	$html .= '</select></td>';
 
 	$html .= '<td><label for="' . esc_attr( $prefixe ) . '-lof" class="screen-reader-text">N° LOF du chiot ' . esc_html( $numero ) . '</label>';
-	$html .= '<input type="text" id="' . esc_attr( $prefixe ) . '-lof" name="' . esc_attr( $champ ) . '[lof]" value="' . esc_attr( $lof ) . '" class="regular-text"></td>';
+	$html .= '<input type="text" id="' . esc_attr( $prefixe ) . '-lof" name="' . esc_attr( $champ ) . '[lof]" value="' . esc_attr( $lof ) . '" class="widefat"></td>';
 
 	$html .= '<td><label for="' . esc_attr( $prefixe ) . '-devenir" class="screen-reader-text">Devenir du chiot ' . esc_html( $numero ) . '</label>';
-	$html .= '<input type="text" id="' . esc_attr( $prefixe ) . '-devenir" name="' . esc_attr( $champ ) . '[devenir]" value="' . esc_attr( $devenir ) . '" class="regular-text"></td>';
+	$html .= '<input type="text" id="' . esc_attr( $prefixe ) . '-devenir" name="' . esc_attr( $champ ) . '[devenir]" value="' . esc_attr( $devenir ) . '" class="widefat"></td>';
 
 	$html .= '<td><label for="' . esc_attr( $prefixe ) . '-retirer" class="screen-reader-text">Retirer le chiot ' . esc_html( $numero ) . '</label>';
 	$html .= '<input type="checkbox" id="' . esc_attr( $prefixe ) . '-retirer" name="' . esc_attr( $champ ) . '[retirer]" value="1"></td>';

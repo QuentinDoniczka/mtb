@@ -144,9 +144,17 @@ function rendre_radios( string $cle, string $libelle, array $options, string $va
 	printf( '<fieldset class="mtb-champ" id="%s">', esc_attr( $identifiant ) );
 	printf( '<legend class="mtb-champ__etiquette"><strong>%s</strong></legend>', esc_html( $libelle ) );
 
+	/*
+	 * Un choix par paragraphe, la forme que « portee/ecran.php » emploie déjà pour ses boutons
+	 * radio. Sans enveloppe, « label » étant en ligne, le libellé d'un choix touche le bouton du
+	 * suivant — écart mesuré : zéro pixel — et l'œil les apparie à l'envers. Le paragraphe porte le
+	 * pas d'un choix au suivant à 34,5 px à 1440 et 36,3 px à 360, au-dessus des 24 px demandés
+	 * entre deux cibles voisines ; un simple retour à la ligne s'arrête à la hauteur du texte,
+	 * 17 px, et resterait sous ce seuil.
+	 */
 	foreach ( $choix as $option => $etiquette ) {
 		printf(
-			'<label class="mtb-champ__choix"><input type="radio" name="%1$s" value="%2$s"%3$s /> %4$s</label>',
+			'<p><label class="mtb-champ__choix"><input type="radio" name="%1$s" value="%2$s"%3$s /> %4$s</label></p>',
 			esc_attr( $cle ),
 			esc_attr( (string) $option ),
 			checked( $valeur, (string) $option, false ),
@@ -176,15 +184,16 @@ function rendre_statut( string $valeur, string $sexe ): void {
 	printf( '<fieldset class="mtb-champ" id="%s">', esc_attr( $identifiant ) );
 	echo '<legend class="mtb-champ__etiquette"><strong>Statut</strong></legend>';
 
+	// Même enveloppe que « rendre_radios() », et pour la même raison.
 	printf(
-		'<label class="mtb-champ__choix"><input type="radio" name="_mtb_statut" value=""%1$s /> %2$s</label>',
+		'<p><label class="mtb-champ__choix"><input type="radio" name="_mtb_statut" value=""%1$s /> %2$s</label></p>',
 		checked( $valeur, '', false ),
 		esc_html( non_renseigne() )
 	);
 
 	foreach ( statuts() as $cle => $formes ) {
 		printf(
-			'<label class="mtb-champ__choix"><input type="radio" name="_mtb_statut" value="%1$s"%2$s /> <span class="mtb-champ__libelle-accorde" data-mtb-masculin="%3$s" data-mtb-feminin="%4$s">%5$s</span></label>',
+			'<p><label class="mtb-champ__choix"><input type="radio" name="_mtb_statut" value="%1$s"%2$s /> <span class="mtb-champ__libelle-accorde" data-mtb-masculin="%3$s" data-mtb-feminin="%4$s">%5$s</span></label></p>',
 			esc_attr( (string) $cle ),
 			checked( $valeur, (string) $cle, false ),
 			esc_attr( $formes['masculin'] ),
@@ -634,16 +643,16 @@ function rendre_galerie( int $post_id ): void {
 		 * indisponible. Le bouton existe, il n'est simplement pas utilisable ici.
 		 */
 		printf(
-			'<button type="button" class="button-link mtb-galerie__retirer">%s</button>',
+			'<button type="button" class="button mtb-galerie__retirer">%s</button>',
 			esc_html( sprintf( 'Retirer la photo %d', $rang ) )
 		);
 		printf(
-			'<button type="button" class="button-link mtb-galerie__avant"%1$s>%2$s</button>',
+			'<button type="button" class="button mtb-galerie__avant"%1$s>%2$s</button>',
 			1 === $rang ? ' disabled="disabled"' : '',
 			esc_html( sprintf( 'Monter la photo %d', $rang ) )
 		);
 		printf(
-			'<button type="button" class="button-link mtb-galerie__apres"%1$s>%2$s</button>',
+			'<button type="button" class="button mtb-galerie__apres"%1$s>%2$s</button>',
 			$rang === $total ? ' disabled="disabled"' : '',
 			esc_html( sprintf( 'Descendre la photo %d', $rang ) )
 		);

@@ -155,6 +155,10 @@ ajoute une de plus, autant de fois que vous voulez.
 remplit en plusieurs fois.** Vous pouvez enregistrer une portée sans aucun chiot, puis ajouter les
 lignes au fur et à mesure.
 
+**Remplissez ce tableau sur un ordinateur.** Les cases y sont larges et le tableau tient dans la page,
+jusqu'à la colonne **Retirer ce chiot**, tout à droite. Sur un téléphone, les cases deviennent très
+étroites : la saisie reste possible, mais elle est pénible dès le deuxième chiot.
+
 **Les compteurs de l'encadré La portée ne s'en déduisent jamais.** **Nombre de mâles** et
 **Nombre de femelles** d'un côté, la liste des chiots de l'autre : ce sont deux choses séparées, et
 c'est voulu. Vous connaissez les nombres le jour de la naissance ; les noms viennent bien plus tard.
