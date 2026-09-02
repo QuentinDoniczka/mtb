@@ -107,19 +107,22 @@
 
    SÉLECTEUR DOUBLÉ, ET C'EST LE HISSAGE LUI-MÊME QUI L'EXIGE — ne pas le
    « simplifier ». Avant #33, ce crochet n'avait pas d'adversaire ; depuis, c'est
-   .mtb-dispo DANS base.css, qui porte white-space: normal. Sur le site, (0,2,0)
-   contre (0,1,0) suffirait. DANS LA TOILE, NON : le cœur préfixe
-   .editor-styles-wrapper aux feuilles passées à add_editor_style() — donc à
-   base.css — et PAS aux feuilles de blocs ; la primitive y pèse alors (0,2,0),
-   un crochet non doublé aussi, ÉGALITÉ tranchée par un ordre d'enfilage inconnu.
-   La convention « deux classes minimum » de l'en-tête de cette feuille
-   (l. 11-15) a été écrite contre un h2 — (0,0,1) préfixé en (0,1,1) — et CESSE
-   D'ÊTRE SUFFISANTE dès que base.css porte un sélecteur de CLASSE sur le même
-   élément. Ce serait donc le défaut même que #33 ferme, réintroduit par #33. Le
-   dépôt documente déjà ce remède pour cette raison exacte : base.css:761-763, et
-   base.css:900-903 qui note « aucun sélecteur doublé nécessaire, contrairement à
-   une feuille de bloc ». (0,3,0) gagne dans les trois contextes, sans
-   !important et sans dépendre de l'ordre. */
+   .mtb-dispo DANS base.css, qui porte white-space: normal.
+   LE MOTIF ÉCRIT ICI JUSQU'AU LOT 16 ÉTAIT FAUX, et il faut le dire : il
+   annonçait qu'en toile le cœur préfixe .editor-styles-wrapper à base.css et pas
+   aux feuilles de blocs, d'où une ÉGALITÉ (0,2,0) à trancher. MESURÉ sous
+   WordPress 6.9 sur la liste que Blink apparie : le cœur NE PRÉFIXE RIEN, la
+   toile est une iframe, et la primitive y pèse (0,1,0). Un crochet non doublé,
+   à (0,2,0), aurait donc gagné seul dans les trois contextes. La convention
+   « deux classes minimum » (l. 11-15) suffisait ; le (0,3,0) est un surplus
+   AU-DELÀ d'elle.
+   CE QUI LE JUSTIFIE ENCORE, et c'est le seul motif qui survive : la mesure
+   vient d'UNE chaîne, sur UN cœur, et transformStyles a déjà changé de
+   comportement entre versions de Gutenberg. Onze octets de marge contre une
+   mesure d'un seul cœur — et si un jour le doublage saute, le badge de l'encart
+   retombe sur white-space: normal, ce que base.css juge lui-même préférable
+   (« un repli vaut toujours mieux qu'un débordement »). Le pire cas est bénin :
+   c'est ce qui rend le surplus défendable et non obligatoire. */
 .mtb-derniere-portee.mtb-derniere-portee .mtb-dispo {
   white-space: nowrap;
 }

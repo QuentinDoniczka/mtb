@@ -1076,10 +1076,14 @@ textarea[aria-invalid="true"] {
  * --- 4. TABLE DE CASCADE — trois contextes, neuf porteurs -----------
  * LES TROIS CONTEXTES : (a) gabarit de blocs, base.css enfilée AVANT les
  * feuilles de blocs ; (b) gabarit de fiche, base.css APRÈS elles ; (c) toile de
- * l'éditeur, où le cœur préfixe `.editor-styles-wrapper` aux feuilles passées à
- * `add_editor_style()` — donc à base.css — et PAS aux feuilles de blocs. Ce
- * modèle de préfixage est une prémisse du dépôt, REPRISE ET NON RE-MESURÉE ici :
- * elle est écrite au §10.5.3 ci-dessus et dans quatre feuilles de blocs.
+ * l'éditeur, où le cœur N'APPLIQUE AUCUN PRÉFIXE — ni à base.css, ni aux
+ * feuilles de blocs. MESURÉ au lot 16 sous WordPress 6.9, sur la liste que Blink
+ * apparie réellement : la toile est une iframe, base.css y est injectée VERBATIM,
+ * commentaires compris, et `.mtb-dispo` y pèse (0,1,0). Le modèle de préfixage
+ * écrit au §10.5.3 et dans plusieurs feuilles de blocs est une prémisse du dépôt
+ * RÉFUTÉE PAR LA MESURE ; ces occurrences sont en dette. Aucune n'inverse sa
+ * propre conclusion : partout la prémisse produisait un doublage SURNUMÉRAIRE,
+ * jamais un doublage manquant, et aucun pixel du site n'en dépend.
  * LES NEUF PORTEURS, tous relevés dans le code : bandeau-ouverture/render.php:150
  * · derniere-portee/render.php:159 et :105 · liste-portees/rendu.php:273 et :393
  * · single-mtb_chien.php:173, :182 et :383 · single-mtb_portee.php:100. Celui de
@@ -1089,7 +1093,8 @@ textarea[aria-invalid="true"] {
  * AUCUNE RÈGLE DU §13 NE DÉPEND DE L'ORDRE D'ENFILAGE, et voici pourquoi :
  *   · un SEUL crochet scopé les contredit encore, le `white-space: nowrap` de
  *     `.mtb-derniere-portee.mtb-derniere-portee .mtb-dispo`, à (0,3,0) : il bat
- *     13.1 dans les trois contextes, y compris la toile où 13.1 pèse (0,2,0) ;
+ *     13.1 dans les trois contextes — mesuré, la toile comprise, où 13.1 pèse
+ *     (0,1,0) et non (0,2,0) comme ce fichier l'a longtemps écrit ;
  *   · les cinq autres règles scopées voisines — `.mtb-liste-portees__vignette`,
  *     `.mtb-derniere-portee__photo`, `.mtb-fiche-chien__portrait`,
  *     `.mtb-fiche-chien__portrait--vide`, `.mtb-fiche-portee__dispo` /
@@ -1317,13 +1322,16 @@ textarea[aria-invalid="true"] {
    — posée sur `:root`, où `--point-interet` n'existe pas, elle se FIGERAIT à
    `50% 38%`, valeur ensuite héritée par tous les descendants, et les cinq
    cadrages cesseraient de fonctionner EN SILENCE.
-   LA CLASSE EST RÉPÉTÉE, et le doublage est CONSERVÉ au hissage : une fois ici,
-   cette règle et le `img` de la l. 124 sont préfixées ENSEMBLE par
-   `.editor-styles-wrapper`, soit (0,3,1) contre (0,1,1) dans la toile et (0,2,1)
-   contre (0,0,1) sur le site. Dé-doublée en `.mtb-photo > img`, elle donnerait
-   (0,1,1) contre (0,1,1) dans la toile : ÉGALITÉ tranchée par l'ordre, contre le
-   `block-size: auto` de la l. 128. Le doublage coûte onze octets et ferme le
-   sujet.
+   LA CLASSE EST RÉPÉTÉE, et le doublage est CONSERVÉ au hissage. Le motif écrit
+   ici jusqu'au lot 16 — un préfixage `.editor-styles-wrapper` qui doublerait les
+   poids dans la toile — est FAUX : mesuré sous WordPress 6.9, le cœur ne préfixe
+   rien, et cette règle pèse (0,2,1) contre (0,1,0) dans les DEUX contextes. Elle
+   gagnerait donc aussi dé-doublée, à (0,1,1).
+   CE QUI JUSTIFIE ENCORE LES ONZE OCTETS, et c'est le seul motif qui survive à la
+   mesure : cette mesure vient d'UNE chaîne, sur UN cœur, et le comportement de
+   `transformStyles` a déjà changé entre versions de Gutenberg. Onze octets de
+   marge contre une mesure d'un seul cœur, sur une propriété dont la perte serait
+   bénigne, est un marché tenable — mais c'est CE marché-là, pas l'ancien.
    `display: block` : restée en ligne, l'image dépasserait le bas du cadre de la
    profondeur de ses jambages.
    LIMITE NOMMÉE, NON TENUE : le §6.6 veut qu'une source trop petite ne soit pas
