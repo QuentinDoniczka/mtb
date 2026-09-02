@@ -159,14 +159,17 @@ balisage serveur — nouvelle dette **T104** · **L6** *antérieur* — 44 ligne
 restantes**, cinq sont bloquées par une question ouverte et la sixième en dépend par transitivité.
 **Aucun lot ne peut partir avant que l'utilisateur ne tranche.**
 
-- **#23** bloquée par **Q1** · **#24** par **Q4** · **#26** et **#48** par **Q5** · **#42** par **Q14**
+- **#23** bloquée par **Q1** · **#24** par **Q4** · **#42** par **Q14** — **trois questions vivantes**
+- **#26** et **#48** ne sont **pas** en attente d'une réponse : elles sont **garées par le report volontaire de Q5**, assumé par l'utilisateur le 2026-08-30 (« on verra quand tout est prêt »). Rien à demander ; elles se rouvriront quand le reste du site sera prêt
 - **#25** (assemblage du guide) ne porte aucune question bloquante mais **suit #23 et #24**, dont elle
   documentera les livrables — et désormais **#32**, qui est livrée.
 
-**Quatre réponses débloqueraient les six issues.** C'est le goulot du projet, devant toute
-considération technique, et il n'y a plus rien à faire en parallèle.
+**Trois réponses — Q1, Q4, Q14 — débloqueraient quatre issues sur six** : #23, #24, #42, puis #25 par
+transitivité. Les deux autres, #26 et #48, restent garées par un report que l'utilisateur a choisi.
+C'est le goulot du projet, devant toute considération technique, et il n'y a plus rien à faire en
+parallèle.
 
-**Questions en attente pour l'utilisateur** : les quatre du §15 (Q1, Q4, Q5, Q14) · le **badge de
+**Questions en attente pour l'utilisateur** : les trois vivantes du §15 (Q1, Q4, Q14 — **pas Q5**, reportée) · le **badge de
 disponibilité du lot 16**, à juger à l'œil sur l'accueil et une fiche portée, toujours sans réponse ·
 et **deux questions neuves nées de ce lot**, portées au §15 : **Q24** — la barre de 44 px du BRIEF
 §209 vaut-elle pour l'administration, ou seulement pour le site public ? **Q25** — les 134 textes
