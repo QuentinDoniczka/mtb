@@ -10,6 +10,12 @@
  * SPÉCIFICITÉ : la toile préfixe base.css (editor.css:11-28), pas cette
  * feuille ; une règle d'élément y pèse (0,1,1). D'où les classes doublées
  * des règles 5, 7 et 10.
+ * NOTE DE SOLDE, ajoutée par #33 le 2026-09-02 : cette prémisse de préfixage
+ * est DÉMENTIE PAR LA MESURE — la toile est une iframe, le cœur n'y préfixe
+ * rien, et une règle d'élément y pèse (0,0,1) ; l'argument complet est au §13,
+ * point 4, de base.css. LES TROIS CLASSES DOUBLÉES RESTENT EN PLACE : elles
+ * gagnent dans les trois contextes, avec ou sans préfixe, et l'inertie d'un
+ * motif n'est pas une raison de le retirer.
  *
  * VALEURS BRUTES, liste close : `44px` (§12.10, base.css:369) ; `600`, `1.4` et
  * `.16em`, ligne « h4 / étiquette » du §4.5, recopiés de base.css:229-237 —
@@ -128,8 +134,11 @@
    §4.4b : §6 s'intitule « Photographies » et parle de chiens ; un plan
    est un DOCUMENT, et le rogner peut COUPER LE POINT D'ARRIVÉE. NE PAS
    « CORRIGER » EN `cover`.
-   AUCUN `object-position` : la déclaration existe déjà quatre fois (T18 — sept
-   avant #33, qui en a hissé trois dans `base.css` §13) et diverge (T16-bis) ;
+   AUCUN `object-position` : la déclaration existe déjà quatre fois DANS LES
+   FEUILLES DE BLOCS — `mtb-bandeau-ouverture`, `mtb-fiche-information`,
+   `mtb-galerie-photos`, `mtb-grille-chiens` —, soit CINQ dans le thème avec la
+   primitive de `base.css` §13 nommée ci-dessous ; et elle diverge (T16-bis).
+   T18 : sept écritures avant #33, qui en a hissé trois.
    `50% 38%` tient à la tête d'un chien. Ne rien écrire donne l'initiale
    `50% 50%`, le centre géométrique, seul ancrage sensé sur un plan.
    ET SURTOUT, DEPUIS #33 : NE JAMAIS ÉMETTRE `mtb-photo` SUR CE CADRE. Le
@@ -138,9 +147,15 @@
    ci-dessous. Le `cover` hissé et le `contain` délibéré seraient à ÉGALITÉ,
    l'ordre d'enfilage trancherait, et un plan rogné peut COUPER LE POINT
    D'ARRIVÉE. Vérifié sur le rendu servi : la classe n'y est pas émise.
-   Classe DOUBLÉE (0,2,1) : `img { block-size: auto }` (base.css:131) pèse
-   (0,1,1) dans la toile ; à sélecteur simple, ÉGALITÉ tranchée par un ordre
-   inconnu. */
+   Classe DOUBLÉE (0,2,1) : `img { block-size: auto }` (base.css:124-129, la
+   déclaration à la l. 128) pèserait (0,1,1) dans la toile ; à sélecteur simple,
+   ÉGALITÉ tranchée par un ordre inconnu.
+   NOTE DE SOLDE, ajoutée par #33 le 2026-09-02, sur DEUX points. (1) Le renvoi
+   disait `base.css:131`, qui est une ligne de commentaire. (2) Le préfixage
+   invoqué est DÉMENTI PAR LA MESURE — la toile est une iframe, le cœur n'y
+   préfixe rien, et l'élément y pèse (0,0,1) ; l'argument complet est au §13,
+   point 4, de base.css. LE DOUBLAGE RESTE EN PLACE : il gagne dans les trois
+   contextes, avec ou sans préfixe. */
 .mtb-coordonnees-plan__cadre.mtb-coordonnees-plan__cadre > img {
   display: block;
   inline-size: 100%;

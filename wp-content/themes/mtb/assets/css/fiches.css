@@ -293,8 +293,16 @@
 
 /* 3.4  Le commentaire (§7.4-4) : prose en canal texte, livrée par `base.css`.
    Seule garde, le dernier paragraphe ne pousse pas sa marge hors de la section.
-   Classe doublée pour peser (0,2,0) contre le `p` de `base.css:241`, qui pèse
-   (0,1,1) une fois préfixé dans la toile de l'éditeur. */
+   Classe doublée pour peser (0,2,0) contre le `p` de `base.css:223-225`, qui
+   pèserait (0,1,1) une fois préfixé dans la toile de l'éditeur.
+   NOTE DE SOLDE, ajoutée par #33 le 2026-09-02, sur DEUX points. (1) Le renvoi
+   disait `base.css:241`, qui porte un `text-decoration-color` dans `a:hover` :
+   la règle `p { margin-block-end }` ouvre à la l. 223. (2) Le préfixage invoqué
+   est DÉMENTI PAR LA MESURE — la toile est une iframe, le cœur n'y préfixe
+   rien, et ce `p` y pèse (0,0,1) ; l'argument complet est au §13, point 4, de
+   base.css. LA CLASSE DOUBLÉE RESTE EN PLACE : (0,2,0) gagne dans les trois
+   contextes, avec ou sans préfixe, et l'inertie d'un motif n'est pas une raison
+   de le retirer. */
 .mtb-fiche-portee__commentaire.mtb-fiche-portee__commentaire > :last-child {
   margin-block-end: 0;
 }
@@ -561,7 +569,10 @@
 
 /* Le formulaire du cœur est habillé par `base.css` ; seule garde, sa dernière
    boîte ne pousse pas sa marge hors du rembourrage de l'encart. Classe doublée
-   pour peser (0,2,0) contre le `p` de `base.css:241`, à (0,1,1) dans la toile. */
+   pour peser (0,2,0) contre le `p` de `base.css:223-225`, qui pèserait (0,1,1)
+   dans la toile — même renvoi corrigé et même note de solde qu'à la section 3.4
+   ci-dessus (#33, 2026-09-02) : le préfixage est démenti par la mesure, et la
+   classe doublée reste en place. */
 .mtb-encart-protege.mtb-encart-protege > :last-child,
 .mtb-encart-protege.mtb-encart-protege .post-password-form > :last-child {
   margin-block-end: 0;

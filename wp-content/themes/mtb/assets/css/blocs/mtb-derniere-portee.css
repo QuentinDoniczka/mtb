@@ -13,6 +13,14 @@
  * .editor-styles-wrapper — « h2 » y pèse (0,1,1) — et pas cette feuille : à une
  * seule classe on gagnerait sur le site et on PERDRAIT dans l'éditeur. (0,2,0)
  * bat les deux, sans !important ni ordre de chargement (cf. editor.css:69).
+ * NOTE DE SOLDE, ajoutée par #33 le 2026-09-02 : le motif de préfixage donné
+ * ci-dessus est DÉMENTI PAR LA MESURE — la toile est une iframe, le cœur n'y
+ * préfixe rien, et « h2 » y pèse (0,0,1) ; l'argument complet est au §13,
+ * point 4, de base.css. LA CONVENTION « DEUX CLASSES MINIMUM » RESTE EN PLACE :
+ * (0,2,0) gagne dans les trois contextes, avec ou sans préfixe, et l'inertie
+ * d'un motif n'est pas une raison de le retirer. C'est bien cette convention
+ * que la l. 117 déclare suffisante, là où le crochet de la section 5 va à
+ * (0,3,0) pour un motif qui, lui, survit à la mesure.
  *
  * Absents à dessein (contrat §13, §10.6) : aucun content: porteur de mot, aucune
  * transition, aucune requête média, aucun .mtb-etat-vide* (dette T-#12-b).
@@ -99,7 +107,11 @@
    MESURÉ à 360 px, iframe de même origine : badge 238 px dans un canal de
    324 px, aucun débordement. LA MESURE N'EST PAS REJOUÉE, ELLE DEVIENT UN
    MAJORANT : elle a été prise AVEC L'ANCIEN REMBOURRAGE, et le nouveau retire
-   8 px horizontaux — le badge ne peut que rétrécir, la marge que grandir. La
+   12 px horizontaux — 2 × 4 px de rembourrage, plus 4 px d'écart de pastille.
+   Le chiffre vient de MASTER.md §5.1.1 (« rétrécit de 12 px ») et la passe
+   d'intégration du lot 16 l'a MESURÉ : badge 238,08 → 226,08 px à 360 px. Cette
+   feuille a longtemps écrit « 8 px », un majorant plus lâche mais faux.
+   Le badge ne peut que rétrécir, la marge que grandir. La
    feuille sœur mtb-liste-portees.css avait mesuré l'inverse DANS SON contexte,
    badge à côté d'une vignette de 144 px, où nowrap déborde et rompt le 360 px
    (scrollWidth 400 pour clientWidth 360, échec AA). Les deux mesures sont

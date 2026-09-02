@@ -23,19 +23,21 @@
  * image — zéro requête tierce ; aucun !important, aucun @media, aucune transition,
  * aucune règle sur `--vide` (rien que `__vide` ne porte déjà).
  *
- * PRIMITIVES PARTAGÉES, ÉCRITES NUES — contrat §18.1, qui ANNULE l'arbitrage 5 et
- * les dettes T-#13-a/b. `.mtb-dispo`, ses variantes, son `::before`, `.mtb-photo`,
- * son cerne et sa règle d'image portent les noms de MASTER (§3.3, §6.2), sans
- * préfixe de bloc. Le scopage tombe parce qu'il ne protégeait pas : un descendant
- * de `.mtb-liste-portees` EST un `.mtb-dispo`, donc les règles nues de la feuille
- * sœur mtb-derniere-portee.css atteignaient nos badges de toute façon — MESURÉ,
- * `white-space: nowrap` y a fui (§17.2). Il ne protège que si tout le monde scope,
- * et MASTER ne nomme qu'UNE implémentation du badge et de la photo ; scoper rendait
- * la fusion asymétrique et illisible. Nues, ces règles sont hissables dans base.css
- * SANS RENOMMAGE — un déplacement, non une réconciliation de deux dialectes. Le
- * hissage appartient au lead du lot : cette feuille n'ouvre pas base.css. Les
- * déclarations reprennent celles de la sœur pour que la fusion soit sans effet ;
- * les deux écarts qui subsistent sont nommés sur place (sections 2 et 5).
+ * PRIMITIVES PARTAGÉES — ELLES ONT QUITTÉ CETTE FEUILLE AVEC #33. `.mtb-dispo`,
+ * ses variantes, son `::before`, `.mtb-photo`, son cerne et sa règle d'image ont
+ * vécu ici, écrites NUES sous les noms de MASTER (§3.3, §6.2) par le contrat
+ * §18.1, qui ANNULAIT l'arbitrage 5 et les dettes T-#13-a/b ; elles vivent
+ * désormais dans base.css §13, en un seul exemplaire (dette T18, payée par #33).
+ * POURQUOI ELLES ÉTAIENT NUES, ET POURQUOI CELA A RENDU LE HISSAGE POSSIBLE : le
+ * scopage ne protégeait pas — un descendant de `.mtb-liste-portees` EST un
+ * `.mtb-dispo`, donc les règles nues de la feuille sœur mtb-derniere-portee.css
+ * atteignaient nos badges de toute façon (MESURÉ, `white-space: nowrap` y a fui,
+ * §17.2) — et MASTER ne nomme qu'UNE implémentation du badge et de la photo ;
+ * scoper aurait rendu la fusion asymétrique et illisible. Nues, ces règles
+ * étaient hissables SANS RENOMMAGE : un déplacement, non une réconciliation de
+ * deux dialectes. Le hissage a eu lieu au lot 16. CE QUI RESTE ICI est la BOÎTE
+ * de la vignette ; les deux écarts d'autrefois ne subsistent plus, et les
+ * sections 2 et 5 ne portent désormais que leur avis de départ.
  *
  * L'APPARENCE §9.1 DE L'ÉTAT VIDE ÉDITEUR N'EST PAS ICI — contrat §18.2 : §9.1 la
  * place dans editor.css, livrée par #6, sur les crochets gelés au niveau du lot
@@ -150,7 +152,7 @@
   min-inline-size: 0;
 }
 
-/* 2. La vignette — la BOÎTE scopée, le TRAITEMENT nu (§18.1) ----------------- */
+/* 2. La vignette — la BOÎTE scopée ; LE TRAITEMENT EST PARTI (§18.1) --------- */
 
 /* ⚠ COMMENTAIRE CROISÉ OBLIGATOIRE (§7.6, arbitrage 12). Le `9rem` ci-dessous et
    le `sizes="144px"` de plugins/mtb-core/includes/blocks/liste-portees/rendu.php
@@ -170,8 +172,9 @@
    sont mesurées sans débordement : 360 px à texte normal, zoom de PAGE à 200 %.
    CE QUI RESTE SCOPÉ, et ce n'est pas une entorse (§18.1) : cette règle porte la
    BOÎTE — dimension, ratio, rayon —, décisions d'EMPLACEMENT propres à une ligne
-   d'index, que MASTER n'attribue pas à la primitive partagée. La primitive nue
-   ci-dessous porte le TRAITEMENT : fond, encre, cerne, cadrage de l'image. */
+   d'index, que MASTER n'attribue pas à la primitive partagée. Le TRAITEMENT —
+   fond, encre, cerne, cadrage de l'image — était porté par la primitive nue qui
+   suivait cette règle ; depuis #33 il vit dans base.css §13. */
 .mtb-liste-portees__vignette {
   flex: 0 1 auto;
   inline-size: 9rem;
@@ -189,10 +192,13 @@
    primitive partagée : c'est exactement le partage que la règle ci-dessus
    annonçait déjà.
    Le `border-radius: inherit` du cerne, que cette feuille était SEULE à écrire,
-   est RETENU dans la primitive : sans lui, un cerne à angles droits déborderait
-   du `--r-0` posé ci-dessus, et sur un cadre droit la déclaration est inerte.
-   Superset inerte, donc la mise en commun a été une suppression et non un
-   arbitrage. La vignette de l'index ne change pas d'un pixel. */
+   est RETENU dans la primitive. Le rayon posé ci-dessus est `--r-0`, qui vaut 0
+   (tokens.css:109) : la déclaration est donc INERTE sur cette vignette comme sur
+   tous les autres cadres photo du thème, aucun n'étant arrondi. Elle est écrite
+   pour le jour où un rayon arriverait sur un cadre — le cerne le suivrait alors
+   sans qu'on y revienne. Superset inerte, donc la mise en commun a été une
+   suppression et non un arbitrage. La vignette de l'index ne change pas d'un
+   pixel. */
 
 /* 3. Le nom — <a class="__lien"> OU <span class="__nom"> --------------------- */
 

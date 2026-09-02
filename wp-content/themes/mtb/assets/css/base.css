@@ -903,7 +903,15 @@ textarea[aria-invalid="true"] {
      cœur préfixe les DEUX règles et préserve leur écart — aucun sélecteur doublé
      nécessaire, contrairement à une feuille de bloc. MESURÉ à 360 px : canal
      324, 324 − 128 − 12 = 184 px pour la valeur ; §7.7 interdit toute largeur
-     fixe > 300 px. */
+     fixe > 300 px.
+     NOTE DE SOLDE, ajoutée par #33 le 2026-09-02 : la prémisse invoquée
+     ci-dessus — « le cœur préfixe les DEUX règles » — est DÉMENTIE PAR LA
+     MESURE ; l'argument complet et le relevé vivent au §13, point 4. La
+     conclusion, elle, ne dépend pas d'elle : (0,1,1) bat (0,0,1) dans les trois
+     contextes, avec ou sans préfixe. LA RÈGLE RESTE EN PLACE — l'inertie d'un
+     motif n'est pas une raison de le retirer. À savoir, parce que c'est cette
+     phrase même que le contrat gelé §5 citait en appui pour rendre obligatoire
+     le doublage du crochet de mtb-derniere-portee.css. */
   .mtb-tableau td {
     display: grid;
     grid-template-columns: 8rem 1fr;
@@ -1024,12 +1032,13 @@ textarea[aria-invalid="true"] {
  * Décision 30, gelée à docs/contracts/issue-16.md:519-520 : « une primitive
  * nommée par MASTER s'écrit en classe NUE, une seule fois, dans base.css ».
  * `.mtb-dispo::before` et `.mtb-photo > img` sont LITTÉRALEMENT écrites par le
- * document (§3.3 l. 211, §6.2 l. 496) : ce ne sont pas des crochets inventés
+ * document (§3.3 l. 212, §6.2 l. 496) : ce ne sont pas des crochets inventés
  * par le thème, ce sont deux noms que MASTER emploie lui-même.
  * Le §10 ci-dessus (`.mtb-tableau`) est le même cas à la virgule près : un
  * consommateur qui n'est le rendu d'AUCUN bloc, donc qu'aucune feuille de
  * composant ne couvre. base.css est par ailleurs déjà passée à
- * `add_editor_style()` (functions.php:56) : une feuille neuve n'y serait pas,
+ * `add_editor_style()` (functions.php:72-79 — la liste des trois feuilles à la
+ * l. 72, l'appel à la l. 79) : une feuille neuve n'y serait pas,
  * elle exigerait de rouvrir functions.php (hors empreinte, décision 9) et
  * ferait passer `make css-check` de 15 à 16 paires.
  * AVANT #33, CES DIX RÈGLES ÉTAIENT ÉCRITES TROIS FOIS — `fiches.css`,
@@ -1184,7 +1193,7 @@ textarea[aria-invalid="true"] {
        concernent pas le badge, et sa hauteur de 26 px N'EST PAS une
        non-conformité.
 
-   `font-family: var(--sans)` appartient à la primitive : le §4.5 l. 334 impose
+   `font-family: var(--sans)` appartient à la primitive : le §4.5 l. 335 impose
    Public Sans au badge et `--sans` vaut bien Public Sans (tokens.css:26). Une
    primitive hissée ne doit pas dépendre d'un ancêtre `body` (l. 104 de ce
    fichier) qui n'est garanti dans aucune toile.
@@ -1294,11 +1303,13 @@ textarea[aria-invalid="true"] {
    pseudo-élément est OBLIGATOIRE. Ce qui n'est PAS démontrable et ne l'a jamais
    été ici : que le cerne soit VISIBLE à l'oeil sur le site rendu.
    `border-radius: inherit` est RETENU, et ce n'est PAS un arbitrage de valeur :
-   sur un cadre droit — `--r-0` vaut 0 — la déclaration est INERTE, et sur le
-   cadre arrondi de l'index des portées elle empêche un cerne à angles droits de
-   déborder. Superset inerte, donc la mise en commun était une SUPPRESSION et
-   jamais un arbitrage — ce que `blocs/mtb-bandeau-ouverture.css` avait
-   explicitement prévu en l'écrivant lui aussi.
+   AUCUN cadre photo du thème n'est arrondi aujourd'hui — celui de l'index des
+   portées pose `border-radius: var(--r-0)`, et `--r-0` vaut 0 (tokens.css:109)
+   —, la déclaration est donc INERTE partout, sans exception. Elle est écrite
+   pour le jour où un rayon arriverait sur un cadre : le cerne le suivrait alors
+   sans qu'on y revienne. Superset inerte, donc la mise en commun était une
+   SUPPRESSION et jamais un arbitrage — ce que `blocs/mtb-bandeau-ouverture.css`
+   avait explicitement prévu en l'écrivant lui aussi.
    `pointer-events: none` : le pseudo couvre toute la photo et ne doit jamais
    intercepter un clic ni un survol destiné à ce qui est au-dessous. */
 .mtb-photo::after {
