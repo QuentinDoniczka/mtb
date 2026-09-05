@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
- * POURQUOI CE MODULE VIT DANS « query », ALORS QU'IL NE LIT RIEN ET N'EXPOSE AUCUNE FONCTION.
+ * POURQUOI CE MODULE VIT DANS « query », ALORS QU'IL N'EXPOSE AUCUNE FONCTION DE LECTURE.
  *
  * L'issue annonçait « includes/privacy/ ». Ce dossier n'existe pas pour le chargeur :
  * « includes/class-loader.php » ne balaie que six groupes écrits en dur — content, fields, query,

@@ -666,8 +666,13 @@ deux livrées.**
 - **Aucune fonction remplaçable**, nulle part — en particulier **jamais `is_user_logged_in()` ni
   `current_user_can()`** : fonction remplaçable **et** faute fonctionnelle (§3.5).
 - **Aucune fonction globale `mtb_*`.** Ce module n'entre ni par la porte des fonctions de lecture (il
-  ne lit rien) ni par celle des fonctions de composant (il ne rend rien) — `issue-1.md` amendement 1,
-  condition 1. Voir l'arbitrage 2 du §11.
+  n'en expose aucune) ni par celle des fonctions de composant (il ne rend rien) — `issue-1.md`
+  amendement 1, condition 1. Voir l'arbitrage 2 du §11.
+  > **Rectifié le 2026-09-05, arbitrage de lot.** Le premier gel écrivait « il ne lit rien ».
+  > **C'est faux depuis l'accroche 3**, qui lit `post_password` par `get_post_field()`. Seule la
+  > clause fausse tombe : **l'argument porteur ne bouge pas**, car ce qui fonde le domicile dans
+  > `query/` n'a jamais été ce que ce module consulte, mais ce qu'il **expose au thème** — rien.
+  > Le titre de l'en-tête du module porte la même rectification.
 - **Aucun branchement par type de contenu** dans le filtre du plan du site : `accepted_args = 1` le
   rend structurellement impossible.
 - **`wp_robots` est posé, et son périmètre est clos** : la seule condition admise est *« la vue est
