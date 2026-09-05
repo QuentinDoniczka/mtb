@@ -283,8 +283,11 @@ de cookies à accepter. **L'adresse de la vidéo est conservée dans le texte**,
 la raison — vous seule la connaissez.** Si vous voulez qu'elles redeviennent visibles comme les
 autres, dites-le-nous.
 
-*Une précision honnête : la consigne « ne pas référencer » est notée sur ces quatre fiches, mais elle
-n'est pas encore appliquée aux moteurs de recherche. Nous vous préviendrons quand ce sera fait.*
+*Une précision honnête : la consigne « ne pas référencer » est désormais appliquée — ces quatre fiches
+sont tenues à l'écart des moteurs de recherche. Elles restent lisibles par qui connaît leur adresse.
+Voir la fiche « Cinq pages tenues à l'écart des moteurs de recherche »
+(`contenu-a-l-ecart-des-moteurs-de-recherche.md`), qui les nomme avec la page Placement et explique
+comment faire revenir l'une d'elles.*
 
 ---
 

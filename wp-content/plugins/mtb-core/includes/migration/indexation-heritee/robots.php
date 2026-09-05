@@ -35,9 +35,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * LE TROU DE CONTRAINTE 1, ET COMMENT IL SE FERME. Un « noindex » posé par filtre est invisible et
  * irréversible depuis « wp-admin ». Il ne se ferme pas par un réglage — hors périmètre — mais PAR
  * LE GUIDE (D3) : « doc-client-mtb » livre une fiche nommant les cinq contenus. Un état invisible et
- * documenté vaut infiniment mieux qu'un état invisible et tu. Le retour en arrière coûte une ligne :
- * renommer le dossier de ce module en « _indexation-heritee », ce qui laisse les 46 redirections
- * intactes.
+ * documenté vaut infiniment mieux qu'un état invisible et tu.
+ *
+ * LES DEUX RETOURS EN ARRIÈRE, ET ILS NE SE VALENT PAS. La fiche du guide promet à l'éleveuse le
+ * retour d'UNE page ; ce module doit donc documenter les deux gestes, sans quoi la promesse ne
+ * reposerait sur rien :
+ *
+ *   - GLOBAL, pour les cinq d'un coup : renommer ce dossier en « _indexation-heritee », la façon
+ *     documentée de désactiver un module (« class-loader.php », initiale « _»). Les 46 redirections
+ *     restent intactes. Aucune donnée n'est touchée : le fait hérité reste en base, et le
+ *     réactiver est un second renommage.
+ *   - PAR PAGE, pour une seule : supprimer la méta « _mtb_robots_source » du contenu concerné.
+ *     ATTENTION — ce geste EFFACE LA PROVENANCE que la décision 55 protège : cette méta n'est pas un
+ *     réglage, c'est le fait recopié de l'ancien site avec sa source. L'effacer rend le contenu
+ *     indexable ET perd la trace de ce que l'ancien site déclarait, définitivement. Le compte de
+ *     l'étape 6 de « wp mtb verifier-redirections » tombera alors à 4 et la commande échouera —
+ *     c'est voulu : la constante « CONTENUS_NOINDEX_ATTENDUS » se met à jour dans le même geste,
+ *     de sorte qu'une perte de provenance ne puisse pas passer inaperçue.
+ *
+ * Le geste par page est donc le bon quand l'éleveuse demande le retour d'UNE page, à condition
+ * d'assumer explicitement la perte de provenance. Ni l'un ni l'autre ne s'improvise en production.
  */
 
 /**

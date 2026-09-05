@@ -2,8 +2,8 @@
 
 **Quand** : à lire une fois, pour savoir que cet état existe ; à rouvrir le jour où vous voulez qu'une
 de ces pages redevienne trouvable par un moteur de recherche.
-**Temps** : deux minutes de lecture. **Rattrapable** : oui — le retour en arrière ne vous coûte rien,
-une simple demande de votre part suffit.
+**Temps** : deux minutes de lecture. **Rattrapable** : oui, mais **pas par vous seule aujourd'hui** —
+il n'existe pour l'instant aucun écran où le faire ; le geste passe par une demande de votre part.
 
 **Cinq pages de votre site sont volontairement tenues à l'écart des moteurs de recherche** — Google et
 les autres. Ce n'est pas une panne, ce n'est pas un oubli : c'est ce que faisait déjà votre ancien site,
@@ -33,15 +33,16 @@ Relevées le 2026-09-05, telles qu'elles sont aujourd'hui en ligne :
 
 ## Pourquoi ces cinq-là, et pas d'autres
 
-**La règle qui a été reprise de votre ancien site est simple : une page que plus rien ne reliait au
-reste du site en était aussi écartée pour les moteurs de recherche.**
+**Ce qui a été repris de votre ancien site est un constat, pas une règle : les pages que plus rien ne
+reliait au reste du site en étaient aussi écartées pour les moteurs de recherche.**
 
 Ce n'est pas un hasard de fiche par fiche : sur votre ancien site, **aucune** des dix-sept fiches de
 chien n'était placée dans un menu — ce n'était donc pas la règle générale des fiches de chien. Mais
 treize d'entre elles restaient reliées depuis la page qui listait vos chiens ; ces treize-là étaient
 trouvables par les moteurs. **Les quatre qui ne l'étaient pas — Halan, Ray-Ban, Roxane, Youry — et la
-page Placement n'étaient reliées depuis aucune autre page du site.** C'est ce seul fait, et rien
-d'autre, qui explique leur écart des moteurs de recherche.
+page Placement n'étaient reliées depuis aucune autre page du site.** Autrement dit : ces cinq pages
+sont exactement celles que plus aucune page ne reliait ; **nous ne savons pas si c'est la raison** de
+leur écart.
 
 **Nous ne disons pas — et nous ne savons pas — pourquoi ces quatre chiens ne sont plus reliés au reste
 du site.** Rien dans votre ancien site ne le précise, et nous n'inventons pas de raison à votre place.
@@ -93,9 +94,18 @@ c'est fait de notre côté, en une ligne.
 ## Un point de vigilance, pour vous seule à trancher
 
 **L'une des cinq est la page Placement**, celle qui parle des chiots aux familles. Ce n'est
-probablement pas la page que vous souhaitez le plus garder à l'écart des moteurs de recherche — mais
-la décision vous appartient entièrement, et rien ne presse. Il vous suffit de nous le dire, dans un
-sens ou dans l'autre, quand vous le souhaitez.
+probablement pas la page que vous souhaitez le plus garder à l'écart des moteurs de recherche.
+
+**Trois choses à savoir, parce qu'elles ne se devinent pas :**
+
+1. **Quand vous affichez la page Placement, elle ne revient pas pour autant dans les moteurs de
+   recherche.** Ce sont deux choses séparées : l'afficher la rend visible sur votre site, pas
+   trouvable sur Google. Rien à l'écran ne vous le signale — c'est pourquoi c'est écrit ici.
+2. **Ce réglage existait dans votre ancienne interface**, où il se cochait page par page. **Il
+   n'existe pas encore dans la vôtre** : sur ce point précis, le nouveau site vous en offre moins que
+   l'ancien.
+3. **Un écran pour le faire vous-même est prévu.** D'ici là, le seul geste possible est de nous le
+   demander — et il n'y a aucune urgence à trancher.
 
 ---
 

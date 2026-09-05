@@ -694,9 +694,15 @@ déjà pratiqué par `migration/import-fixtures/`.
 > garde `WP_CLI`**
 >
 > Le §2 assigne à `migration/` une « déclaration à l'inclusion, sous garde `WP_CLI` ». L'issue #24 y
-> dépose **deux modules qui accrochent des hooks de front en permanence** — `redirections-301/`
+> dépose **deux modules qui accrochent cinq hooks de front en permanence** — `redirections-301/`
 > (`template_redirect` 1, `the_content` 20) et `indexation-heritee/` (`wp_robots` 20,
-> `wp_sitemaps_posts_query_args` 10) — et **déclare cet écart plutôt que de dévier en douce**.
+> `wp_sitemaps_posts_query_args` 10, **`wp_sitemaps_add_provider` 10**) — et **déclare cet écart
+> plutôt que de dévier en douce**.
+>
+> *(Le cinquième hook a été ajouté le 2026-09-05 par l'exception motivée au §6.4, datée en fin de ce
+> contrat. Cette énumération a été corrigée dans le même geste : **un amendement qui sous-déclare sa
+> propre portée est exactement ce qu'il est censé empêcher.** Correction d'un décompte factuel avant
+> tout collage dans `issue-1.md` — aucun arbitrage n'est réécrit.)*
 > Précédent : décision 46, le formulaire de contact ayant déclaré un amendement pour son second hook.
 >
 > **Pourquoi `migration/` et pas ailleurs.** L'empreinte annoncée à l'issue (`includes/seo/**`) est
@@ -733,7 +739,7 @@ déjà pratiqué par `migration/import-fixtures/`.
 | Groupe | Module | Issue | Rôle |
 |---|---|---|---|
 | `migration/` | `redirections-301` | #24 | Table gelée des 52 adresses de l'ancien site ; 301 sur `template_redirect` 1 ; réparation des ancres internes sur `the_content` 20 ; commande `wp mtb verifier-redirections` |
-| `migration/` | `indexation-heritee` | #24 | `wp_robots` « noindex, nofollow » et retrait du plan du site pour les contenus portant `_mtb_robots_source` (5 aujourd'hui) |
+| `migration/` | `indexation-heritee` | #24 | `wp_robots` « noindex, nofollow » et retrait du plan du site pour les contenus portant `_mtb_robots_source` (5 aujourd'hui) ; retrait du fournisseur `users` du plan du site (exception motivée au §6.4, datée du 2026-09-05) |
 
 ---
 

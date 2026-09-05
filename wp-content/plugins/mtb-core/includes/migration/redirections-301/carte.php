@@ -59,7 +59,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   « formes »  — formes d'adresse altérées connues, pour la seule réparation des ancres ;
  *   « note »    — motif écrit, non vide seulement quand le verdict en demande un.
  *
- * @return array<string, array<string, mixed>> Les 52 entrées, dans l'ordre du sitemap source.
+ * @return array<string, array<string, mixed>> Les 52 entrées, REGROUPÉES PAR NATURE — les six
+ *                                            identités, les 27 portées, les 2 pages, les 17 fiches
+ *                                            — et non dans l'ordre du sitemap source. C'est
+ *                                            « docs/migration/redirections.md » qui tient la table
+ *                                            dans l'ordre du référentiel ; l'ordre n'a ici aucune
+ *                                            portée, la lecture se faisant par clé.
  */
 function carte(): array {
 	static $carte = null;

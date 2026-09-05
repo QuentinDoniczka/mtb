@@ -224,21 +224,25 @@ Et puis plus rien. **C'est ainsi sur votre ancien site** : la phrase y est déj�
 pas inventé la suite. **À vous de la compléter si vous le souhaitez** — ouvrez la page, cliquez à la
 fin de cette ligne, écrivez, **Mettre à jour**.
 
-### La page Placement était discrète sur l'ancien site — elle ne l'est pas encore ici
+### La page Placement était discrète sur l'ancien site — elle l'est aussi ici
 
 Sur votre ancien site, **la page Placement n'était dans aucun menu**, et elle demandait aux moteurs de
 recherche de **ne pas la référencer**. C'est la seule des sept dans ce cas : les six autres ne
 demandaient rien de tel. Cela ressemble à un choix délibéré, mais **personne ici n'en connaît la
 raison — vous seule la connaissez.**
 
-**Ce choix est noté, il n'est pas encore appliqué.** Soyons nets, parce que la nuance compte : sur le
-nouveau site, **la page Placement est publiée, et elle n'est pas masquée des moteurs de recherche.**
-Elle peut donc y apparaître. Rendre une page discrète vis-à-vis des moteurs est une autre étape du
-chantier, qui n'a pas encore eu lieu.
+**Ce choix est désormais appliqué.** Sur le nouveau site, **la page Placement est publiée et lisible
+par qui connaît son adresse, mais elle est tenue à l'écart des moteurs de recherche**, comme sur
+votre ancien site.
 
-**Ce que vous pouvez faire** : si vous voulez qu'elle redevienne discrète, dites-le-nous — nous le
-ferons à cette étape-là. Si au contraire vous voulez qu'elle soit trouvable, dites-le aussi : il n'y
-aura alors rien à faire.
+**Attention à un point qui ne se devine pas** : quand vous affichez cette page, elle **ne revient pas
+pour autant** dans les moteurs de recherche. Ce sont deux choses séparées, et aucun écran ne vous le
+signale.
+
+**Ce que vous pouvez faire** : si vous voulez qu'elle soit trouvable sur Google, dites-le-nous — c'est
+une ligne à changer de notre côté. **Voir la fiche *Cinq pages tenues à l'écart des moteurs de
+recherche*** (`contenu-a-l-ecart-des-moteurs-de-recherche.md`), qui nomme les cinq pages concernées et
+explique l'ordre des gestes.
 
 ### Les mentions légales de l'ancien site se contredisent
 

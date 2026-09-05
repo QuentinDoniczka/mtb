@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * AUCUNE FONCTION D'ASSAINISSEMENT DE TEXTE N'EST APPLIQUÉE ICI, et c'est délibéré :
  * « sanitize_text_field() » ou « sanitize_title() » détruiraient le chemin — le premier mange les
  * balises et les octets de contrôle, le second remplacerait « é » par « e » et ferait échouer la
- * recherche de clé précisément sur les 29 adresses accentuées. L'assainissement, ici, c'est le
+ * recherche de clé précisément sur les 30 adresses accentuées. L'assainissement, ici, c'est le
  * décodage, le rejet dur de l'octet nul, et surtout le fait que la valeur produite ne serve QU'À
  * une lecture de clé dans un tableau constant : jamais à une requête, jamais à une sortie.
  *

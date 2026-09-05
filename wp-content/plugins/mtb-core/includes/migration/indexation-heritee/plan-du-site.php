@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * ─────────────────────────────────────────────────────────────────────────────────────────────
  * CONDITION DE NON-COLLISION AVEC LE FILTRE DE #23, À NE JAMAIS DÉFAIRE
  *
- * « includes/query/page-protegee/bootstrap.php:55 » accroche le MÊME crochet, à la MÊME priorité,
+ * « includes/query/page-protegee/bootstrap.php:71 » accroche le MÊME crochet, à la MÊME priorité,
  * pour retirer le contenu protégé par mot de passe. « add_filter() » EMPILE : les deux rappels
  * s'exécutent, la sortie du premier entrant dans le second. L'ordre leur est indifférent — à UNE
  * condition, et à elle seule :
@@ -53,6 +53,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Retire du plan du site tout contenu portant le fait hérité.
+ *
+ * ASYMÉTRIE DÉCLARÉE AVEC SON JUMEAU, ET ELLE EST VOULUE. « page-protegee/bootstrap.php:112 »
+ * accroche le même crochet avec une signature NON TYPÉE (« exclure_du_plan_du_site( $arguments ) »),
+ * par prudence contre un filtre tiers qui rendrait autre chose qu'un tableau. Ce rappel-ci est
+ * TYPÉ, et ne s'aligne pas sur lui, pour deux motifs :
+ *
+ *   1. LA SIGNATURE EST GELÉE AU CONTRAT #24 §6.3, qui l'écrit en toutes lettres sous le titre
+ *      « forme conforme, imposée », en regard d'une liste de « formes interdites, à refuser en
+ *      revue ». La revue compare le code au texte : casser cette correspondance coûterait plus
+ *      qu'elle ne rapporte.
+ *   2. LE RISQUE QUE LE JUMEAU PARE N'EXISTE PAS ICI. Le cœur passe toujours un tableau à
+ *      « wp_sitemaps_posts_query_args », et la contrainte D10 interdit toute extension tierce sur
+ *      ce site : aucun filtre étranger ne peut s'intercaler. Le typage rend donc visible, dès
+ *      l'appel, la seule forme que ce rappel accepte.
+ *
+ * Écrit ici plutôt que tu, pour qu'une revue future ne lise pas cette divergence comme un oubli et
+ * n'« aligne » pas les deux signatures en croyant bien faire.
  *
  * @param array  $args            Arguments de requête du sous-plan en cours de construction.
  * @param string $type_de_contenu Type de contenu du sous-plan.

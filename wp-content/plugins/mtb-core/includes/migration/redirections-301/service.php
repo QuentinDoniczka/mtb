@@ -58,7 +58,7 @@ function rediriger(): void {
 
 	/*
 	 * 3. Normalisation. « REQUEST_URI » n'est PAS passée à « sanitize_text_field() » : elle
-	 * détruirait le chemin, et notamment les 29 adresses accentuées. Le décodage, le rejet de
+	 * détruirait le chemin, et notamment les 30 adresses accentuées. Le décodage, le rejet de
 	 * l'octet nul et le retrait du préfixe du site vivent dans « normaliser_chemin() », dont le
 	 * résultat ne sert QU'À une lecture de clé dans un tableau constant.
 	 */
