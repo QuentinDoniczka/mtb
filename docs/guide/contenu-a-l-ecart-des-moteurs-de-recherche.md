@@ -86,8 +86,9 @@ règle habituelle de ce site — d'ordinaire, tout ce qui change se fait depuis 
 c'est précisément pour cela que cette fiche existe : pour que cet état soit **écrit et expliqué**,
 plutôt que silencieux.
 
-**Le revenir en arrière, lui, ne vous coûte rien.** Vous n'avez rien à configurer : vous demandez, et
-c'est fait de notre côté, en une ligne.
+**Le retour en arrière, lui, est simple — mais il ne passe pas par vous aujourd'hui.** Vous n'avez
+rien à configurer, et rien que vous *puissiez* configurer : vous nous le demandez, et c'est une ligne
+à changer de notre côté.
 
 ---
 
