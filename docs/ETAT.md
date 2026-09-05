@@ -155,19 +155,67 @@ tienne ensemble, et une divergence serait **invisible à l'écran** puisque `des
 balisage serveur — nouvelle dette **T104** · **L6** *antérieur* — 44 lignes > 120 caractères dans
 `portee/ecran.php`, 15 dans `chien/ecran.php`, aucun PHPCS pour les mesurer.
 
-**Prochaine action : le projet est désormais entièrement bloqué sur des réponses.** Des **6 issues
-restantes**, cinq sont bloquées par une question ouverte et la sixième en dépend par transitivité.
-**Aucun lot ne peut partir avant que l'utilisateur ne tranche.**
+**Le goulot est levé : les trois questions vivantes ont été tranchées le 2026-09-05.** Le lot 17 se
+fermait sur un projet entièrement bloqué — plus rien à faire en parallèle, quatre issues suspendues à
+trois réponses. Elles sont venues.
 
-- **#23** bloquée par **Q1** · **#24** par **Q4** · **#42** par **Q14** — **trois questions vivantes**
-- **#26** et **#48** ne sont **pas** en attente d'une réponse : elles sont **garées par le report volontaire de Q5**, assumé par l'utilisateur le 2026-08-30 (« on verra quand tout est prêt »). Rien à demander ; elles se rouvriront quand le reste du site sera prêt
-- **#25** (assemblage du guide) ne porte aucune question bloquante mais **suit #23 et #24**, dont elle
-  documentera les livrables — et désormais **#32**, qui est livrée.
+- **Q1 → #23 débloquée.** La page protégée porte **du texte et des tableaux réservés à certaines
+  personnes**, « simplement pour le moment ». Protection **native de WordPress**, tableaux au bloc du
+  cœur, lien et mot de passe transmis de la main à la main. **Ne pas sur-concevoir** : ni rôles, ni
+  comptes, ni espace multi-pages.
+- **Q4 → #24 débloquée.** **URL normalisées sans accent, 301 depuis les accentuées** — voir décision
+  69. L'utilisateur n'a pas choisi la forme, il a donné le **critère** : « tant qu'on peut copier les
+  liens et les donner aux gens ».
+- **Q14 → #42 débloquée.** **On garde le fourre-tout « Autres disciplines » et on recopie le classement
+  de la source.** `MASTER.md` §10.2 s'aligne donc sur **9** disciplines, pas 8 : T54 se solde en
+  ajoutant la neuvième.
+- **#25** (assemblage du guide) ne porte aucune question mais **suit #23 et #24**, dont elle
+  documentera les livrables — et **#32**, livrée au lot 17.
+- **#26** et **#48** ne sont **pas** en attente d'une réponse : elles sont **garées par le report
+  volontaire de Q5**, assumé le 2026-08-30 (« on verra quand tout est prêt »). Rien à demander.
 
-**Trois réponses — Q1, Q4, Q14 — débloqueraient quatre issues sur six** : #23, #24, #42, puis #25 par
-transitivité. Les deux autres, #26 et #48, restent garées par un report que l'utilisateur a choisi.
-C'est le goulot du projet, devant toute considération technique, et il n'y a plus rien à faire en
-parallèle.
+**Prochaine action : lot 18 = #23, #24 et #42, LES TROIS EN PARALLÈLE.** Verdict d'empreinte obtenu
+de `github-boards` le 2026-09-05, pas présumé.
+
+**Ma suspicion de recouvrement CSS était infondée, et c'est vérifié plutôt que supposé.** Je craignais
+que #23 (page protégée) et #24 (redirections) touchent chacune une feuille du thème et se recouvrent
+par leurs artefacts `*.min.css`. Elles n'en touchent aucune : #23 est rendue par
+`templates/singular.html` via `core/post-content`, qui déclenche **nativement**
+`get_the_password_form()` sans une ligne de thème, et sa checklist ne porte que des filtres serveur ;
+#24 est entièrement serveur. L'encart `.mtb-encart-protege` de `fiches.css:538` existe déjà, livré par
+**#16 pour les fiches portée et chien** — pas pour les pages, et #23 n'y touche pas. Aucune des trois
+ne touche `theme.json` ni `functions.php`.
+
+**Mais le verdict a trouvé bien pire, et il faut le lire avant de lancer : les empreintes annoncées de
+#23 et #24 sont irréalisables telles quelles.** `class-loader.php:145` déclare
+`GROUPES = array( 'content', 'fields', 'query', 'blocks', 'admin', 'migration' )` — six noms en dur, et
+la liste est **close par contrat** (`issue-1.md` §5, `issue-27.md` tâche 1, où l'ajout d'un septième
+groupe a été **proposé et refusé**). Or les empreintes annoncent `includes/privacy/**` et
+`includes/seo/**` : **ni `privacy` ni `seo` n'est un groupe connu**, et aucun des deux dossiers
+n'existe. `charger_groupe()` ne balaie que les six noms fixes — **un `bootstrap.php` posé sous
+`includes/privacy/` ou `includes/seo/` ne serait jamais inclus : pas d'erreur, pas de ligne au
+journal, module mort.** Exactement la classe de défaut invisible que le projet traque depuis T6/#27.
+
+**Ce que cela impose aux deux chaînes** : leur `leaddev-back-mtb` doit **trancher le domicile du
+module avant d'écrire une ligne** — le loger sous l'un des six groupes existants (`admin` et `query`
+sont les candidats plausibles pour des filtres qui tournent sur toute requête publique sans dépendre
+d'un type de contenu). **Rouvrir `class-loader.php` est interdit** : la seule réouverture nominative
+accordée à ce jour, celle de #27, est refermée. **Cela ne crée aucun recouvrement entre #23 et #24** —
+leurs sous-dossiers restent disjoints quel que soit le groupe retenu.
+
+**Aucune contrainte d'ordre entre #23 et #24, vérifiée et non supposée.** La coordination sur le
+sitemap est **asymétrique mais non séquentielle** : #23 possède seule le filtre d'exclusion
+(`wp_sitemaps_posts_query_args`), #24 possède le générateur et `wp_robots`, et son corps liste
+« le sitemap exclut le contenu protégé » comme **critère d'acceptation**, pas comme code à écrire.
+Les deux filtres sont additifs sur le sitemap natif et se combinent dans n'importe quel ordre.
+**À transmettre à `test-integration-mtb`** : la coordination n'est observable qu'une fois les deux
+présentes — vérifier explicitement **qu'une page protégée posée par #23 n'apparaît pas dans le sitemap
+produit par #24**. C'est le seul test qui exerce réellement la jonction entre les deux issues.
+
+**Empreintes réelles du lot 18** : #23 → `mtb-core/includes/<groupe à trancher>/page-protegee/**` ·
+#24 → `mtb-core/includes/<groupe à trancher>/{redirections,sitemap}/**` **plus la réécriture intégrale
+de `docs/migration/redirections.md`** (fichier additif déjà touché par #20 et #21, mais qu'aucune autre
+issue du lot ne touche) · #42 → `design-system/MASTER.md` §10.2 seul, aucun code.
 
 **Questions en attente pour l'utilisateur** : les trois vivantes du §15 (Q1, Q4, Q14 — **pas Q5**, reportée) · le **badge de
 disponibilité du lot 16**, à juger à l'œil sur l'accueil et une fiche portée, toujours sans réponse ·
@@ -1427,6 +1475,7 @@ Attrape-courriels Mailpit sur http://localhost:8025.
 
 | # | Décision | Date | Pourquoi |
 |---|----------|------|----------|
+| 69 | **Les adresses de pages sont normalisées sans accent, et les accentuées redirigent en 301** | 2026-09-05 | Réponse à Q4, et **l'utilisateur n'a pas arbitré la forme : il a donné le critère** — « tant qu'on peut copier les liens et les donner aux gens ». Il disait aussi ne pas voir le problème, ce qui est normal : **il est invisible tant qu'on ne copie pas un lien.** L'ancien site sert `/bhpl/portée-a3-2025/` et onze URL du même genre ; copiée depuis un navigateur, l'adresse devient `/bhpl/port%C3%A9e-a3-2025/` — illisible, et fréquemment coupée en deux par les clients de messagerie. Le critère donné tranche donc **dans un seul sens**, et c'est pourquoi je n'ai pas reposé la question : **normaliser**. Les accentuées restent servies en **301** vers les normalisées — contrainte 4, rien de l'ancien site ne se perd, ni les favoris ni l'indexation acquise. **Ce que la décision ne dit pas** : elle ne préjuge d'aucun schéma de permalien (`/bhpl/`, `/portees/`, plat ou imbriqué) — seul l'accent est tranché. **Portée** : vaut pour toute URL future, pas seulement pour les 52 reprises ; un contenu dont le titre porte un accent produit une adresse sans accent |
 | 68 | **Un contrat qui gèle une largeur dit dans quel état de navigateur elle a été relevée** | 2026-09-03 | Arbitrage rendu au lot 17 sur l'écart de 15 px entre `docs/contracts/issue-32.md` §4.1 et la passe d'intégration. **Ce n'était pas une erreur de mesure, c'était une mention manquante** : la barre de défilement verticale est prélevée sur le viewport de mise en page. La revue a produit **les deux séries dans le même navigateur** en ne changeant qu'un drapeau — barres visibles → 1425 / 897 / 187,8 / 998,2, soit les cinq valeurs du contrat **au dixième de pixel** ; barres masquées → 1440 / 912 / 191,2 / 1011,2, soit celles du test, dont l'outil passe `--hide-scrollbars` d'office. **Les deux relevés sont justes et reproductibles à la demande** : il n'y a pas un chiffre vrai et un faux, il y a deux états du navigateur. Erreur de raisonnement à ne pas refaire, elle est de moi : j'ai écrit que les mesures de la revue « concordaient avec le contrat et pas avec le test » — elles concordent avec **les deux**, selon le drapeau. **Règle** : toute valeur de largeur gelée dans un contrat porte l'état de barre de défilement de son relevé. Sans cette mention, l'écart est illisible et la chaîne suivante citera de travers — ce projet a déjà payé la dérive d'ancres (T88) |
 | 67 | **Où vit le CSS d'administration : nulle part — on rend le balisage au cœur plutôt que de l'habiller** | 2026-09-03 | Arbitrage rendu au lot 17, **en refusant les deux termes de la tâche 1 de #32** (feuille servie par le thème, ou dérogation écrite au contrat de #5). Le fait qui tranche était dans le dépôt et l'issue l'ignorait : **des trois écrans de saisie, celui dont son contrat lui imposait le balisage du cœur n'a aucun défaut à aucune largeur ; les deux qui ont inventé des crochets de classes en ont trois.** Le défaut n'était donc pas « il manque une feuille » mais « deux écrans ont quitté le balisage du cœur ». Écrire la feuille payait la facture, rendre le balisage annule la dette. **Second motif, décisif et vérifié** : l'interdit du visuel dans l'extension est gelé dans **quatre** contrats, et `issue-4.md:513` **ne porte aucune convention d'amendement** — par décision 65, il ne s'ouvre pas ; **la dérogation n'aurait pas pu être écrite là où l'interdit vit**. Troisième motif, mesuré : `design-system/MASTER.md` ne décrit **aucune** apparence d'administration (il n'en fixe que le vocabulaire, §10.2 et §10.4) — il n'y a rien de propre au projet à préserver à travers un changement de thème, seulement une régression à ne pas s'infliger. **Portée** : ne se généralise pas en « l'administration ne s'habille jamais », mais en **« un écran qui emploie le balisage du cœur n'a pas besoin d'être habillé »** — le critère n'est pas la liste des classes, c'est leur origine (`issue-5.md:405-411`). Corollaire d'accessibilité appris dans le même geste : le `<br />` du cœur donne 19,8 px entre deux cibles et **échoue** à SC 2.5.8 là où l'état initial le passait — **la parité avec WordPress n'est pas une excuse recevable**, le brief impose AA sur ce que nous livrons |
 | 66 | **Un contrat gelé que la mesure réfute n'est pas corrigé : son erratum est écrit ici, daté, et la mesure prime sur lui** | 2026-09-02 | Arbitrage rendu au lot 16, et il **complète la décision 65 sur le cas qu'elle ne couvrait pas**. La 65 autorise l'amendement daté d'un contrat qui porte déjà cette convention ; `docs/contracts/issue-33.md` ne la porte pas, et ses **§5, §8(3) et §10** reposent sur une prémisse fausse : « la toile de l'éditeur préfixe `base.css` par `.editor-styles-wrapper` et pas les feuilles de blocs ». **La toile est une iframe, le cœur n'y préfixe rien** — mesuré par la chaîne #33, qui a livré `a8bec34` contre son propre contrat, puis **indépendamment** par la passe d'intégration au Chrome réel : 0 sélecteur préfixé sur les 11 présents dans la toile, et retirer la règle 13.10 du CSSOM n'y change aucun pixel. **Ce qui est gelé, c'est la décision, pas sa justification** : quand les deux se séparent, la décision peut survivre à sa raison. Ici elle survit — le doublage (0,3,0) **reste en place**, il gagne dans les trois contextes avec ou sans préfixe, et l'inertie d'un motif n'est pas une raison de le retirer. **Le remède appliqué au code est la note de solde datée** — cinq posées dans l'empreinte de #33, sur la forme validée de `mtb-bandeau-ouverture.css:54-57`, chacune renvoyant au §13 point 4 de `base.css` plutôt que de recopier l'argument. **Le risque que cela ferme est nommé par la chaîne elle-même** : « une garde dont la justification est démentie se fait supprimer par la chaîne suivante ». **Ce qui reste dû** : les occurrences de la même prémisse **hors empreinte de #33** n'ont pas été soldées — voir T101 |
@@ -1514,11 +1563,11 @@ Reprises du §15 du brief. Aucune ne bloque le bootstrap ; chacune bloque une is
 | Q15 | **« Centre » doit-il signifier le centre géométrique, ou le cadrage par défaut de §6.2 (tête du chien) ?** Voir dette T16-bis. C'est le sens d'un libellé offert à l'éleveuse. | l'harmonisation de #7 et #14 | ⏳ **révision `lead-design-mtb`** |
 | Q12 | **« Truffe » et « cavage » sont-ils la même chose pour Fabienne ?** Le mot *truffe* n'apparaît **nulle part** sur le site source ; la page Travail porte une ligne *Cavage* — et le cavage **est** la recherche de truffes. La chaîne #5 a refusé de graver la déduction, à raison. Le code n'attend pas la réponse : le site range lui-même Cavage sous « Autres disciplines », donc la reprise recopie son classement. | rien aujourd'hui — la reprise (#19-#21) et la qualité du tableau de la page Travail | ⏳ **pour l'éleveuse** |
 | Q13 | **Fabienne consigne-t-elle la date de saillie ?** `MASTER.md` §10.2 fige le libellé « Saillie » (champ de date), mais BRIEF §5.1 ne l'inscrit pas dans les champs d'une portée. §10 dit **comment nommer**, pas **quoi livrer** : le champ n'a donc pas été livré. Le livrer aurait présumé qu'elle tient cette date. | rien — rouvrable sur #3 si la réponse est oui | ⏳ **pour l'éleveuse** |
-| Q14 | **Les quatre lignes « Autres disciplines » du site source sont-elles des disciplines à part entière, ou la rubrique « Autres » du site actuel ?** (Agility · Brevet Maitre Chien Drogue · Cavage · Qualification chien de sauvetage) | rien — la reprise les exprimera de toute façon | ⏳ **pour l'éleveuse** |
-| Q1 | Usage exact de la page protégée par mot de passe (familles de chiots / avant-première / documents d'élevage) | l'issue `prive` | ⏳ en attente |
+| Q14 | **Les quatre lignes « Autres disciplines » du site source sont-elles des disciplines à part entière, ou la rubrique « Autres » du site actuel ?** (Agility · Brevet Maitre Chien Drogue · Cavage · Qualification chien de sauvetage) | rien — la reprise les exprimera de toute façon | ✅ **TRANCHÉE le 2026-09-05 : la rubrique fourre-tout, on recopie le classement de la source.** Les quatre restent groupées sous **« Autres disciplines »**, neuvième valeur de `mtb_resultat_disciplines()`, et tout résultat inhabituel futur ira au même endroit. **Ni Agility, ni Cavage, ni Brevet Maitre Chien Drogue n'entrent dans la liste** comme disciplines nommées. **Ce que ce choix écarte explicitement** : déplacer `Qual. Chien de sauvetage` (2012, Dixie) vers la discipline **Sauvetage**, qui existe pourtant et a son tableau — l'option a été posée à l'utilisateur **avec la mention qu'elle corrigerait la source au lieu de la recopier**, et **elle a été écartée**. Le classement d'origine reste tel quel, bizarrerie comprise. **Conséquence pour #42** : `MASTER.md` §10.2 s'aligne sur **9** disciplines, pas 8 — l'écart T54 se solde en **ajoutant la neuvième**, pas en retirant l'emploi |
+| Q1 | Usage exact de la page protégée par mot de passe (familles de chiots / avant-première / documents d'élevage) | l'issue `prive` | ✅ **TRANCHÉE le 2026-09-05** : **des données — du texte et des tableaux — réservées à certaines personnes**, « on peut faire simplement pour le moment ». Donc : **une page ordinaire**, écrite comme les autres, protégée par le mot de passe **natif de WordPress** que l'éditrice pose, change et retire seule (BRIEF §8). Les tableaux se font au **bloc Tableau du cœur**, sans code. La page n'apparaît ni dans les index, ni dans le sitemap, ni dans la recherche : **le lien et le mot de passe se transmettent de la main à la main**. Aucune des trois pistes du §15 n'est retenue nommément — ni « familles de chiots », ni « avant-première », ni « documents d'élevage » : **le contenu est laissé libre**, c'est la protection qui est le livrable. **Ne pas sur-concevoir** : ni rôles, ni comptes, ni espace multi-pages tant que « pour le moment » tient |
 | Q2 | ~~Point de départ du design~~ | — | ✅ tranchée 2026-08-15 : voir décision 8 |
 | Q3 | ~~Conservation des messages du formulaire en base, ou envoi par courriel uniquement~~ | — | ✅ **tranchée 2026-08-21 : envoi par courriel uniquement**, rien n'est écrit en base. Voir décision 45 |
-| Q4 | URL accentuées conservées (`/bhpl/portée-a3-2025/`) ou normalisées avec redirections 301 | l'issue `seo` | ⏳ en attente |
+| Q4 | URL accentuées conservées (`/bhpl/portée-a3-2025/`) ou normalisées avec redirections 301 | l'issue `seo` | ✅ **TRANCHÉE le 2026-09-05 : normalisées, avec 301 depuis les accentuées** — voir décision 69. L'utilisateur n'a pas arbitré la forme mais **donné le critère** : « tant qu'on peut copier les liens et les donner aux gens ». Ce critère tranche, et dans un seul sens |
 | Q5 | Hébergement de production et propriété du nom de domaine | la mise en ligne, #26 et #48 | ⏸️ **REPORTEE par l'utilisateur le 2026-08-30, decision assumee : « on verra quand tout est pret ».** Ce n'est plus une question en attente de reponse, c'est un report volontaire : rien ne se decide avant que le reste du site soit pret. **Consequence a connaitre : #26 et #48 sont gares tant que le report tient**, et ne doivent entrer dans aucun lot. **A verifier au moment de les reprendre** : #48 depend reellement de Q5 (rien dans le depot ne garantit qu'un diagnostic PHP reste invisible chez l'hebergeur, le correctif de #31 passant par un mecanisme Docker) ; en revanche il n'est **pas etabli** que #26 en depende vraiment — l'incompatibilite `scandir()` du chargeur pourrait se lever sans connaitre l'hebergeur. A trancher quand #26 revient, plutot que de la laisser bloquee par heritage |
 | Q6 | ~~Rubrique « actualités » séparée ?~~ **Tranchée le 2026-08-19 : non**, pas d'entrée « Actualités » dans le menu livré par défaut, les nouvelles restent sur l'accueil — le menu étant modifiable par l'éleveuse, l'ajouter plus tard ne coûte aucune ligne. **Tarifs des chiots affichés ?** toujours ouverte | ~~#18~~, désormais **#17** (page Placement) | ⏳ **volet tarifs seul** |
 | Q22 | **Que met-on dans le menu livré par défaut, et faut-il en livrer un ?** Aujourd'hui `provision.sh` ne crée **aucun** menu et le thème n'enregistre que deux *emplacements* — donc sur l'installation de l'éleveuse, l'écran dira « Créez votre premier menu ». La fiche a été réécrite pour décrire cet état et lui apprendre à créer le sien. Livrer un menu par défaut demanderait de savoir quelles entrées, et l'inventer serait un acte de contenu. | rien — la fiche couvre le cas | ⏳ **pour l'éleveuse** |
