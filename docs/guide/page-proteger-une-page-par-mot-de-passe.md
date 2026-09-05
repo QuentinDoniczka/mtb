@@ -55,7 +55,11 @@ Dès que la page est protégée, et sans que vous ayez rien d'autre à faire :
 - **elle disparaît de la liste des pages que le site remet aux moteurs de recherche** — ce qu'on
   appelle le plan du site. *Rien à voir avec le menu du bas de page, qui porte le même nom et que vous
   composez vous-même.*
-- **son contenu n'est plus lisible** sans le mot de passe, même par quelqu'un qui connaît son adresse.
+- **son contenu n'est plus lisible** sans le mot de passe, même par quelqu'un qui connaît son adresse ;
+- **le site demande en plus aux moteurs de recherche de ne pas faire figurer cette page dans leurs
+  résultats**, et cela vaut **même si quelqu'un publie le lien ailleurs**. C'est automatique : vous
+  n'avez rien à cocher, rien à régler, rien à demander à personne. C'est une consigne, que les moteurs
+  sérieux respectent — mais ce qui garde vraiment votre contenu, c'est le mot de passe.
 
 **Vous n'avez aucune liste à tenir, aucun réglage supplémentaire à faire ailleurs.**
 
@@ -69,7 +73,9 @@ Dès que la page est protégée, et sans que vous ayez rien d'autre à faire :
 4. Cliquez sur **Mettre à jour**.
 
 **La page redevient visible partout immédiatement** : dans la recherche du site et dans le plan du
-site, dès la mise à jour, sans délai et sans rien d'autre à faire. Si vous ne voulez pas encore la
+site, dès la mise à jour, sans délai et sans rien d'autre à faire. La consigne donnée aux moteurs de
+recherche disparaît en même temps — eux, en revanche, repassent quand ils le décident, et peuvent
+mettre quelques jours avant de proposer la page dans leurs résultats. Si vous ne voulez pas encore la
 montrer, ne retirez pas la protection.
 
 ## Changer le mot de passe

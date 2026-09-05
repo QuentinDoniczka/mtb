@@ -86,10 +86,16 @@ contre nous, explicitement, sur le hook exact que nous posons.** Et la garde dom
 - Dans `query/`, la déviation est **stylistique et bruyante** : un relecteur l'objectera à voix haute
   et rien ne casse. Dans `admin/`, elle serait **mortelle et muette**.
 
-**Rectification de fait, portée au contrat parce qu'elle a servi à décider.** L'énoncé de lancement
-annonçait « 3 modules `admin` sur 5 portent la garde ». **Ils sont 2 sur 5** : `corbeille` ne l'a pas
-au niveau du fichier. La conclusion est inchangée et l'argument est **plus fort** avec le bon chiffre,
-puisque `corbeille` écrit la norme du groupe sans en avoir besoin.
+**Rectification de fait, portée au contrat parce qu'elle a servi à décider.** Le chiffre « 3 modules
+`admin` sur 5 portent la garde » vient de **`brainstorm-mtb`**, qui l'a posé à l'ouverture de la
+chaîne ; il a été **relayé tel quel par `lead-issue-mtb`** dans sa délégation à `leaddev-back-mtb`,
+qui l'a **réfuté sur le code**. *(Il n'est pas de l'orchestrateur de lot, qui n'a jamais compté ces
+gardes — attribution corrigée le 2026-09-05 ; une fausse trace de provenance dans un contrat gelé est
+le défaut que la décision 64 a coûté au lot 15.)*
+
+**Ils sont 2 sur 5** : `corbeille` ne l'a pas au niveau du fichier. La conclusion est inchangée et
+l'argument est **plus fort** avec le bon chiffre, puisque `corbeille` écrit la norme du groupe sans en
+avoir besoin.
 
 ### 2.3 Le prix, écrit ici pour que la revue n'ait pas à le découvrir
 
@@ -98,12 +104,23 @@ puisque `corbeille` écrit la norme du groupe sans en avoir besoin.
 | Ce que le §2 dit de `query` | Ce que fait `page-protegee` |
 |---|---|
 | « fonctions de lecture `mtb_*` exposées au thème » | **n'expose aucune fonction** — le thème ne l'appelle jamais |
-| « Hook et priorité imposés : **aucun** » | **pose deux crochets** |
+| « Hook et priorité imposés : **aucun** » | **pose trois crochets** |
 
-**Ce n'est pas un amendement d'`issue-1.md`, et `issue-1.md` n'est pas ouvert par #23.** Lecture
-retenue : la colonne s'intitule « Hook et priorité **imposés** » — « aucun » y dit *rien ne t'est
-imposé*, non *tu n'as pas le droit* ; et le §3, qui énumère ce qu'un `bootstrap.php` a le droit de
-faire à l'inclusion, autorise `add_action` et `add_filter` **sans distinguer les groupes**.
+> **Amendement au contrat #1 §2 — `query` accroche trois crochets, déclaré ici et nulle part
+> ailleurs.**
+> `includes/query/page-protegee/` pose `wp_sitemaps_posts_query_args`, `pre_get_posts` et `wp_robots`,
+> que le tableau du §2 d'`issue-1.md` n'assigne pas à ce groupe. **L'amendement est écrit dans le
+> présent contrat, pas dans `issue-1.md`, qui n'est ouvert ni au §2 ni au §11.**
+> Forme reprise du précédent du dépôt : `docs/contracts/issue-22.md:783` déclare
+> « **`template_redirect` priorité 1 : amendement au contrat #1 §2** » **dans son propre contrat** ;
+> `issue-1.md` §2 n'a jamais été édité pour cela, ses seuls amendements datés étant ceux de #27.
+> **C'est la seule forme qui permette à deux chaînes d'amender le même §2 le même jour sans se
+> voir** — et c'est exactement le cas du lot 18, où #24 en écrit un aussi.
+
+Lecture qui fonde l'amendement : la colonne s'intitule « Hook et priorité **imposés** » — « aucun » y
+dit *rien ne t'est imposé*, non *tu n'as pas le droit* ; et le §3, qui énumère ce qu'un
+`bootstrap.php` a le droit de faire à l'inclusion, autorise `add_action` et `add_filter` **sans
+distinguer les groupes**.
 
 **Objection légitime, à assumer telle quelle en revue** : *« deux des quatre modules `query/`
 affirment dans leur en-tête "aucun hook n'est posé" (`portee/bootstrap.php:6`,
@@ -123,12 +140,12 @@ L'en-tête du fichier le dit, et le §7 le grave.
 ```
 wp-content/plugins/mtb-core/includes/query/page-protegee/
 └── bootstrap.php      namespace MTB\Core\Query\PageProtegee
-                       2 accroches, 2 rappels
+                       3 accroches, 3 rappels
 ```
 
-**Un seul fichier.** Deux crochets, aucune donnée. Précédent exact : `admin/medias/bootstrap.php`
-(deux crochets, un fichier, un en-tête plus long que le code). Découper coûterait deux `require_once`
-et deux docblocs pour vingt lignes de corps.
+**Un seul fichier.** Trois crochets, aucune donnée. Précédent exact : `admin/medias/bootstrap.php`
+(deux crochets, un fichier, un en-tête plus long que le code). Découper coûterait trois `require_once`
+et trois docblocs pour vingt lignes de corps.
 
 **Aucun `class-*.php`, aucun `block.json`, aucun `editeur.js`, aucun CSS, aucune constante globale.**
 
@@ -149,6 +166,30 @@ add_filter( 'wp_sitemaps_posts_query_args', __NAMESPACE__ . '\\exclure_du_plan_d
 **Pourquoi non typé** : précédent explicite du dépôt, `admin/corbeille/bootstrap.php:49-50` — « un
 filtre tiers peut avoir rendu autre chose qu'un tableau, et `strict_types` en ferait une **erreur
 fatale** ». Sur le plan du site, une erreur fatale servirait un XML tronqué à un moteur de recherche.
+
+#### Convention de cohabitation sur `wp_sitemaps_posts_query_args` — gelée à l'identique dans les contrats #23 et #24
+
+**Ce hook est filtré par deux modules du lot 18** : `query/page-protegee/` (ici) et
+`migration/indexation-heritee/plan-du-site.php` (#24, pour ses cinq contenus repris `noindex`, qui
+sont **publiés et non protégés** — un plan du site qui annonce une page `noindex` se contredit). Les
+deux rappels sont additifs et ne partagent aucun fichier. **Sans convention, ils se détruisent en
+silence** : pas d'erreur, pas de journal, le plan du site répond 200 en annonçant une page qui devait
+en sortir.
+
+> **Chaque rappel MUTE des clés de `$args`. Aucun ne remplace `$args`.**
+> Interdit : `return array( … );` · `$args = array( … );` · `unset( $args['has_password'] );`
+> Et une `meta_query` préexistante s'**enveloppe** sous `'relation' => 'AND'`, jamais ne se complète
+> par ajout : si l'autre filtre avait posé `'relation' => 'OR'`, un ajout naïf ferait passer
+> l'exclusion par un OU et elle serait **sans effet, silencieusement**.
+
+**Le cas de la `meta_query` est théorique pour #23**, qui emploie `has_password` et non `meta_query`.
+**C'est précisément pourquoi il est gelé maintenant** : la convention doit exister avant le premier
+module qui en aura besoin, pas après.
+
+**Vérifié à ce gel** : `wp_sitemaps_posts_entry` **ne peut pas** retirer une entrée — le cœur empile
+le retour sans le tester, et un tableau vide produit un `<url/>` vide, pire que rien ;
+`wp_sitemaps_add_provider` est à la maille du fournisseur entier. `wp_sitemaps_posts_query_args` est
+donc bien le seul point d'accroche des deux issues.
 
 ### 3.3 Accroche 2 — la recherche et les flux
 
@@ -193,6 +234,59 @@ garde 3 est vraie et la clause s'applique. **Sans objet ici** :
 `content/portee/bootstrap.php:53` déclare `'supports' => array( 'title', 'editor', 'revisions',
 'thumbnail' )` — **pas `comments`**. Ne pas ajouter de garde `! is_singular()` pour un cas qui
 n'existe pas ; connaître la ligne.
+
+### 3.3 bis Accroche 3 — la directive d'indexation
+
+**Ajoutée le 2026-09-05, sur arbitrage de lot, après le premier gel.** Le contrat renvoyait d'abord
+`wp_robots` à #24 (§6, première rédaction) et laissait la limite §8.2 ouverte. **L'orchestrateur s'est
+corrigé et me l'a rendue, et le motif est juste** : #24 possède `wp_robots` **pour ses cinq contenus
+repris de l'ancien site**, qui sont des **faits recopiés, stockés avec leur provenance** dans
+`_mtb_robots_source` (décision 55). *Notre* règle n'est pas un fait recopié — c'est **une règle**. La
+verser dans cette table corromprait ce que la décision 55 protège, et obligerait #24 à connaître
+`post_password_required()`.
+
+```php
+add_filter( 'wp_robots', __NAMESPACE__ . '\\interdire_indexation_du_contenu_protege', 20 );
+```
+
+| | |
+|---|---|
+| **Priorité** | **20**, alignée sur `migration/indexation-heritee/bootstrap.php:47` et pour le même motif écrit là-bas : **après** `wp_robots_noindex_embeds`, `wp_robots_max_image_preview` et les autres rappels du cœur |
+| **Arguments** | 1 |
+| **Signature** | `interdire_indexation_du_contenu_protege( array $robots ): array` |
+| **Condition** | vue **singulière** dont l'objet interrogé porte un mot de passe non vide |
+| **Effet** | rend `wp_robots_no_robots( $robots )` — helper du cœur, **non remplaçable**, déjà employé dans le dépôt (`blocks/formulaire-contact/traitement.php:246`). On ne pose pas `noindex` à la main : le helper gère aussi `follow`/`nofollow` selon `blog_public` |
+
+**La condition porte sur la présence d'un mot de passe, JAMAIS sur `post_password_required()`.**
+C'est le même raisonnement qu'au §3.5, et il est structurant : `post_password_required()` répond
+*« ce visiteur-ci est-il enfermé dehors ? »*, donc la directive dépendrait du **cookie du visiteur**.
+Une page mise en cache pour quelqu'un qui vient de saisir le mot de passe serait alors resservie
+**sans `noindex`** — l'empoisonnement de cache que le §3.5 refuse déjà pour les index. Le BRIEF §8 est
+inconditionnel ; cette directive l'est aussi.
+
+Forme retenue, sur précédent du dépôt : `'' !== (string) get_post_field( 'post_password', … )`
+(`blocks/encart-appel/rendu.php:182`, `blocks/lien-de-recours/rendu.php:99`).
+
+**Ne fait pas** : ne touche aucune autre clé de `$robots` · ne s'applique **qu'aux vues singulières**
+(les archives, la recherche et les flux n'ont plus à contenir le contenu protégé — accroches 1 et 2)
+· ne lit ni n'écrit `_mtb_robots_source`, qui appartient à #24 · ne teste jamais la session.
+
+**Pourquoi ce n'est pas de la sur-conception** : exclure du plan du site **n'empêche pas**
+l'indexation d'une URL partagée de la main à la main, et Q1 dit « réservées à certaines personnes ».
+C'est la complétion minimale d'un objectif déjà écrit à l'énoncé, pas un périmètre élargi.
+
+**Écart assumé au présent §, ratifié le 2026-09-05.** Le code livré intercale une garde que le
+tableau ci-dessus ne nomme pas : `if ( $identifiant <= 0 ) { return $robots; }`, entre
+`is_singular()` et la lecture du mot de passe. **Elle est conservée.** Elle a son précédent
+(`query/portee/bootstrap.php:28`), elle ne change **ni la condition gelée ni son résultat** — elle
+écarte seulement le cas où `get_queried_object_id()` ne rend rien d'exploitable —, et **retirer une
+garde pour se conformer à la lettre d'un tableau serait payer la forme avec de la robustesse.**
+
+**Deuxième écart, sur un attendu de mesure et non sur le code.** Le §5.4 bis B4 exigeait « aucun
+`noindex` sur `/?s=Z8` ». **Mesuré : il y en a un, et il vient du cœur** (`wp_robots_noindex_search`),
+**identique avant et après #23**. C'est l'attendu écrit qui décrivait mal l'état natif de WordPress,
+pas le module qui déborde. **Ni le code ni la condition ne sont touchés** ; B4 se lit désormais
+« aucun `noindex` **introduit par #23** hors des vues singulières ».
 
 ### 3.4 No-op quand rien n'est protégé — la formulation honnête
 
@@ -258,9 +352,10 @@ paraphraser :
 - **(c)** **la panne de ce module est invisible** — il ne rend rien, n'imprime rien, ne journalise
   rien, ne déclare aucune fonction : s'il ne se charge pas, ou si une garde est mal posée, la page
   répond **200**, rien n'entre dans `debug.log`, et une page réservée réapparaît simplement **dans le
-  plan du site, dans les flux, et dans la recherche pour toute personne connectée** *(les trois
-  façades rectifiées le 2026-09-05, voir §4.1 — le premier gel n'en nommait qu'une)*. **Le seul
-  témoin est le protocole du §5.**
+  plan du site, dans les flux, dans la recherche pour toute personne connectée, et devient
+  indexable** *(façades rectifiées le 2026-09-05 : le premier gel n'en nommait qu'une, la mesure en a
+  ajouté deux — §4.1 — et l'arbitrage de lot une quatrième — §3.3 bis)*. **Le seul témoin est le
+  protocole du §5.**
 
 Il doit également nommer le domicile et son prix (§2.3), pour qu'une chaîne future ne redécouvre pas
 l'arbitrage.
@@ -307,7 +402,9 @@ vérifiée dans le code**.
 | 24 | Un `core/query` posé dans une page | aucun `allowed_block_types_all` dans le dépôt | rien | `blocks/categorie-mtb/bootstrap.php:25` renvoie à « l'epic Gabarits » | **non — hors #23, §8.4** |
 | 25 | Archives de date / auteur (`templates/index.html:6`) | requête principale | non filtré | `MASTER.md` l. 1088-1090 : aucun index d'élevage n'y tombe. *(Rectifié après mesure : la pile porte **un** `post` publié, `Hello world!` ID 1, qui sort dans `/feed/`. Sans conséquence — il n'est pas protégé — mais la ligne ne peut plus s'appuyer sur « aucun `post` publié ».)* | **non — sans objet, nommé §8.5** |
 
-> **26 points de sortie. 3 à écrire (19b, 20, 21). 18 déjà tenus à la source. 5 hors périmètre et
+| **26** | **Indexation d'une URL protégée partagée hors du site** | le moteur suit un lien donné de la main à la main ; l'exclusion du plan du site n'y peut rien | **RIEN AVANT #23** — aucun `wp_robots` sur le contenu protégé | *ajoutée le 2026-09-05, arbitrage de lot — voir §3.3 bis* | **OUI — accroche 3** |
+
+> **27 points de sortie. 4 à écrire (19b, 20, 21, 26). 18 déjà tenus à la source. 5 hors périmètre et
 > nommés.**
 
 ### 4.1 Rectification après mesure — la ligne 19 telle qu'elle avait été gelée était fausse
@@ -438,6 +535,21 @@ périmètre réel de l'accroche 2 est *recherche des connectés + flux pour tous
 | F2 | `GET /feed/` | 200 · aucune mention de `/espace-prive/` |
 | F3 | `GET /?s=Z9&feed=rss2` | 200 · aucune mention de `z9-2026` |
 
+### 5.4 bis Directive d'indexation — accroche 3
+
+**Mesure de référence d'abord** : jouer B1 et B2 **avant** d'écrire l'accroche 3. Aucun `noindex` ne
+doit y apparaître, sans quoi on ne saura pas si le filtre a agi.
+
+| | En anonyme | Attendu |
+|---|---|---|
+| B1 | `GET /espace-prive/` — chercher `<meta name="robots"` dans le `<head>` | **avant** : pas de `noindex` · **après** : `noindex` présent |
+| B2 | `GET /portees/z9-2026-demo/` | idem |
+| **B3** | `GET /contact/` **et** `GET /portees/z8-2026-demo/` (témoins **non protégés**) | **AUCUN `noindex`, avant comme après.** Témoin décisif : un filtre trop large marquerait tout le site `noindex` et **rien à l'écran ne le dirait** |
+| **B4** | `GET /` (accueil), `GET /portees/` (archive), `GET /?s=Z8` (recherche) | **aucun `noindex` introduit par #23** — l'accroche 3 ne vise **que** les vues singulières. *Rectifié après mesure : `/?s=…` porte un `noindex` du cœur (`wp_robots_noindex_search`), **identique avant et après**. La comparaison avant/après est le verdict, pas la présence absolue.* |
+| B5 | `GET /espace-prive/` **après avoir saisi le mot de passe** (cookie `wp-postpass_*` posé) | **`noindex` TOUJOURS présent.** C'est ce qui distingue la condition retenue (« l'objet porte un mot de passe ») de `post_password_required()` (« ce visiteur-ci est enfermé dehors ») — voir §3.3 bis. Un `noindex` qui disparaîtrait ici serait empoisonnable en cache |
+| B6 | Après **retrait** de la protection (N6), `GET /espace-prive/` | **plus de `noindex`** — la page redevient indexable, comme elle redevient visible |
+| B7 | Non-régression #24 : les cinq contenus repris (halan, ray-ban, roxane, youry, page placement) | **`noindex` toujours présent** une fois #24 livrée. Deux filtres additifs sur `wp_robots`, aucun ne doit annuler l'autre |
+
 ### 5.5 Le mécanisme natif — page **et** portée
 
 | | Geste | Attendu |
@@ -480,7 +592,7 @@ Vérifie le **§4**, pas du code neuf. Toutes en anonyme, `Z9 2026` protégée, 
 
 | | Geste | Attendu |
 |---|---|---|
-| **Z1** | `wp eval "var_dump( has_filter('wp_sitemaps_posts_query_args'), has_action('pre_get_posts') );"` | **Les deux non-faux.** Seul témoin direct que le module a été **inclus**, donc que le dossier est dans un groupe balayé. **`false` ici est le module mort d'`ETAT.md:196-197`** |
+| **Z1** | `wp eval "var_dump( has_filter('wp_sitemaps_posts_query_args'), has_action('pre_get_posts'), has_filter('wp_robots') );"` | **Les trois non-faux.** Seul témoin direct que le module a été **inclus**, donc que le dossier est dans un groupe balayé. **`false` ici est le module mort d'`ETAT.md:196-197`.** Sur `wp_robots`, non-faux ne distingue pas ce module de `migration/indexation-heritee`, qui filtre le même crochet à la même priorité (§3.3 bis) : ce sont **B1, B2 et B7** du §5.4 bis qui séparent les deux effets, pas cette sonde |
 | Z2 | `debug.log` après toute la passe | **vide** — aucune notice, aucun `_doing_it_wrong`, aucun avertissement de traduction |
 | Z3 | `wp eval "var_dump( get_option('mtb_core_empreinte') );"` avant / après | **identique.** #23 n'ajoute ni type, ni taxonomie, ni règle : un battement signalerait un enregistrement conditionnel, interdit (`issue-1.md` §13, amendement 2 règle 3) |
 | Z4 | `php -l` sur `bootstrap.php` | 0 erreur |
@@ -514,15 +626,28 @@ produit T8 :
 
 #24 (« redirections et référencement ») tourne **en parallèle**, sur le même arbre, sans branche.
 
+**Rectifiée le 2026-09-05, après arbitrage de lot.** La première rédaction donnait `wp_robots` à #24
+en entier ; c'était trop large, et l'orchestrateur l'a resserré. Le tableau ci-dessous **remplace**
+cette version.
+
 | Sujet | Propriétaire | Ce que l'autre ne fait pas |
 |---|---|---|
-| `wp_sitemaps_posts_query_args` | **#23, seule** | #24 ne pose pas ce filtre |
-| Générateur de plan du site, `wp_robots`, `noindex` | **#24, seule** | **#23 ne pose ni `wp_robots`, ni `noindex`, ni aucune directive d'indexation — même là où ce serait la bonne chose. Arbitré au niveau du lot.** |
+| `wp_sitemaps_posts_query_args` | **partagé** — #23 pour le contenu protégé, #24 pour ses cinq contenus repris | Les deux **mutent** `$args`, aucun ne le remplace : **convention gelée au §3.2**, à l'identique dans les deux contrats |
+| `wp_robots` — **contenu protégé par mot de passe** | **#23, seule** | #24 ne connaît pas `post_password_required()` et n'a pas à l'apprendre |
+| `wp_robots` — **les cinq contenus repris `noindex`** (halan, ray-ban, roxane, youry, page placement) | **#24, seule** | **#23 ne lit ni n'écrit `_mtb_robots_source`** : ce sont des **faits recopiés avec leur provenance** (décision 55), pas des règles. Y verser notre règle corromprait la table |
+| Générateur de plan du site | **#24, seule** | #23 ne le touche pas |
 | Redirections 301, `template_redirect` | **#24, seule** | #23 ne redirige rien |
 | `docs/migration/redirections.md` | **#24, seule** | #23 ne l'ouvre pas |
 
-Les deux filtres sont **additifs** sur le plan du site natif et se combinent **dans n'importe quel
-ordre** : aucune contrainte de séquencement entre les deux chaînes.
+**`wp_robots` est donc filtré par deux modules, délibérément, et ce n'est pas un doublon.** Les deux
+rappels répondent à deux questions différentes (*ce contenu porte-t-il un mot de passe ?* contre *ce
+contenu était-il déjà `noindex` sur l'ancien site ?*), sur deux ensembles disjoints, avec deux
+provenances de vérité distinctes. **Aucune chaîne future ne doit en « retirer un » en croyant
+dédoublonner.** Les filtres `wp_robots` sont additifs ; les deux emploient la priorité **20**, pour le
+motif écrit à `migration/indexation-heritee/bootstrap.php:45-47`.
+
+Tous ces filtres sont **additifs** et se combinent **dans n'importe quel ordre** : aucune contrainte
+de séquencement entre les deux chaînes.
 
 **Vérification de jonction due à `test-integration-mtb`** (§5.2 S7, exigée par `ETAT.md:210-213`) :
 une page protégée posée par #23 n'apparaît pas dans le plan du site produit par #24. **C'est le seul
@@ -545,8 +670,14 @@ deux livrées.**
   condition 1. Voir l'arbitrage 2 du §11.
 - **Aucun branchement par type de contenu** dans le filtre du plan du site : `accepted_args = 1` le
   rend structurellement impossible.
-- **Aucun `wp_robots`, aucun `noindex`, aucune redirection, aucune règle de réécriture, aucun
-  `flush_rewrite_rules()`, aucun `init` 99, aucun `wp_loaded` 20.**
+- **`wp_robots` est posé, et son périmètre est clos** : la seule condition admise est *« la vue est
+  singulière et son objet porte un mot de passe »*. **Aucune autre directive d'indexation, aucune
+  lecture ni écriture de `_mtb_robots_source`** (table de #24, faits recopiés — décision 55), **aucun
+  `noindex` sur une archive, une recherche ou un flux.**
+- **Aucune redirection, aucune règle de réécriture, aucun `flush_rewrite_rules()`, aucun `init` 99,
+  aucun `wp_loaded` 20.**
+- **Ne jamais remplacer `$args` dans un filtre de plan du site** — muter les clés, envelopper une
+  `meta_query` sous `'relation' => 'AND'`. Convention gelée au §3.2, partagée avec #24.
 - **Aucune écriture en base**, aucune option, aucun transient, aucun `wp_cache_set`.
 - **Aucun filtre `the_password_form`.** Il produirait un **encart dans l'encart** sur les fiches,
   `enveloppe-fiche.php:100-108` imprimant déjà l'encart **avant** d'appeler `get_the_password_form()`
@@ -580,10 +711,12 @@ deux livrées.**
    mot de passe d'un contenu »), les seize clés en `show_in_rest => false` (`:174`).
    **Ce qui fuit : un titre et une URL. Ce qui ne fuit pas : chiots, parents, tests de santé,
    texte.**
-2. **Une URL partagée reste indexable.** Le module retire la page des index **du site**. Publiée
-   ailleurs, un moteur peut l'atteindre — il n'y verra que le mur de mot de passe. Une directive
-   `noindex` serait la réponse ; **elle appartient à #24** (§6). Si #24 ne la pose pas, cette limite
-   reste ouverte et doit être consignée, pas contournée.
+2. ~~**Une URL partagée reste indexable.**~~ **LIMITE FERMÉE le 2026-09-05 — voir §3.3 bis.** Elle
+   était ouverte au premier gel parce que le contrat renvoyait `wp_robots` à #24. L'arbitrage de lot
+   l'a rendue à #23, et l'accroche 3 la ferme : une vue singulière dont l'objet porte un mot de passe
+   rend `wp_robots_no_robots()`. **Ce qui subsiste, et qui n'est pas une limite mais un fait** : un
+   moteur qui ignore la directive verrait toujours ce que voit un humain sans le mot de passe — le
+   titre préfixé et le formulaire, **jamais le contenu**.
 3. **Le menu.** `themes/mtb/functions.php:615` :
    `return $contenu instanceof WP_Post && 'publish' === $contenu->post_status;` — aucun test de mot de
    passe. **Une page protégée EST publiée** : ajoutée au menu, son nom s'affiche sur tout le site.
@@ -671,12 +804,14 @@ les refait pas.
 | 3 | Les flux RSS sont-ils dans le périmètre ? La checklist ne nomme que sitemap et recherche | **Oui, ajoutés** | BRIEF §8 dit « ni les **index publics**, ni le sitemap, ni la recherche » : **un flux est un index public au sens littéral**. `content/portee/bootstrap.php:54` (`has_archive => true`) rend `/portees/feed/` disponible et le cœur n'y filtre pas `has_password`. **Le coût est une condition dans un rappel déjà écrit.** Refuser au nom du périmètre laisserait ouverte la moitié d'un trou qu'on vient de reboucher. |
 | 4 | Écrire un filtre pour **nos** listes (encart d'accueil, liste de portées, grille de chiens) | **Aucune ligne** | Déjà tenu **à la source**, ancre par ancre (§4, lignes 1-18). Un filtre de plus serait la **sixième écriture de la même règle** — la classe de défaut consignée en **T104** au lot 17. Le périmètre de #23 sur ces points est **la preuve, pas le code**, et c'est ce que le §4 solde (dette **T8**). |
 | 5 | Filtrer la REST | **Non** | La recherche REST est ce dont l'éditeur de blocs se sert pour **poser le lien que l'éleveuse doit transmettre** ; la couper priverait l'issue de son geste central. Ce qui fuit est un titre et une URL ; les métas sont closes depuis #3 pour cette raison exacte. **Limite assumée §8.1, mesurée par X1-X5**, pas un oubli. |
-| 6 | `noindex` sur un contenu protégé | **Hors #23** | `wp_robots` appartient à **#24**, qui tourne en parallèle. C'est la bonne chose à faire et **#23 ne la fait pas** : la répartition d'empreinte prime. Remontée à l'orchestrateur ; si #24 ne la pose pas, la limite §8.2 reste ouverte et consignée. |
+| 6 | `noindex` sur un contenu protégé | ~~Hors #23~~ → **RENVERSÉ le 2026-09-05 : #23 le pose, dans son propre module** (§3.3 bis) | Première décision : `wp_robots` appartenait à #24 en entier, donc #23 s'abstenait malgré l'utilité, la répartition d'empreinte primant. **L'orchestrateur s'est corrigé et le motif emporte l'adhésion** : #24 possède `wp_robots` **pour ses cinq contenus repris**, qui sont des **faits recopiés avec leur provenance** (`_mtb_robots_source`, décision 55) ; notre règle est **une règle**, la verser là corromprait la table et obligerait #24 à connaître `post_password_required()`. Les filtres `wp_robots` étant additifs, chacun pose le sien sur sa propre condition — et **toute la politique « le contenu protégé est invisible » (plan du site, recherche, flux, robots) tient dès lors en un seul endroit**, celui qui porte le concept. C'est le contraire de T95 et T104, où une même règle vit en deux copies que rien ne surveille. Ce n'est pas de la sur-conception : exclure du plan du site n'empêche pas l'indexation d'une URL partagée, et Q1 dit « réservées à certaines personnes ». |
 | 7 | Un fichier ou plusieurs | **Un seul `bootstrap.php`** | Deux crochets, aucune donnée. Précédent `admin/medias`. Découper coûterait deux `require_once` et deux docblocs pour vingt lignes de corps. |
 | 8 | `accepted_args` du filtre de plan du site : 1 ou 2 | **1** | Le cœur passe `$post_type` en second. **Le refuser rend structurellement impossible** l'ajout d'une branche par type — la porte par laquelle un type de contenu futur serait oublié. La règle est la même pour tous les types. |
 | 9 | Ligne d'inventaire d'`issue-1.md` §11 | **#23 n'ouvre pas `issue-1.md`** | Le fichier se contredit sur son propriétaire (l. 12-14 « chaque issue l'y ajoute » contre l. 407-408 « hors de l'empreinte de toute chaîne »), et **#24 y écrira dans le même lot** : recouvrement d'empreinte sur un arbre unique, sans branche. Remonté à l'orchestrateur. **Ligne rédigée au §12, à coller par `/lead-mtb` à la clôture du lot.** |
-| 10 | Le chiffre « 3 modules `admin` sur 5 portent la garde », posé au lancement de la chaîne | **Corrigé en 2 sur 5** | `corbeille/bootstrap.php:63` est **dans le rappel**, pas dans la portée du fichier. **La conclusion est inchangée et l'argument est plus fort** : `corbeille:59` écrit la norme du groupe (« comme dans tout ce groupe ») **sans en avoir besoin**. Consigné parce que le chiffre a servi à décider. |
+| 10 | Le chiffre « 3 modules `admin` sur 5 portent la garde », **posé par `brainstorm-mtb` et relayé par `lead-issue-mtb`** — *ni posé ni relayé par l'orchestrateur de lot* | **Corrigé en 2 sur 5 par `leaddev-back-mtb`** | `corbeille/bootstrap.php:63` est **dans le rappel**, pas dans la portée du fichier. **La conclusion est inchangée et l'argument est plus fort** : `corbeille:59` écrit la norme du groupe (« comme dans tout ce groupe ») **sans en avoir besoin**. Consigné parce que le chiffre a servi à décider. |
 | 11 | *(après implémentation, 2026-09-05)* La ligne 19 du §4 — « la recherche du site n'est tenue par rien avant #23 » — **est réfutée par la mesure** | **Le contrat est rectifié, pas le code.** Voir §4.1 | `WP_Query::parse_search()` pose déjà `AND post_password = ''`, **mais sous `! is_user_logged_in()`**. Mesuré : la page protégée était **absente** de `/?s=` en anonyme avant #23, **présente** pour une connectée. Précédent du lot 16 : quand une mesure réfute un contrat gelé, **la mesure gagne**. Le code n'a pas été touché pour masquer l'écart, et le fait est écrit dans le docbloc du rappel pour qu'une chaîne future ne le redécouvre pas. **Le périmètre réel de l'accroche 2 est *recherche des connectés + flux pour tous* — et c'est l'arbitrage 3 qui la sauve.** |
+| 13 | *(arbitrage de lot, 2026-09-05)* Deux modules filtreront `wp_sitemaps_posts_query_args` — comment les empêcher de s'annuler ? | **Convention gelée : chaque rappel MUTE des clés, aucun ne remplace `$args`** (§3.2) | Sans elle, deux rappels additifs se détruisent **en silence** : pas d'erreur, pas de journal, le plan du site répond 200 en annonçant une page qui devait en sortir. Rédaction reprise **à l'identique** dans les contrats #23 et #24 — deux formulations divergentes vaudraient pas de convention du tout. Le volet `meta_query` est **théorique pour #23**, qui emploie `has_password` : c'est précisément pourquoi on le gèle avant le premier module qui en aura besoin. |
+| 14 | *(arbitrage de lot)* Où déclarer que `query/` accroche des hooks que le §2 du contrat #1 ne lui assigne pas | **Dans le présent contrat, §2.3. Jamais dans `issue-1.md`** | Précédent du dépôt : `docs/contracts/issue-22.md:783` déclare « `template_redirect` priorité 1 : amendement au contrat #1 §2 » **dans son propre contrat** ; `issue-1.md` §2 n'a jamais été édité pour cela. **C'est la seule forme qui permette à deux chaînes d'amender le même §2 le même jour sans se voir** — le cas exact du lot 18, où #24 en écrit un aussi. |
 | 12 | *(après implémentation)* Créer une `const ARGUMENT_EXCLUSION` sous espace de noms — laissé ouvert par l'arbitrage 2 | **Non créée** | Décision du dev, retenue : le contrat décrit ce module comme « deux crochets, **aucune donnée** », et une constante y introduirait la seule donnée du fichier ; l'indirection cacherait au point d'usage le nom exact de la variable de requête, qui est précisément ce qu'un relecteur doit lire ; et les deux occurrences vivent dans deux fonctions dont les docblocs expliquent séparément la clause — elles ne varieraient pas ensemble. |
 
 ---
@@ -687,7 +822,7 @@ les refait pas.
 recouvrement d'empreinte avec #24 arbitré :
 
 ```
-| `query/` | `page-protegee` | #23 | Exclut le contenu protégé par mot de passe du plan du site, de la recherche et des flux — deux crochets du cœur, aucune fonction globale, aucune option, aucune méta |
+| `query/` | `page-protegee` | #23 | Exclut le contenu protégé par mot de passe du plan du site, de la recherche et des flux, et le déclare non indexable — trois crochets du cœur, aucune fonction globale, aucune option, aucune méta |
 ```
 
 Note à joindre sous le tableau : *#23 est le premier module du groupe `query/` à poser des crochets.
@@ -704,6 +839,12 @@ recherche comprise (R6, R7).
 
 **Sur le site : trois disparitions, zéro apparition.** Ce qu'elle protège cesse d'apparaître dans la
 recherche du site, dans les flux et dans le plan du site.
+
+**Et une quatrième exclusion qu'elle ne verra jamais à l'écran** : la page protégée demande aux
+moteurs de recherche de ne pas l'indexer (accroche 3, §3.3 bis). Rien ne change dans son
+administration ni sur la page ; c'est un ordre adressé aux moteurs, dans le code de la page. Il vaut
+même une fois le mot de passe saisi — c'est la page qui est réservée, pas la visite. La fiche d'aide
+le dit en une puce, sans jargon.
 
 **Ce qu'elle faisait déjà seule et continue de faire** : poser, changer et retirer un mot de passe
 depuis l'écran d'édition. **#23 ne modifie pas ce geste — elle en rend la promesse vraie.**

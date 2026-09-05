@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * façade où ils servent.
  *
  * « query » est donc retenu, à son prix, écrit ici pour que la revue n'ait pas à le découvrir : ce
- * module n'expose aucune fonction « mtb_ » et il pose deux crochets, là où deux autres modules du
+ * module n'expose aucune fonction « mtb_ » et il pose trois crochets, là où deux autres modules du
  * groupe écrivent dans leur en-tête qu'« aucun hook n'est posé ». L'objection est légitime et
  * s'assume telle quelle : une impureté de forme s'objecte à voix haute en revue, une mort silencieuse
  * ne se dit nulle part. L'arbitrage complet est au §2 de « docs/contracts/issue-23.md ».
@@ -47,11 +47,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Il ne rend rien, n'imprime rien, ne journalise rien, ne déclare aucune fonction globale, n'écrit
  * rien en base et n'émet aucune chaîne de caractères. S'il cesse d'être chargé, ou si une garde est
  * mal posée, la page répond 200 et debug.log reste vide, pendant qu'un contenu réservé réapparaît
- * en TROIS endroits que personne ne relit : le plan du site, les flux, et la recherche du site pour
- * toute personne connectée. Le SEUL témoin est le protocole de vérification du §5 de
- * « docs/contracts/issue-23.md », qui se rejoue en entier à chaque livraison touchant ce fichier ;
- * son point Z1 — has_filter() et has_action() non faux — est la seule preuve directe que ce fichier a
- * été inclus.
+ * en QUATRE endroits que personne ne relit : le plan du site, les flux, la recherche du site pour
+ * toute personne connectée, et la page redevient indexable par les moteurs. Le SEUL témoin est le
+ * protocole de vérification du §5 de « docs/contracts/issue-23.md », qui se rejoue en entier à chaque
+ * livraison touchant ce fichier ; son point Z1 — has_filter() et has_action() non faux — est la seule
+ * preuve directe que ce fichier a été inclus.
+ *
+ * « wp_robots » EST FILTRÉ PAR DEUX MODULES DU LOT, DÉLIBÉRÉMENT. CE N'EST PAS UN DOUBLON.
+ *
+ * Celui-ci et « migration/indexation-heritee » posent chacun leur rappel sur « wp_robots », en
+ * priorité 20 tous les deux. Ils répondent à DEUX QUESTIONS DIFFÉRENTES, sur DEUX ENSEMBLES
+ * DISJOINTS, avec DEUX PROVENANCES DE VÉRITÉ : ici, « ce contenu porte-t-il un mot de passe ? » —
+ * une RÈGLE, qui se relit dans la colonne « post_password » ; là-bas, « ce contenu était-il déjà
+ * noindex sur l'ancien site ? » — un FAIT RECOPIÉ, conservé avec sa provenance dans
+ * « _mtb_robots_source » (décision 55), que ce module ne lit ni n'écrit jamais. Verser notre règle
+ * dans leur table corromprait ce que la décision 55 protège ; verser leurs faits ici obligerait la
+ * reprise à connaître le mot de passe d'un contenu. Les filtres « wp_robots » sont additifs et se
+ * combinent dans n'importe quel ordre. QU'AUCUNE CHAÎNE FUTURE N'EN RETIRE UN EN CROYANT
+ * DÉDOUBLONNER : elle rendrait indexable soit tout le contenu protégé, soit les cinq contenus repris,
+ * et — encore une fois — rien à l'écran ne le dirait.
  */
 
 add_filter( 'wp_sitemaps_posts_query_args', __NAMESPACE__ . '\\exclure_du_plan_du_site', 10, 1 );
@@ -74,6 +88,17 @@ add_filter( 'wp_sitemaps_posts_query_args', __NAMESPACE__ . '\\exclure_du_plan_d
  * crochets du plan du site sont écartés à dessein : « wp_sitemaps_post_types » retirerait un TYPE
  * entier au lieu d'une entrée, et « wp_sitemaps_posts_pre_url_list » court-circuiterait la requête du
  * cœur, donc aussi son comptage.
+ *
+ * CONVENTION DE COHABITATION, GELÉE À L'IDENTIQUE DANS LES CONTRATS #23 ET #24 — NE PAS « SIMPLIFIER »
+ * CE CORPS EN RECONSTRUISANT LE TABLEAU. Ce hook porte DEUX rappels : celui-ci et
+ * « migration/indexation-heritee/plan-du-site.php », qui écarte du plan les cinq contenus repris que
+ * l'ancien site tenait en noindex. Chaque rappel MUTE des clés de $args ; AUCUN ne remplace $args.
+ * Sont donc interdits ici : « return array( … ); », « $arguments = array( … ); » et
+ * « unset( $arguments['has_password'] ); ». Sans cette convention, les deux rappels se détruiraient
+ * l'un l'autre EN SILENCE — pas d'erreur, pas de journal, un plan du site en 200 annonçant une page
+ * qui devait en sortir. Et le jour où l'un des deux emploiera une meta_query, elle s'ENVELOPPERA sous
+ * « 'relation' => 'AND' » plutôt que de se compléter par ajout : un ajout naïf dans un « OR »
+ * préexistant rendrait l'exclusion sans effet, silencieusement elle aussi.
  *
  * Le paramètre et le retour ne sont pas typés, et c'est le précédent d'« admin/corbeille » : un
  * filtre tiers peut avoir rendu autre chose qu'un tableau, et strict_types en ferait une erreur
@@ -157,4 +182,57 @@ function exclure_de_la_recherche( \WP_Query $requete ): void {
 	}
 
 	$requete->set( 'has_password', false );
+}
+
+add_filter( 'wp_robots', __NAMESPACE__ . '\\interdire_indexation_du_contenu_protege', 20 );
+
+/**
+ * Interdit aux moteurs d'indexer la page ou la fiche dont l'objet porte un mot de passe.
+ *
+ * Les deux premières accroches retirent le contenu protégé des index DU SITE ; elles n'empêchent pas
+ * un moteur d'atteindre une adresse transmise de la main à la main, puis publiée ailleurs. Il n'y
+ * verrait que le mur de mot de passe, mais le titre — que le cœur préfixe de « Protégé : » — et
+ * l'adresse entreraient dans un index tiers. C'est la complétion minimale d'une promesse déjà écrite
+ * au BRIEF §8, pas un périmètre élargi.
+ *
+ * PRIORITÉ 20, ET ELLE EST ALIGNÉE, PAS ARBITRAIRE : c'est celle de
+ * « migration/indexation-heritee/bootstrap.php:47 », et pour le motif qui y est écrit — passer après
+ * « wp_robots_noindex_embeds », « wp_robots_max_image_preview » et les autres rappels du cœur, pour
+ * ne pas travailler sur un tableau incomplet.
+ *
+ * LA CONDITION PORTE SUR LE CONTENU, JAMAIS SUR LE VISITEUR, ET C'EST LE POINT QUI DÉCIDE DE LA
+ * FORME. post_password_required() répondrait à une tout autre question — « CE visiteur-ci est-il
+ * enfermé dehors ? » —, donc la directive dépendrait du cookie « wp-postpass_ » de celui qui demande
+ * la page. Une page mise en cache pour quelqu'un qui vient de saisir le mot de passe serait alors
+ * resservie À TOUS SANS noindex : l'empoisonnement de cache que le §3.5 refuse déjà pour les index,
+ * et un défaut qu'aucune page à l'écran ne montrerait. On lit donc la colonne, avec la forme du
+ * dépôt : « '' !== (string) get_post_field( 'post_password', … ) ».
+ *
+ * Le retour passe par wp_robots_no_robots(), helper du cœur et NON remplaçable, plutôt que par un
+ * « noindex » posé à la main : lui seul accorde aussi « follow » ou « nofollow » selon le réglage
+ * « blog_public » du site. Aucune autre clé de $robots n'est touchée, et rien n'est appliqué hors des
+ * vues singulières — les archives, la recherche et les flux ne contiennent plus le contenu protégé,
+ * les leur marquer serait marquer tout le site.
+ *
+ * @param array<string, mixed> $robots Directives d'indexation déjà composées.
+ *
+ * @return array<string, mixed> Directives, complétées du refus d'indexation si le contenu est
+ *                              protégé.
+ */
+function interdire_indexation_du_contenu_protege( array $robots ): array {
+	if ( ! is_singular() ) {
+		return $robots;
+	}
+
+	$identifiant = get_queried_object_id();
+
+	if ( $identifiant <= 0 ) {
+		return $robots;
+	}
+
+	if ( '' === (string) get_post_field( 'post_password', $identifiant ) ) {
+		return $robots;
+	}
+
+	return wp_robots_no_robots( $robots );
 }
