@@ -403,9 +403,30 @@ C'est la carte du plugin, puisque le code n'en contient aucune.
 | `content/` | `resultat` | #5 | Type `mtb_resultat`, ses 8 clés `_mtb_`, `assainissement.php` |
 | `fields/` | `resultat` | #5 | Écran de saisie en un seul bloc, titre composé au serveur, sauvegarde, messages d'enregistrement |
 | `query/` | `resultat` | #5 | 4 fonctions publiques : `mtb_resultat_disciplines`, `mtb_resultat_sexes`, `mtb_get_resultats_travail_par_discipline`, `mtb_get_resultats_travail_du_chien` |
+| `query/` | `page-protegee` | #23 | Exclut le contenu protégé par mot de passe du plan du site, de la recherche et des flux, et le déclare non indexable — trois crochets du cœur, aucune fonction globale, aucune option, aucune méta. Amendement au §2 déclaré dans `docs/contracts/issue-23.md` §2.3 |
+| `migration/` | `redirections-301` | #24 | Table gelée des 52 adresses de l'ancien site ; 301 sur `template_redirect` 1 ; réparation des ancres internes sur `the_content` 20 ; commande `wp mtb verifier-redirections`. Amendement au §2 déclaré dans `docs/contracts/issue-24.md` |
+| `migration/` | `indexation-heritee` | #24 | `wp_robots` « noindex, nofollow » et retrait du plan du site pour les contenus portant `_mtb_robots_source` (5 aujourd'hui) ; retrait du fournisseur `users` du plan du site (exception motivée au §6.4, datée du 2026-09-05) |
 
 > Tenu à jour par `/lead-mtb` à la clôture de chaque lot, ce fichier étant hors de l'empreinte de
-> toute chaîne. Dernière mise à jour : clôture du lot 2 (issues #3, #4, #5).
+> toute chaîne. Dernière mise à jour : clôture du **lot 18** (issues #23, #24 — #42 n'a livré aucun
+> module).
+>
+> **AVERTISSEMENT DATÉ DU 2026-09-05 — CET INVENTAIRE EST INCOMPLET, ET C'EST MESURÉ.**
+> Il porte **12 lignes** ; le disque porte **34 modules** avec un `bootstrap.php` dans les six
+> groupes — `content` 3, `fields` 3, `query` 5, `blocks` 13, `admin` 5, `migration` 5.
+> **Vingt-deux manquent** : les 13 modules de `blocks/`, les 5 de `admin/`, `query/coordonnees`, et
+> les 3 de `migration/` livrés avant ce lot (`import-fixtures`, `portees-chiens`, `resultats-pages`).
+> La cause est un trou de méthode, pas un oubli ponctuel : ce document se
+> contredit sur le propriétaire de l'inventaire — l. 12-14 (« chaque issue qui livre un module
+> l'y ajoute ») contre l. 407-408 (« tenu à jour par `/lead-mtb` […] hors de l'empreinte de toute
+> chaîne ») — et **aucune des deux lectures n'a été honorée depuis la clôture du lot 2**, ni par les
+> chaînes, ni par les leads successifs. La contradiction est **tranchée en faveur de la seconde** au
+> lot 18 : le §11 **est** un index central, et la décision 9 proscrit l'index central édité à la main
+> parce que les chaînes parallèles y entrent en collision. **L'énoncé gelé de la l. 12-14 n'est pas
+> réécrit** (décision 65) ; son erratum est dans `docs/ETAT.md`, daté, et prime sur lui (décision 66).
+> **Les 22 lignes manquantes sont une dette nommée, à solder par une passe de recensement** — tant
+> qu'elle n'est pas payée, *cette carte ne montre pas tout le plugin, et aucune chaîne ne doit
+> conclure de son silence qu'un module n'existe pas.*
 >
 > **#27 (2026-08-29) n'a livré aucun module** : elle n'a modifié que `includes/class-loader.php`.
 > Aucune ligne n'est donc ajoutée à cet inventaire, et `includes/routing/` n'a **pas** été créé.
