@@ -112,10 +112,20 @@ actif, `rediriger` accroché à `template_redirect` 1, `/bhpl/port%C3%A9e-a3-202
 `/portees/a3-2025/`. Volumes `mtb_db_data` et `mtb_wp_data` intacts. **T94 reste ouverte** : l'orphelin
 `mtb-wpcli-run-6eb203f5b414` est toujours là, signalé et non supprimé.
 
-**Prochaine action** : ouvrir l'issue **T108** (mettre une page en sommeil / la réveiller), qui est
-désormais le seul besoin **exprimé par l'éleveuse** en attente. **#25** (assemblage du guide) est
-débloquée — elle suivait #23 et #24, toutes deux livrées. **#26** et **#48** restent garées par le
-report volontaire de Q5.
+**Les quatre dettes du lot sont ouvertes en issues**, et deux milestones neufs les portent :
+**#52** (T108, sommeil et réveil — milestone 13) · **#49** (T105, énumération des auteurs), **#50**
+(T106, faux 404 du plan des auteurs), **#51** (T107, inventaire du §11) — milestone 12. Le milestone 9
+est **fermé**. **#25** (assemblage du guide) est débloquée : elle suivait #23 et #24, toutes deux
+livrées. **#26** et **#48** restent garées par le report volontaire de Q5.
+
+**Prochaine action : lot 19 = #25, #51 et #52, LES TROIS EN PARALLÈLE.** Verdict d'empreinte obtenu de
+`github-boards`, pas présumé : disjointes, et aucune ne touche `theme.json`, `functions.php`, l'index
+des blocs ni une feuille CSS. **#49 et #50 se recouvrent** (même dossier, et #50 vise un fichier de
+#49) : elles ne vont **jamais** dans la même parallélisation — c'est le lot d'après, en séquence.
+
+**#52 est la seule issue du board portée par un besoin que l'éleveuse a formulé elle-même.** Son
+énoncé **exclut volontairement les portées passées** tant que Q26 n'est pas tranchée ; si la réponse
+vient, elle se scinde en une issue de plus plutôt que de s'élargir en cours de chaîne.
 
 **Phase : lot 17 (#32, habillage des écrans de saisie — personne ne le porte) livré, testé et revu
 le 2026-09-03. L'issue est fermée.** Trois commits, `3667745` → `fe699ba`, dont **un seul porte du
