@@ -24,20 +24,32 @@ rien à la façon d'écrire la page : elle décide seulement qui peut la lire.
 2. Écrivez votre texte. Pour un tableau, placez le curseur, cliquez sur le bouton **+** en haut à
    gauche, et choisissez **Tableau**.
 
-3. Regardez la **colonne de droite** : elle contient un encadré nommé **Résumé**, et dans cet encadré
-   une ligne **Visibilité**. *Si vous ne voyez pas cette colonne, ouvrez-la avec le bouton en forme
-   d'engrenage, en haut à droite de l'écran.*
+3. Regardez la **colonne de droite** : elle a deux onglets, **Page** et **Bloc**. Cliquez sur l'onglet
+   **Page**. *Si vous ne voyez pas cette colonne, ouvrez-la avec le bouton en forme d'engrenage, en
+   haut à droite de l'écran.*
 
-4. Sur la ligne **Visibilité**, cliquez sur le mot **Public**, écrit à droite.
+4. Sous le titre de la page, vous voyez une suite de rangées : **État**, **Publier**, **Slug**,
+   **Auteur/autrice**, **Modèle**, **Commentaires**, **Parent**. Sur la rangée **État**, cliquez sur
+   l'état écrit à droite — **Publié** quand la page est déjà en ligne.
 
-5. Dans la petite liste qui s'ouvre, cliquez sur **Protégé par mot de passe**.
+5. Un panneau s'ouvre, intitulé **État et visibilité**. Il contient d'abord cinq états à choisir —
+   **Brouillon**, **En attente**, **Privée**, **Planifié**, **Publié** — puis, sous un trait, une
+   **case à cocher**. **Cochez la case « Protégée par mot de passe ».** *Vous ne touchez pas aux cinq
+   états : la page reste **Publié**, et elle est protégée en plus. Les deux vont ensemble.*
 
-6. Tapez votre mot de passe dans le champ qui apparaît juste en dessous.
+6. Tapez votre mot de passe dans le champ qui apparaît juste en dessous, sous le titre en majuscules
+   **MOT DE PASSE**. *Le champ est vide et affiche en gris **Utilisez un MDP fort** : c'est une simple
+   invitation, elle disparaît dès que vous tapez.*
 
-7. Cliquez sur **Publier**, en haut à droite, puis confirmez. *Si la page était déjà en ligne, le
-   bouton s'appelle **Mettre à jour**.*
+7. Refermez le panneau : cliquez sur **la croix en haut à droite du panneau**, ou appuyez sur la
+   touche **Échap**, ou cliquez simplement à côté. **Il n'y a pas de bouton OK ici : ne le cherchez
+   pas.** Dans les trois cas, la case cochée et le mot de passe tapé sont conservés.
 
-8. **Copiez le lien de la page, et donnez-le avec le mot de passe** aux personnes concernées. C'est
+8. Cliquez sur **Enregistrer**, en haut à droite de l'écran. **C'est ce bouton, et lui seul, qui
+   enregistre le mot de passe.** *Sur une page, ce bouton s'appelle toujours **Enregistrer**, quel que
+   soit l'état de la page.*
+
+9. **Copiez le lien de la page, et donnez-le avec le mot de passe** aux personnes concernées. C'est
    l'étape qu'on oublie le plus souvent : sans le lien, personne ne trouvera cette page, car elle
    n'apparaît nulle part sur le site.
 
@@ -67,10 +79,20 @@ Dès que la page est protégée, et sans que vous ayez rien d'autre à faire :
 
 ## Retirer la protection
 
+Sur une page déjà protégée, la rangée **État** affiche toujours **Publié**, comme sur n'importe
+quelle page en ligne. Rien, à cet endroit, ne montre qu'elle est protégée : c'est normal, vous êtes
+bien sur la bonne page. Vous le voyez en ouvrant le panneau : la case **Protégée par mot de passe** y
+est cochée, et votre mot de passe est déjà écrit dans le champ, lisible. *Sur une portée, c'est
+l'inverse : la ligne affiche **Visibilité : Protégée par mot de passe**, cela se voit sans rien
+ouvrir.*
+
 1. Ouvrez la page : **Pages**, **Toutes les pages**, son titre.
-2. Dans la colonne de droite, encadré **Résumé**, cliquez sur la ligne **Visibilité**.
-3. Cliquez sur **Public**.
-4. Cliquez sur **Mettre à jour**.
+2. Dans la colonne de droite, onglet **Page**, cliquez sur l'état écrit à droite de la rangée
+   **État**. Le panneau **État et visibilité** s'ouvre.
+3. **Décochez la case « Protégée par mot de passe ».** *Il n'y a rien d'autre à choisir : l'état
+   **Publié** de la page ne change pas.*
+4. Refermez le panneau : la croix en haut à droite du panneau, la touche **Échap**, ou un clic à côté.
+5. Cliquez sur **Enregistrer**.
 
 **La page redevient visible partout immédiatement** : dans la recherche du site et dans le plan du
 site, dès la mise à jour, sans délai et sans rien d'autre à faire. La consigne donnée aux moteurs de
@@ -80,8 +102,12 @@ montrer, ne retirez pas la protection.
 
 ## Changer le mot de passe
 
-Mêmes gestes que pour le poser : **Résumé**, **Visibilité**, **Protégé par mot de passe**, vous
-remplacez le mot de passe, puis **Mettre à jour**.
+Mêmes gestes que pour le poser : onglet **Page**, rangée **État**. Là encore, la rangée **État**
+affiche **Publié** et rien d'autre : ne cherchez pas dans la colonne de droite un signe que la page est
+protégée, il n'y en a pas. Vous le voyez une fois le panneau ouvert, où votre mot de passe actuel est
+déjà écrit dans le champ, lisible. La case **Protégée par mot de passe** est déjà cochée,
+**laissez-la cochée** : vous remplacez seulement le mot de passe dans le champ **MOT DE PASSE**, vous
+refermez le panneau, puis vous cliquez sur **Enregistrer**.
 
 **Attention** : les personnes qui avaient déjà saisi l'ancien mot de passe **devront saisir le
 nouveau** à leur prochaine visite. **Ce qu'il faut faire** : prévenez-les et redonnez-leur le nouveau
@@ -128,7 +154,7 @@ menu, en haut de toutes les pages du site**, pour tout le monde. Le contenu rest
 tous les visiteurs verraient qu'elle existe et comment elle s'appelle.
 
 **Ce qu'il faut faire à la place** : ne mettez pas cette page au menu, et **donnez son lien
-directement** aux personnes concernées. C'est à cela que sert le lien copié à l'étape 8.
+directement** aux personnes concernées. C'est à cela que sert le lien copié à l'étape 9.
 
 ---
 
@@ -137,11 +163,18 @@ directement** aux personnes concernées. C'est à cela que sert le lien copié �
 Le geste existe également sur une **portée** — le contenu est alors caché de la même façon, et la
 portée n'apparaît plus dans la liste des portées ni sur la page d'accueil.
 
-**L'écran de la portée ne ressemble pas à celui d'une page.** Vous n'y trouverez pas l'encadré
-**Résumé** : la protection se règle dans l'encadré **Publier**, en haut à droite, sur la ligne
-**Visibilité :**. Cliquez sur le lien **Modifier** au bout de cette ligne, choisissez
-**Protégé par un mot de passe**, tapez le mot de passe, cliquez sur **OK**, puis sur
-**Mettre à jour**.
+**L'écran de la portée ne ressemble pas à celui d'une page.** Vous n'y trouverez pas la colonne à deux
+onglets : la protection se règle dans l'encadré **Publier**, en haut à droite, sur la ligne
+**Visibilité : Publique**. Cliquez sur le lien **Modifier** au bout de cette ligne : trois choix
+apparaissent — **Publique**, **Protégée par mot de passe**, **Privée**. Choisissez
+**Protégée par mot de passe**, tapez le mot de passe dans le champ **Mot de passe :**, cliquez sur
+**OK**, puis sur **Mettre à jour** — ou sur **Publier**, si vous venez tout juste de créer la portée.
+*Le bouton **Annuler**, à côté d'**OK**, referme ces choix sans rien changer.*
+
+**Le nom du réglage est exactement le même que sur une page** : **Protégée par mot de passe**, des deux
+côtés. Ce qui change, ce sont les gestes : sur une portée vous **choisissez** parmi trois possibilités
+et vous confirmez avec **OK** ; sur une page vous **cochez une case** et il n'y a pas d'**OK**. Une fois
+la portée protégée, la ligne affiche **Visibilité : Protégée par mot de passe**.
 
 Tout le reste de cette page reste vrai : le lien se donne de la main à la main, le mot de passe faux ne
 dit rien, et vous retrouvez la portée dans **Portées**. Sur le site, une portée protégée affiche en
@@ -183,7 +216,7 @@ comme un numéro de compte ou une pièce d'identité.
 - Une page **protégée** dont on lit le texte ou les tableaux **sans avoir tapé le mot de passe**.
 - Une page dont vous avez **retiré** la protection et qui reste introuvable dans la recherche du site
   le lendemain.
-- La ligne **Visibilité** absente de l'encadré **Résumé**.
+- La rangée **État** absente de l'onglet **Page**, dans la colonne de droite.
 
 **Ce qu'il vaut mieux ne pas faire :**
 

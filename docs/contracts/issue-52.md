@@ -533,10 +533,32 @@ ouvert par cette chaîne** (décision 70).
 >   au lendemain de la conversion et destiné à changer.
 >
 > Le **contrôle 2 du §10 de `issue-24.md`** (balise `robots` des cinq, et leur absence du plan du site)
-> **reste vrai après #52**, mais par un autre mécanisme, et **seulement si la conversion a eu lieu** :
-> c'est la raison d'être des contrôles C1→C6.
-> `migration/redirections-301/**` **n'est pas ouvert par #52** et `CONTENUS_NOINDEX_ATTENDUS` n'est pas
-> touchée.
+> **n'est plus vrai qu'à moitié, et il faut le dire ainsi** : **vrai** de l'absence du plan du site,
+> **faux** de la balise — voir 11.4. `migration/redirections-301/**` **n'est pas ouvert par #52** et
+> `CONTENUS_NOINDEX_ATTENDUS` n'est pas touchée.
+
+**11.4 — Relève de ce que l'arbitrage A3 rend faux dans deux documents gelés.**
+> A3 fait passer la directive servie aux cinq contenus repris de `noindex, nofollow` à ce que rend
+> `wp_robots_no_robots()` — soit **`noindex, follow`** quand `blog_public` vaut 1 (mesuré le
+> 2026-09-07 : `max-image-preview:large, noindex, follow`). **Trois passages en deviennent faux. Ils ne
+> sont pas réécrits — décision 66, un contrat gelé se relève et se date, il ne se corrige pas :**
+>
+> | Passage | Ce qu'il dit | Ce qui est vrai depuis le 2026-09-07 |
+> |---|---|---|
+> | `docs/contracts/issue-24.md:391` | l'état `contenu_noindex` promet « `noindex` **+ `nofollow`** rendus » | `noindex` **+ `follow`** (selon `blog_public`) |
+> | `docs/contracts/issue-24.md:891-892` | contrôle 2 du §10, chaîne mesurée `<meta name='robots' content='max-image-preview:large, noindex, nofollow' />` | `…, noindex, follow` — **la moitié « absence du plan du site » du même contrôle reste vraie** |
+> | `docs/migration/redirections.md:254-255` | même chaîne périmée | idem |
+>
+> **Le danger que cette relève ferme, et il est nommément celui d'A3** : une chaîne future rejouera ce
+> contrôle, mesurera `follow`, lira le contrat gelé, conclura à une régression et **« réparera » très
+> exactement ce qu'A3 a voulu faire**. Sans cette relève, l'écart le mieux motivé du lot serait défait
+> par un contrat qui a raison sur le papier et tort dans le dépôt.
+>
+> **Ce qui n'a PAS changé, et qu'il ne faut pas relever par confusion** : le **fait recopié**
+> `_mtb_robots_source` porte toujours `noindex, nofollow` **avec sa provenance**, intact en base
+> (mesuré sur Halan : `noindex, nofollow` / `html/chien-halan.html`). Seule la **directive servie**
+> s'aligne sur la règle. Le contrat #24 dit toujours la vérité sur **ce que la source déclarait** ; il
+> ne dit plus la vérité sur **ce que le site rend**.
 
 ---
 

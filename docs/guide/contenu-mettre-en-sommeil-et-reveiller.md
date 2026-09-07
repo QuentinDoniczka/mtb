@@ -82,6 +82,10 @@ d'elles**. Le bouton d'enregistrement, lui, ne porte pas le même nom.
 **Il n'y a rien d'autre à faire, rien à demander à personne, rien à ressaisir.** Le contenu n'a jamais
 cessé d'exister ; vous levez simplement la consigne donnée aux moteurs de recherche.
 
+**Si plus rien sur votre site ne relie le contenu que vous réveillez**, le réveiller ne suffit pas : il
+faut aussi le relier depuis un menu ou depuis une autre page. Lisez d'abord
+[Cinq pages tenues à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md).
+
 ---
 
 ## Ce qui se fait tout seul
@@ -158,22 +162,13 @@ décochez, enregistrez, la consigne est levée.
 
 ## Cinq contenus sont déjà en sommeil aujourd'hui
 
-Relevés le 2026-09-05, ils étaient **déjà tenus à l'écart des moteurs de recherche sur votre ancien
-site**. Cet état a été repris tel quel, et **rien de plus n'est su** : nous ne savons pas pourquoi ces
-cinq-là et pas d'autres, et nous n'inventons pas de raison à votre place.
+**Quatre fiches de chien et une page** portent déjà la mention **En sommeil**, et **chacune a sa case,
+déjà cochée**. Ce n'est pas une anomalie.
 
-| Contenu | Titre | Où le retrouver |
-|---|---|---|
-| Fiche de chien | Halan | **Chiens** → **Tous les chiens** |
-| Fiche de chien | Ray-Ban | **Chiens** → **Tous les chiens** |
-| Fiche de chien | Roxane | **Chiens** → **Tous les chiens** |
-| Fiche de chien | Youry | **Chiens** → **Tous les chiens** |
-| Page | Placement | **Pages** → **Toutes les pages** |
+**Lesquelles, et d'où vient cet état** : voir
+[Cinq pages tenues à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md).
 
-**Ces cinq contenus sont en ligne et lisibles** par toute personne qui en connaît l'adresse. Chacun
-porte la mention **En sommeil** à côté de son titre, et **chacun a sa case, déjà cochée**.
-
-**Pour en remettre un dans Google : ouvrez-le, décochez la case, enregistrez.** C'est tout, et c'est
+**Pour en remettre une dans Google : ouvrez-la, décochez la case, enregistrez.** C'est tout, et c'est
 définitivement à vous. Vous n'avez plus rien à nous demander sur ce point.
 
 ---
