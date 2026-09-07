@@ -19,6 +19,7 @@ refermez.
 | Ajouter des photos à une portée | [Ajouter une portée](portee-ajouter-une-portee.md), au titre « Les photos » |
 | Savoir ce qu'un visiteur voit d'une portée | [Ce qui s'affiche sur la page d'une portée](portee-ce-qui-s-affiche-sur-le-site.md) |
 | Comprendre la page qui liste toutes mes portées | [La liste de toutes les portées](portee-la-liste-des-portees.md) |
+| Mettre une portée ancienne de côté, sans la supprimer — et la ressortir plus tard | [Mettre un contenu en sommeil, et le réveiller](contenu-mettre-en-sommeil-et-reveiller.md) |
 
 ## Vos chiens
 
@@ -27,6 +28,7 @@ refermez.
 | Ajouter un chien | [Ajouter un chien](chien-ajouter-un-chien.md) |
 | Ajouter des photos à une fiche de chien | [Ajouter un chien](chien-ajouter-un-chien.md), au titre « Section Photos et pedigree » |
 | Savoir ce qu'un visiteur voit d'un chien | [Ce qui s'affiche sur la fiche d'un chien](chien-ce-qui-s-affiche-sur-le-site.md) |
+| Mettre une fiche de chien de côté, sans la supprimer — et la ressortir plus tard | [Mettre un contenu en sommeil, et le réveiller](contenu-mettre-en-sommeil-et-reveiller.md) |
 
 ## Vos résultats de travail, et vos listes
 
@@ -43,6 +45,7 @@ refermez.
 | Poser un composant dans une page, ou l'enlever | [Créer une page à partir d'un modèle](page-composer-une-page-libre.md), au titre « Un modèle n'est pas un cadre rigide » |
 | Montrer tous mes chiens sur une page | [Créer la page « La meute »](page-creer-la-page-la-meute.md) |
 | Réserver une page à certaines personnes | [Protéger une page par un mot de passe](page-proteger-une-page-par-mot-de-passe.md) |
+| Retirer un contenu des moteurs de recherche sans le supprimer, et l'y remettre | [Mettre un contenu en sommeil, et le réveiller](contenu-mettre-en-sommeil-et-reveiller.md) |
 
 ## Ce que vous posez dans une page
 
@@ -79,7 +82,7 @@ l'enlever est **le même pour tous** : il est décrit une seule fois, dans
 |---|---|
 | Retrouver mes portées et mes fiches de chiens, et savoir ce qui reste à compléter | [Vos portées et vos chiens, repris de l'ancien site](contenu-repris-de-l-ancien-site.md) — et, au titre « 6. Les descriptions de photos, quand vous aurez le temps », ce que vous complétez à votre rythme |
 | Retrouver mes pages de texte et mes résultats de travail | [Vos pages et vos résultats, repris de l'ancien site](page-ce-qui-a-ete-repris-de-l-ancien-site.md) — et, au titre « Vos pages n'ont pas encore de menu — c'est votre geste suivant », ce qui rendra ces pages atteignables en cliquant |
-| Comprendre pourquoi certaines pages ne se trouvent pas dans un moteur de recherche | [Cinq pages tenues à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md) |
+| Comprendre pourquoi certains contenus ne se trouvent pas dans un moteur de recherche | [Les contenus tenus à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md) |
 
 ---
 
