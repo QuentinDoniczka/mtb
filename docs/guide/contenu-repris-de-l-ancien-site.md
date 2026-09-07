@@ -280,8 +280,9 @@ de cookies à accepter. **L'adresse de la vidéo est conservée dans le texte**,
 **Quatre fiches sont volontairement discrètes.** **Halan**, **Ray-Ban**, **Roxane** et **Youry**
 étaient déjà, sur votre ancien site, absentes des menus et marquées « ne pas référencer ». Ce choix a
 été **repris tel quel** : elles ne sont dans aucun menu du nouveau site. **Personne ici n'en connaît
-la raison — vous seule la connaissez.** Si vous voulez qu'elles redeviennent visibles comme les
-autres, dites-le-nous.
+la raison — vous seule la connaissez.** Si vous voulez qu'elles reparaissent dans un menu, vous le
+faites vous-même, quand vous voulez : c'est le geste décrit dans « Modifier le menu du site »
+(`menu-modifier-le-menu.md`).
 
 *Une précision honnête : la consigne « ne pas référencer » a été reprise, et elle est aujourd'hui
 **un réglage qui vous appartient**, sur chacune de ces quatre fiches — vous le levez seule, quand vous
