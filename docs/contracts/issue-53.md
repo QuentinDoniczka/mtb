@@ -299,13 +299,34 @@ l'issue répare l'honnêteté :
 l'origine, la 6 bis l'est aussi. Écrire « neuf » romprait la convention du fichier **et contredirait le
 `longdesc` de `bootstrap.php`, que cette chaîne n'ouvre pas**.
 
-### Amendement identifié et NON appliqué — à porter par le lead de lot
+### Extension d'empreinte ACCORDÉE par le lead de lot — `redirections-301/bootstrap.php:78-79`
 
-`redirections-301/bootstrap.php:79`, dans le `longdesc` imprimé par
-`wp mtb verifier-redirections --help`, porte la **même inexactitude** que les deux lignes ci-dessus, dans
-un texte que l'utilisateur lit **avant** de jouer la commande. Ce fichier **n'est pas dans l'empreinte de
-#53** et n'est pas « un service qui n'existe pas encore » — la seule porte que cette empreinte ouvre.
-**La chaîne refuse donc de l'écrire et remonte le texte exact.** Voir le rapport de chaîne.
+**Elle sort de l'empreinte publiée de l'issue : elle se lit ici, elle ne se devine pas.**
+
+La chaîne avait d'abord **refusé** d'écrire ce fichier (arbitrage A5 ci-dessous) et remonté le texte au
+lead, l'empreinte n'ouvrant un autre fichier que pour « un service qui n'existe pas encore ». **Le lead
+de lot a accordé l'extension**, avec ce motif, qui est celui de l'issue elle-même :
+
+> `--help` annonce, **avant** qu'on joue la commande, une étape 6 décrite pour ce qu'elle n'est plus et
+> une doctrine restée à deux natures. Laisser cela reconduirait au niveau de l'aide le défaut que T109
+> répare au niveau du témoin : **un texte qui affirme plus que ce qu'il couvre.** La contrainte « un
+> témoin doit prouver ce qu'il prétend prouver » vaut aussi pour ce que la commande **prétend** dans son
+> aide.
+
+**Bornes strictes de l'extension** : les **deux lignes 78-79 seulement** — la phrase des natures et
+l'énumération des étapes. **Aucune ligne exécutable**, aucun changement d'enregistrement de la commande,
+rien d'autre dans ce fichier. Le fichier est **disjoint** de `indexation-heritee/bootstrap.php`, que la
+chaîne #50 a touché : deux fichiers distincts dans deux modules distincts, aucune collision.
+
+**Le compte « Huit » ne bouge pas ; l'amorce annonce désormais ses deux sous-étapes.** Texte livré :
+« **Huit étapes, dont deux sous-étapes — 3 bis et 6 bis :** … ». Le lead de lot a **recompté** la phrase —
+elle porte les étapes **principales 0 à 7**, et `3 bis` n'y était **déjà pas** compté, donc ajouter `6 bis`
+ne la change pas — puis a retenu la forme longue, au motif qu'elle est **plus exacte que celle d'avant,
+`3 bis` y étant déjà tue**. On n'écrit **jamais** « neuf ».
+
+*Trace d'un aller-retour, gardée parce que c'est le genre de chose qu'on refait sinon* : la clause a été
+écrite, retirée sur une première consigne (« n'y touche pas »), puis rétablie sur la seconde. **Le compte
+n'a jamais été en cause** ; seul l'aveu des sous-étapes l'était.
 
 ---
 

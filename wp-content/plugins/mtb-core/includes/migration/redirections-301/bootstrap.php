@@ -75,8 +75,8 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			),
 			'longdesc'  => "## NOTES\n\n"
 				. "Cette commande N'ÉCRIT RIEN : ni option, ni contenu, ni métadonnée. Elle lit le disque et la base, jamais le réseau.\n\n"
-				. "Elle prouve que la table est cohérente avec le référentiel et que chaque cible se résout aujourd'hui. Elle ne dit RIEN de ce que le serveur répond : cela se mesure au « curl », et les deux contrôles ne se présentent jamais l'un pour l'autre.\n\n"
-				. "Huit étapes : 0 le référentiel n'a pas bougé — 1 chaque adresse du référentiel est une clé — 2 chaque clé est une adresse du référentiel — 3 chaque cible de verdict « 301 » se résout en contenu publié — 3 bis avertissement quand la cible n'a été obtenue que par le repli — 4 aucune boucle — 5 chaque lien vers l'ancien domaine stocké en base est couvert — 6 le nombre de contenus non indexés — 7 les repères d'installation.\n\n"
+				. "Elle prouve que la table est cohérente avec le référentiel, que chaque cible se résout aujourd'hui et — depuis l'étape 6 bis — que la règle de mise en sommeil est chargée, accrochée, et qu'elle produit son effet sur le plan du site que le cœur fabrique en processus. Elle ne dit RIEN de ce que le serveur répond : cela se mesure au « curl ». Trois natures de contrôle, et aucune ne se présente jamais pour une autre.\n\n"
+				. "Huit étapes, dont deux sous-étapes — 3 bis et 6 bis : 0 le référentiel n'a pas bougé — 1 chaque adresse du référentiel est une clé — 2 chaque clé est une adresse du référentiel — 3 chaque cible de verdict « 301 » se résout en contenu publié — 3 bis avertissement quand la cible n'a été obtenue que par le repli — 4 aucune boucle — 5 chaque lien vers l'ancien domaine stocké en base est couvert — 6 les contenus repris qui portent le fait hérité — 6 bis l'effet de leur conversion, mesuré sur le plan du site — 7 les repères d'installation.\n\n"
 				. "Elle se joue en recette, depuis l'arbre du dépôt, où « docs/migration/source/sitemap.xml » existe. Le dossier « docs/ » n'est pas déployé en production, et aucun autre fichier de ce module ne le lit.\n\n"
 				. "## EXAMPLES\n\n"
 				. "    wp mtb verifier-redirections\n",
