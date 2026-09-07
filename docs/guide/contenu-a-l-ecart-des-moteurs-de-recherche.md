@@ -56,11 +56,13 @@ Ce que nous constatons, c'est seulement l'état des pages : plus aucune page ne 
 
 ## Si vous voulez que l'une d'elles redevienne trouvable
 
-Deux gestes, **dans cet ordre, et pas dans l'autre** :
+Deux gestes, **dans cet ordre, et pas dans l'autre**. Ils sont les mêmes pour une fiche de chien —
+Halan, Ray-Ban, Roxane, Youry — et pour la page Placement :
 
-1. **D'abord**, remettez la page dans un menu, ou reliez-la depuis une autre page du site — un lien
-   comme n'importe quel autre. Voir *Modifier le menu* (`menu-modifier-le-menu.md`).
-2. **Ensuite seulement**, réveillez-la. Voir *Mettre un contenu en sommeil, et le réveiller*
+1. **D'abord**, reliez ce contenu au reste du site : remettez-le dans un menu, ou posez un lien vers
+   lui depuis une autre page — un lien comme n'importe quel autre. Voir *Modifier le menu*
+   (`menu-modifier-le-menu.md`).
+2. **Ensuite seulement**, réveillez-le. Voir *Mettre un contenu en sommeil, et le réveiller*
    (`contenu-mettre-en-sommeil-et-reveiller.md`).
 
 **Pourquoi cet ordre, et pas l'inverse** : une page que rien ne relie au reste du site, remise dans les
