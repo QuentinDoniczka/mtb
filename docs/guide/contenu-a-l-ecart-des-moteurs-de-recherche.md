@@ -1,7 +1,7 @@
 # Les contenus tenus à l'écart des moteurs de recherche
 
-**Quand** : à lire une fois, pour savoir que cet état existe ; à rouvrir le jour où vous voulez qu'une
-de ces pages redevienne trouvable par un moteur de recherche.
+**Quand** : à lire une fois, pour savoir que cet état existe ; à rouvrir le jour où vous voulez qu'un
+de ces contenus redevienne trouvable par un moteur de recherche.
 **Temps** : deux minutes de lecture. **Rattrapable** : oui, entièrement, et **par vous seule** — le
 geste est décrit dans *Mettre un contenu en sommeil, et le réveiller*
 (`contenu-mettre-en-sommeil-et-reveiller.md`).
@@ -18,7 +18,7 @@ réveiller — c'est l'autre fiche : *Mettre un contenu en sommeil, et le révei
 
 ## Les contenus concernés
 
-Relevées le 2026-09-05, telles qu'elles sont aujourd'hui en ligne :
+Relevés le 2026-09-05, tels qu'ils sont aujourd'hui en ligne :
 
 | Contenu | Titre public | Adresse servie |
 |---|---|---|
@@ -78,7 +78,7 @@ recherche sont invités à ne pas les proposer dans leurs résultats.
 
 **Ne confondez pas ce sujet avec la protection d'une page par un mot de passe** (voir *Protéger une page
 par un mot de passe*, `page-proteger-une-page-par-mot-de-passe.md`) : ce sont deux mécanismes
-différents. Aucune de ces cinq pages n'est protégée par un mot de passe.
+différents. Aucun de ces cinq contenus n'est protégé par un mot de passe.
 
 ---
 

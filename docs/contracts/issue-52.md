@@ -444,6 +444,17 @@ MTB\Core\Migration\IndexationHeritee\convertir(): int
 > une ligne au journal**. C'est exactement la famille d'interdit du §12, appliquée à la valeur au lieu
 > de la clé. **Le contrôle E4 se rejoue** après ce changement, la charge serveur→JavaScript ayant bougé.
 >
+> **Une recopie de plus, laissée sciemment et déclarée ici — c'est le geste qui manquait à A9.**
+> `editeur.js` recopie les valeurs `'1'` et `'0'` en littéraux, là où `CLE` lui est **transportée** par
+> `window.mtbSommeil.cle` et **gardée** par un repli. L'asymétrie est réelle : trois recopies fermées,
+> une quatrième laissée. **Elle est laissée pour une raison mesurée, pas par omission** — le risque
+> pratique est nul (`ENDORMI` et `REVEILLE` sont les deux états d'un booléen stocké en chaîne, gelés au
+> §2 de ce contrat et interdits de changement par le §12), tandis que la fermer imposerait de rouvrir
+> `editeur-de-blocs.php` et de **rejouer le contrôle E4 au navigateur réel**, seule sonde prouvant que
+> le panneau écrit. **Ce que la revue relevait n'était pas le risque, c'était le silence** : A9 déclare
+> nommément ce qu'il laisse, celle-ci ne l'était pas. Elle l'est désormais. **Dette portée au lot, pas
+> à cette chaîne.**
+>
 > **Deux points signalés et laissés en l'état, déclarés ici pour qu'ils ne se redécouvrent pas** :
 > (a) `indexation-heritee/bootstrap.php` conserve son `require_once` de `fait.php`, devenu un no-op
 > strict depuis que `conversion.php` le requiert lui-même — le bootstrap sert de **manifeste des

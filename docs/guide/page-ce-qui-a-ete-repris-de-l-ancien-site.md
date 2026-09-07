@@ -236,8 +236,9 @@ par qui connaît son adresse, mais elle est tenue à l'écart des moteurs de rec
 votre ancien site.
 
 **Attention à un point qui ne se devine pas** : quand vous affichez cette page, elle **ne revient pas
-pour autant** dans les moteurs de recherche. Ce sont deux choses séparées, et aucun écran ne vous le
-signale.
+pour autant** dans les moteurs de recherche. Ce sont deux choses séparées, et votre administration
+vous le montre : dans **Pages** → **Toutes les pages**, la page porte la mention **En sommeil** à côté
+de son titre, et la phrase sous sa case dit « Il reste affiché dans vos pages et dans vos menus. »
 
 **Ce que vous pouvez faire** : si vous voulez qu'elle soit trouvable sur Google, **vous le faites
 vous-même, sans rien nous demander** — c'est la case **Mettre ce contenu en sommeil** que vous

@@ -31,7 +31,7 @@ réveiller trois semaines, se rendormir ensuite.
 
 5. Cliquez sur **Mettre à jour**.
 
-![L'encadré Publier d'une portée déjà publiée, en haut à droite, entièrement visible : les lignes État, Visibilité et « Publié le : », puis en toute dernière ligne la case Mettre ce contenu en sommeil, cochée, et sa phrase d'aide en dessous ; le bouton Mettre à jour lisible sous l'encadré](captures/sommeil-portee-encadre-publier.png)
+![L'encadré Publier d'une portée déjà publiée, en haut à droite, entièrement visible : les lignes État, Visibilité et « Publié le : », puis en toute dernière ligne la case Mettre ce contenu en sommeil, cochée, et sa phrase d'aide en dessous ; dans le même encadré, sous la case, le bouton Mettre à jour, à côté de Déplacer dans la corbeille](captures/sommeil-portee-encadre-publier.png)
 
 **Sous la case, une phrase vous rappelle ce que le sommeil fait et ne fait pas** :
 
@@ -162,10 +162,10 @@ décochez, enregistrez, la consigne est levée.
 
 ## Ce qui est déjà en sommeil aujourd'hui
 
-**Quatre fiches de chien et une page** portent déjà la mention **En sommeil**, et **chacune a sa case,
+**Quelques contenus de votre site** portent déjà la mention **En sommeil**, et **chacun a sa case,
 déjà cochée**. Ce n'est pas une anomalie.
 
-**Lesquelles, et d'où vient cet état** : voir
+**Lesquelles, combien, et d'où vient cet état** : voir
 [Les contenus tenus à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md).
 
 **Pour en remettre une dans Google : ouvrez-la, décochez la case, enregistrez.** C'est tout, et c'est
