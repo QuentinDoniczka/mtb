@@ -201,11 +201,34 @@ reconstruire `$args`, et défaire la clause d'un voisin est précisément le ges
 
 | Fichier | Geste |
 |---|---|
-| `fait.php` | **inchangé, octet pour octet.** `_mtb_robots_source` reste, avec sa provenance (décision 55) |
+| `fait.php` | **la donnée et sa provenance sont inchangées** — `_mtb_robots_source`, `CLE`, `demande_noindex()` et le format à provenance de la décision 55 ne bougent pas. **Un seul bloc de commentaire est corrigé**, voir A11 |
 | `robots.php` | **supprimé** — `marquer_noindex()` en était le seul corps, il n'en reste rien de vivant |
 | `plan-du-site.php` | `ecarter_les_noindex()` **supprimée** ; `ecarter_le_fournisseur_utilisateurs()` et son bloc d'exception **inchangés** |
 | `bootstrap.php` | les `add_filter` des lignes 47 et 52 **retirés** ; celui de la ligne 57 **inchangé** ; en-tête réécrit |
 | `conversion.php` | **créé** |
+
+> **Arbitrage A11, rendu le 2026-09-07 — ce que « inchangé, octet pour octet » couvrait, et ce qu'il ne
+> couvrait pas.** La première rédaction de ce §6 gelait `fait.php` « octet pour octet ». **L'intention
+> était de protéger la DONNÉE recopiée et sa provenance** — `_mtb_robots_source`, la constante `CLE`,
+> `demande_noindex()` et le format à provenance de la **décision 55** —, et elle reste entière : aucune
+> de ces lignes ne bouge, et aucune méta n'est réécrite.
+>
+> **Elle ne couvrait pas une description de mécanique devenue fausse.** Le bloc de commentaire de
+> `fait.php` décrivait « l'asymétrie entre les deux lecteurs de cette clé » — le filtre `wp_robots` et
+> le retrait du plan du site — et renvoyait à la mesure d'égalité du §6.2 de #24 **comme si elle
+> valait**. Or #52 a supprimé **les deux lecteurs**, et le §11.3 déclare cette mesure **morte**.
+> Laisser ce bloc, c'était **HIGH-1 dans le code plutôt que dans le contrat**, et lu bien plus souvent :
+> une chaîne future y aurait trouvé l'invitation à rétablir précisément ce que le **§12** lui interdit —
+> un filtre lisant `_mtb_robots_source` —, ce qui rendrait **le réveil de l'éleveuse inopérant en
+> silence**.
+>
+> **Le bloc est donc réécrit ; rien d'exécutable ne change** (diff vérifié : toutes les lignes ajoutées
+> ou retirées sont des lignes de commentaire). Il dit désormais que la clé est un **fait recopié avec sa
+> provenance**, qu'elle **n'agit plus** depuis la conversion, que les deux lecteurs **ont été
+> supprimés**, que la mesure du §6.2 est **relevée au §11.3**, et il porte l'**interdit du §12**. La
+> règle générale que cet arbitrage pose : **un gel « octet pour octet » protège une donnée et sa
+> provenance, jamais une affirmation sur le fonctionnement — une affirmation fausse ne se gèle pas,
+> elle se corrige.**
 
 **Le commentaire historique de `robots.php` ne disparaît pas en silence.** Celui qui déclare qu'« un
 `noindex` posé par filtre est invisible et irréversible depuis `wp-admin` » est **relevé, daté et

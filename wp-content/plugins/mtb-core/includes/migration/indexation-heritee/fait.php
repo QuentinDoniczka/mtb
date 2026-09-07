@@ -14,16 +14,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /*
- * LE FILTRE LIT LA MÉTA ; IL NE CODE JAMAIS EN DUR LA LISTE DES CINQ IDENTIFIANTS. C'est ce qui le
- * rend juste si un sixième contenu portait la méta un jour, et indépendant des identifiants de
- * contenu, qui diffèrent d'une base à l'autre.
+ * LA LECTURE PASSE PAR LA MÉTA ; ELLE NE CODE JAMAIS EN DUR LA LISTE DES CINQ IDENTIFIANTS. C'est ce
+ * qui rend « demande_noindex() » juste si un sixième contenu portait la méta un jour, et indépendante
+ * des identifiants de contenu, qui diffèrent d'une base à l'autre.
  *
- * ASYMÉTRIE DÉLIBÉRÉE ENTRE LES DEUX LECTEURS DE CETTE CLÉ :
- *   - le filtre « wp_robots » lit la VALEUR — il faut y trouver « noindex » ;
- *   - le retrait du plan du site teste l'EXISTENCE de la clé, jamais sa valeur, parce que
- *     « meta_query » ne sait pas fouiller une valeur sérialisée sans devenir fausse.
- * Le contrôle qui les réconcilie est écrit au contrat #24 §6.2 : le nombre de contenus portant la
- * clé, le nombre rendus « noindex » et le nombre retirés du plan du site doivent être ÉGAUX.
+ * CETTE CLÉ EST UN FAIT RECOPIÉ, CONSERVÉ AVEC SA PROVENANCE (décision 55). Ce qu'elle déclare, c'est
+ * CE QUE L'ANCIEN SITE DÉCLARAIT — la directive relevée dans le « <head> » archivé, datée et sourcée.
+ * Elle n'est ni réécrite ni effacée, et c'est aujourd'hui sa seule raison d'être.
+ *
+ * ELLE N'AGIT PLUS. Depuis l'issue #52, le 2026-09-07, ce fait ne produit AUCUNE DIRECTIVE : il a été
+ * CONVERTI UNE FOIS, par « conversion.php » de ce même dossier, en un état que l'éleveuse pilote —
+ * « _mtb_en_sommeil ». Les deux lecteurs que ce bloc décrivait auparavant ONT ÉTÉ SUPPRIMÉS : le
+ * filtre « wp_robots » « marquer_noindex() », avec son fichier « robots.php », et le retrait du plan
+ * du site « ecarter_les_noindex() », retirée de « plan-du-site.php ». L'asymétrie entre lecture de la
+ * VALEUR et test d'EXISTENCE qu'ils imposaient N'EXISTE PLUS, et la mesure d'égalité du §6.2 du
+ * contrat #24 qui les réconciliait est RELEVÉE au §11.3 du contrat #52 : ne plus s'y appuyer.
+ *
+ * INTERDIT OPPOSABLE — §12 DU CONTRAT #52. Ne JAMAIS réintroduire un filtre « wp_robots » ni un filtre
+ * de plan du site qui lise cette clé. Le rétablir rendrait LE RÉVEIL INOPÉRANT EN SILENCE : l'éleveuse
+ * décocherait la case, l'écran lui dirait le contenu réveillé, et le contenu resterait hors des
+ * moteurs.
+ *
+ * CE QUI RESTE LISIBLE ICI, ET POURQUOI C'EST UTILE. Cette clé répond encore à « QU'EST-CE QUE
+ * L'ANCIEN SITE DÉCLARAIT ? », quand « _mtb_en_sommeil » répond à « QU'EST-CE QUE L'ÉLEVEUSE A DÉCIDÉ
+ * DEPUIS ? ». Deux questions distinctes, qui ne doivent JAMAIS FUSIONNER : l'une est un fait de
+ * migration, figé ; l'autre est une décision vivante.
  */
 
 /**
