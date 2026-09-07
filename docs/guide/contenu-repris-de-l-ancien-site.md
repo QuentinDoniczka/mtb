@@ -283,9 +283,12 @@ de cookies à accepter. **L'adresse de la vidéo est conservée dans le texte**,
 la raison — vous seule la connaissez.** Si vous voulez qu'elles redeviennent visibles comme les
 autres, dites-le-nous.
 
-*Une précision honnête : la consigne « ne pas référencer » est désormais appliquée — ces quatre fiches
-sont tenues à l'écart des moteurs de recherche. Elles restent lisibles par qui connaît leur adresse.
-Voir la fiche « Cinq pages tenues à l'écart des moteurs de recherche »
+*Une précision honnête : la consigne « ne pas référencer » a été reprise, et elle est aujourd'hui
+**un réglage qui vous appartient**, sur chacune de ces quatre fiches — vous le levez seule, quand vous
+voulez, et vous le remettez de même. Tant qu'il est là, ces quatre fiches sont tenues à l'écart des
+moteurs de recherche et restent lisibles par qui connaît leur adresse. Le geste est décrit dans « Mettre un contenu en
+sommeil, et le réveiller » (`contenu-mettre-en-sommeil-et-reveiller.md`). Voir aussi la fiche
+« Les contenus tenus à l'écart des moteurs de recherche »
 (`contenu-a-l-ecart-des-moteurs-de-recherche.md`), qui les nomme avec la page Placement et explique
 comment faire revenir l'une d'elles.*
 

@@ -239,10 +239,13 @@ votre ancien site.
 pour autant** dans les moteurs de recherche. Ce sont deux choses séparées, et aucun écran ne vous le
 signale.
 
-**Ce que vous pouvez faire** : si vous voulez qu'elle soit trouvable sur Google, dites-le-nous — c'est
-une ligne à changer de notre côté. **Voir la fiche *Cinq pages tenues à l'écart des moteurs de
-recherche*** (`contenu-a-l-ecart-des-moteurs-de-recherche.md`), qui nomme les cinq pages concernées et
-explique l'ordre des gestes.
+**Ce que vous pouvez faire** : si vous voulez qu'elle soit trouvable sur Google, **vous le faites
+vous-même, sans rien nous demander** — c'est la case **Mettre ce contenu en sommeil** que vous
+décochez sur la page, et cela se refait autant de fois que vous voulez. Le geste est décrit pas à pas
+dans *Mettre un contenu en sommeil, et le réveiller* (`contenu-mettre-en-sommeil-et-reveiller.md`).
+**Voir aussi la fiche *Les contenus tenus à l'écart des moteurs de recherche***
+(`contenu-a-l-ecart-des-moteurs-de-recherche.md`), qui nomme les contenus concernés et explique
+l'ordre des gestes.
 
 ### Les mentions légales de l'ancien site se contredisent
 

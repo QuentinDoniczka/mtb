@@ -84,7 +84,7 @@ cessé d'exister ; vous levez simplement la consigne donnée aux moteurs de rech
 
 **Si plus rien sur votre site ne relie le contenu que vous réveillez**, le réveiller ne suffit pas : il
 faut aussi le relier depuis un menu ou depuis une autre page. Lisez d'abord
-[Cinq pages tenues à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md).
+[Les contenus tenus à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md).
 
 ---
 
@@ -160,13 +160,13 @@ décochez, enregistrez, la consigne est levée.
 
 ---
 
-## Cinq contenus sont déjà en sommeil aujourd'hui
+## Ce qui est déjà en sommeil aujourd'hui
 
 **Quatre fiches de chien et une page** portent déjà la mention **En sommeil**, et **chacune a sa case,
 déjà cochée**. Ce n'est pas une anomalie.
 
 **Lesquelles, et d'où vient cet état** : voir
-[Cinq pages tenues à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md).
+[Les contenus tenus à l'écart des moteurs de recherche](contenu-a-l-ecart-des-moteurs-de-recherche.md).
 
 **Pour en remettre une dans Google : ouvrez-la, décochez la case, enregistrez.** C'est tout, et c'est
 définitivement à vous. Vous n'avez plus rien à nous demander sur ce point.

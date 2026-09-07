@@ -1,4 +1,4 @@
-# Cinq pages tenues à l'écart des moteurs de recherche
+# Les contenus tenus à l'écart des moteurs de recherche
 
 **Quand** : à lire une fois, pour savoir que cet état existe ; à rouvrir le jour où vous voulez qu'une
 de ces pages redevienne trouvable par un moteur de recherche.
@@ -16,7 +16,7 @@ réveiller — c'est l'autre fiche : *Mettre un contenu en sommeil, et le révei
 
 ---
 
-## Les cinq pages concernées
+## Les contenus concernés
 
 Relevées le 2026-09-05, telles qu'elles sont aujourd'hui en ligne :
 
