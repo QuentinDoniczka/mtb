@@ -29,7 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * formulaire partiel, sans notre case — écriraient « 0 » et RÉVEILLERAIENT UN CONTENU ENDORMI EN
  * SILENCE. Aucune erreur, aucun journal, un écran qui répond 200 et un contenu qui revient dans
  * Google sans que personne l'ait demandé. C'est exactement le motif écrit à
- * « fields/portee/sauvegarde.php:36-43 », et c'est le même garde-fou.
+ * « enregistrer_champs() » de « fields/portee/sauvegarde.php », qui pose la même sentinelle sous le
+ * nom « mtb_portee_ecran », et c'est le même garde-fou.
  *
  * La présence du champ de nonce vaut donc « ce POST vient bien de l'écran d'édition, la case y était,
  * et son absence signifie décochée ». La vérification cryptographique qui suit vaut « et ce POST

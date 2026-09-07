@@ -17,13 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * CE MODULE NE PORTE AUCUNE GARDE « if ( ! is_admin() ) { return; } », ET C'EST LE PIÈGE LE PLUS
  * COÛTEUX DE CETTE ISSUE.
  *
- * « fields/chien/bootstrap.php:17 » en porte une, à juste titre : rien de ce module-là n'a de sens
- * hors de wp-admin. ICI, ELLE TUERAIT LE MODULE SUR LA SEULE FAÇADE OÙ IL DOIT COURIR. Le panneau
- * « Résumé » de l'éditeur de blocs écrit l'état par la façade REST, « /wp-json/ », OÙ is_admin() VAUT
- * FAUX : sous cette garde, register_post_meta() ne courrait pas, la clé ne serait pas déclarée, la
- * case se cocherait, la page s'enregistrerait — ET LA CASE REVIENDRAIT DÉCOCHÉE. Sans erreur, sans
- * une ligne au journal, sur un écran qui répond 200. L'éleveuse conclurait que l'interrupteur ne
- * marche pas, et elle aurait raison.
+ * « fields/chien/bootstrap.php » en porte une en tête de fichier, à juste titre : rien de ce
+ * module-là n'a de sens hors de wp-admin. ICI, ELLE TUERAIT LE MODULE SUR LA SEULE FAÇADE OÙ IL DOIT
+ * COURIR. La case de la zone latérale de l'éditeur de blocs écrit l'état par la façade REST,
+ * « /wp-json/ », OÙ is_admin() VAUT FAUX : sous cette garde, register_post_meta() ne courrait pas,
+ * la clé ne serait pas déclarée, la case se cocherait, la page s'enregistrerait — ET LA CASE
+ * REVIENDRAIT DÉCOCHÉE. Sans erreur, sans une ligne au journal, sur un écran qui répond 200.
+ * L'éleveuse conclurait que l'interrupteur ne marche pas, et elle aurait raison.
  *
  * LE CONTEXTE SE TESTE DANS LES RAPPELS, JAMAIS AU CHARGEMENT. C'est ce que font « rendre_la_case() »
  * — qui vérifie le type du contenu et la capacité —, « mettre_le_script_en_file() » — qui vérifie

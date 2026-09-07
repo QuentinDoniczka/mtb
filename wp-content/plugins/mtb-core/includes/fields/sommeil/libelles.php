@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * SOURCE UNIQUE DES CHAÎNES, POUR QUE LES TROIS ÉCRANS NE PUISSENT PAS DIVERGER.
  *
  * L'interrupteur paraît à trois endroits : l'encadré « Publier » de l'éditeur classique (portée,
- * fiche de chien), le panneau « Résumé » de l'éditeur de blocs (page), et la mention dans les listes
+ * fiche de chien), la zone latérale de l'éditeur de blocs (page), et la mention dans les listes
  * d'administration. Les trois lisent CES fonctions ; aucun ne recopie une phrase. Le JavaScript de
  * l'éditeur de blocs les REÇOIT DU SERVEUR et les imprime — il n'en compose aucune, il n'en concatène
  * aucune. Une phrase recopiée dans un quatrième endroit divergerait au premier ajustement de

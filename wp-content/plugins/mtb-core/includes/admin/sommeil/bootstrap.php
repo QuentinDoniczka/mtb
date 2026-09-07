@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * L'un a besoin de la garde d'ouverture, l'autre serait TUÉ par elle. « fields/sommeil » doit courir
  * sur la façade REST, où is_admin() vaut faux, sans quoi la métadonnée ne serait pas déclarée et le
- * panneau « Résumé » ne pourrait rien écrire. Ce module-ci, à l'inverse, ne pose qu'un seul crochet,
+ * case de la zone latérale ne pourrait rien écrire. Ce module-ci, à l'inverse, ne pose qu'un seul crochet,
  * « display_post_states », qui N'EXISTE QU'EN ADMINISTRATION : la garde y est donc parfaitement sûre,
  * et c'est la norme du groupe. Les réunir dans un seul module obligerait à choisir, et fabriquerait
  * exactement le piège que décrit le §2.2 du contrat #23.

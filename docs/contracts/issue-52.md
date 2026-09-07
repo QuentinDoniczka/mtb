@@ -222,6 +222,18 @@ on ne l'invente pas.**
 Le test d'absence est **`metadata_exists( 'post', $id, CLE )`, jamais `get_post_meta()`** : lui seul
 sépare « absente » de `'0'`.
 
+**Les deux questions restent séparément lisibles après conversion, et c'est une exigence, pas une
+conséquence heureuse.** `_mtb_robots_source` répond à *« qu'est-ce que l'ancien site déclarait ? »* et
+garde sa provenance (décision 55) ; `_mtb_en_sommeil` répond à *« qu'est-ce que l'éleveuse a décidé
+depuis ? »*. **Les deux clés coexistent sur les cinq contenus et ne fusionnent jamais** : un contenu
+réveillé porte le fait hérité **inchangé** et l'état à `'0'`. Une chaîne future qui effacerait
+`_mtb_robots_source` « puisqu'elle n'agit plus » détruirait la seule trace de ce que la source
+déclarait, et rendrait la reprise invérifiable.
+
+**L'idempotence se prouve par la mesure, jamais par la lecture du code** : `convertir()` jouée deux fois
+de suite rend **`n` puis `0`**, et sur un contenu remis à `'0'` elle rend **`0`** en laissant `'0'`
+intact. C'est le contrôle **C4**, et il est la preuve que T108 est payée — un réveil n'est jamais défait.
+
 **Le trou du déclencheur, mesuré et fermé.** `mtb_core_mise_a_jour` ne se déclenche que si
 l'empreinte d'identité change (`MTB_CORE_VERSION` + types + taxonomies `mtb_`). #52 n'ajoute ni type ni
 taxonomie et ne touche pas `mtb-core.php`. **Ce crochet ne se déclenchera donc pas une seule fois du
@@ -291,10 +303,53 @@ crochet court à la fin de `#misc-publishing-actions`, donc **après** la ligne 
 la ligne *Publier le* — il n'existe aucun crochet entre les deux. La fiche décrit **ce qu'elle voit**,
 jamais ce qu'on aurait voulu.
 
-**Page — éditeur de blocs.** `wp.editor.PluginPostStatusInfo`, panneau **Résumé**, avec repli **écrit
-et commenté** vers `wp.editPost.PluginPostStatusInfo`, **déprécié depuis WordPress 6.6** — dans ce sens
-et jamais l'inverse, sinon la console imprime un avertissement de dépréciation à chaque ouverture. ES5,
+**Page — éditeur de blocs.** `wp.editor.PluginPostStatusInfo`, avec repli **écrit et commenté** vers
+`wp.editPost.PluginPostStatusInfo`, **déprécié depuis WordPress 6.6** — dans ce sens et jamais
+l'inverse, sinon la console imprime un avertissement de dépréciation à chaque ouverture. ES5,
 `wp.element.createElement`, **aucun JSX, aucune étape de construction**.
+
+> **Arbitrage A10, rendu le 2026-09-07 — le panneau « Résumé » N'EXISTE PAS, et l'emplacement réel est
+> celui-ci.** La première rédaction de ce §7 situait la case dans un panneau **« Résumé »**, nom repris
+> du guide et jamais mesuré. **Relevé au navigateur réel, WordPress 6.9, le 2026-09-07** : la recherche
+> exhaustive des nœuds feuilles rend `[]` pour « Résumé » — **le mot n'est nulle part sur cet écran.**
+> Ce qui existe : une **zone latérale de droite à deux onglets, « Page » et « Bloc »** ; sous l'onglet
+> **« Page »**, un titre, puis les rangées **État · Publier · Slug · Auteur/autrice · Modèle ·
+> Commentaires · Parent** ; **la case est dans la même section, après ces rangées, sans aucun titre de
+> panneau au-dessus d'elle.**
+>
+> **Ce n'est pas nous qui choisissons cet emplacement, c'est `PluginPostStatusInfo`** — le code était
+> juste, c'est ce document qui était faux. Un contrat gelé qui décrit un écran que la version installée
+> ne porte pas ne protège plus rien : il fige une erreur. D'où la règle que cet arbitrage pose pour la
+> suite : **un fait d'interface gelé ici porte la version dans laquelle il a été relevé et la date du
+> relevé.**
+>
+> **Libellés du cœur mesurés le même jour, WordPress 6.9**, parce que la fiche d'aide les recopie :
+>
+> | Écran | Ligne de date | Bouton |
+> |---|---|---|
+> | Portée / chien **publié** (éditeur classique) | **« Publié le : »** | **« Mettre à jour »** |
+> | Portée / chien **neuf** | **« Publier tout de suite »** | **« Publier »** |
+> | Page **publiée** (éditeur de blocs) | — | **« Enregistrer »**, et il **ne change pas** selon l'état |
+>
+> **« Publier le » n'existe sur aucun de ces écrans** : ne pas le réintroduire. Les deux éditeurs
+> diffèrent sur le bouton, et c'est l'origine mesurée d'une erreur qui vit encore dans
+> `docs/guide/page-proteger-une-page-par-mot-de-passe.md` — **hors de l'empreinte de #52**, signalée au
+> lead, non corrigée ici.
+
+**Transport des chaînes jusqu'au JavaScript — propriété gelée, pas seulement mesurée.** Les libellés
+partent par `wp_add_inline_script()` dans `window.mtbSommeil`, sérialisés par **`wp_json_encode()`**,
+qui échappe les caractères non-ASCII en `\uXXXX` : **la charge utile part en ASCII pur sur le fil** et
+le moteur JavaScript la restitue en U+2019. Le risque de mojibake sur les apostrophes typographiques
+est donc **structurellement nul, et pas seulement absent à la mesure**. **Conséquence opposable** :
+aucune chaîne future ne compose un libellé à la main dans le JavaScript ni ne contourne
+`wp_json_encode()` — elle perdrait cette propriété sans qu'aucun écran ne le dise.
+
+**`show_in_rest` est vrai pour `page` SEULE, et c'est motivé.** Seule la page emploie l'éditeur de
+blocs : sans `show_in_rest`, `editPost({ meta })` n'écrirait rien, **sans erreur visible**. `mtb_portee`
+et `mtb_chien` emploient l'éditeur classique (`use_block_editor_for_post_type` rendu faux) et passent
+par `save_post_*` : leur ouvrir la REST serait une surface sans usage. C'est aussi le précédent de
+`content/portee/champs.php`, dont les clés sont fermées à la REST parce que
+`WP_REST_Post_Meta_Fields` ne teste pas le mot de passe d'un contenu.
 
 **Aucun octet de CSS n'est produit par l'extension** : classes du cœur uniquement (`misc-pub-section`,
 `howto`), `wp.components.CheckboxControl` côté blocs. **Aucun `make css`, aucun artefact `*.min.css`
@@ -453,11 +508,23 @@ ouvert par cette chaîne** (décision 70).
 > faits `_mtb_robots_source` relevés sur l'ancien site.
 
 **11.3 — Relève de la mesure d'égalité du §6.2 du contrat #24.**
-> Le contrat #24 §6.2 pose comme invariant que *le nombre de contenus portant `_mtb_robots_source`, le
-> nombre rendus `noindex` et le nombre retirés du plan du site sont ÉGAUX*. **Cet invariant cesse d'être
-> vrai le 2026-09-07**, et ce n'est pas une régression : le fait hérité ne **produit** plus la
-> directive, il a été **converti** en une règle que l'éleveuse pilote. Il est remplacé par **deux
-> nombres distincts** :
+> **L'égalité en question.** Le contrat #24 §6.2 pose comme invariant que *le nombre de contenus portant
+> `_mtb_robots_source`, le nombre rendus `noindex` et le nombre retirés du plan du site sont ÉGAUX*.
+>
+> **Pourquoi elle valait.** Parce qu'une **seule** source produisait les trois nombres : la méta
+> `_mtb_robots_source`, lue par `marquer_noindex()` pour la directive et par `ecarter_les_noindex()`
+> pour le plan du site. L'égalité était la façon de réconcilier l'**asymétrie** que `fait.php` documente
+> — le filtre `wp_robots` lit la **valeur** de la méta, le retrait du plan du site teste son
+> **existence** —, asymétrie sûre tant que rien d'autre n'agissait sur ces façades.
+>
+> **Ce qui la rompt.** Dès qu'une règle vivante se superpose, l'égalité meurt et l'asymétrie devient une
+> divergence réelle entre ce que la balise dit et ce que le plan du site fait. C'est précisément
+> pourquoi #52 **convertit** au lieu de faire cohabiter (§6) : après conversion, il y a **une clé, une
+> valeur, une règle, trois façades d'accord**.
+>
+> **Cet invariant cesse donc d'être vrai le 2026-09-07**, et ce n'est **pas** une régression : le fait
+> hérité ne **produit** plus la directive, il a été **converti** en une règle que l'éleveuse pilote. Il
+> est remplacé par **deux nombres distincts** :
 > - **5** — contenus portant `_mtb_robots_source`. Constante historique, mesurée par l'étape 6 de
 >   `wp mtb verifier-redirections` (`CONTENUS_NOINDEX_ATTENDUS`), qui reste **verte** parce qu'elle
 >   compte la **méta en base** et n'a jamais lu la balise rendue (vérifié :

@@ -97,7 +97,8 @@ require_once MTB_CORE_DIR . 'includes/query/mise-en-sommeil/etat.php';
  * rappelle pas elle-même.
  *
  * AUCUN NONCE, AUCUNE CAPACITÉ, ET C'EST MOTIVÉ, PAS OUBLIÉ — même raisonnement qu'à
- * « class-loader.php:276-285 » : cette écriture n'est PAS D'ORIGINE UTILISATEUR, sa valeur dérive
+ * « Loader::synchroniser_version() » de « includes/class-loader.php », dont le docbloc écrit le même
+ * raisonnement : cette écriture n'est PAS D'ORIGINE UTILISATEUR, sa valeur dérive
  * d'une méta déjà en base, elle doit tourner sur un import WP-CLI comme sur la première visite
  * d'administration venue, et une capacité la rendrait inopérante là où elle sert. La règle « nonce
  * sur toute écriture » de CLAUDE.md vise les écritures issues d'une requête utilisateur ; ce n'en est

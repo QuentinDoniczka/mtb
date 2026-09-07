@@ -1,6 +1,6 @@
 <?php
 /**
- * L'interrupteur « en sommeil » dans le panneau « Résumé » de l'éditeur de blocs.
+ * L'interrupteur « en sommeil » dans la zone latérale de l'éditeur de blocs.
  *
  * @package MTB\Core
  */
@@ -12,6 +12,29 @@ namespace MTB\Core\Fields\Sommeil;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/*
+ * OÙ LA CASE PARAÎT EXACTEMENT — RELEVÉ AU NAVIGATEUR, WORDPRESS 6.9, LE 2026-09-07.
+ *
+ * Zone latérale de droite, onglet « Page », sous les rangées « État », « Publier », « Slug »,
+ * « Auteur/autrice », « Modèle », « Commentaires » et « Parent ». IL N'Y A AUCUN TITRE DE PANNEAU
+ * AU-DESSUS DE LA CASE : elle est le dernier élément de la même section que ces rangées.
+ *
+ * IL N'Y A PAS DE PANNEAU « RÉSUMÉ » SUR CETTE VERSION, et ce n'est pas un détail de rédaction. Le
+ * mot a été cherché à l'écran : « document.body.innerText » ne le contient nulle part, et la
+ * recherche exhaustive des nœuds valant exactement « Résumé » rend une liste vide. Le seul titre de
+ * la zone latérale est le TITRE DE LA PAGE elle-même. Quiconque écrira « le panneau Résumé » dans une
+ * fiche d'aide enverra l'éleveuse chercher quelque chose qui n'existe pas — c'est exactement ainsi
+ * que la fiche du mot de passe s'est trompée, et c'est pourquoi ce relevé est écrit ici avec sa date
+ * et sa version plutôt que tenu de mémoire.
+ *
+ * ET CE N'EST PAS NOUS QUI CHOISISSONS CET EMPLACEMENT. Il est décidé par « PluginPostStatusInfo »,
+ * le point d'extension du cœur : tout ce que ce module fournit, c'est le contenu à y déposer. On ne
+ * peut ni le remonter, ni le descendre, ni lui donner un titre sans quitter ce point d'extension —
+ * et le quitter reviendrait à fabriquer un panneau à nous, que l'éleveuse aurait à apprendre en plus.
+ * Une chaîne future qui voudrait déplacer la case doit savoir qu'elle change de mécanisme, pas de
+ * réglage.
+ */
 
 /**
  * Déclare le script de l'éditeur de blocs. Appelée sur « init », priorité 20.
@@ -47,10 +70,10 @@ function declarer_le_script(): void {
  * « ce n'est pas mon écran », jamais une erreur.
  *
  * LES CHAÎNES VIENNENT DU SERVEUR, LE JAVASCRIPT LES IMPRIME. Il n'en compose aucune, n'en concatène
- * aucune et n'en traduit aucune : c'est ce qui garantit que le panneau « Résumé » et l'encadré
- * « Publier » de l'éditeur classique disent MOT POUR MOT la même chose, aujourd'hui et après le
- * prochain ajustement de rédaction. Le calcul de la page d'accueil se fait ici aussi, côté serveur,
- * par le couple d'options qui en décide — le JavaScript reçoit un booléen déjà tranché.
+ * aucune et n'en traduit aucune : c'est ce qui garantit que la case de la zone latérale et celle de
+ * l'encadré « Publier » de l'éditeur classique disent MOT POUR MOT la même chose, aujourd'hui et
+ * après le prochain ajustement de rédaction. Le calcul de la page d'accueil se fait ici aussi, côté
+ * serveur, par le couple d'options qui en décide — le JavaScript reçoit un booléen déjà tranché.
  *
  * « before » et non « after » : l'objet doit exister au moment où le fichier s'exécute.
  *
@@ -79,7 +102,7 @@ function mettre_le_script_en_file(): void {
 				/*
 				 * LA CLÉ AUSSI VIENT DU SERVEUR, pour le même motif que les phrases et pour un enjeu
 				 * plus grave. Écrite en dur côté JavaScript, elle divergerait le jour où la constante
-				 * PHP changerait : le panneau « Résumé » continuerait d'écrire sous l'ancien nom, la
+				 * PHP changerait : la case de la zone latérale continuerait d'écrire sous l'ancien nom, la
 				 * case cesserait de persister, la page répondrait 200 et le journal resterait vide.
 				 * C'est la signature de panne exacte que toute cette issue combat. « CLE » est ici la
 				 * seule et même constante que lisent la requête, l'écran classique et la conversion.

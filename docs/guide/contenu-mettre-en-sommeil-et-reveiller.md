@@ -22,14 +22,16 @@ réveiller trois semaines, se rendormir ensuite.
 2. Cliquez sur le titre du contenu à endormir.
 
 3. Regardez l'encadré **Publier**, en haut à droite. **La case est la toute dernière ligne de cet
-   encadré**, tout en bas, **après la ligne qui porte la date de publication** — et non juste après la
-   ligne **Visibilité**. Descendez jusqu'au bas de l'encadré, elle y est.
+   encadré**, tout en bas, **après la ligne « Publié le : »** — et non juste après la ligne
+   **Visibilité**. Descendez jusqu'au bas de l'encadré, elle y est. *Sur un contenu que vous venez tout
+   juste de créer, cette même ligne s'appelle **Publier tout de suite** ; la case est au même endroit,
+   en dessous.*
 
 4. Cochez **Mettre ce contenu en sommeil**.
 
 5. Cliquez sur **Mettre à jour**.
 
-![L'encadré Publier d'une portée, en haut à droite, entièrement visible : les lignes État, Visibilité et la ligne de date de publication, puis en toute dernière ligne la case Mettre ce contenu en sommeil, cochée, et sa phrase d'aide en dessous](captures/sommeil-portee-encadre-publier.png)
+![L'encadré Publier d'une portée déjà publiée, en haut à droite, entièrement visible : les lignes État, Visibilité et « Publié le : », puis en toute dernière ligne la case Mettre ce contenu en sommeil, cochée, et sa phrase d'aide en dessous ; le bouton Mettre à jour lisible sous l'encadré](captures/sommeil-portee-encadre-publier.png)
 
 **Sous la case, une phrase vous rappelle ce que le sommeil fait et ne fait pas** :
 
@@ -41,23 +43,31 @@ réveiller trois semaines, se rendormir ensuite.
 
 ## Les étapes — sur une page
 
-L'écran d'une page n'est pas celui d'une portée, et **le bouton d'enregistrement ne porte pas le même
-nom**. Ne cherchez pas l'encadré **Publier** : il n'existe pas ici.
+L'écran d'une page n'est pas celui d'une portée. Le mot **Publier** y est bien présent — vous le verrez,
+c'est normal. Ce qui change, c'est qu'**il n'y a pas d'encadré Publier en bloc** comme sur une portée :
+les réglages de la page sont de simples rangées, les unes sous les autres, et **la case est en dessous
+d'elles**. Le bouton d'enregistrement, lui, ne porte pas le même nom.
 
 1. Dans le menu de gauche, cliquez sur **Pages**, puis sur **Toutes les pages**.
 
 2. Cliquez sur le titre de la page.
 
-3. Dans la **colonne de droite**, trouvez la case **Mettre ce contenu en sommeil**, avec sa phrase
-   d'aide en dessous. *Si vous ne voyez pas cette colonne, ouvrez-la avec le bouton en forme
-   d'engrenage, en haut à droite de l'écran.*
+3. Regardez la **colonne de droite** : elle a deux onglets, **Page** et **Bloc**. Cliquez sur l'onglet
+   **Page**. *Si vous ne voyez pas cette colonne, ouvrez-la avec le bouton en forme d'engrenage, en haut
+   à droite de l'écran.*
 
-4. Cochez la case.
+4. Sous le titre, vous voyez une suite de rangées : **État**, **Publier**, **Slug**,
+   **Auteur/autrice**, **Modèle**, **Commentaires**, **Parent**. **Descendez sous la dernière** : la
+   case **Mettre ce contenu en sommeil** est là, avec sa phrase d'aide en dessous. Aucun titre ne
+   l'annonce, elle est seule.
 
-5. Cliquez sur **Enregistrer**, en haut à droite. *Sur une page, le bouton s'appelle **Enregistrer** ;
-   sur une portée et sur une fiche de chien, il s'appelle **Mettre à jour**. C'est le même geste.*
+5. Cochez la case.
 
-![La colonne de droite de l'éditeur d'une page : la case Mettre ce contenu en sommeil, cochée, avec sa phrase d'aide, et le bouton Enregistrer en haut à droite de l'écran](captures/sommeil-page-panneau-resume.png)
+6. Cliquez sur **Enregistrer**, en haut à droite. *Sur une page, le bouton s'appelle toujours
+   **Enregistrer**, quel que soit l'état de la page ; sur une portée et sur une fiche de chien, il
+   s'appelle **Mettre à jour**. C'est le même geste.*
+
+![La colonne de droite de l'éditeur d'une page, onglet Page actif : les rangées État, Publier, Slug, Auteur/autrice, Modèle, Commentaires, Parent, puis en dessous d'elles la case Mettre ce contenu en sommeil, cochée, avec sa phrase d'aide ; le bouton Enregistrer lisible en haut à droite de l'écran](captures/sommeil-page-zone-laterale.png)
 
 ---
 
@@ -106,9 +116,9 @@ chiens** et **Toutes les pages**. C'est votre seul repère : vous voyez d'un cou
 - **Rien à l'écran ne signale qu'un contenu dort**, sinon la mention **En sommeil** dans vos listes
   d'administration. Une page endormie s'affiche exactement comme les autres pour qui a le lien.
 
-**Ne confondez pas avec la protection par mot de passe.** Ce sont deux choses différentes : le sommeil
-laisse le contenu **lisible par tous ceux qui ont l'adresse**, il l'écarte seulement des moteurs de
-recherche. Si vous voulez que le contenu ne soit **pas lisible** sans autorisation, c'est l'autre
+**Ne confondez pas avec la protection par mot de passe.** Le mot de passe choisit **qui peut voir** ;
+le sommeil choisit **qui peut trouver**. Le sommeil laisse le contenu **lisible par tous ceux qui ont
+l'adresse**, il l'écarte seulement des moteurs de recherche. Si vous voulez que le contenu ne soit **pas lisible** sans autorisation, c'est l'autre
 fiche qu'il vous faut : [Protéger une page par un mot de passe](page-proteger-une-page-par-mot-de-passe.md).
 
 ---
@@ -180,8 +190,8 @@ définitivement à vous. Vous n'avez plus rien à nous demander sur ce point.
   des portées.** C'est voulu : le sommeil ne retire rien de vos pages ni de vos menus.
 - **Vous avez décoché la case, et Google propose encore le contenu.** La consigne est bien levée ;
   c'est le moteur qui n'est pas encore repassé.
-- **La case est la toute dernière ligne de l'encadré Publier**, sous la ligne de date, et non juste
-  après **Visibilité**. C'est sa place.
+- **La case est la toute dernière ligne de l'encadré Publier**, sous la ligne **Publié le :**, et non
+  juste après **Visibilité**. C'est sa place.
 
 **Ce n'est pas normal, signalez-le :**
 

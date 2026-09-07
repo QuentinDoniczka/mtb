@@ -58,10 +58,10 @@ require_once __DIR__ . '/etat.php';
  * une convention GELÉE AUX CONTRATS #23 ET #24, et elle vaut pour tout rappel futur, d'où qu'il
  * vienne.
  *
- * « includes/query/page-protegee/bootstrap.php:71 » accroche le MÊME crochet, à la MÊME priorité,
- * pour retirer le contenu protégé par mot de passe. « add_filter() » EMPILE : les deux rappels
- * s'exécutent, la sortie du premier entrant dans le second. L'ordre leur est indifférent — à UNE
- * condition, et à elle seule :
+ * « exclure_du_plan_du_site() » de « includes/query/page-protegee » accroche le MÊME crochet à la
+ * MÊME priorité, pour retirer le contenu protégé par mot de passe — homonyme du nôtre, dans un autre
+ * espace de noms. « add_filter() » EMPILE : les deux rappels s'exécutent, la sortie du premier
+ * entrant dans le second. L'ordre leur est indifférent — à UNE condition, et à elle seule :
  *
  *     CHAQUE RAPPEL MUTE DES CLÉS DE « $args ». AUCUN NE REMPLACE « $args ».
  *

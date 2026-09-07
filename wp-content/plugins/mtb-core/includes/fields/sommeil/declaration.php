@@ -66,7 +66,7 @@ const CHAMP = 'mtb_en_sommeil';
  *
  * L'« auth_callback » EST OBLIGATOIRE, PAS DÉFENSIF. La clé commence par un souligné, elle est donc
  * PROTÉGÉE au sens du cœur, et register_meta() lui affecterait « __return_false » par défaut : TOUTE
- * écriture par la REST serait refusée, la case du panneau « Résumé » se cocherait, la page
+ * écriture par la REST serait refusée, la case de la zone latérale se cocherait, la page
  * s'enregistrerait, et la case reviendrait décochée — sans erreur, sans journal, sur un écran qui
  * répond 200. Il teste « current_user_can( 'edit_post', $object_id ) », LA CAPACITÉ SUR L'OBJET, et
  * jamais « edit_posts » : la capacité générale autoriserait à endormir une page qu'on n'a pas le

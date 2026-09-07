@@ -1,5 +1,14 @@
 /**
- * Interrupteur « en sommeil » — panneau « Résumé » de l'éditeur de blocs.
+ * Interrupteur « en sommeil » — zone latérale de l'éditeur de blocs.
+ *
+ * OÙ LA CASE PARAÎT, RELEVÉ AU NAVIGATEUR, WORDPRESS 6.9, LE 2026-09-07 : zone latérale de droite,
+ * onglet « Page », sous les rangées « État », « Publier », « Slug », « Auteur/autrice », « Modèle »,
+ * « Commentaires » et « Parent », SANS AUCUN TITRE DE PANNEAU AU-DESSUS D'ELLE. Il n'existe PAS de
+ * panneau « Résumé » sur cette version : le mot ne figure nulle part à l'écran, vérifié. Ne pas le
+ * réintroduire, ici ni dans une fiche d'aide — l'éleveuse chercherait une chose qui n'existe pas.
+ *
+ * L'emplacement n'est pas notre choix : il est décidé par « PluginPostStatusInfo », le point
+ * d'extension du cœur. Ce fichier fournit le contenu, pas la place.
  *
  * ES5, aucune syntaxe JSX, aucune étape de construction : le fichier est servi tel quel, lisible et
  * modifiable sans outillage. Il n'est mis en file que sur l'écran d'édition d'une page ; le visiteur
@@ -52,7 +61,7 @@
 	 * et « wp_add_inline_script() » l'apporte jusqu'ici dans « window.mtbSommeil.cle », exactement
 	 * comme il apporte le libellé et l'aide. La recopier en dur ferait courir la panne la plus grave
 	 * de ce module : la constante PHP changée, ce fichier continuerait d'écrire sous l'ancien nom, la
-	 * case du panneau « Résumé » cesserait de persister, la page répondrait 200 et le journal
+	 * case de la zone latérale cesserait de persister, la page répondrait 200 et le journal
 	 * resterait vide.
 	 *
 	 * Repli explicite plutôt que confiance : si la charge du serveur n'apportait pas de clé
@@ -66,7 +75,7 @@
 	}
 
 	/**
-	 * La case à cocher du panneau « Résumé », et l'avertissement de page d'accueil le cas échéant.
+	 * La case à cocher de la zone latérale, et l'avertissement de page d'accueil le cas échéant.
 	 *
 	 * Lecture et écriture passent par « core/editor » et jamais par la façade REST en direct : l'état
 	 * suit ainsi le cycle normal de l'éditeur — il devient une modification non enregistrée, le bouton
@@ -104,7 +113,7 @@
 				 * CheckboxControl is deprecated since version 6.7 and will be removed in version 7.0 ».
 				 * Même motif que le repli de « Panneau » ci-dessus : on ne laisse pas un avertissement
 				 * de dépréciation s'installer dans la console de l'éleveuse. Elle n'a aucun effet hors
-				 * de la marge basse du contrôle, que le panneau « Résumé » compose lui-même.
+				 * de la marge basse du contrôle, que la zone latérale compose elle-même.
 				 */
 				__nextHasNoMarginBottom: true,
 				label: reglages.libelle,

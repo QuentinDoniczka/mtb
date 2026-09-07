@@ -25,7 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *      (« class-loader.php », initiale « _ ») — NE REMET PLUS RIEN DANS GOOGLE : il empêcherait
  *      seulement la conversion des contenus PAS ENCORE convertis, l'état des autres étant déjà en
  *      base et servi par « query/mise-en-sommeil ». Le module reste néanmoins séparé pour que ce
- *      renommage, s'il devient nécessaire, n'emporte pas une ligne des 46 redirections.
+ *      renommage, s'il devient nécessaire, n'emporte pas une ligne de la carte des 52 adresses
+ *      reprises.
  *   3. TÉMOINS D'ÉCHEC DISJOINTS. « redirections-301 » se prouve vivant par un code de sortie
  *      WP-CLI ; ce module-ci n'a PAS de commande, et sa seule sonde est l'état écrit en base sur les
  *      contenus repris. Deux sondes de nature différente : les réunir dans un dossier ferait croire
