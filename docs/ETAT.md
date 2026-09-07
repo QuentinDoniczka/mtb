@@ -130,6 +130,31 @@ voisin, et « des trois types concernés » là où le module garantit explicite
 **Les deux invariants du guide tiennent, mesurés** : 37 liens / 28 cibles / **0 lien mort** / **0
 libellé ≠ H1**, et **126 références ↔ 126 captures, 0 orphelin des deux côtés**.
 
+**Les trois dettes du lot sont ouvertes en issues**, sous le **milestone 15** : **#53** (T109, témoin
+rejouable du `noindex` hérité, `seo`) · **#54** (T110, « Slug » et « Définir l'image mise en avant » sur
+l'écran d'une page, `contenu` — **il n'y a pas de label `admin` dans les 14 domaines de `CLAUDE.md`**,
+`contenu` est celui du précédent similaire #35) · **#55** (T112, le vocabulaire du guide, `doc`).
+**T111 n'a pas d'issue** : déclarée au contrat de #52, elle se soldera au passage par l'issue qui
+rouvrira le module en rejouant E4. Les milestones **10 et 14 sont fermés** ; **13 reste ouvert** —
+`github-boards` a corrigé ma supposition, #49 et #50 y sont encore.
+
+**Prochaine action : lot 20 = #50, #49 et #53 — PAS TOUS EN PARALLÈLE.** Verdict d'empreinte obtenu de
+`github-boards` et **calculé sur le disque après le remaniement de #52**, pas sur les énoncés d'origine.
+**#49 et #50 se recouvrent** sur `indexation-heritee/bootstrap.php` **et** `plan-du-site.php` : séquentiel,
+**#50 d'abord** — correctif étroit et déjà cerné, avant que #49 n'ouvre le même fichier pour un mécanisme
+encore à choisir. **#53 tourne en parallèle** : l'inquiétude que j'avais posée — T109 partagerait le
+voisinage d'`indexation-heritee` — **a été vérifiée et se dissout**, `redirections-301` étant un module
+**explicitement déclaré distinct** par le bootstrap voisin (`indexation-heritee/bootstrap.php:17-33`,
+trois motifs gelés : témoins d'échec disjoints, noms honnêtes), sans aucune référence croisée.
+Puis **lot 21 = #54 et #55**, **séquentielles entre elles** — elles partagent
+`docs/guide/contenu-mettre-en-sommeil-et-reveiller.md`, recouvrement créé par la rédaction même des deux
+énoncés — et sans troisième issue disponible pour compléter le lot.
+
+**Après ces deux lots, le board ne porte plus que #26 et #48, garées par le report de Q5 — donc plus
+aucun travail exécutable.** Aucun épic de fonctionnalité n'est ouvert : il ne reste que de la dette.
+**Question posée à l'utilisateur à la clôture du lot 19, sans réponse à ce jour** : le brief est-il
+intégralement couvert, ou reste-t-il un chunk à décomposer ? C'est un préalable au lot 22, pas au 20.
+
 **Phase : lot 18 (#23 page protégée, #24 redirections et référencement, #42 neuvième discipline) livré,
 testé et revu le 2026-09-05. Les trois issues sont fermées.** Sept commits, `05000d1` → `ff3e3fc`.
 Intégration : **142 vérifications, 141 conformes, 0 échec imputable au code**. Revue **BLOQUANTE au
