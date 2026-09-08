@@ -38,6 +38,38 @@ if ( ! defined( 'ABSPATH' ) ) {
  *      contenus repris. Deux sondes de nature différente : les réunir dans un dossier ferait croire
  *      qu'une seule suffit.
  *
+ *      ACTE DATÉ DU 2026-09-08 (#56) — « SA SEULE SONDE EST L'ÉTAT ÉCRIT EN BASE » N'EST PLUS VRAI, ET
+ *      LE FICHIER SE CONTREDISAIT DÉJÀ LUI-MÊME PLUS BAS. La phrase était exacte à #52, quand ce module
+ *      ne faisait que convertir. Elle a cessé de l'être le 2026-09-08 avec #50, dont la sonde est un
+ *      CODE DE STATUT HTTP — ce que la deuxième surface silencieuse écrit noir sur blanc quelques
+ *      paragraphes plus loin (« Sa sonde n'est pas en base, c'est un code de statut HTTP »). #56
+ *      l'éloigne encore : ses trois rappels se prouvent vivants par un CORPS HTTP, jamais par un état
+ *      en base. LE DÉCOMPTE HONNÊTE EST DONC : ce module a désormais des sondes DE DEUX NATURES —
+ *      l'état en base pour la conversion, un corps ou un code HTTP pour les cinq autres effets.
+ *      CE QUI NE CHANGE PAS, ET C'EST TOUT L'OBJET DU MOTIF : aucune n'est un code de sortie WP-CLI.
+ *      La frontière avec « redirections-301 » tient donc intacte, et la conclusion du motif 3 — les
+ *      réunir ferait croire qu'une seule sonde suffit — est INCHANGÉE. Seule la description du témoin
+ *      de CE module-ci était périmée. Corrigé par ajout, jamais par amputation : le motif garde la
+ *      trace de ce qu'il a cru.
+ *
+ * PREMIER ACTE DATÉ DU 2026-09-08 (#56) — LE COMPTAGE DU MOTIF 2 EST DEVENU FAUX : SIX EFFETS.
+ * Le motif 2 ci-dessus écrit « TROIS EFFETS, ET ILS TOMBENT ENSEMBLE ». Depuis le 2026-09-08 (#56),
+ * ILS SONT SIX, et le comptage n'est pas un détail de rédaction : c'est ce qui dit à qui renommerait le
+ * dossier en « _indexation-heritee » ce qu'il rouvre exactement. LE PIÈGE MATÉRIEL EST DONC AGGRAVÉ.
+ * Aux trois déjà nommés — le fournisseur rendu au plan du site, le 404 franc du sous-plan qui tombe avec
+ * lui, et toutes les archives d'auteur du site qui rouvrent (« /author/<slug>/ » de retour à 200, la
+ * forme en requête de retour à 301) — s'ajoutent TROIS AUTRES, du même instant :
+ *   4. « /wp-json/wp/v2/users » et « /wp-json/wp/v2/users/<id> » REPUBLIENT LES DEUX COMPTES, leurs
+ *      slugs ET LE NOM CIVIL DE L'ÉLEVEUSE, en une requête sans cookie — sous leurs DEUX écritures,
+ *      jolie adresse et forme en requête, et l'oracle par recherche de nom avec elles ;
+ *   5. « /feed/ », « /feed/rdf/ » et « /feed/atom/ » republient le nom d'affichage du compte 1 ;
+ *   6. l'oEmbed de tout contenu singulier republie ce même nom ET l'adresse « /author/admin/ » —
+ *      ADRESSE QUI, AU MÊME INSTANT, REDEVIENT 200 PAR L'EFFET 3. Les deux se rallument ensemble : le
+ *      document en publie l'URL pendant qu'elle recommence à répondre.
+ * C'est exactement ce que le regroupement sous un seul « bootstrap.php » achète — une dégradation
+ * COHÉRENTE, jamais une moitié fermée et une moitié ouverte — et c'est aussi ce qui rend le renommage
+ * plus coûteux qu'il n'en a l'air. Aucun état mort à nettoyer dans les six cas.
+ *
  * CE QUE CE MODULE FAIT DEPUIS LE 2026-09-07 (#52), ET CE QU'IL NE FAIT PLUS.
  *
  * Il ne SERT PLUS AUCUNE DIRECTIVE. Il ne pose plus « wp_robots », il ne retire plus rien du plan du
@@ -98,6 +130,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  * PROPOSÉE POUR AUTANT : la seule qui aurait du sens serait une commande WP-CLI, et LUI EN DONNER UNE
  * CONTREDIRAIT LE MOTIF 3 CI-DESSUS. Résidu nommé, non masqué, et son poids réel écrit plutôt que lissé.
  *
+ * QUATRIÈME SURFACE SILENCIEUSE, DEPUIS LE 2026-09-08 (#56) — DEUXIÈME ACTE DATÉ. De même nature que les
+ * deux précédentes, et d'un enjeu supérieur aux trois. Si l'un des trois rappels de
+ * « identite-des-comptes.php » cesse de mordre — une ligne « add_filter » perdue dans une reprise, le
+ * dossier renommé en « _indexation-heritee », le cœur renommant une clé de route ou cessant d'appeler
+ * « the_author() » dans un gabarit de flux, un tiers filtrant « rest_endpoints » APRÈS nous et
+ * réenregistrant la route — UNE IDENTITÉ DE COMPTE REPARAÎT DANS UN DOCUMENT PUBLIC. RIEN NE LE DIRAIT :
+ * pas une ligne au journal, pas un écran, pas un ralentissement, et l'éleveuse ne visite jamais ces
+ * adresses. Pire que les précédentes sur un point : les trois surfaces sont DISJOINTES, si bien que
+ * DEUX PEUVENT CONTINUER DE MORDRE PENDANT QUE LA TROISIÈME FUIT — une vérification faite sur la
+ * première dirait « c'est fermé » en toute bonne foi.
+ * LA NUANCE QUI SE DIT PLUTÔT QU'ELLE NE SE LISSE, ET ELLE MONTE D'UN CRAN À CHAQUE ISSUE : ce que #50
+ * protège est une adresse machine que personne ne demande ; ce que #49 protège est L'IDENTIFIANT DE
+ * CONNEXION de l'éleveuse ; CE QUE #56 PROTÈGE EST AUSSI SON NOM CIVIL, publié en une requête sans
+ * cookie, par une adresse qu'un aspirateur trouve avant un être humain. Le mode de panne est muet dans
+ * les trois cas, l'enjeu ne l'est pas. Sa sonde est de même nature que celles de #50 et #49 — un corps
+ * HTTP, joué en recette, protocole du §11 du contrat #56 — et AUCUNE SONDE SUPPLÉMENTAIRE N'EST PROPOSÉE
+ * POUR AUTANT : la seule qui aurait du sens serait une commande WP-CLI, et LUI EN DONNER UNE
+ * CONTREDIRAIT LE MOTIF 3. Résidu nommé, non masqué, pour la troisième fois.
+ *
  * AMENDEMENT DÉCLARÉ À LA BORNE 1 (contrat #24 §15) : ce module ÉCRIT désormais, ce qu'il ne faisait
  * pas. La borne 1 porte sur ses hooks de FRONT ; les trois accroches de la conversion sont
  * « mtb_core_mise_a_jour », « added_post_meta » / « updated_post_meta » (administration ou WP-CLI) et
@@ -118,6 +169,30 @@ if ( ! defined( 'ABSPATH' ) ) {
  * « _mtb_robots_source » relevés sur l'ancien site, et celui de #49 est clos et daté aux archives
  * d'auteur de ce site.
  *
+ * TROISIÈME ACTE DATÉ DU 2026-09-08 (#56) — « LES TROIS HOOKS DE FRONT DE CE MODULE » EN COMPTE SIX.
+ * Le paragraphe ci-dessus en énumère trois ; l'énumération est juste à sa date et le comptage a cessé de
+ * l'être. Les SIX hooks de front de ce module sont désormais : « wp_sitemaps_add_provider » 10,
+ * « template_redirect » 20 (#50), « request » 10 (#49), puis « rest_endpoints » 10, « the_author » 10 et
+ * « oembed_response_data » 10 (#56). SIX, ET PAS SEPT : aucune garde de ceinture n'est écrite, et il ne
+ * faut pas en écrire « au cas où ». Et « de front » continue de se dire de l'EFFET, non du contexte
+ * d'exécution : « rest_endpoints » court aussi au préchargement de l'éditeur de blocs, et « the_author »
+ * court aussi sur les écrans de liste — où son rappel SORT PAR SA PREMIÈRE GARDE sans rien substituer,
+ * faute de quoi la colonne « Auteur » afficherait le titre du site pour chaque ligne, en silence.
+ *
+ * QUATRIÈME ACTE DATÉ DU 2026-09-08 (#56) — LA BORNE 1 N'EST PAS ÉTENDUE, ET C'EST ÉCRIT PLUTÔT QUE
+ * SUPPOSÉ. #50 l'avait resserrée en « il lit, il RÉPOND », #49 l'a étendue en « il lit, il RÉPOND, ET IL
+ * PEUT AMENDER LA REQUÊTE EN MÉMOIRE — JAMAIS L'ÉTAT PERSISTANT ». #56 S'ARRÊTE EN DEÇÀ : ses trois
+ * rappels LISENT ET RÉPONDENT, et rien de plus. Aucun n'amende une requête — aucun ne lit ni ne modifie
+ * une variable de requête, aucun ne consulte « $_GET », « $_POST » ni aucune superglobale ; aucun
+ * n'écrit — ni « update_option », ni « wp_insert_post », ni « update_post_meta », ni
+ * « wp_set_object_terms », aucune règle de réécriture touchée, aucun « flush » requis, aucun état laissé
+ * en base ; et aucun ne lit un compte, une option ou un registre. LA FORMULATION DE LA BORNE 1 RESTE
+ * DONC MOT POUR MOT CELLE DE #49. UNE BORNE QU'ON N'ÉTEND PAS MÉRITE D'ÊTRE CONSTATÉE PAR ÉCRIT : sans
+ * cette ligne, le prochain qui ajoutera un rappel ici croira l'avoir étendue sans le savoir, ou croira
+ * qu'elle l'a été par #56 et s'autorisera un cran de plus sans amendement. Les bornes 2 et 3 sont
+ * traitées en tête de « identite-des-comptes.php » : la 2 intacte, la 3 ÉTIRÉE et non pas « close »,
+ * avec sa recommandation de renommage du module, ajournée avec son motif.
+ *
  * MESURE D'ÉGALITÉ DU CONTRAT #24 §6.2, RELEVÉE LE 2026-09-07 : « le nombre de contenus portant
  * _mtb_robots_source, le nombre rendus noindex et le nombre retirés du plan du site sont ÉGAUX » cesse
  * d'être vrai, et ce n'est pas une régression. Le fait hérité ne PRODUIT plus la directive, il a été
@@ -131,6 +206,7 @@ require_once __DIR__ . '/fait.php';
 require_once __DIR__ . '/plan-du-site.php';
 require_once __DIR__ . '/conversion.php';
 require_once __DIR__ . '/archives-d-auteur.php';
+require_once __DIR__ . '/identite-des-comptes.php';
 
 /*
  * Trois accroches sur une seule fonction idempotente, parce qu'aucune ne couvre à elle seule les
@@ -192,3 +268,35 @@ add_action( 'template_redirect', __NAMESPACE__ . '\\repondre_404_au_sous_plan_re
 // PRIORITÉ 10, UN ARGUMENT. Aucun autre rappel de ce crochet n'existe dans ce dépôt — vérifié par
 // recherche sur « wp-content/ » le 2026-09-08 — donc aucune concurrence de priorité.
 add_filter( 'request', __NAMESPACE__ . '\\neutraliser_la_requete_d_auteur', 10, 1 );
+
+// Vie privée des comptes : ni la route REST, ni les flux, ni l'oEmbed ne publient plus une identité
+// (dette T113, issue #56, 2026-09-08). Le détail, les quinze faits du cœur et le motif de chaque garde
+// — comme de chaque garde REFUSÉE — sont écrits en tête de « identite-des-comptes.php » et au-dessus de
+// chacun des trois rappels ; ce renvoi ne les recopie pas, il dit ce qu'on ne verrait pas d'ici.
+// TROIS RAPPELS GROUPÉS PARCE QU'ILS FERMENT UN SEUL SUJET PAR TROIS TRANSPORTS. Leur mode de panne est
+// identique — une identité de compte reparaît dans un document public, en silence — et leur témoin
+// aussi : un corps HTTP joué en recette. Les tenir ensemble rend « on en a oublié un » plus difficile ;
+// c'est la demi-fermeture qui est le risque principal de cette issue, pas la panne franche.
+// CE QUE #49 A FERMÉ, LA ROUTE REST LE PUBLIAIT ENCORE : relevé du 2026-09-08, « /wp-json/wp/v2/users »
+// rend pour chaque compte un « link » vers « /author/<slug>/ » — l'adresse même que « request » fait
+// répondre 404 — ET le slug, ET le nom civil de l'éleveuse. Deux mécanismes décrivant le même fait et
+// divergeant en silence : le mode de panne de #52, ici fermé par le regroupement sous ce fichier.
+// PRIORITÉ 10, UN ARGUMENT CHACUN, ET AUCUNE CONCURRENCE : aucun rappel de « rest_endpoints », de
+// « the_author » ni de « oembed_response_data » n'existait dans « wp-content/ » — vérifié par recherche
+// le 2026-09-08. Aucun ordre n'est à imposer entre ces trois-là ni avec les quatre accroches ci-dessus :
+// leurs crochets courent à des instants disjoints et aucun ne lit ce qu'un autre écrit.
+// AUCUNE GARDE DE CEINTURE N'EST ÉCRITE, et c'est délibéré : une garde contre un cas impossible rassure
+// sans couvrir. LE MOT « MESURÉ » NE FIGURE PAS DANS CETTE PHRASE, ET C'EST VOULU : la formule est reprise
+// du fait 5 de « archives-d-auteur.php », où l'impossibilité était RELEVÉE ; ici elle ne l'est pour aucune
+// des deux gardes refusées — « is_admin() » l'est pour incohérence d'administration, et
+// « defined( 'REST_REQUEST' ) » sur une DÉDUCTION (contrat #56 §14, point 1). Recopier « mesuré comme
+// impossible » aurait attribué une mesure à un raisonnement — la faute même que ce module traque.
+// Les deux gardes envisagées pour le premier rappel — « is_admin() » et
+// « defined( 'REST_REQUEST' ) » — sont REFUSÉES, chacune avec son motif propre, et LE MOTIF DE #49 NE S'Y
+// RECOPIE PAS : il se remplace. Le motif neuf est écrit au-dessus de « retirer_les_routes_d_identite() ».
+// LA SEULE GARDE DU LOT EST « is_admin() » SUR LE DEUXIÈME RAPPEL, et elle est obligatoire :
+// « wp-admin/includes/class-wp-posts-list-table.php:1284 » appelle « get_the_author() », donc sans elle
+// les écrans Pages et Articles afficheraient le titre du site comme auteur de tout, EN SILENCE.
+add_filter( 'rest_endpoints', __NAMESPACE__ . '\\retirer_les_routes_d_identite', 10, 1 );
+add_filter( 'the_author', __NAMESPACE__ . '\\substituer_le_nom_d_auteur', 10, 1 );
+add_filter( 'oembed_response_data', __NAMESPACE__ . '\\substituer_l_auteur_oembed', 10, 1 );
