@@ -237,7 +237,7 @@ disque.*
 | A2 | Étendre la fiche menu à Chiens seul, ou à Chiens **et** Portées ? | **Les deux, en une seule section courte** | Décision 74 ; coût marginal d'une phrase ; Chiens seul recrée la dette pour une portée |
 | A3 | Y ajouter les résultats de travail ? | **Non** | `show_in_nav_menus => false` — l'encadré n'existe pas |
 | A4 | La section neuve peut-elle dire « l'encadré Chiens, dans la colonne de gauche » ? | **Non — elle doit passer par Options de l'écran d'abord** | Mesuré : l'encadré est masqué par défaut (§2.1) |
-| A5 | Le cas « Link » de la page d'accueil est-il dans le périmètre ? | **Non — clos par la mesure, rien n'est écrit** | Sur `post.php`, l'accueil dit « Adresse de la page » comme toute page ; « Lien » n'existe que dans l'Éditeur de site, **403** pour l'éleveuse (§2.2) |
+| A5 | Le cas « Link » de la page d'accueil est-il dans le périmètre ? | **Non — clos par la mesure, rien n'est écrit** | **Pour le rôle Éditeur, le seul dont le guide décide** : sur `post.php`, l'accueil dit « Adresse de la page » comme toute page, et « Lien » ne s'atteint que par l'Éditeur de site, **403** pour elle. **Ce n'est pas un énoncé sur l'existence de cette rangée en général** — un administrateur lit « Lien » sur `post.php` même (§9.1). La décision, elle, est inchangée |
 | A6 | La passe de contrecoup dans la fiche menu est-elle dans cette issue ? | **Oui, elle est constitutive de C3** | Sinon la correction recrée la dette qu'elle solde |
 | A7 | Faut-il corriger `chien-ajouter-un-chien.md:238` (« Adresse de la page » sur un chien) ? | **Non** | Libellé du produit, gelé par `MASTER.md` §10.2 |
 
@@ -433,9 +433,21 @@ lire** (`/wp-json/wp/v2/settings` → 403) ; `isFrontPage` est donc faux pour el
 
 | Ancre | Énoncé d'origine | Statut après amendement |
 |---|---|---|
-| `:133-135` | l'accueil affiche « Adresse de la page » sur `post.php` | **restreint au rôle Éditeur** — vrai pour lui, faux pour un administrateur |
-| `:136-138` | « la rangée Lien n'existe que dans l'Éditeur de site » | **retiré** — énoncé d'existence que je n'avais pas mesuré |
-| `:130-131` | « sur l'écran que le guide décrit, c'est faux » | **remplacé** par le verdict de `issue-54.md:664-672` |
+| §2.2, tableau et puce 1 | l'accueil affiche « Adresse de la page » sur `post.php` | **restreint au rôle Éditeur** — vrai pour lui, faux pour un administrateur |
+| §2.2, puce 2 | « la rangée Lien **n'existe que** dans l'Éditeur de site » | **récrit en énoncé d'accès, pas d'existence** : « pour l'éleveuse, elle ne s'atteint que par l'Éditeur de site ». La formule d'origine ne subsiste nulle part |
+| §2.2, verdict | « sur l'écran que le guide décrit, c'est faux » | **remplacé** par un bandeau d'amendement renvoyant à `issue-54.md:664-672` |
+| **§6, arbitrage A5** | reprenait la même formule universelle | **restreinte au rôle Éditeur**, avec mention explicite qu'un administrateur lit « Lien » sur `post.php` |
+
+**Ancres citées par nature, non par numéro de ligne** : les amendements successifs de ce contrat
+déplacent les lignes, et une ancre chiffrée y devient fausse en silence — la famille de défaut que ce
+document passe son temps à documenter.
+
+**Cette quatrième ligne a été ajoutée après coup.** Une première rédaction de ce § déclarait l'énoncé
+« **retiré** » alors qu'il **subsistait dans le tableau des arbitrages du §6**, relevé par la revue de
+lot. C'est le défaut de ce lot en miniature — **un document qui affirme au présent avoir corrigé ce
+qu'il n'a pas corrigé** —, et il est d'autant moins acceptable ici que le §6 est précisément ce qu'une
+chaîne future consulte pour ne pas re-litiger. Le renvoi « (§2.2) » y routait un lecteur diligent ;
+**on ne conçoit pas pour le lecteur diligent.**
 
 **Verdict retenu, celui de #54 et il est meilleur que le mien** : « **Les deux relevés sont exacts.
 Ils portent sur deux comptes, pas sur deux routes.** »
