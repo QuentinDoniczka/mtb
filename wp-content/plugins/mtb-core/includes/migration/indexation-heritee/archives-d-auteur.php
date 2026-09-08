@@ -55,7 +55,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 /*
- * HUIT FAITS DU CŒUR, RELEVÉS DANS LE CONTENEUR LE 2026-09-08, WordPress 6.9. AUCUN N'EST DÉDUIT.
+ * NEUF FAITS DU CŒUR, RELEVÉS DANS LE CONTENEUR LE 2026-09-08, WordPress 6.9. AUCUN N'EST DÉDUIT.
  *
  *   1. « wp-includes/class-wp.php:409 » — « $this->query_vars = apply_filters( 'request',
  *      $this->query_vars ); », et l. 418 « do_action_ref_array( 'parse_request', array( &$this ) ); ».
@@ -87,6 +87,32 @@ if ( ! defined( 'ABSPATH' ) ) {
  *      règle de réécriture passent bien par « public_query_vars ». Relevé pour documenter le rejet du
  *      filtre « query_vars » — écarté parce qu'il ne pose AUCUN 404 et rendrait donc 200 sur l'index du
  *      blog — et non pour le rouvrir.
+ *   9. « wp-admin/includes/post.php:1319 » — « wp( $query ); », dans « wp_edit_posts_query() » ; et
+ *      l. 1407 « wp( wp_edit_attachments_query_vars( $q ) ); », dans « wp_edit_attachments_query() ».
+ *      CE FILTRE COURT DONC EN ADMINISTRATION : « wp() » appelle « WP::main() », qui appelle
+ *      « WP::parse_request() », qui applique « request » (fait 1). CE SONT LES DEUX SEULS APPELS DE
+ *      « wp() » DE TOUT « wp-admin/ » — relevé par recherche le 2026-09-08 ; la seule autre ligne que
+ *      la recherche rend, « class-wp-posts-list-table.php:164 », est un commentaire. Les deux servent
+ *      des écrans de LISTE : toute liste « edit.php » (Articles, Pages, Portées, Chiens, Résultats) et
+ *      la Médiathèque EN MODE LISTE (« class-wp-media-list-table.php:102 » appelle
+ *      « wp_edit_attachments_query() »). LE MODE GRILLE N'ATTEINT PAS « wp() », et le détail vaut
+ *      d'être écrit parce qu'il se lit de travers : « wp-admin/upload.php:140 » branche sur
+ *      « if ( 'grid' === $mode ) », et cette branche-là appelle bien « wp_edit_attachments_query_vars() »
+ *      (l. 158) — mais c'est L'AUTRE FONCTION, celle qui se contente de fabriquer des variables de
+ *      requête et les passe à « wp_localize_script() » (l. 166) pour que le navigateur interroge
+ *      ensuite. Deux fonctions de noms voisins et de rôles disjoints : « post.php:1333 »
+ *      « wp_edit_attachments_query_vars() », qui n'appelle jamais « wp() », et « post.php:1406 »
+ *      « wp_edit_attachments_query() », qui l'appelle l. 1407. La grille va donc chercher ses données
+ *      par « admin-ajax.php:103 » (l'action « query-attachments », traitée par
+ *      « wp-admin/includes/ajax-actions.php:3021 », « wp_ajax_query_attachments() »), et
+ *      « admin-ajax.php » n'appelle jamais « wp() ». CONSÉQUENCE À DIRE PLUTÔT QU'À TAIRE :
+ *      « upload.php:137 » fait de « grid » LE MODE PAR DÉFAUT, si bien que le défaut du 2026-09-08 ne
+ *      touchait la Médiathèque QUE hors de son mode par défaut — une raison de plus pour qu'il soit
+ *      passé inaperçu. « post.php » — modifier, enregistrer — n'appelle jamais « wp() » non plus.
+ *      Enfin « author » EST une variable publique (« class-wp.php:18 »), donc elle entre
+ *      bien dans « query_vars » en administration : ce n'est pas une possibilité théorique, c'est le
+ *      chemin des onglets « Le mien » des écrans de liste. Et « wp-admin/admin.php:104 » appelle
+ *      « auth_redirect() » AVANT que « edit.php » n'atteigne « wp_edit_posts_query() ».
  *
  * CES NUMÉROS DE LIGNE SONT ÉPINGLÉS À WordPress 6.9. « wp-includes/ » n'étant pas versionné dans ce
  * dépôt, ILS SE PÉRIMERONT EN SILENCE à la prochaine montée de version. Résidu nommé, non masqué.
@@ -149,36 +175,69 @@ const CLES_EMPORTEES = array( 'feed' );
  * détruirait la route REST et tout ce qu'un voisin y aurait mis — l'éditeur de blocs par terre, et
  * invisible en recette si l'on ne teste que le front.
  *
- * L'ORDRE DES CINQ GARDES EST IMPOSÉ par le contrat #49 §6, et aucune ne se réordonne : REST avant
- * tout, parce que c'est la seule dont l'oubli casse autre chose que cette issue ; détection avant
+ * L'ORDRE DES CINQ GARDES EST IMPOSÉ par le contrat #49 §6, et aucune ne se réordonne : contexte avant
+ * tout — administration et REST — parce que ce sont les seules sorties dont l'oubli casse autre chose
+ * que cette issue, et l'oubli de la première a bel et bien cassé un écran ; détection avant
  * modification, pour que le coût sur les requêtes ordinaires soit un « array_key_exists() » et rien de
  * plus ; retraits avant la pose de « error », pour que l'état intermédiaire « requête vidée sans 404 »
  * — le faux 200 — n'existe à aucun instant du filtre.
  *
  * @param array $variables Variables de la requête en cours, telles que le cœur vient de les collecter.
  *
- * @return array Le tableau reçu, rendu identique hors d'une requête d'auteur ; amputé des clés
- *               d'auteur et du flux et portant « error » sur une requête d'auteur.
+ * @return array Le tableau reçu, rendu identique en administration, sur une requête REST et hors d'une
+ *               requête d'auteur ; amputé des clés d'auteur et du flux et portant « error » sur une
+ *               requête d'auteur du front.
  */
 function neutraliser_la_requete_d_auteur( array $variables ): array {
 	/*
-	 * 1. LA GARDE LA PLUS GRAVE DU FICHIER, ET C'EST POURQUOI ELLE EST LA PREMIÈRE.
-	 * « rest_api_loaded() » lit la route REST sur « parse_request », donc APRÈS ce filtre (faits 1 et
-	 * 2) — et la clé d'auteur EST une variable publique : « /wp-json/wp/v2/posts?author=1 » la porte.
-	 * Sans cette sortie, une requête REST légitime partirait en 404 : L'ÉDITEUR DE BLOCS PAR TERRE,
-	 * rayon d'explosion « site entier » côté administration, pour la fermeture d'une archive publique.
-	 * Doctrine reprise de « query/page-protegee/bootstrap.php » (« is_admin() vaut FAUX sur
-	 * /wp-json/ ») ; rien n'est réinventé ici.
+	 * 1. DEUX SORTIES DE CONTEXTE, ET ELLES SONT LES PREMIÈRES PARCE QUE CHACUNE CASSE AUTRE CHOSE QUE
+	 * CETTE ISSUE.
+	 *
+	 * « is_admin() » — CE FILTRE COURT EN ADMINISTRATION. C'est le fait 9, relevé le 2026-09-08 dans
+	 * le conteneur, et il CONTREDIT la prémisse écrite ici jusque-là : « wp_edit_posts_query() »
+	 * (« wp-admin/includes/post.php:1319 ») et « wp_edit_attachments_query() » (l. 1407) appellent
+	 * « wp() », donc « WP::parse_request() », donc « request ». Sans cette sortie, dès que l'adresse
+	 * d'un écran de liste porte une clé d'auteur — ce que fait l'onglet « Le mien » — les clés étaient
+	 * retirées et « error » posé : L'ÉCRAN PORTÉES RENDAIT LES 33 PORTÉES SOUS UN ONGLET QUI EN ANNONCE
+	 * UNE, en statut 404, sans un mot, sans un terme technique, SANS UNE LIGNE AU JOURNAL. Un écran qui
+	 * a l'air de marcher et qui ment sur ce qu'il montre est pire qu'un écran cassé : l'éleveuse n'a
+	 * aucune raison de le signaler. Mesuré avant correctif, en session : « Tous (33) | Le mien (1) »,
+	 * 20 lignes affichées, « 33 éléments », statut 404.
+	 *
+	 * ET ELLE NE ROUVRE RIEN SUR LE FRONT — mesuré, pas déduit, parce que c'est une prémisse non
+	 * vérifiée qui a produit le défaut ci-dessus. « wp-admin/admin.php:104 » appelle
+	 * « auth_redirect() » AVANT que « edit.php » n'atteigne « wp_edit_posts_query() » : un visiteur
+	 * anonyme demandant « /wp-admin/edit.php?post_type=… &author=2 » est renvoyé à la connexion en 302
+	 * avec un CORPS DE ZÉRO OCTET, avant que « wp() » ne coure — aucune donnée d'auteur ne sort. Les
+	 * deux seuls autres contextes où « is_admin() » vaut vrai, « admin-ajax.php » et
+	 * « admin-post.php », N'APPELLENT JAMAIS « wp() » (fait 9), donc ce rappel n'y court pas du tout.
+	 * La fermeture de l'énumération sur le front est entière.
+	 *
+	 * « rest_route » — LA GARDE LA PLUS GRAVE DU FICHIER. « rest_api_loaded() » lit la route REST sur
+	 * « parse_request », donc APRÈS ce filtre (faits 1 et 2) — et la clé d'auteur EST une variable
+	 * publique : « /wp-json/wp/v2/posts?author=1 » la porte. Sans cette sortie, une requête REST
+	 * légitime partirait en 404 : L'ÉDITEUR DE BLOCS PAR TERRE, rayon d'explosion « site entier » côté
+	 * administration, pour la fermeture d'une archive publique. Doctrine reprise de
+	 * « query/page-protegee/bootstrap.php » (« is_admin() vaut FAUX sur /wp-json/ ») ; rien n'est
+	 * réinventé ici, et c'est précisément pourquoi « is_admin() » NE SUFFIT PAS et ne remplace pas ce
+	 * test.
 	 *
 	 * « defined( 'REST_REQUEST' ) » EST INTERDIT DANS CE FICHIER, et le dire vaut mieux que de laisser
 	 * un successeur le rajouter de bonne foi : à l'instant où ce filtre court, LA CONSTANTE N'EST PAS
 	 * ENCORE DÉFINIE, puisque c'est « rest_api_loaded() » qui la définit, après nous (fait 2). La
-	 * recopier donnerait l'illusion de la protection REST tout en ne protégeant rien. C'est aussi
-	 * pourquoi la garde de contexte des deux services de front voisins n'est pas recopiée telle quelle
-	 * ici — écart délibéré, non un oubli : « parse_request() » ne court ni dans « wp-admin », ni sur
-	 * « admin-ajax.php », ni sur « wp-cron.php ».
+	 * recopier donnerait l'illusion de la protection REST tout en ne protégeant rien. C'est pourquoi
+	 * la garde de contexte des deux services de front voisins n'est toujours pas recopiée telle
+	 * quelle : on en reprend « is_admin() », qui couvre aussi « admin-ajax.php », et rien d'autre.
+	 * « wp_doing_cron() » n'est pas repris non plus, ET CE TIERS DE PHRASE EST MAINTENANT ANCRÉ COMME
+	 * LES AUTRES : c'est le dernier morceau de l'affirmation dont #49 a trouvé le premier morceau faux,
+	 * et il ne s'appuyait sur rien, le fait 9 ayant borné sa recherche à « wp-admin/ » alors que
+	 * « wp-cron.php » est à la racine. Relevé le 2026-09-08 dans le conteneur, WordPress 6.9 :
+	 * « wp-cron.php » ne porte AUCUNE occurrence d'un appel à « wp() » ; il pose
+	 * « define( 'DOING_CRON', true ); » (l. 42) puis charge « wp-load.php » (l. 46), et rien de plus.
+	 * « WP::parse_request() » n'y court donc jamais, et ce rappel n'y est jamais appliqué : reprendre
+	 * « wp_doing_cron() » serait une garde qui rassure sans couvrir.
 	 */
-	if ( isset( $variables['rest_route'] ) ) {
+	if ( is_admin() || isset( $variables['rest_route'] ) ) {
 		return $variables;
 	}
 

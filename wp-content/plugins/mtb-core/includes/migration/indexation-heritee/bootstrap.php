@@ -105,15 +105,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Les TROIS hooks de front de ce module — « wp_sitemaps_add_provider » 10, « template_redirect » 20
  * depuis le 2026-09-08 (#50) et « request » 10 depuis le 2026-09-08 (#49) — n'écrivent RIEN. Le
  * premier rend « false » au cœur ; le deuxième pose un code de statut sur la réponse en cours ; le
- * troisième AMENDE LA REQUÊTE EN MÉMOIRE, pour le seul processus en cours. La borne 1 disait « il
- * lit », #50 l'a resserrée en « il lit, il RÉPOND » — poser un 404 est répondre, pas écrire — et #49
- * l'étend une seconde fois, par écrit et non en silence (contrat #49 §13.1) : « IL LIT, IL RÉPOND, ET
- * IL PEUT AMENDER LA REQUÊTE EN MÉMOIRE — JAMAIS L'ÉTAT PERSISTANT. » Aucun « update_option »,
- * « wp_insert_post », « update_post_meta », « wp_set_object_terms » ni « wp_delete_post » sur une
- * requête publique, et aucune règle de réécriture touchée. Les bornes 2 et 3 sont intactes : aucun état
- * en base ne déclenche la conversion — c'est la requête elle-même qui la borne — le périmètre reste
- * clos aux seuls faits « _mtb_robots_source » relevés sur l'ancien site, et celui de #49 est clos et
- * daté aux archives d'auteur de ce site.
+ * troisième AMENDE LA REQUÊTE EN MÉMOIRE, pour le seul processus en cours — et « de front » se dit ici
+ * de son EFFET, non de son contexte d'exécution : le cœur applique aussi « request » sur les écrans de
+ * liste de l'administration, où ce rappel sort par sa première garde sans rien amender (voir le renvoi
+ * de son « add_filter », plus bas). La borne 1 disait « il lit », #50 l'a resserrée en « il lit, il
+ * RÉPOND » — poser un 404 est répondre, pas écrire — et #49 l'étend une seconde fois, par écrit et non
+ * en silence (contrat #49 §13.1) : « IL LIT, IL RÉPOND, ET IL PEUT AMENDER LA REQUÊTE EN MÉMOIRE —
+ * JAMAIS L'ÉTAT PERSISTANT. » Aucun « update_option », « wp_insert_post », « update_post_meta »,
+ * « wp_set_object_terms » ni « wp_delete_post » sur une requête publique, et aucune règle de
+ * réécriture touchée. Les bornes 2 et 3 sont intactes : aucun état en base ne déclenche la conversion
+ * — c'est la requête elle-même qui la borne — le périmètre reste clos aux seuls faits
+ * « _mtb_robots_source » relevés sur l'ancien site, et celui de #49 est clos et daté aux archives
+ * d'auteur de ce site.
  *
  * MESURE D'ÉGALITÉ DU CONTRAT #24 §6.2, RELEVÉE LE 2026-09-07 : « le nombre de contenus portant
  * _mtb_robots_source, le nombre rendus noindex et le nombre retirés du plan du site sont ÉGAUX » cesse
@@ -161,7 +164,7 @@ add_filter( 'wp_sitemaps_add_provider', __NAMESPACE__ . '\\ecarter_le_fournisseu
 // « template_redirect » ne passe aucun argument.
 add_action( 'template_redirect', __NAMESPACE__ . '\\repondre_404_au_sous_plan_retire', 20 );
 
-// Neutralisation des archives d'auteur (dette T105, issue #49, 2026-09-08). Le détail et les huit faits
+// Neutralisation des archives d'auteur (dette T105, issue #49, 2026-09-08). Le détail et les neuf faits
 // du cœur sont écrits en tête de « archives-d-auteur.php » ; l'ordre imposé des cinq gardes est écrit
 // au-dessus du rappel lui-même, dans le même fichier.
 // LE FILTRE « request », ET NON « template_redirect » 20 COMME LE RAPPEL CI-DESSUS. Le motif est
@@ -173,6 +176,19 @@ add_action( 'template_redirect', __NAMESPACE__ . '\\repondre_404_au_sous_plan_re
 // « rest_api_loaded() » et avant que « REST_REQUEST » ne soit défini : la garde REST de ce rappel est
 // « isset( $variables['rest_route'] ) », et « defined( 'REST_REQUEST' ) » y est interdit comme
 // trompeur. Le tableau n'est jamais remplacé : seules des clés nommées en sont retirées.
+// ET « request » COURT AUSSI EN ADMINISTRATION. Ce renvoi affirmait le contraire ; c'était FAUX, et
+// personne ne l'avait mesuré. FAIT RELEVÉ le 2026-09-08 dans le conteneur : « wp() » a EXACTEMENT DEUX
+// sites d'appel dans tout « wp-admin/ » — « includes/post.php:1319 » dans « wp_edit_posts_query() » et
+// « includes/post.php:1407 » dans « wp_edit_attachments_query() » — et « wp() » applique « request » par
+// « WP::parse_request() ». Toute liste « edit.php » et la Médiathèque en mode liste passent donc par ce
+// rappel, et l'onglet « Le mien » met une clé d'auteur dans leur adresse : sans garde, l'écran Portées
+// rendait LES 33 PORTÉES SOUS UN ONGLET QUI EN ANNONCE UNE, en 404, sans un mot et sans une ligne au
+// journal. LA GARDE 1 PORTE DONC « is_admin() » À CÔTÉ DE « rest_route ». Elle ne rouvre rien sur le
+// front, et c'est mesuré et non déduit : « wp-admin/admin.php:104 » appelle « auth_redirect() » AVANT
+// que « edit.php » n'atteigne « wp_edit_posts_query() », si bien qu'un anonyme part en 302 vers
+// « wp-login.php » avec un corps de zéro octet, avant tout appel à « wp() » ; et « admin-ajax.php »
+// comme « admin-post.php », les deux seuls autres contextes où « is_admin() » vaut vrai, n'appellent
+// jamais « wp() ». Le détail est écrit au fait 9 en tête de « archives-d-auteur.php ».
 // PRIORITÉ 10, UN ARGUMENT. Aucun autre rappel de ce crochet n'existe dans ce dépôt — vérifié par
 // recherche sur « wp-content/ » le 2026-09-08 — donc aucune concurrence de priorité.
 add_filter( 'request', __NAMESPACE__ . '\\neutraliser_la_requete_d_auteur', 10, 1 );

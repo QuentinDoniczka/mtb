@@ -822,3 +822,173 @@ contrat l'étend**. Le décompte a été corrigé et l'extension inscrite.
 3. Les points du §14 sont inchangés : le compte sans contenu publié, la création d'un troisième compte,
    et le comportement d'une version future du cœur restent établis **par construction, jamais par
    mesure**.
+
+---
+
+# Amendement — 2026-09-08, issue #49, correctif HIGH : la prémisse du §6 que la mesure dément, et l'écran qu'elle a cassé
+
+> Ajout daté, conforme à la **convention d'amendement** déclarée en tête de ce contrat. **Le §6 et le
+> §17 restent lisibles tels qu'ils ont été gelés ; cet amendement en contredit trois passages
+> ouvertement, et dit pourquoi.** *Un contrat qu'on réécrit en silence ne prouve plus rien ; un contrat
+> qu'on amende par écrit garde la trace de ce qu'il a cru.*
+
+## A. La prémisse fausse, et les trois endroits où ce contrat l'écrit
+
+Le §6, sous-section « La garde de contexte des modules voisins n'est PAS recopiée », gèle :
+
+> « `parse_request()` ne court ni dans `wp-admin`, ni sur `admin-ajax.php`, ni sur `wp-cron.php` »
+
+**Les deux dernières branches sont vraies. La première est FAUSSE.** Elle n'a été mesurée par personne :
+les quatorze questions du §3.2 **ne la posaient pas**, et le §14 — « ce qui n'est pas mesuré » — **ne la
+nommait pas**. *Elle est passée entre les mailles précisément parce qu'elle avait l'air d'une évidence,
+et c'est la seule ligne de ce contrat que personne n'a songé à falsifier.*
+
+**Les trois passages atteints, tous laissés lisibles tels quels :**
+
+| § | Passage | Ce qui est faux |
+|---|---|---|
+| **§6**, tableau, ligne **garde 1** | La garde ne porte que `isset( $variables['rest_route'] )` | **Incomplète** : il y manque `is_admin()` |
+| **§6**, sous-section « La garde de contexte … n'est PAS recopiée » | « `parse_request()` ne court ni dans `wp-admin` … » | **La branche `wp-admin` est fausse** |
+| **§17**, arbitrage **11** | Même prémisse, mot pour mot | **Idem** |
+
+**Ce qui reste juste et n'est PAS touché** : le §15 (interdits), le §11 (contrôles P7 et P11), et **le
+motif pour lequel `defined( 'REST_REQUEST' )` reste interdit** — voir §D.
+
+## B. Le fait manquant — **M15**, ajouté à la liste du §3
+
+> **M15 — Le filtre `request` court-il en administration ?**
+> **Réponse : OUI.** Relevé le 2026-09-08 dans le conteneur, WordPress 6.9.
+>
+> - `wp-admin/includes/post.php:1319` — `wp( $query );` dans `wp_edit_posts_query()`
+> - `wp-admin/includes/post.php:1407` — `wp( wp_edit_attachments_query_vars( $q ) );` dans
+>   `wp_edit_attachments_query()`
+> - Ce sont les **deux seuls** sites d'appel de `wp()` dans tout `wp-admin/` — la recherche rend
+>   **trois** lignes, la troisième (`class-wp-posts-list-table.php:164`) étant **un commentaire**.
+> - `wp()` appelle `WP::main()`, qui appelle `WP::parse_request()`, qui applique le filtre `request`.
+> - `author` **est une variable publique** (`class-wp.php:18`), donc elle entre dans `query_vars` en
+>   administration — **le fait 1 de ce contrat le disait déjà, pour un autre usage.**
+>
+> **Corollaires relevés, chacun avec son ancre :**
+> - `wp-cron.php` **n'appelle jamais `wp()`** : recherche sur le fichier → **aucune occurrence** ; il
+>   pose `define( 'DOING_CRON', true )` (`:42`) et charge `wp-load.php` (`:46`), rien de plus. **La
+>   branche `wp-cron.php` du §6 était vraie — et elle n'était, elle non plus, adossée à aucun relevé.**
+> - `admin-ajax.php` et `admin-post.php` définissent `WP_ADMIN` mais **n'appellent jamais `wp()`**.
+> - **Médiathèque** : `upload.php:140` — `if ( 'grid' === $mode )` **branche AVANT**
+>   `wp_edit_attachments_query_vars()`, appelée seulement en `:158`, dans la branche **liste**. Le mode
+>   **grille** passe par `admin-ajax.php:103` (`'query-attachments'`, traitée en
+>   `ajax-actions.php:3021`). Et **le mode par défaut est `grid`** (`upload.php:137`) : *c'est pourquoi
+>   le défaut était invisible sur cette base.*
+
+## C. Ce que la prémisse fausse a coûté — et c'est un écran de l'éleveuse
+
+**Mesuré par moi, en session connectée comme `fabienne` (rôle Éditeur), AVANT correctif :**
+
+| Écran | Avant | Après |
+|---|---|---|
+| `edit.php?post_type=mtb_portee` | `200 · 175 431 · 20 lignes · « 33 éléments »` | **identique à l'octet** |
+| `edit.php?post_type=mtb_portee&author=2` | **`404`** · 175 619 · **20 lignes** · **« 33 éléments »** | **`200` · 125 845 · `1` ligne · « 1 élément »** |
+| `edit.php?post_type=mtb_chien&author=1` | **`404`** · **20 lignes** | **`200` · `19` lignes · « 19 éléments »** |
+| `upload.php?mode=list&author=2` | **`404`** · **20 lignes** | **`200` · `0` ligne** *(le compte 2 n'a aucun média — état vide du cœur, vérifié en base)* |
+| `upload.php` (**grille**) | `200 · 186 608` | **identique à l'octet** |
+
+> **Elle possède 1 portée sur 33.** L'onglet « Le mien » s'affichait donc pour elle sur l'écran
+> **Portées**, celui qu'elle utilise le plus. Elle cliquait, et obtenait **les 33 portées** sous un
+> onglet qui en annonce une, **servies en 404** — sans un message, sans un mot technique, **sans une
+> ligne au journal** (`debug.log` à 0 octet, vérifié).
+>
+> **Un écran qui a l'air de marcher et qui ment sur ce qu'il montre est pire qu'un écran cassé : elle
+> n'a aucune raison de le signaler.** C'est le mode de panne que ce contrat traquait sur le front, et
+> qu'il a laissé entrer par l'administration.
+
+**Le compte de lignes est la preuve, pas le code de statut** : la liste filtrée rend **1 ligne**, pas
+20, et le contrôle croisé en base donne bien **1** `mtb_portee` au compte 2 et **19** `mtb_chien`
+publiés au compte 1. *Rendre 200 ne suffisait pas : il fallait que l'écran dise vrai.*
+
+## D. Le correctif — **une seule ligne exécutable**, et pourquoi elle ne rouvre rien
+
+**§6, garde 1, forme corrigée** : la condition de sortie devient
+`is_admin() || isset( $variables['rest_route'] )`, le corps et l'ordre des cinq gardes restant
+inchangés.
+
+**Vérifié sur le diff : c'est la SEULE ligne exécutable modifiée dans tout le dépôt.** Tout le reste est
+du commentaire.
+
+**La fermeture de T105 sur le front reste ENTIÈRE — mesuré, pas déduit**, parce que c'est exactement la
+classe de prémisse qui nous a menés ici :
+
+| Adresse, **en anonyme** | Mesuré |
+|---|---|
+| `/wp-admin/edit.php?post_type=mtb_portee&author=2` | **`302` · 0 octet** → `wp-login.php?redirect_to=…&reauth=1` |
+| `/wp-admin/upload.php?author=2&mode=list` | **`302` · 0 octet** → `wp-login.php…` |
+| `/wp-admin/edit.php?author=1` | **`302` · 0 octet** → `wp-login.php…` |
+| `/wp-admin/admin-ajax.php?action=…&author=1` | `400` |
+| `/wp-admin/admin-post.php?action=…&author=1` | `400` |
+
+`wp-admin/admin.php:104` appelle **`auth_redirect()`** *avant* que `edit.php` n'atteigne
+`wp_edit_posts_query()`. Un anonyme est donc renvoyé à la connexion **avant que `wp()` ne coure**, avec
+un **corps de zéro octet**. Et les deux seuls autres contextes où `is_admin()` vaut vrai
+— `admin-ajax.php`, `admin-post.php` — **n'appellent jamais `wp()`** (§B).
+
+> **`is_admin()` RESTREINT la surface d'action du rappel, il ne l'étend pas.** C'est `auth_redirect()`
+> du cœur, mesuré, qui garde la porte.
+
+**Les 13 adresses de front du §7 sont INCHANGÉES** — toutes `404 · text/html · 18 284`,
+`redirect_url` **vide**, md5 du corps `d9f9bae7`, identique à `/nexiste-pas-du-tout/` relevé dans le
+même relevé. *C'est le contrôle qui prouve que le correctif ne rouvre rien.* La garde REST est intacte :
+`/wp-json/wp/v2/posts?author=1` → `200 · 1 847 o`, filtre auteur honoré ; `?author=2` → `200 · 2 o`
+(`[]`), **et la différence prouve que le filtre est réellement appliqué, pas ignoré.**
+Non-régressions : `/` `25 491` · `/portees/` `31 819` · `/travail/` `35 411` ·
+`/wp-sitemap-users-1.xml` `404 · 18 284` · `wp mtb verifier-redirections` **code 0** ·
+`/bhpl/port%C3%A9e-m-2016/` et sa forme UTF-8 brute → `301` · les cinq contenus en sommeil →
+`noindex, follow` · **`debug.log` : 0 octet avant et après** · `php -l` : **0 erreur**.
+
+### `defined( 'REST_REQUEST' )` reste INTERDIT — l'interdit du §15 est CONFIRMÉ, pas assoupli
+
+Le §15 tient sans changement, et la revue l'a revérifié : appliquer le filtre à un tableau portant
+`rest_route` et `author` rend le tableau **intact**. À l'instant où ce filtre court, `REST_REQUEST`
+**n'est pas encore définie** — c'est `rest_api_loaded()` qui la définit, **après** (fait 2). **C'est
+`rest_route` qui protège, et lui seul.**
+
+**Et `wp_doing_ajax()` / `wp_doing_cron()` ne sont toujours PAS recopiés** — mais désormais **pour un
+motif relevé et non supposé** (§B) : ni `admin-ajax.php`, ni `admin-post.php`, ni `wp-cron.php`
+n'appellent `wp()`. *Le §6 avait la bonne conclusion sur ces deux termes, avec un motif qu'il n'avait
+pas mesuré. La conclusion tient ; le motif est maintenant écrit.*
+
+## E. L'arbitrage 11 du §17, corrigé
+
+> **Recopier la garde de contexte des modules voisins ? — Décision révisée : `is_admin()` OUI, le reste
+> NON.**
+> Le motif gelé (« `parse_request()` ne court ni en admin, ni en ajax, ni en cron ») était **faux sur
+> son premier tiers**. `is_admin()` entre donc à la garde 1, **non pour aligner sur les voisins**, mais
+> parce que **la mesure montre que ce filtre court sur les écrans de liste de l'administration**.
+> `wp_doing_ajax()`, `wp_doing_cron()` et `defined( 'REST_REQUEST' )` restent écartés, avec le motif
+> relevé du §D. *La forme de la garde des voisins n'est toujours pas recopiée ; c'est un terme sur
+> quatre qui est repris, pour une raison qui lui est propre.*
+
+## F. La leçon, écrite parce qu'elle vaut plus que le correctif
+
+**Ce contrat a fait tout ce qu'il fallait sur le cœur de WordPress** : quatorze questions, chacune avec
+son fichier, ses numéros de ligne, ses branches de falsification écrites d'avance. **Et il a laissé
+passer une phrase de contexte qu'il n'a pas pensé à interroger** — parce qu'elle décrivait *où le code
+ne court pas*, et qu'on falsifie spontanément ce qu'on affirme, pas ce qu'on nie.
+
+> **La liste des mesures dues protège ce qu'on a pensé à y mettre. Une prémisse énoncée comme une
+> évidence, dans un commentaire, n'entre dans aucune liste — et c'est là qu'elle coûte le plus cher.**
+
+Corollaire appliqué ici : les **deux corollaires du §B** — `wp-cron.php` et le mode grille — étaient
+**vrais mais non mesurés**, sous un titre affirmant « AUCUN N'EST DÉDUIT ». **Ils sont désormais
+relevés et ancrés.** *Une affirmation vraie sans ancre est la même dette que celle qui vient de casser
+un écran ; elle n'a simplement pas encore été payée.*
+
+## G. Ce qui reste non joué après cet amendement
+
+1. **Le contrôle P14** — l'éditeur de blocs ouvert **à la main dans un navigateur**, sélecteur de lien
+   manipulé, enregistrement joué. **Toujours non joué.** Mesuré à sa place : `post.php?post=…&action=edit`
+   et `post-new.php` en session → `200` — **mais `post.php` n'appelle jamais `wp()`, il n'était donc pas
+   exposé au défaut** : cette mesure ne tient pas lieu de sonde. Revient à la passe d'intégration du lot.
+2. **Le mode grille de la Médiathèque en usage réel** : la page `upload.php` est mesurée (identique à
+   l'octet), **pas** l'appel ajax `query-attachments` avec un filtre auteur depuis l'interface.
+3. **Les résidus R1, R2, R4 et R6 du §9 restent OUVERTS.** `/wp-json/wp/v2/users` publie toujours **les
+   deux identifiants** à un visiteur anonyme. **T105 n'est close que sur son énoncé.**
+4. Les numéros de ligne du **fait 9** sont, comme les huit autres, **épinglés à WordPress 6.9** et se
+   périmeront en silence.
