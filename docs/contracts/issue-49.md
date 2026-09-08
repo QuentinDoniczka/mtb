@@ -873,11 +873,25 @@ motif pour lequel `defined( 'REST_REQUEST' )` reste interdit** — voir §D.
 >   pose `define( 'DOING_CRON', true )` (`:42`) et charge `wp-load.php` (`:46`), rien de plus. **La
 >   branche `wp-cron.php` du §6 était vraie — et elle n'était, elle non plus, adossée à aucun relevé.**
 > - `admin-ajax.php` et `admin-post.php` définissent `WP_ADMIN` mais **n'appellent jamais `wp()`**.
-> - **Médiathèque** : `upload.php:140` — `if ( 'grid' === $mode )` **branche AVANT**
->   `wp_edit_attachments_query_vars()`, appelée seulement en `:158`, dans la branche **liste**. Le mode
->   **grille** passe par `admin-ajax.php:103` (`'query-attachments'`, traitée en
->   `ajax-actions.php:3021`). Et **le mode par défaut est `grid`** (`upload.php:137`) : *c'est pourquoi
->   le défaut était invisible sur cette base.*
+> - **Médiathèque — et le détail se lit de travers, donc il s'écrit en entier.** Ce sont **deux
+>   fonctions de noms voisins et de rôles disjoints** : `post.php:1333`,
+>   `wp_edit_attachments_query_vars()`, qui **n'appelle jamais `wp()`** et se contente de fabriquer des
+>   variables de requête ; et `post.php:1406`, `wp_edit_attachments_query()`, qui **appelle `wp()` en
+>   `:1407`**. Seule la seconde est appelée par le **mode liste**
+>   (`class-wp-media-list-table.php:102`). Le **mode grille** (`upload.php:140`,
+>   `if ( 'grid' === $mode )`) appelle bien `wp_edit_attachments_query_vars()` en `:158` — **dans sa
+>   propre branche** — mais c'est **l'autre fonction**, et il va chercher ses données par
+>   `admin-ajax.php:103` (`'query-attachments'`, traitée en `ajax-actions.php:3021`), qui n'appelle
+>   jamais `wp()`. Et **le mode par défaut est `grid`** (`upload.php:137`) : **le défaut ne touchait donc
+>   la Médiathèque QUE hors de son mode par défaut** — *une raison de plus pour qu'il passe inaperçu, et
+>   une raison de plus de ne pas se fier à « personne ne s'en est plaint ».*
+>
+>   > **Rectification du jour, écrite plutôt que passée sous silence.** La première rédaction de ce
+>   > corollaire plaçait `:158` « dans la branche **liste** » : **c'est faux**, `:158` est dans la
+>   > branche **grille**, et le chemin réel passe par deux fonctions distinctes. La **conclusion** —
+>   > seul le mode liste atteint `wp()` — était juste ; **le chemin ne l'était pas.** Corrigé le
+>   > 2026-09-08, avant tout push, sur relevé. *Laisser un chemin faux sous un titre qui dit « AUCUN
+>   > N'EST DÉDUIT » aurait reproduit le défaut même que cet amendement répare.*
 
 ## C. Ce que la prémisse fausse a coûté — et c'est un écran de l'éleveuse
 
