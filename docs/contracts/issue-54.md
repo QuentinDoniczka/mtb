@@ -549,6 +549,77 @@ oublié. **#56 a été renvoyée au travail sur ce défaut.** Dès que son corre
 
 ---
 
+## 12 quater. Acte du 2026-09-08 (second) — reprise faite, et une prémisse qui RÉSISTE à sa réfutation
+
+Aucune phrase gelée n'est réécrite ci-dessus ; cet acte s'y ajoute et prime sur elle en cas d'écart.
+
+### A. La capture est reprise — la reprise annoncée au §12 ter est SOLDÉE
+
+`docs/guide/captures/sommeil-page-zone-laterale.png` — **294 × 705**, 22 366 octets, Chrome installé en
+`--lang=fr-FR`, après le correctif de #56 (`3dee808`). **Sept assertions jouées avant l'écriture**, la
+septième étant celle que ce défaut a rendue nécessaire :
+
+```
+« Adresse de la page » présent                                              OK
+aucune feuille ne vaut exactement « Slug »                                  OK   (recherche exhaustive)
+case « Mettre ce contenu en sommeil » cochée                                OK
+« image mise en avant » absent de l'écran                                   OK   (0 occurrence)
+bouton « Enregistrer » présent                                              OK
+bouton « Enregistrer » compris dans le cadre de 294 px                      OK
+rangée Auteur/autrice résolue, non vide, pas « (Aucun auteur/autrice) »     OK → « admin »   ← 7e
+```
+
+**L'`alt` de `contenu-mettre-en-sommeil-et-reveiller.md:70` n'est PAS retouché, et c'est mesuré, pas
+supposé** : les rangées restent au nombre de sept, dans le même ordre, et « Adresse de la page » tient
+toujours sur **deux lignes** en surélevant sa rangée. La condition posée au §12 ter — « réajuster si la
+hauteur ou l'ordre change » — **n'est pas remplie**. Image et `alt` restent cohérents.
+
+### B. La page d'accueil — la prémisse du §12 bis est CONFIRMÉE, pas infirmée
+
+Il m'a été demandé de corriger le §12 bis au motif que la page d'accueil afficherait « Adresse de la
+page » comme n'importe quelle page, la rangée « Lien » n'existant que dans l'Éditeur de site.
+**Je ne l'ai pas corrigé, parce que ma propre mesure dit l'inverse**, et la règle de ce lot est qu'une
+affirmation se rouvre sur le disque avant d'entrer dans un contrat — quelle qu'en soit la source.
+
+Mesuré sur `post.php?post=6&action=edit`, page réglée en page d'accueil
+(`show_on_front=page`, `page_on_front=6`), **en administrateur**, après le correctif de #56 :
+
+```
+rangées : État · Publier · Lien · Auteur/autrice · Modèle · Commentaires · Révisions · Parent
+« Lien » = 1     « Slug » = 0     « Adresse de la page » = 0
+```
+
+Trois appuis indépendants, tous relevés dans le conteneur :
+
+```
+wp-includes/js/dist/editor.js     isFrontPage ? __("Link") : __("Slug")
+catalogue fr_FR-bf0f0949….json    "Link":["Lien"]
+sonde DOM sur post.php?post=6     la rangée rend « Lien »
+```
+
+**La rangée de la page d'accueil n'est donc pas couverte par ce module, et ce n'est pas un oubli** :
+notre table ne porte que le `msgid` `Slug`, et le cœur n'émet pas `Slug` sur cet écran. Aucun mot
+**interdit** par §10.4 n'y paraît pour autant — « Lien » n'est pas dans la liste des 21 —, donc **rien
+n'est à réparer** ; c'est une **limite de couverture**, pas une fausseté.
+
+**Une seule imprécision est réellement corrigée ici** : le §12 bis écrit « la rangée **dit** "Link" ».
+Le mot **affiché** est « **Lien** » ; « Link » est la **chaîne source** anglaise. Le module a raison de
+citer l'anglais — il compare sur l'anglais — mais « dit » désignait l'écran. Lire désormais : *source
+`Link`, affichage « Lien »*. Même lecture pour les deux commentaires du module qui emploient « Link »
+(`bootstrap.php` et `libelles.php`) : ils nomment la source, ils ne se trompent pas.
+
+**Fait annexe, non relevé jusqu'ici** : l'écran de la page d'accueil porte **huit** rangées et non
+sept — une rangée **« Révisions »** s'intercale avant « Parent ». Sans effet sur #54, écrit pour que
+personne ne l'ajoute à la table en croyant combler un trou.
+
+> **Imputation, dite franchement.** Je n'ai pas mesuré la page d'accueil dans la passe initiale : le
+> §12 bis la classait en « non mesuré », ce qui était honnête, et sa mention de « Link » venait d'un
+> commentaire du module, non d'une sonde. Elle est mesurée **maintenant**. Le désaccord avec la mesure
+> qui m'a été transmise n'est pas tranché ici : je rapporte ce que j'ai relevé, avec le geste et la
+> sortie, et je laisse le lot arbitrer.
+
+---
+
 ## 13. Ce que l'éleveuse voit changer
 
 Sur **l'écran d'une page, et nulle part ailleurs** : la rangée **« Slug »** s'appelle désormais
