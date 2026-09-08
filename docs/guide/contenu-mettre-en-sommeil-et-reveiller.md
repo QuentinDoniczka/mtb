@@ -59,7 +59,8 @@ d'elles**. Le bouton d'enregistrement, lui, ne porte pas le même nom.
 4. Sous le titre, vous voyez une suite de rangées : **État**, **Publier**, **Adresse de la page**,
    **Auteur/autrice**, **Modèle**, **Commentaires**, **Parent**. **Descendez sous la dernière** : la
    case **Mettre ce contenu en sommeil** est là, avec sa phrase d'aide en dessous. Aucun titre ne
-   l'annonce, elle est seule.
+   l'annonce, elle est seule. *Sur une page que vous avez déjà modifiée plusieurs fois, une rangée
+   **Révisions** s'ajoute juste avant **Parent** : c'est normal, et ça ne change rien au geste.*
 
 5. Cochez la case.
 

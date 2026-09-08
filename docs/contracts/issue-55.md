@@ -346,3 +346,57 @@ déjà « Adresse de la page », cohérent avec C1.
    geste, hors critère T112 : **déclarée plutôt que corrigée au passage.**
 6. **L'ancre `:88`** citée par l'énoncé de l'issue désigne une **ligne vide** ; le libellé de menu
    qu'elle visait est à `:89`. Sans effet — la ligne n'a pas été touchée.
+
+---
+
+## 8. Acte du 2026-09-08 (après commit `a6ec9a9`) — l'énumération des rangées de l'étape 4
+
+Routé par le lead après mesure de #54 : l'écran de la **page d'accueil** porte **huit** rangées, une
+rangée **Révisions** s'intercalant avant **Parent**, alors que l'étape 4 de
+`contenu-mettre-en-sommeil-et-reveiller.md` en énumère **sept**. Défaut **préexistant** à ce lot.
+
+### 8.1 Le cadrage transmis était inexact — mesuré, pas déduit
+
+Il m'a été routé comme « vraie pour toute page **sauf l'accueil** ». **Le seuil n'est pas l'accueil,
+c'est l'historique.** Relevé en session éditrice, sur trois pages :
+
+| Page | Révisions | Rangées |
+|---|---|---|
+| Placement (318) | 0 | **7** |
+| Contact (4) | **1** | **7** |
+| Accueil (6) | 6 | **8** — `Révisions` **avant** `Parent` |
+
+La rangée apparaît **au-delà d'une** révision. La page 4, à une révision, en montre encore sept :
+c'est elle qui discrimine, et sans elle on aurait conclu « l'accueil est un cas spécial ».
+
+**Conséquence, plus large que le cas signalé** : la liste de sept devient fausse sur **toute page que
+l'éleveuse a modifiée plusieurs fois**, pas seulement l'accueil — et **tout ce projet existe pour
+qu'elle modifie ses pages elle-même**. Chaque page finira par franchir ce seuil. Ce n'est donc pas une
+singularité de l'accueil à signaler, c'est un compte qui vieillit — la même famille de défaut que
+l'inventaire gravé du §7.1.
+
+### 8.2 Arbitrage, au critère du §1
+
+- **1ʳᵉ détente : oui.** L'étape porte un geste — trouver la case sous les rangées.
+- **2ᵈᵉ détente : oui, en substance.** L'énumération n'est pas la cible du geste, c'est le **repère**
+  qui lui fait reconnaître le panneau. Une liste donnée pour exhaustive et démentie par l'écran lui
+  fait douter d'être au bon endroit, au moment précis où elle cherche une case « qu'aucun titre
+  n'annonce ».
+
+**Décision : corriger, mais par le seul ajout qui ne dépende d'aucun compte.** Une incise en italique
+— la forme déjà employée aux étapes 3 et 6 — dit qu'une rangée **Révisions** s'ajoute **juste avant
+Parent** sur une page déjà modifiée plusieurs fois, et que le geste est inchangé.
+
+### 8.3 Ce qui n'a PAS été touché, et c'est vérifié au diff
+
+- **La ligne `:59` figée par #54 n'est pas modifiée du tout** : elle n'apparaît qu'en **contexte** dans
+  le diff. L'énumération des sept, leur ordre et le libellé **Adresse de la page** sont intacts au
+  caractère près. Le diff se réduit à **une phrase ajoutée** en fin d'étape.
+- **Le mot « huit » n'est écrit nulle part**, et la liste n'a pas été portée à huit éléments.
+- **L'`alt` de `:70` n'a pas bougé d'un caractère** : il décrit la capture de la page **318**, qui
+  montre bien **sept** rangées — **il est exact pour son image**, et l'aligner sur huit aurait rendu
+  faux un texte vrai.
+- **`captures/sommeil-page-zone-laterale.png` intacte** ; invariant **126 références / 126 `.png`**
+  tenu.
+- « **Descendez sous la dernière** » reste juste dans les deux cas : la dernière rangée est **Parent**,
+  avec ou sans **Révisions**.
