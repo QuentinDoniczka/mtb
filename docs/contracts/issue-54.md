@@ -620,6 +620,77 @@ personne ne l'ajoute à la table en croyant combler un trou.
 
 ---
 
+## 12 quinquies. Acte du 2026-09-08 (troisième) — LES DEUX MESURES SONT VRAIES, elles diffèrent par le rôle
+
+Cet acte **réconcilie** le §12 quater et la mesure de #55, et il prime sur les deux. Aucune phrase
+antérieure n'est réécrite.
+
+### Le geste
+
+`post.php?post=6&action=edit` — la page réglée en page d'accueil — ouvert **en session `fabienne`**
+(rôle **Éditeur**, le compte de l'éleveuse), Chrome en `--lang=fr-FR`, connexion par le vrai
+formulaire `wp-login.php`. Barre d'administration : « Fabienne Guéneau ». Lecture seule.
+
+### La sortie, recopiée
+
+```
+ACCUEIL (post 6), session ÉDITRICE
+  rangées : État · Publier · Adresse de la page · Auteur/autrice · Modèle · Commentaires · Révisions · Parent
+  8 rangées · 3e rangée = « Adresse de la page »
+  « Lien » = 0     « Slug » = 0     « Adresse de la page » = 1
+  réglages du site lisibles : NON   page_on_front = null   show_on_front = null
+  /wp-json/wp/v2/settings → 403
+
+ACCUEIL (post 6), session ADMINISTRATEUR — rappel du §12 quater
+  rangées : État · Publier · Lien · Auteur/autrice · Modèle · Commentaires · Révisions · Parent
+  « Lien » = 1     « Slug » = 0     « Adresse de la page » = 0
+```
+
+### La conclusion, et elle n'invalide personne
+
+**Les deux relevés sont exacts. Ils portent sur deux comptes, pas sur deux routes.** Le mécanisme est
+mesuré de bout en bout :
+
+```
+editor.js          isFrontPage = postType === "page" && getHomePage()?.postId === +postId
+                   isFrontPage ? __("Link") : __("Slug")
+```
+
+`isFrontPage` se calcule depuis les **réglages du site**. Le rôle Éditeur ne peut pas les lire —
+`/wp-json/wp/v2/settings` rend **403**, `page_on_front` vaut `null` dans son magasin. Pour elle,
+`isFrontPage` est donc **faux**, le cœur émet `__("Slug")`, **et notre table le renomme**.
+
+**Conséquence, et elle est meilleure que ce que le §12 quater laissait croire** : pour **le compte qui
+décide — le sien** —, la page d'accueil **est couverte** par ce module et affiche « Adresse de la
+page » comme n'importe quelle page. La phrase « la rangée de la page d'accueil n'est pas couverte » du
+§12 quater n'est vraie **que pour un administrateur**, c'est-à-dire pour un écran que l'éleveuse ne
+verra jamais. **À lire désormais avec cette restriction**, et à ne pas recopier sans elle.
+
+**Mesuré au passage, même session** : `post.php?post=318&action=edit` en session Éditrice rend
+**7 rangées** dont la 3e vaut « Adresse de la page ». **La fiche du guide est donc vraie pour elle**,
+sur la page même qu'elle illustre.
+
+**Fait annexe confirmé sur les deux rôles** : l'écran de la page d'accueil porte **huit** rangées, une
+**« Révisions »** s'intercalant avant « Parent ». L'étape 4 de
+`contenu-mettre-en-sommeil-et-reveiller.md` en énumère **sept** : elle décrit donc exactement toute
+page **sauf** l'accueil. **Écart préexistant à #54** — le rename n'y change rien —, non corrigé ici
+parce que `docs/guide/**` appartient à #55. **Signalé, non traité.**
+
+### Ce que cette passe a écrit, et rendu
+
+La session a créé **un jeton de session** dans les métadonnées du compte de l'éleveuse (103 → 104).
+**Retiré**, et l'instantané d'après est **identique octet pour octet** à celui d'avant, sur les
+22 clés. `debug.log` : **2 838 octets, inchangé**. Aucune écriture de contenu, aucun enregistrement,
+aucune révision ni brouillon automatique créés.
+
+> **Page 6, à ne pas m'imputer** : son `post_modified_gmt` vaut `2026-09-08 11:53:51`, soit **environ
+> deux heures avant** ma première ouverture de cet écran, et ses six révisions s'arrêtent au
+> **2026-09-07**. Aucune révision ni brouillon automatique n'a été créé aujourd'hui. Relevé parce que
+> la passe d'intégration compare des octets et qu'une date du jour se lit vite comme une trace de la
+> dernière chaîne passée.
+
+---
+
 ## 13. Ce que l'éleveuse voit changer
 
 Sur **l'écran d'une page, et nulle part ailleurs** : la rangée **« Slug »** s'appelle désormais
