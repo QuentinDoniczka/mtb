@@ -492,6 +492,63 @@ au §3, pas un oubli · la page d'**accueil**, dont la rangée dit « Link » et
 
 ---
 
+## 12 ter. La capture du guide — sa provenance, et la reprise qui reste DUE
+
+**Reprise le 2026-09-08**, en même temps que l'`alt` qu'elle illustre, dans le commit `f462817` :
+`docs/guide/captures/sommeil-page-zone-laterale.png`, **294 × 705** — les dimensions exactes de la
+capture qu'elle remplace, pour que l'échelle de la fiche ne dérive pas. Chrome installé, piloté en CDP,
+lancé en **`--lang=fr-FR`** : sans ce drapeau les dates du panneau sortent en anglais et l'image
+mentirait sur un détail que l'éleveuse voit.
+
+**Six assertions jouées AVANT l'écriture du fichier** — la prise avorte plutôt que de mentir (dette
+**T103**), et elle a effectivement avorté une fois avant d'aboutir :
+
+```
+« Adresse de la page » présent                                        OK
+aucune feuille de l'arbre ne vaut exactement « Slug »                 OK   (recherche exhaustive)
+case « Mettre ce contenu en sommeil » cochée                          OK
+« image mise en avant » absent de l'écran                             OK   (0 occurrence)
+bouton « Enregistrer » présent                                        OK
+bouton « Enregistrer » compris dans le cadre de 294 px                OK
+```
+
+Les trois autres captures de la fiche ont été **relues une par une** et **aucune n'est concernée** par
+ce renommage : `sommeil-page-accueil-avertissement.png` ne montre aucune rangée ·
+`sommeil-liste-chiens-mention.png` est une liste sans Modification rapide ouverte ·
+`sommeil-portee-encadre-publier.png` est l'encadré **Publier** de l'éditeur classique d'une portée,
+que #54 ne touche pas.
+
+### ⚠️ REPRISE DUE — cette capture porte un défaut vivant qui n'est pas le nôtre
+
+L'image montre la rangée **Auteur/autrice** valant **« (Aucun auteur/autrice) »**, alors que
+`post_author` de la page 318 vaut **1**. Ce n'est pas un transitoire : sondé **40 secondes**. Cause
+mesurée, **hors de l'empreinte de #54** :
+
+```
+rest_do_request( GET /wp/v2/users ) en administrateur → 404 « rest_no_route »
+migration/indexation-heritee/identite-des-comptes.php:205-206
+    unset( $routes['/wp/v2/users'] );
+    unset( $routes['/wp/v2/users/(?P<id>[\d]+)'] );
+commit 9dcf04c (refs #56) — retrait INCONDITIONNEL, aucune exception d'administration
+```
+
+**Pourquoi l'image a tout de même été prise dans cet état** : c'est l'écran **réel** du jour, et la
+doctrine déjà arbitrée pour cette fiche même est qu'elle recopie ce que l'éleveuse voit — la
+« corriger » par anticipation la ferait mentir. L'`alt` ne décrit pas la valeur de cette rangée, la
+fiche ne dit donc rien de faux.
+
+**Mais la reprise est DUE et ne se signalera pas toute seule** — même mode de panne qu'un `make css`
+oublié. **#56 a été renvoyée au travail sur ce défaut.** Dès que son correctif est mesuré :
+
+1. rejouer la prise avec le harnais conservé (`scratchpad/issue54/capture.mjs`) ;
+2. vérifier que la rangée Auteur/autrice se résout ;
+3. **réajuster l'`alt` de `contenu-mettre-en-sommeil-et-reveiller.md:70` si la hauteur de la rangée
+   change** — il décrit aujourd'hui « le libellé […] tient sur deux lignes et rend la rangée un peu
+   plus haute que ses voisines » ;
+4. committer image et `alt` **ensemble**, jamais l'un sans l'autre.
+
+---
+
 ## 13. Ce que l'éleveuse voit changer
 
 Sur **l'écran d'une page, et nulle part ailleurs** : la rangée **« Slug »** s'appelle désormais
