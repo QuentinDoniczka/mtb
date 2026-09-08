@@ -1,0 +1,117 @@
+<?php
+/**
+ * Les deux tables gelées du module : les libellés du type « page », et les chaînes du navigateur.
+ *
+ * SOURCE UNIQUE DES SIX CHAÎNES : les quatre libellés photo, « Adresse de la page », et le nom
+ * accessible du bouton. La sixième n'était au gel du contrat qu'une entrée CONDITIONNELLE, admise
+ * seulement si sa source anglaise était un msgid nu, sans « % » ni « < » ni « > » ni « & », et si son
+ * remplacement se bornait à substituer le groupe nominal ; les trois conditions ayant été mesurées
+ * vertes, elle est dans la table — le contrat, lui, en dénombre encore cinq. Aucun autre fichier de ce
+ * module, PHP ou JavaScript, n'écrit l'une d'elles : la moitié PHP appelle « libelles_du_type() », la
+ * moitié JavaScript reçoit « table_javascript() » par « wp_add_inline_script() ». Recopier l'une de
+ * ces chaînes ailleurs fabriquerait une seconde vérité, qui divergerait en silence le jour où l'une
+ * des deux changerait.
+ *
+ * @package MTB\Core
+ */
+
+declare(strict_types=1);
+
+namespace MTB\Core\Admin\VocabulairePage;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Les quatre libellés de la famille « photo » du type de contenu « page ».
+ *
+ * LES QUATRE VALEURS SONT RECOPIÉES DU DÉPÔT, ELLES NE SONT PAS RÉDIGÉES ICI. Elles viennent de
+ * « includes/content/portee/bootstrap.php », qui les pose déjà dans le tableau « labels » de son
+ * register_post_type(), et « includes/content/chien/bootstrap.php » les répète à l'identique.
+ * « design-system/MASTER.md » §10.2 ne fige que le NOM — « Photo principale », jamais « image mise
+ * en avant » — et ne dit rien des trois verbes. La règle qui s'applique aux trois autres n'est donc
+ * pas « recopier §10.2 » mais RECOPIER LE DÉPÔT, pour que les types Portée, Chien et Page disent le
+ * même mot. Un dev qui les retaperait de mémoire produirait une quatrième formulation.
+ *
+ * LES QUATRE, OU AUCUNE — JAMAIS UN SOUS-ENSEMBLE. Deux seulement de ces quatre clés sont mesurées à
+ * l'écran d'une page sur WordPress 6.9 (le bouton, par « set_featured_image » ; le titre de la
+ * fenêtre des photos, par « featured_image »). L'écart entre ce qui est mesuré et ce qui est écrit
+ * est DÉCLARÉ, pas dissimulé, et il tient à quatre motifs. Renommer le bouton sans le titre laisserait
+ * le mot interdit à l'écran, juste au-dessus. La fiche d'aide deviendrait inécrivable — elle emploierait
+ * le mot interdit pour désigner l'endroit où il ne faut pas l'employer. Portée et Chien disent déjà les
+ * quatre : une Page qui n'en dirait que deux créerait un écart qu'une chaîne future « corrigerait » au
+ * hasard, dans un sens ou dans l'autre. Et le coût des deux clés non mesurées est de deux affectations.
+ *
+ * Mémoïsée par un « static » local, comme la table de « admin/description-photo » : construite une
+ * fois par requête.
+ *
+ * @return array<string, string> Clé de libellé du cœur => libellé affiché.
+ */
+function libelles_du_type(): array {
+	static $libelles = null;
+
+	if ( null === $libelles ) {
+		$libelles = array(
+			'featured_image'        => 'Photo principale',
+			'set_featured_image'    => 'Choisir la photo principale',
+			'remove_featured_image' => 'Retirer la photo principale',
+			'use_featured_image'    => 'Utiliser comme photo principale',
+		);
+	}
+
+	return $libelles;
+}
+
+/**
+ * Les chaînes sources anglaises du navigateur, et le libellé français qui les remplace.
+ *
+ * ON COMPARE SUR L'ANGLAIS, JAMAIS SUR LE FRANÇAIS, exactement comme « admin/description-photo ». Le
+ * point d'extension « i18n.gettext » reçoit la traduction en premier paramètre et la CHAÎNE SOURCE en
+ * deuxième : comparer la source rend le module indifférent à l'état de la langue du site, il mord
+ * aussi bien sur une installation restée en anglais — cas que le provisionnement documente comme
+ * possible. Comparer le français serait de surcroît un piège de caractère : l'apostrophe du cœur est
+ * U+2019 (’) et non U+0027 ('), et une comparaison écrite avec la mauvaise échouerait sans le dire.
+ *
+ * LES DEUX ENTRÉES, ET POURQUOI CHACUNE. Relevé au navigateur, WORDPRESS 6.9, LE 2026-09-08, sur
+ * l'écran d'édition d'une page :
+ *
+ *   « Slug » — msgid NU, sans contexte, émis par « __() » depuis le paquet « wp-editor ». TROIS
+ *   émissions sur cet écran : l'étiquette de la rangée de la zone latérale, le titre de la fenêtre
+ *   volante qu'elle ouvre, et l'étiquette du champ de saisie de cette fenêtre — cette dernière est
+ *   masquée à l'œil et lue par les lecteurs d'écran. Le catalogue français traduit « Slug » par
+ *   « Slug » : ce n'est PAS une traduction manquante, c'est la traduction officielle, et aucun filtre
+ *   PHP ne l'atteint.
+ *
+ *   « Edit or replace the featured image » — msgid NU également, nom accessible du bouton de la photo
+ *   quand une photo est déjà posée. Le mot interdit y survit INVISIBLE À L'ŒIL ET PRONONCÉ À VOIX
+ *   HAUTE. Le remplacement n'est pas une phrase rédigée : c'est la phrase française du cœur — « Modifier
+ *   ou remplacer l’image mise en avant » — avec le SEUL groupe nominal substitué. Rien d'autre n'a
+ *   bougé, ni le verbe, ni la conjonction, ni l'ordre des mots.
+ *
+ * CE QUI N'EST PAS DANS CETTE TABLE, ET NE DOIT PAS Y ENTRER SANS MESURE. Une entrée écrite « au cas
+ * où » est un renommage non mesuré, qui déborde sur des écrans que personne n'a regardés. En
+ * particulier : la phrase d'aide de la fenêtre volante emploie le mot « permalien », interdit lui
+ * aussi, mais c'est un TEXTE D'AIDE et non une étiquette — « admin/description-photo » a déjà refusé
+ * de remplacer un texte d'aide du cœur, au motif qu'on ne remplace jamais un texte par un autre qui en
+ * dit moins, et §10.2 fige des libellés, jamais des phrases. La ligne devient par ailleurs « Link »,
+ * et non « Slug », quand la page est la page d'accueil : ce module ne couvre donc pas ce cas-là.
+ *
+ * AUCUNE VALEUR NE PORTE « % », « < », « > » NI « & », et c'est une contrainte opposable à toute ligne
+ * future. « @wordpress/i18n » expose sprintf() et de nombreuses chaînes du cœur y passent : un « % » de
+ * trop y lève la même panne que du côté PHP, celle que « admin/corbeille/bootstrap.php » documente.
+ *
+ * @return array<string, string> Chaîne source anglaise du cœur => libellé affiché.
+ */
+function table_javascript(): array {
+	static $table = null;
+
+	if ( null === $table ) {
+		$table = array(
+			'Slug'                               => 'Adresse de la page',
+			'Edit or replace the featured image' => 'Modifier ou remplacer la photo principale',
+		);
+	}
+
+	return $table;
+}

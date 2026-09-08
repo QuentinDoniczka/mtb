@@ -56,7 +56,7 @@ d'elles**. Le bouton d'enregistrement, lui, ne porte pas le même nom.
    **Page**. *Si vous ne voyez pas cette colonne, ouvrez-la avec le bouton en forme d'engrenage, en haut
    à droite de l'écran.*
 
-4. Sous le titre, vous voyez une suite de rangées : **État**, **Publier**, **Slug**,
+4. Sous le titre, vous voyez une suite de rangées : **État**, **Publier**, **Adresse de la page**,
    **Auteur/autrice**, **Modèle**, **Commentaires**, **Parent**. **Descendez sous la dernière** : la
    case **Mettre ce contenu en sommeil** est là, avec sa phrase d'aide en dessous. Aucun titre ne
    l'annonce, elle est seule.
@@ -67,7 +67,7 @@ d'elles**. Le bouton d'enregistrement, lui, ne porte pas le même nom.
    **Enregistrer**, quel que soit l'état de la page ; sur une portée et sur une fiche de chien, il
    s'appelle **Mettre à jour**. C'est le même geste.*
 
-![La colonne de droite de l'éditeur d'une page, onglet Page actif : les rangées État, Publier, Slug, Auteur/autrice, Modèle, Commentaires, Parent, puis en dessous d'elles la case Mettre ce contenu en sommeil, cochée, avec sa phrase d'aide ; le bouton Enregistrer lisible en haut à droite de l'écran](captures/sommeil-page-zone-laterale.png)
+![La colonne de droite de l'éditeur d'une page, onglet Page actif : les rangées État, Publier, Adresse de la page — dont le libellé, plus long que les autres, tient sur deux lignes et rend la rangée un peu plus haute que ses voisines —, Auteur/autrice, Modèle, Commentaires, Parent, puis en dessous d'elles la case Mettre ce contenu en sommeil, cochée, avec sa phrase d'aide ; le bouton Enregistrer lisible en haut à droite de l'écran](captures/sommeil-page-zone-laterale.png)
 
 ---
 
