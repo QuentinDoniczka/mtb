@@ -77,8 +77,15 @@
  * n'est PAS écrite « en passant » : l'issue ne ferme qu'un écran. La phrase d'aide de la fenêtre
  * volante emploie « permalien », mot interdit lui aussi, mais c'est un texte d'aide et non une
  * étiquette — précédent gelé de « admin/description-photo », qui a refusé de remplacer un texte d'aide
- * du cœur. Enfin la rangée s'appelle « Link », et non « Slug », quand la page est la page d'accueil :
- * ce cas-là n'est pas couvert.
+ * du cœur. Enfin la page d'accueil : elle n'échappe à cette table QUE POUR UN ADMINISTRATEUR, et la
+ * cause compte plus que la conclusion. Le cœur y fait « isFrontPage ? __("Link") : __("Slug") », et
+ * « isFrontPage » se calcule depuis les réglages du site. Le rôle ÉDITEUR — celui de l'éleveuse — ne
+ * peut pas les lire : « /wp-json/wp/v2/settings » lui rend 403 et « page_on_front » vaut null dans
+ * son magasin, donc « isFrontPage » y est FAUX, le cœur émet « Slug », et la table le renomme.
+ * Mesuré sur les DEUX comptes le 2026-09-08 (WordPress 6.9), sur « post.php?post=6&action=edit » :
+ * administrateur → la rangée rend « Lien » ; éditrice → elle rend « Adresse de la page ».
+ * POUR LE COMPTE QUI DÉCIDE, L'ACCUEIL EST DONC COUVERT : ne « comblez » pas ce trou, il n'existe
+ * pas de son côté, et y ajouter « Link » renommerait une rangée que seule l'administration voit.
  *
  * RELEVÉ DE L'ÉCRAN, DATÉ ET VERSIONNÉ — WORDPRESS 6.9, LE 2026-09-08, page témoin « Placement ».
  * Zone latérale, onglet « Page », dans cet ordre : État · Publier · Slug · Auteur/autrice · Modèle ·

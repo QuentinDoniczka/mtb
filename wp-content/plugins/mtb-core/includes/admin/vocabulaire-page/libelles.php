@@ -94,8 +94,14 @@ function libelles_du_type(): array {
  * particulier : la phrase d'aide de la fenêtre volante emploie le mot « permalien », interdit lui
  * aussi, mais c'est un TEXTE D'AIDE et non une étiquette — « admin/description-photo » a déjà refusé
  * de remplacer un texte d'aide du cœur, au motif qu'on ne remplace jamais un texte par un autre qui en
- * dit moins, et §10.2 fige des libellés, jamais des phrases. La ligne devient par ailleurs « Link »,
- * et non « Slug », quand la page est la page d'accueil : ce module ne couvre donc pas ce cas-là.
+ * dit moins, et §10.2 fige des libellés, jamais des phrases. Quant à la page d'accueil, la ligne n'y
+ * devient « Link » QUE POUR UN ADMINISTRATEUR : le cœur fait « isFrontPage ? __("Link") : __("Slug") »
+ * et calcule « isFrontPage » depuis les réglages du site, que le rôle ÉDITEUR ne peut pas lire
+ * (« /wp-json/wp/v2/settings » rend 403, « page_on_front » vaut null). Pour l'éleveuse,
+ * « isFrontPage » est donc FAUX, le cœur émet « Slug », et LA TABLE CI-DESSOUS LE RENOMME DÉJÀ.
+ * Mesuré sur les deux comptes le 2026-09-08. N'ajoutez donc pas « Link » ici pour « compléter » :
+ * ce serait renommer une rangée que seule l'administration voit, sur un écran hors du parcours de
+ * l'éleveuse, et sans qu'aucun mot du §10.4 soit en cause — « Lien » n'est pas un mot interdit.
  *
  * AUCUNE VALEUR NE PORTE « % », « < », « > » NI « & », et c'est une contrainte opposable à toute ligne
  * future. « @wordpress/i18n » expose sprintf() et de nombreuses chaînes du cœur y passent : un « % » de
