@@ -1546,3 +1546,58 @@ comme une MESURE**, sur le chemin des sous-requêtes `?_embed=1` et sur la port�
 Elle a rectifié quatre décomptes rendus faux par le correctif, et **signalé l'ancre `:1078` sans la
 corriger**, faute de pouvoir l'ouvrir. **Le `php -l` a été joué par le lead**, l'agent ayant **déclaré
 n'avoir aucun outil d'exécution** — pour la deuxième fois, et c'est la bonne conduite.
+
+---
+
+# Addendum daté — 2026-09-08, issue #56 : R15, la garde du rappel `the_author`, ouverte en dette
+
+> Ajout daté, conforme à la convention d'amendement. **Aucune section n'est réécrite.** Cet addendum
+> n'ajoute qu'un résidu nommé et l'arbitrage qui l'accompagne, rendu par le lead orchestrateur.
+
+## R15 — le rappel `the_author` n'est gardé que par `is_admin()`
+
+**Le constat, et il est de la même famille que le défaut que ce lot vient de payer.** Le §4.3 de ce
+contrat refuse `is_admin()` comme garde du rappel REST, avec ce motif : **`is_admin()` vaut FAUX sur
+`/wp-json/`**, si bien que le préchargement de l'éditeur (où elle vaut vrai) et les requêtes XHR du même
+écran (où elle vaut faux) se comporteraient différemment. **Ce motif n'a jamais été opposé au rappel 2**,
+`substituer_le_nom_d_auteur()`, dont `is_admin()` est pourtant l'unique garde (§6).
+
+**Conséquence** : le jour où une réponse REST atteindrait `the_author`, l'éleveuse verrait **le titre du
+site présenté comme l'auteur d'un contenu, dans un écran d'administration**, sans un message et sans une
+ligne au journal. **C'est le mode de panne de la décision 79, à un rappel de distance.**
+
+### L'état mesuré — latent, et il faut dire lequel des deux mots s'applique
+
+| Relevé, 2026-09-08 | Valeur |
+|---|---|
+| Occurrences de `the_author` / `get_the_author` dans `wp-content/themes/mtb/` | **0** |
+| Occurrences dans `wp-content/plugins/mtb-core/`, hors notre propre `add_filter` | **0** |
+| Appelants réels du crochet aujourd'hui | **le cœur seul** : `feed-rss2.php:95`, `feed-rdf.php:78`, `feed-atom.php:56` (faits 7 à 9), et `class-wp-posts-list-table.php:1284` en administration (fait 15) |
+
+> **LATENT AUJOURD'HUI, VIVANT LE JOUR OÙ QUELQUE CHOSE APPELLERA `the_author` HORS ADMINISTRATION ET
+> HORS FLUX.**
+
+### L'arbitrage — rendu par le lead orchestrateur, et son motif est écrit
+
+**Décision : la garde n'est PAS élargie dans ce lot.**
+
+Le motif n'est pas la prudence, c'est la disproportion des risques : **le seul appelant réel de
+`the_author` hors administration est le cœur dans les flux — c'est-à-dire la cible même du correctif de
+#56.** Toucher cette garde en fin de lot risquerait **la fermeture des flux, qui est le livrable**, pour
+fermer un chemin que **personne n'emprunte**. *On ne met pas en jeu un livrable mesuré pour couvrir un
+cas dont on vient de mesurer qu'il n'existe pas.*
+
+**La forme envisagée, consignée pour l'issue qui la reprendra** — dans l'idiome déjà employé par le
+dépôt (`blocks/grille-chiens/donnees.php:190`) :
+`is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST && current_user_can( 'edit_posts' ) )`.
+**Et surtout pas une capacité seule** : un flux est un document servi en amont de toute session, et
+`/feed/` rendu à une éleveuse connectée puis mis en cache par un frontal republierait le nom du compte à
+des anonymes — **l'objection d'empoisonnement du §4.1, transposée aux flux.** Un flux n'est jamais
+`REST_REQUEST` ; c'est ce terme, et lui seul, qui tient la forme composée.
+
+**Ce résidu n'autorise rien** : tant qu'il n'est pas repris par une issue datée, la garde du rappel 2
+reste `is_admin()` seule, et **le §15 continue d'interdire d'y toucher sans rouvrir ce contrat.**
+
+*Trouvé par la passe de brainstorm de la reprise, mesuré par le lead de chaîne, arbitré par le lead
+orchestrateur. Nommé plutôt que tu — c'est la seule chose qui empêche un latent de devenir une
+surprise.*
