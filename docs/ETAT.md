@@ -77,12 +77,23 @@ empreinte ne le portant pas ; c'était juste, et c'est moi qui ai levé l'interd
 d'empreinte est du niveau du lot, pas de la chaîne. (3) #53 a maintenu une réserve sur `--require` que
 je lui donnais pour close, et sa réserve était fondée.
 
-**Prochaine action : le board ne porte plus que de la dette, et deux issues garées.** Lot 21 = **#54 et
-#55**, **séquentielles entre elles** — elles partagent `docs/guide/contenu-mettre-en-sommeil-et-reveiller.md`.
-Puis les dettes neuves **T113** (prioritaire), **T114**, **T115**, à ouvrir en issues. **#26 et #48
-restent garées par le report de Q5.** **Question posée à l'utilisateur à la clôture du lot 19 et
-toujours sans réponse** : le brief est-il intégralement couvert, ou reste-t-il un chunk à décomposer ?
-Elle devient bloquante après le lot 21.
+**Prochaine action : lot 21 = #54 → #55 en séquence, ∥ #56 en parallèle.** Verdict d'empreinte obtenu
+de `github-boards` et **calculé sur le disque**, pas sur les énoncés. **#54 et #55 se recouvrent** sur
+`docs/guide/contenu-mettre-en-sommeil-et-reveiller.md` — l'empreinte de #55 est `docs/guide/**`, 30
+fichiers — donc séquentiel. **#56 (T113, l'oracle REST) est disjoint des deux** et complète le lot.
+
+**Les trois dettes du lot 20 sont ouvertes en issues, sous le milestone 16** : **#56** (T113, oracle
+d'énumération par la route REST, `seo` — **prioritaire, c'est une donnée personnelle de l'éleveuse**) ·
+**#57** (T114, ancres du cœur épinglées à 6.9, `infra`) · **#58** (T115, mode de panne muet, `seo`
+`infra`). **Le milestone 13 est fermé** ; le 15 garde #54 et #55.
+
+**Lot 22 = #57 puis #58, séquentielles** — elles écrivent toutes deux dans le `bootstrap.php` du même
+module — **et toutes deux se recouvrent aussi avec #56**, dont l'empreinte est `indexation-heritee/**`
+entier : elles ne peuvent donc pas rejoindre le lot 21. À deux issues, il leur manque une troisième.
+
+**#26 et #48 restent garées par le report de Q5.** **Question posée à l'utilisateur à la clôture du lot
+19, toujours sans réponse, et désormais échue** : le brief est-il intégralement couvert, ou reste-t-il
+un chunk à décomposer ? Sans réponse, le lot 22 se compose à deux issues au lieu de trois.
 
 **Deux points de configuration qui reviendront à chaque lot, et qui sont pour l'utilisateur.**
 (1) **`git-mtb` refuse d'apposer `Co-Authored-By` et `Claude-Session`**, en invoquant une règle de son
