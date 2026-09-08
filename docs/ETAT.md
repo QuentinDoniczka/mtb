@@ -81,14 +81,18 @@ aucun bloc**, un enregistrement supplémentaire s'y ajoutant en deux lignes. Le 
 aujourd'hui. **Verdict d'empreinte obtenu de `github-boards` et calculé sur le disque, pas sur les
 énoncés.**
 
-**La troisième issue est T118, et elle n'existe pas encore : il faut la créer avant de lancer le lot 22.**
+**La troisième issue est T118, ouverte sous le numéro #59** (milestone 16, labels `feature` `contenu`).
 (« Slug » dans la Modification rapide, empreinte `includes/admin/vocabulaire-page/**` — le module que #54
 vient de livrer est le seul de `mtb-core` qui renomme des libellés du cœur en administration, donc le
 point d'extension naturel.) **Disjonction établie sur pièce et non supposée** : aucun fichier de
 `indexation-heritee/` ne porte la moindre trace de `gettext` ni de `Slug`, les deux répertoires ne se
 touchent nulle part. Aucune epic ouverte ne la couvre — la 16 ne liste que T113, T114 et T115.
 
-**T116 est déconseillée pour le lot 22, malgré sa priorité.** Aucun fichier de `mtb-core` ne mentionne
+**T116 est ouverte sous le numéro #60** (labels `feature` `seo` `prive`, **délibérément sans milestone**),
+**et elle est déconseillée pour le lot 22, malgré sa priorité.** Son corps porte une **question bloquante**
+à trancher par l'utilisateur avant tout démarrage : le message conditionnel honnête (« si un compte
+correspond, un lien vient d'être envoyé ») ne ment pas, mais **choisir entre la vie privée et l'autonomie
+de l'éditrice est un arbitrage produit**, pas une décision d'issue `seo`. Aucun fichier de `mtb-core` ne mentionne
 aujourd'hui `wp-login`, `lostpassword` ni `login_errors` : le correctif est **entièrement à écrire**, et
 rien ne garantit qu'une chaîne choisisse un module neuf plutôt que d'étendre `indexation-heritee/` —
 où la fermeture précédente du même sujet a atterri. **Le recouvrement ne peut pas être tranché sur le
