@@ -24,12 +24,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  *      « _indexation-heritee » — la façon documentée de désactiver un module
  *      (« class-loader.php », initiale « _ ») — NE RÉVEILLE PLUS AUCUN CONTENU MIS EN SOMMEIL : il
  *      empêcherait seulement la conversion des contenus PAS ENCORE convertis, l'état des autres
- *      étant déjà en base et servi par « query/mise-en-sommeil ». IL N'EST PAS NEUTRE POUR AUTANT,
- *      et il faut le dire ici : il rendrait au plan du site le fournisseur écarté le 2026-09-05, et
- *      ferait tomber avec lui le 404 franc posé depuis le 2026-09-08 (#50) — les deux effets
- *      tombent ensemble, puisqu'ils lisent la même constante. Le module reste néanmoins séparé pour
- *      que ce renommage, s'il devient nécessaire, n'emporte pas une ligne de la carte des 52
- *      adresses reprises.
+ *      étant déjà en base et servi par « query/mise-en-sommeil ». IL N'EST PAS NEUTRE POUR AUTANT, et
+ *      il faut le dire ici parce que c'est UN PIÈGE MATÉRIEL pour qui l'appliquerait de bonne foi.
+ *      TROIS EFFETS, ET ILS TOMBENT ENSEMBLE : il rendrait au plan du site le fournisseur écarté le
+ *      2026-09-05 ; il ferait tomber avec lui le 404 franc posé depuis le 2026-09-08 (#50), les deux
+ *      lisant la même constante ; et, depuis le 2026-09-08 (#49), IL ROUVRIRAIT TOUTES LES ARCHIVES
+ *      D'AUTEUR DU SITE — « /author/<slug>/ » de retour à 200 et la forme en requête de retour à 301
+ *      vers elle — DONC L'ÉNUMÉRATION DES COMPTES, CELUI DE L'ÉLEVEUSE COMPRIS, DE NOUVEAU LISIBLE.
+ *      Le module reste néanmoins séparé pour que ce renommage, s'il devient nécessaire, n'emporte pas
+ *      une ligne de la carte des 52 adresses reprises.
  *   3. TÉMOINS D'ÉCHEC DISJOINTS. « redirections-301 » se prouve vivant par un code de sortie
  *      WP-CLI ; ce module-ci n'a PAS de commande, et sa seule sonde est l'état écrit en base sur les
  *      contenus repris. Deux sondes de nature différente : les réunir dans un dossier ferait croire
@@ -82,18 +85,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  * natures différentes ; en ajouter un troisième de la nature du voisin brouillerait la frontière
  * que ce motif protège. Résidu nommé, non masqué.
  *
+ * TROISIÈME SURFACE SILENCIEUSE, DEPUIS #49, DE MÊME NATURE QUE LA PRÉCÉDENTE ET D'UN TOUT AUTRE ENJEU.
+ * Si le rappel du filtre « request » cesse de mordre — ligne « add_filter » perdue dans une reprise,
+ * « CLES_D_AUTEUR » vidée, dossier renommé en « _indexation-heritee », le cœur renommant une de ces
+ * clés ou cessant d'honorer « error », un tiers filtrant « request » après nous et les remettant —
+ * « /author/<slug>/ » revient à 200 et la forme en requête à 301, silencieusement. RIEN NE LE DIRAIT :
+ * pas une ligne au journal, pas un écran, et l'éleveuse ne visite jamais ces adresses. LA NUANCE QUI SE
+ * DIT PLUTÔT QU'ELLE NE SE LISSE : ce que #50 protège est une adresse machine que personne ne demande ;
+ * CE QUE CELUI-CI PROTÈGE EST L'IDENTIFIANT DE CONNEXION DE L'ÉLEVEUSE. Le mode de panne est muet dans
+ * les deux cas, l'enjeu ne l'est pas. Sa sonde est de même nature que celle de #50 — un code de statut
+ * HTTP, joué en recette, protocole du §11 du contrat #49 — et AUCUNE SONDE SUPPLÉMENTAIRE N'EST
+ * PROPOSÉE POUR AUTANT : la seule qui aurait du sens serait une commande WP-CLI, et LUI EN DONNER UNE
+ * CONTREDIRAIT LE MOTIF 3 CI-DESSUS. Résidu nommé, non masqué, et son poids réel écrit plutôt que lissé.
+ *
  * AMENDEMENT DÉCLARÉ À LA BORNE 1 (contrat #24 §15) : ce module ÉCRIT désormais, ce qu'il ne faisait
  * pas. La borne 1 porte sur ses hooks de FRONT ; les trois accroches de la conversion sont
  * « mtb_core_mise_a_jour », « added_post_meta » / « updated_post_meta » (administration ou WP-CLI) et
  * « admin_init » (administration seule) : AUCUNE ÉCRITURE SUR UNE REQUÊTE PUBLIQUE.
- * Les DEUX hooks de front de ce module — « wp_sitemaps_add_provider » 10 et, depuis le 2026-09-08
- * (#50), « template_redirect » 20 — n'écrivent RIEN. Le premier rend « false » au cœur ; le second
- * pose un code de statut sur la réponse en cours. La borne 1 dit « il lit, il RÉPOND » : poser un
- * 404 est répondre, pas écrire. Aucun « update_option », « wp_insert_post », « update_post_meta »,
- * « wp_set_object_terms » ni « wp_delete_post » sur une requête publique. Les bornes 2 et 3
- * sont intactes : aucun état en base ne déclenche la conversion — c'est la requête elle-même qui la
- * borne — et le périmètre reste clos aux seuls faits « _mtb_robots_source » relevés sur l'ancien
- * site.
+ * Les TROIS hooks de front de ce module — « wp_sitemaps_add_provider » 10, « template_redirect » 20
+ * depuis le 2026-09-08 (#50) et « request » 10 depuis le 2026-09-08 (#49) — n'écrivent RIEN. Le
+ * premier rend « false » au cœur ; le deuxième pose un code de statut sur la réponse en cours ; le
+ * troisième AMENDE LA REQUÊTE EN MÉMOIRE, pour le seul processus en cours. La borne 1 disait « il
+ * lit », #50 l'a resserrée en « il lit, il RÉPOND » — poser un 404 est répondre, pas écrire — et #49
+ * l'étend une seconde fois, par écrit et non en silence (contrat #49 §13.1) : « IL LIT, IL RÉPOND, ET
+ * IL PEUT AMENDER LA REQUÊTE EN MÉMOIRE — JAMAIS L'ÉTAT PERSISTANT. » Aucun « update_option »,
+ * « wp_insert_post », « update_post_meta », « wp_set_object_terms » ni « wp_delete_post » sur une
+ * requête publique, et aucune règle de réécriture touchée. Les bornes 2 et 3 sont intactes : aucun état
+ * en base ne déclenche la conversion — c'est la requête elle-même qui la borne — le périmètre reste
+ * clos aux seuls faits « _mtb_robots_source » relevés sur l'ancien site, et celui de #49 est clos et
+ * daté aux archives d'auteur de ce site.
  *
  * MESURE D'ÉGALITÉ DU CONTRAT #24 §6.2, RELEVÉE LE 2026-09-07 : « le nombre de contenus portant
  * _mtb_robots_source, le nombre rendus noindex et le nombre retirés du plan du site sont ÉGAUX » cesse
@@ -107,6 +127,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/fait.php';
 require_once __DIR__ . '/plan-du-site.php';
 require_once __DIR__ . '/conversion.php';
+require_once __DIR__ . '/archives-d-auteur.php';
 
 /*
  * Trois accroches sur une seule fonction idempotente, parce qu'aucune ne couvre à elle seule les
@@ -139,3 +160,19 @@ add_filter( 'wp_sitemaps_add_provider', __NAMESPACE__ . '\\ecarter_le_fournisseu
 // Ne jamais descendre ce rappel sous la priorité de « redirect_canonical ». Pas d'« accepted_args » :
 // « template_redirect » ne passe aucun argument.
 add_action( 'template_redirect', __NAMESPACE__ . '\\repondre_404_au_sous_plan_retire', 20 );
+
+// Neutralisation des archives d'auteur (dette T105, issue #49, 2026-09-08). Le détail et les huit faits
+// du cœur sont écrits en tête de « archives-d-auteur.php » ; l'ordre imposé des cinq gardes est écrit
+// au-dessus du rappel lui-même, dans le même fichier.
+// LE FILTRE « request », ET NON « template_redirect » 20 COMME LE RAPPEL CI-DESSUS. Le motif est
+// mesuré, pas déduit : #50 a relevé que « redirect_canonical » « exit » en priorité 10
+// (« wp-includes/default-filters.php:666 »), si bien qu'un rappel à 20 ne mordrait JAMAIS sur la forme
+// en requête et laisserait l'oracle d'énumération des comptes — la moitié la plus dangereuse —
+// entièrement ouvert, EN SILENCE. « request » court dans « WP::parse_request() »
+// (« class-wp.php:409 »), donc AVANT l'action « parse_request » (l. 418), donc avant
+// « rest_api_loaded() » et avant que « REST_REQUEST » ne soit défini : la garde REST de ce rappel est
+// « isset( $variables['rest_route'] ) », et « defined( 'REST_REQUEST' ) » y est interdit comme
+// trompeur. Le tableau n'est jamais remplacé : seules des clés nommées en sont retirées.
+// PRIORITÉ 10, UN ARGUMENT. Aucun autre rappel de ce crochet n'existe dans ce dépôt — vérifié par
+// recherche sur « wp-content/ » le 2026-09-08 — donc aucune concurrence de priorité.
+add_filter( 'request', __NAMESPACE__ . '\\neutraliser_la_requete_d_auteur', 10, 1 );

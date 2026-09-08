@@ -74,6 +74,32 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * SI « users » EST RÉTABLI DEMAIN, LE 404 CESSE DE LUI-MÊME : la garde de désarmement sort dès que
  * le nom est au registre. Aucun état mort à nettoyer, aucune ligne à défaire.
+ *
+ * TROISIÈME ACTE DATÉ, DU 2026-09-08 (#49) — RETIRER PUIS RÉPONDRE NE FERMENT PAS L'ADRESSE.
+ *
+ * Le 2026-09-05 a RETIRÉ « /author/admin/ » du plan du site ; #50 a fait RÉPONDRE 404 au sous-plan
+ * ainsi vidé. NI L'UN NI L'AUTRE N'A FERMÉ L'ADRESSE ELLE-MÊME. Mesurée le 2026-09-08, elle rendait
+ * encore 200 sur 16 379 octets, l'identifiant dans le titre et dans les classes du corps ; la forme en
+ * requête rendait 301 vers elle, ce qui donnait en prime l'oracle : trois réponses discernables selon
+ * qu'un numéro de compte existe ou non, donc la liste complète des comptes lisible en quelques
+ * requêtes (dette T105). #49 FERME L'ADRESSE, ET POUR TOUS LES COMPTES : la mesure en a trouvé DEUX là
+ * où l'énoncé de l'issue en annonçait un, et LE SECOND EST CELUI DE L'ÉLEVEUSE. Un correctif borné à
+ * « admin » aurait laissé SON identifiant de connexion publié — un défaut plus grave que celui qu'il
+ * répare — et aurait exigé une liste d'identifiants, c'est-à-dire le mécanisme qui ment le jour où un
+ * compte est créé.
+ *
+ * LE MÉCANISME VIT DANS « archives-d-auteur.php », DANS CE MÊME MODULE, ET C'EST EXACTEMENT VOULU : il
+ * tombe et se relève avec les deux actes précédents. Les séparer recréerait le mode de panne de #52 —
+ * le plan du site republiant l'archive que l'autre fait répondre 404.
+ *
+ * BORNE 3 TENUE, AVEC SON MOTIF. Le périmètre reste clos et daté : les archives d'auteur de CE site,
+ * fonctionnalité du cœur que ce site n'emploie pas. L'ancien site n'en publiait aucune, le thème n'a
+ * aucun gabarit d'auteur, et une archive d'auteur y tombe sur l'index du blog. Aucun identifiant en dur,
+ * aucun numéro de compte, aucun « user_nicename » n'entre dans le code de ce module — le relevé du
+ * 2026-09-05 ci-dessus en cite un, mais c'est une mesure datée en commentaire, pas une donnée dont un
+ * rappel dépend : le rappel ne lit AUCUN compte, donc il vaut pour les comptes présents ET FUTURS.
+ * Aucune règle de réécriture n'est touchée, aucun « flush » n'est requis, aucun état n'est laissé en
+ * base.
  * ─────────────────────────────────────────────────────────────────────────────────────────────
  */
 
@@ -107,7 +133,9 @@ const FOURNISSEURS_RETIRES = array( 'users' );
  *               « false » est renvoyé.
  */
 function ecarter_le_fournisseur_utilisateurs( $provider, string $name ) {
-	// Comparaison stricte : sans elle, « 0 » et consorts entreraient par une comparaison lâche.
+	// Comparaison stricte, et le motif ne dépend d'AUCUNE version de PHP : ce test porte sur des NOMS,
+	// et un nom se compare à l'identique, type compris. Une comparaison lâche poserait la question
+	// « ces deux valeurs se ressemblent-elles ? » là où la seule question est « est-ce ce nom-là ? ».
 	if ( ! in_array( $name, FOURNISSEURS_RETIRES, true ) ) {
 		return $provider;
 	}
@@ -116,7 +144,7 @@ function ecarter_le_fournisseur_utilisateurs( $provider, string $name ) {
 }
 
 /*
- * QUATRE FAITS DU CŒUR, RELEVÉS DANS LE CONTENEUR LE 2026-09-08, WordPress 6.9. AUCUN N'EST DÉDUIT.
+ * CINQ FAITS DU CŒUR, RELEVÉS DANS LE CONTENEUR LE 2026-09-08, WordPress 6.9. AUCUN N'EST DÉDUIT.
  *
  *   1. FOURNISSEUR ABSENT DU REGISTRE : « wp-includes/sitemaps/class-wp-sitemaps.php:200-202 » —
  *      « if ( ! $provider ) { return; } ». UN « return » NU : aucun code de statut n'est posé, la
