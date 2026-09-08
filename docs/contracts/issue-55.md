@@ -127,15 +127,20 @@ ordinaire (Placement, 318) :
 | Page ordinaire — Placement | `site-editor.php` | **non — HTTP 403** | Slug |
 | **Page d'accueil** — Accueil | `site-editor.php` | **non — HTTP 403** | **Lien** |
 
-**Le contrat #54 §12 bis relève « la page d'accueil, dont la rangée dit « Link » et non « Slug », non
-couverte ». Sur l'écran que le guide décrit, c'est faux — et il n'y a rien à corriger.**
+> **AMENDÉ le 2026-09-08, après la revue de lot — voir le §9. Les trois énoncés qui suivaient étaient
+> tirés d'une mesure faite sur le seul rôle Éditeur et écrits comme s'ils valaient pour tous les
+> comptes. Le §9 les restreint et retire l'énoncé d'existence universel. Le verdict retenu est celui
+> de `issue-54.md:664-672` : « Les deux relevés sont exacts. Ils portent sur deux comptes, pas sur
+> deux routes. » L'arbitrage A5 — ne rien écrire au guide — n'en est pas affecté.**
 
 - Sur `post.php`, la route par laquelle **toutes** les fiches du guide font passer l'éleveuse, la page
   d'accueil affiche **« Adresse de la page »**, **identique** à n'importe quelle autre page. Le module
-  de #54 y **fire** normalement.
-- La rangée « Lien » n'existe que dans l'**Éditeur de site**, qui rend **403** pour l'éleveuse :
+  de #54 y **opère** normalement. *(Vrai **pour le rôle Éditeur**, seul rôle dont dépend le guide —
+  voir §9.)*
+- Pour l'éleveuse, la rangée « Lien » ne s'atteint que par l'**Éditeur de site**, qui rend **403** :
   `fabienne` est `editor` et **n'a pas** `edit_theme_options` (vérifié). Elle **ne peut pas** atteindre
-  cet écran.
+  cet écran. *(Restreint : ce n'est pas un énoncé sur l'existence de cette rangée en général —
+  voir §9.)*
 
 **Arbitrage : le cas « Link » est clos par la mesure, hors périmètre du guide, et RIEN n'est écrit à son
 sujet.** Écrire au guide que l'accueil se comporte autrement introduirait une fausseté là où il n'y en
@@ -400,3 +405,85 @@ Parent** sur une page déjà modifiée plusieurs fois, et que le geste est incha
   tenu.
 - « **Descendez sous la dernière** » reste juste dans les deux cas : la dernière rangée est **Parent**,
   avec ou sans **Révisions**.
+
+---
+
+## 9. Amendement du 2026-09-08 — après la revue de lot
+
+### 9.1 MEDIUM‑1 — j'ai tiré un énoncé universel d'une mesure qui ne l'était pas
+
+**La faute est de raisonnement, pas de mesure**, et elle mérite d'être nommée précisément parce que
+c'est exactement le glissement que la **décision 72** proscrit dans ce dépôt, transposé de la
+causalité à la portée.
+
+Ce que j'ai réellement mesuré : `post.php` en session **Éditrice** (accueil et page ordinaire →
+« Adresse de la page »), et `site-editor.php` en session **administrateur** (accueil → « Lien »).
+Ce que j'en ai écrit : « **la rangée Lien n'existe que dans l'Éditeur de site** ». **Je n'ai jamais
+mesuré `post.php` en session administrateur** — je n'avais donc aucun titre à écrire un énoncé
+d'existence. Deux variables changeaient à la fois entre mes deux relevés, la **route** et le **rôle** ;
+j'ai attribué l'écart à la seule route.
+
+`issue-54.md:642-651` relève « Lien » sur `post.php` **en session administrateur** — donc hors de
+l'Éditeur de site, ce qui suffit à réfuter mon énoncé. Le mécanisme est établi par #54 :
+`editor.js` calcule `isFrontPage` depuis les réglages du site, que le rôle Éditeur **ne peut pas
+lire** (`/wp-json/wp/v2/settings` → 403) ; `isFrontPage` est donc faux pour elle, le cœur émet
+`__("Slug")`, et la table de #54 le renomme.
+
+**Statut des trois énoncés du §2.2 :**
+
+| Ancre | Énoncé d'origine | Statut après amendement |
+|---|---|---|
+| `:133-135` | l'accueil affiche « Adresse de la page » sur `post.php` | **restreint au rôle Éditeur** — vrai pour lui, faux pour un administrateur |
+| `:136-138` | « la rangée Lien n'existe que dans l'Éditeur de site » | **retiré** — énoncé d'existence que je n'avais pas mesuré |
+| `:130-131` | « sur l'écran que le guide décrit, c'est faux » | **remplacé** par le verdict de `issue-54.md:664-672` |
+
+**Verdict retenu, celui de #54 et il est meilleur que le mien** : « **Les deux relevés sont exacts.
+Ils portent sur deux comptes, pas sur deux routes.** »
+
+**Ce qui ne change pas : l'arbitrage A5.** Le guide se règle sur **le seul compte dont il décide, le
+sien** ; pour ce compte la page d'accueil est couverte. **Aucune ligne du guide ne bouge** — la
+conclusion pratique était bonne, c'est la justification qui était trop large. *Ma formulation initiale
+au rapport de chaîne — « une prémisse que tu m'as transmise était fausse » — était donc elle aussi
+trop large : la prémisse de #54 était vraie de son rôle, comme la mienne l'était du sien.*
+
+### 9.2 HIGH‑1 — la ligne promise par deux fichiers et écrite nulle part
+
+`issue-54.md:307-308` et `admin/vocabulaire-page/bootstrap.php:120-122` affirment au présent, après
+avoir écarté trois parades automatiques, que **« la seule parade retenue est humaine : une ligne dans
+la rubrique "Ce n'est pas normal, signalez-le" de la fiche du guide »**. Vérifié : elle n'existait dans
+**aucune** des 29 fiches — ni livrée, ni ajournée, ni ouverte en dette.
+
+**Pourquoi c'est bloquant.** La moitié JavaScript du module compare des **chaînes sources** : le jour
+où le cœur en reformule une, l'écran redit « Slug », **la page s'enregistre normalement et rien n'est
+journalisé**. La panne serait **partielle** — la moitié PHP ne tomberait pas —, donc d'autres libellés
+resteraient français pendant que cette rangée seule redirait « Slug ». L'éleveuse aurait alors sous les
+yeux l'énumération de l'étape 4, démentie par l'écran, **au moment précis où on lui annonce que la case
+cherchée n'est annoncée par rien**. C'est le cas que le §8.2 avait déjà tranché : une liste démentie
+par l'écran **lui fait douter d'être au bon endroit** — ici sans filet, elle conclurait « je me suis
+trompée d'écran », pas « j'appelle ».
+
+**Écrit dans les deux rubriques**, et non dans une seule : les deux fiches portent la même énumération,
+et celle du mot de passe lui demande ensuite de **cliquer** sur la rangée **État**. Registre adapté à
+chaque rubrique — ces rubriques sont sèches, un symptôme par ligne, sans explication.
+
+### 9.3 LOW‑1 — anglicisme
+
+`§2.2` écrivait « le module de #54 y **fire** normalement ». Corrigé en « **opère** ». Document français.
+
+### 9.4 LOW‑3 — résidu nommé : un couplage non déclaré, mesuré vert
+
+La persistance des deux cases des étapes 3-4 de `menu-modifier-le-menu.md` repose sur l'action AJAX
+**`closed-postboxes`** — celle qui enregistre `metaboxhidden_nav-menus`. Or elle **ne figure pas** dans
+la liste blanche du thème (`themes/mtb/functions.php:744-748`, qui déclare `add-menu-item`,
+`menu-get-metabox`, `menu-locations-save`, `menu-quick-search`).
+
+**Mesuré vert** : j'ai relevé la persistance en base sur le compte de l'éleveuse, elle fonctionne
+aujourd'hui. **Mais rien dans le dépôt ne dit pourquoi**, et la revue n'a pas pu le confirmer dans le
+cœur, `wp-admin/` n'étant pas versionné.
+
+**Le mode de panne, s'il survenait, serait silencieux** : si cette action venait à exiger
+`edit_theme_options`, les encadrés apparaîtraient au clic puis **auraient disparu à la visite
+suivante** — contredisant « **Les deux cases ne se cochent qu'une fois** »
+(`menu-modifier-le-menu.md:144-145`), sans aucune erreur à l'écran ni au journal.
+
+**Rien n'est changé** au guide ni au thème : résidu **nommé**, à ouvrir en dette par le lead.

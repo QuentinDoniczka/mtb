@@ -217,6 +217,7 @@ comme un numéro de compte ou une pièce d'identité.
 - Une page dont vous avez **retiré** la protection et qui reste introuvable dans la recherche du site
   le lendemain.
 - La rangée **État** absente de l'onglet **Page**, dans la colonne de droite.
+- La rangée **Adresse de la page** affichée sous le nom **Slug**, dans cette même colonne.
 
 **Ce qu'il vaut mieux ne pas faire :**
 

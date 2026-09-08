@@ -198,6 +198,7 @@ définitivement à vous. Vous n'avez plus rien à nous demander sur ce point.
 - Un contenu endormi dont l'adresse **n'ouvre plus rien**.
 - La case **Mettre ce contenu en sommeil** absente de l'écran d'une portée, d'une fiche de chien ou
   d'une page.
+- La troisième rangée, sous le titre, intitulée **Slug** et non **Adresse de la page**.
 
 **Ce qu'il vaut mieux ne pas faire :**
 
