@@ -1,9 +1,10 @@
 # Modifier le menu du site
 
-**Quand** : quand une page doit apparaître dans le menu, quand l'ordre des entrées ne vous convient
-plus, ou quand une entrée doit changer de nom.
+**Quand** : quand une page, une fiche de chien ou une portée doit apparaître dans le menu, quand
+l'ordre des entrées ne vous convient plus, ou quand une entrée doit changer de nom.
 **Temps** : 2 minutes. **Rattrapable** : oui. Tout se remet comme avant, et **retirer une entrée du
-menu ne supprime jamais la page** : elle reste sur le site, avec son texte et ses photos.
+menu ne supprime jamais le contenu qu'elle vise** : il reste sur le site, avec son texte et ses
+photos.
 
 Le site a **deux endroits où un menu peut s'afficher**, et c'est au même écran que vous composez les
 menus qui les occupent :
@@ -108,14 +109,54 @@ quitter cet écran sans enregistrer : le menu reste comme il était.
 
 ---
 
+## Ajouter un chien ou une portée au menu
+
+Une fiche de chien — celle de **Halan**, par exemple — et une portée s'ajoutent au menu **exactement
+comme une page**. Une seule chose diffère, et c'est elle qui fait chercher pour rien : **leurs
+encadrés ne sont pas affichés au départ** dans la colonne de gauche. Vous les faites apparaître une
+fois, et ils y restent.
+
+1. Dans le menu de gauche, cliquez sur **Menus**, et vérifiez le menu ouvert sur la ligne
+   **Sélectionnez le menu à modifier :**.
+
+2. **En haut à droite de l'écran, cliquez sur le bouton Options de l’écran.** Un panneau se déplie
+   juste en dessous.
+
+3. Dans ce panneau, le groupe **Éléments de l’écran** propose une suite de cases, dans cet ordre :
+   Pages, Articles, **Chiens**, **Portées**, Liens personnalisés, Catégories, Étiquettes.
+   **Cochez Chiens**, et **cochez Portées**.
+
+4. Refermez le panneau en recliquant sur **Options de l’écran**. **Les encadrés Chiens et Portées
+   sont maintenant dans la colonne de gauche**, plus bas, **après Articles** — et non juste sous
+   **Pages**.
+
+5. **À partir de là, tout est identique aux étapes 3 à 7 ci-dessus**, dans l'encadré **Chiens** — ou
+   **Portées** — au lieu de **Pages** : cliquez sur **Tout voir**, cochez la case de **Halan**,
+   cliquez sur **Ajouter au menu**, faites glisser l'entrée à sa place dans **Structure du menu**,
+   puis cliquez sur **Enregistrer le menu**.
+
+**Le piège des dix minutes est le même ici.** L'encadré **Chiens** porte les mêmes trois onglets que
+**Pages** — **Les plus récentes**, **Tout voir**, **Rechercher** — et c'est encore **Les plus
+récentes** qui est ouvert au départ : il ne montre que vos chiens les plus récemment créés, **vos
+chiens anciens n'y sont pas**. **Cliquez sur Tout voir.** L'encadré **Portées** se comporte de la
+même façon.
+
+**Les deux cases ne se cochent qu'une fois.** Elles restent cochées pour vos prochaines visites : vous
+retrouverez les encadrés **Chiens** et **Portées** en place, sans repasser par **Options de l’écran**.
+
+**Il n'y a pas d'encadré pour les résultats de travail** : ne le cherchez pas, ce n'est pas un manque.
+
+---
+
 ## Ce qui se met à jour tout seul
 
 - **Le menu du haut, sur toutes les pages du site**, en même temps. Il n'y a pas une page à reprendre
   une par une.
 - **La page en cours de lecture est signalée toute seule** dans le menu : le visiteur voit où il se
   trouve. Vous n'avez rien à régler pour cela.
-- **Le nom d'une page renommée** ne change pas tout seul dans le menu. C'est voulu : l'entrée du menu
-  porte son propre nom, souvent plus court. Voir « Renommer une entrée ».
+- **Le nom d'un contenu renommé** ne change pas tout seul dans le menu — une page comme une fiche de
+  chien. C'est voulu : l'entrée du menu porte son propre nom, souvent plus court. Voir « Renommer une
+  entrée ».
 
 ---
 
@@ -137,8 +178,8 @@ L'ordre de la liste est exactement l'ordre affiché sur le site, de gauche à dr
 2. Dans le champ **Titre de la navigation**, effacez le nom et tapez celui que vous voulez.
 3. Cliquez sur **Enregistrer le menu**, en bas à droite.
 
-**Seule l'entrée du menu change de nom.** Le titre de la page, lui, ne bouge pas : elle garde son
-titre sur le site et dans **Pages**.
+**Seule l'entrée du menu change de nom.** Le titre du contenu visé, lui, ne bouge pas : il garde son
+titre sur le site et dans sa liste — **Pages**, **Chiens** ou **Portées**, dans le menu de gauche.
 
 ![Une entrée de la liste Structure du menu dépliée : le champ Titre de la navigation en haut de l'encadré, et le lien Retirer tout en bas](captures/menu-entree-ouverte.png)
 
@@ -150,9 +191,10 @@ titre sur le site et dans **Pages**.
 2. En bas de l'encadré qui s'ouvre, cliquez sur **Retirer**.
 3. Cliquez sur **Enregistrer le menu**, en bas à droite.
 
-**La page n'est pas supprimée.** Elle reste entière dans **Pages**, avec son texte et ses photos ;
-elle n'est simplement plus proposée dans le menu. Pour la remettre, ajoutez-la de nouveau : les trois
-clics des étapes 3 à 7.
+**Le contenu n'est pas supprimé.** Il reste entier dans sa liste — **Pages**, **Chiens** ou
+**Portées**, dans le menu de gauche —, avec son texte et ses photos ; il n'est simplement plus
+proposé dans le menu du site. Pour le remettre, ajoutez-le de nouveau : les trois clics des
+étapes 3 à 7.
 
 ---
 
@@ -236,20 +278,22 @@ pas — et il suffit de revenir la corriger.
 
 **C'est normal, vous n'avez rien à faire :**
 
-- **Vous ne trouvez pas une page dans la colonne de gauche.** L'onglet **Les plus récentes** ne
-  montre qu'une poignée de pages. **Cliquez sur Tout voir**, à côté : toutes vos pages publiées y
-  sont, dans l'ordre alphabétique.
-- **Une page toute neuve n'apparaît pas dans la liste des pages à ajouter.** Rien n'est cassé : cet
-  écran ne propose que les pages **publiées**, et l'onglet **Rechercher** n'atteint pas non plus un
-  brouillon. **L'ordre est donc : publier la page d'abord, la poser dans le menu ensuite** — les
-  quelques clics des étapes 3 à 7, le jour où elle est en ligne. Il n'y a rien à préparer avant.
+- **Vous ne trouvez pas un contenu dans la colonne de gauche.** L'onglet **Les plus récentes** ne
+  montre qu'une poignée d'entrées. **Cliquez sur Tout voir**, à côté : tout ce qui est publié y est,
+  dans l'ordre alphabétique. *S'il s'agit d'un chien ou d'une portée et que vous ne voyez même pas
+  l'encadré, c'est l'encadré qui manque : voir « Ajouter un chien ou une portée au menu », ci-dessus.*
+- **Un contenu tout neuf n'apparaît pas dans la liste de la colonne de gauche.** Rien n'est cassé :
+  cet écran ne propose que ce qui est **publié**, et l'onglet **Rechercher** n'atteint pas non plus
+  un brouillon. **L'ordre est donc : publier d'abord, poser dans le menu ensuite** — les quelques
+  clics des étapes 3 à 7, le jour où c'est en ligne. Il n'y a rien à préparer avant.
 - **Le bas du site n'affiche aucune liste de liens.** Aucun menu n'est coché pour **Plan du site** —
   ou aucun menu n'a encore été composé. Ce n'est pas une erreur, et il n'y a ni trou ni message : le
   bas de page s'affiche simplement sans cette liste. Pour en avoir une, voir « Créer un menu », puis
   « Choisir où un menu s'affiche ».
 - **Une entrée n'apparaît pas sur le site alors qu'elle est dans la liste.** Deux causes possibles :
-  la page visée n'est pas publiée, ou le champ **Titre de la navigation** de l'entrée a été effacé.
-  Republiez la page, ou retapez le nom dans ce champ.
+  le contenu visé n'est pas publié, ou le champ **Titre de la navigation** de l'entrée a été effacé.
+  Republiez ce contenu depuis sa liste — **Pages**, **Chiens** ou **Portées** —, ou retapez le nom
+  dans ce champ.
 - **Une entrée mise en retrait s'affiche comme les autres.** Sur le site, le retrait ne se voit pas :
   l'entrée prend simplement sa place à la suite de celle du dessus. Vous n'avez rien à corriger.
 - **Le haut et le bas du site affichent la même liste.** Les deux cases ont été cochées sur le même
@@ -267,8 +311,8 @@ pas — et il suffit de revenir la corriger.
 
 - **Ne recopiez pas l'adresse ou le téléphone de l'élevage dans le Plan du site.** Ils s'affichent
   déjà tout seuls en bas de chaque page, et se corrigent une seule fois dans **Coordonnées**.
-- **Ne supprimez pas une page pour la retirer du menu.** Retirez seulement son entrée : la page reste
-  en ligne, et ceux qui en ont l'adresse continuent d'y accéder.
+- **Ne supprimez pas un contenu pour le retirer du menu.** Retirez seulement son entrée : le contenu
+  reste en ligne, et ceux qui en ont l'adresse continuent d'y accéder.
 
 **Si quelque chose vous inquiète** : ne cliquez pas sur **Enregistrer le menu**, quittez l'écran,
 notez l'heure et appelez-nous. Un menu en cours de modification n'a jamais cassé un site.

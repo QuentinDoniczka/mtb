@@ -73,7 +73,7 @@ l'enlever est **le même pour tous** : il est décrit une seule fois, dans
 
 | Je veux… | Lisez |
 |---|---|
-| Choisir les pages du menu, leur ordre, leur nom | [Modifier le menu du site](menu-modifier-le-menu.md) |
+| Mettre au menu une page, un chien ou une portée, choisir leur ordre et leur nom | [Modifier le menu du site](menu-modifier-le-menu.md) |
 | Changer mon adresse, mon téléphone ou mon courriel | [Modifier vos coordonnées, une fois pour tout le site](coordonnees-modifier-les-coordonnees.md) |
 
 ## Ce qui a été repris de l'ancien site

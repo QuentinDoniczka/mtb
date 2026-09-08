@@ -28,9 +28,9 @@ rien à la façon d'écrire la page : elle décide seulement qui peut la lire.
    **Page**. *Si vous ne voyez pas cette colonne, ouvrez-la avec le bouton en forme d'engrenage, en
    haut à droite de l'écran.*
 
-4. Sous le titre de la page, vous voyez une suite de rangées : **État**, **Publier**, **Slug**,
-   **Auteur/autrice**, **Modèle**, **Commentaires**, **Parent**. Sur la rangée **État**, cliquez sur
-   l'état écrit à droite — **Publié** quand la page est déjà en ligne.
+4. Sous le titre de la page, vous voyez une suite de rangées : **État**, **Publier**,
+   **Adresse de la page**, **Auteur/autrice**, **Modèle**, **Commentaires**, **Parent**. Sur la
+   rangée **État**, cliquez sur l'état écrit à droite — **Publié** quand la page est déjà en ligne.
 
 5. Un panneau s'ouvre, intitulé **État et visibilité**. Il contient d'abord cinq états à choisir —
    **Brouillon**, **En attente**, **Privée**, **Planifié**, **Publié** — puis, sous un trait, une

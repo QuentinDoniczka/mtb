@@ -60,15 +60,15 @@ Deux gestes, **dans cet ordre, et pas dans l'autre**. Ils sont les mêmes pour u
 Halan, Ray-Ban, Roxane, Youry — et pour la page Placement :
 
 1. **D'abord**, reliez ce contenu au reste du site : remettez-le dans un menu, ou posez un lien vers
-   lui depuis une autre page — un lien comme n'importe quel autre. Voir *Modifier le menu*
+   lui depuis une autre page — un lien comme n'importe quel autre. Voir *Modifier le menu du site*
    (`menu-modifier-le-menu.md`).
 2. **Ensuite seulement**, réveillez-le. Voir *Mettre un contenu en sommeil, et le réveiller*
    (`contenu-mettre-en-sommeil-et-reveiller.md`).
 
-**Pourquoi cet ordre, et pas l'inverse** : une page que rien ne relie au reste du site, remise dans les
-moteurs de recherche sans être reliée nulle part, resterait une page orpheline. Les moteurs la
-trouveraient mal, et vos visiteurs, en cherchant sur votre site, ne la trouveraient pas non plus. Relier
-la page d'abord est ce qui rend la seconde étape utile.
+**Pourquoi cet ordre, et pas l'inverse** : un contenu que rien ne relie au reste du site, remis dans les
+moteurs de recherche sans être relié nulle part, resterait isolé — aucun chemin n'y mènerait. Les
+moteurs le trouveraient mal, et vos visiteurs, en cherchant sur votre site, ne le trouveraient pas non
+plus. Relier ce contenu d'abord est ce qui rend la seconde étape utile.
 
 ---
 
