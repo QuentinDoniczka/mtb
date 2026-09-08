@@ -193,6 +193,62 @@ if ( ! defined( 'ABSPATH' ) ) {
  * traitées en tête de « identite-des-comptes.php » : la 2 intacte, la 3 ÉTIRÉE et non pas « close »,
  * avec sa recommandation de renommage du module, ajournée avec son motif.
  *
+ * CINQUIÈME ACTE DATÉ DU 2026-09-08 (#56) — LA FORME LIVRÉE LE MATIN FAISAIT MENTIR UN ÉCRAN.
+ * « retirer_les_routes_d_identite() » amputait la table des routes INCONDITIONNELLEMENT, donc aussi pour
+ * l'éleveuse authentifiée. Mesuré dans un vrai navigateur, session Éditrice, sur l'écran d'édition de la
+ * page 318 dont le « post_author » vaut 1 : le panneau « Auteur/autrice » affichait « (Aucun
+ * auteur/autrice) », DOUZE SCRUTATIONS SUR DOUZE, état stable. LE CONTENU A UN AUTEUR. L'écran ne
+ * tombait pas, IL MENTAIT — le mode de panne de la décision 79, celui qui a bloqué le lot 20.
+ * CE QUE LA FORME CORRIGÉE GARANTIT, ET C'EST LA SEULE PROPRIÉTÉ QUI COMPTE ICI : toute défaillance du
+ * mécanisme — appariement raté, capacité non résoluble, filtre non chargé, « get_routes() » appelée hors
+ * dispatch — LAISSE LA TABLE INTACTE. ELLE PEUT ÉCHOUER EN FUYANT, ELLE NE PEUT PAS ÉCHOUER EN MENTANT ;
+ * la forme du matin avait l'inversion exacte.
+ * ET LA SONDE QUI DEVAIT L'ATTRAPER NE LISAIT PAS CE QUE L'ÉCRAN AFFICHE : S1 a été jouée, dans un vrai
+ * navigateur, et elle a mesuré que l'éditeur s'ouvre et ENREGISTRE — c'est vrai — puis a consigné « il
+ * perd une liste, il ne tombe pas ». Entre « la liste des auteurs est vide » et « le panneau ANNONCE
+ * qu'il n'y a pas d'auteur » il y a toute la différence entre une fonction perdue et une AFFIRMATION
+ * FAUSSE lue par l'éleveuse. Le détail, les six faits du cœur qui portent le correctif et le motif de
+ * chaque geste sont écrits en tête de « identite-des-comptes.php ».
+ *
+ * SIXIÈME ACTE DATÉ DU 2026-09-08 (#56) — « SIX, ET PAS SEPT » DEVIENT SEPT, ET LE SEPTIÈME N'EST PAS
+ * UNE GARDE DE CEINTURE. Le troisième acte daté ci-dessus écrit « SIX, ET PAS SEPT : aucune garde de
+ * ceinture n'est écrite, et il ne faut pas en écrire "au cas où" ». LA PHRASE RESTE JUSTE SUR CE QU'ELLE
+ * INTERDIT, et le comptage a cessé de l'être : le septième hook de front de ce module est
+ * « rest_pre_dispatch » 10, rappel « armer_le_retrait_des_routes_d_identite » (#56, correctif du
+ * 2026-09-08). CE N'EST PAS UNE CEINTURE — une ceinture protège deux fois contre le même cas, et celle
+ * qu'on refusait ici en était une. Celui-ci est UN ARMEMENT : il porte LA DÉCISION que le sixième hook
+ * ne peut pas prendre, faute de connaître le demandeur au moment où le cœur lui passe la table. Sans lui,
+ * le sixième retirait pour tout le monde ; AVEC LUI, LE SIXIÈME EST JUSTE. Un hook de plus qui rend le
+ * précédent correct n'est pas un hook « au cas où », et confondre les deux ferait retirer celui-ci au
+ * premier ménage.
+ *
+ * SEPTIÈME ACTE DATÉ DU 2026-09-08 (#56) — LA QUATRIÈME SURFACE SILENCIEUSE GAGNE DES CAUSES, PAS UNE
+ * SŒUR. Il y en a toujours QUATRE, PAS CINQ : le correctif n'ouvre aucune surface neuve, il ajoute des
+ * CAUSES à la quatrième. SON ÉNONCÉ CI-DESSUS PARLE DE « l'un des trois rappels » de
+ * « identite-des-comptes.php » : LE FICHIER EN PORTE QUATRE DEPUIS LE CORRECTIF — trois qui retirent ou
+ * substituent, un qui arme — et la phrase se lit désormais des quatre. Aux causes déjà nommées
+ * s'ajoutent : le rappel d'armement non accroché ou perdu dans une reprise, un cœur qui cesserait
+ * d'appliquer « rest_pre_dispatch » avant « get_routes() », un cœur qui renommerait ou remanierait ses
+ * routes d'identité de sorte que l'appariement ne les couvre plus, et une capacité qui ne se
+ * résoudrait pas. TOUTES CES CAUSES FONT FUIR, AUCUNE NE FAIT MENTIR —
+ * c'est la propriété du cinquième acte, et c'est ce qui les rend tolérables là où l'inversion ne l'était
+ * pas. RIEN NE LES DIRAIT davantage qu'avant : pas une ligne au journal, pas un écran.
+ * ET LE COMPTAGE « SIX EFFETS » DU MOTIF 2 RESTE JUSTE, avec une précision qui se dit plutôt qu'elle ne
+ * se lisse : depuis le correctif, l'effet 4 ne se dit plus que d'un visiteur SANS « edit_posts ». Pour un
+ * compte qui a « edit_posts », ces deux routes répondent DÉJÀ — c'est le prix assumé, écrit au deuxième
+ * acte daté en tête de « identite-des-comptes.php ». Ce qui revient au renommage du dossier reste donc
+ * exactement ce que le module fermait : la publication à un anonyme, en une requête sans cookie.
+ *
+ * HUITIÈME ACTE DATÉ DU 2026-09-08 (#56) — LA BORNE 2 N'EST PLUS « INTACTE » AU SENS LITTÉRAL. Le
+ * quatrième acte daté ci-dessus renvoie à « identite-des-comptes.php » pour « la 2 intacte ». RIEN N'EST
+ * ÉCRIT EN BASE, et c'est toujours vrai : aucune option, aucune méta, aucun transient, aucun réglage,
+ * aucune visite de « wp-admin », et le module fonctionne toujours à la seconde où le dossier arrive par
+ * FTP. Mais le correctif introduit UN ÉTAT EN MÉMOIRE, pour le seul processus en cours — un loquet à sens
+ * unique, « drapeau_de_retrait() ». LA PHRASE JUSTE EST « SANS ÉTAT PERSISTANT », ET CE N'EST PAS LA MÊME
+ * PHRASE QUE « SANS ÉTAT ». La borne 1, elle, N'EST TOUJOURS PAS ÉTENDUE : le rappel neuf lit une route
+ * et une capacité, il rend son argument inchangé sur TOUS ses chemins, il n'amende aucune requête et
+ * n'écrit rien.
+ *
  * MESURE D'ÉGALITÉ DU CONTRAT #24 §6.2, RELEVÉE LE 2026-09-07 : « le nombre de contenus portant
  * _mtb_robots_source, le nombre rendus noindex et le nombre retirés du plan du site sont ÉGAUX » cesse
  * d'être vrai, et ce n'est pas une régression. Le fait hérité ne PRODUIT plus la directive, il a été
@@ -270,7 +326,7 @@ add_action( 'template_redirect', __NAMESPACE__ . '\\repondre_404_au_sous_plan_re
 add_filter( 'request', __NAMESPACE__ . '\\neutraliser_la_requete_d_auteur', 10, 1 );
 
 // Vie privée des comptes : ni la route REST, ni les flux, ni l'oEmbed ne publient plus une identité
-// (dette T113, issue #56, 2026-09-08). Le détail, les quinze faits du cœur et le motif de chaque garde
+// (dette T113, issue #56, 2026-09-08). Le détail, les vingt et un faits relevés et le motif de chaque garde
 // — comme de chaque garde REFUSÉE — sont écrits en tête de « identite-des-comptes.php » et au-dessus de
 // chacun des trois rappels ; ce renvoi ne les recopie pas, il dit ce qu'on ne verrait pas d'ici.
 // TROIS RAPPELS GROUPÉS PARCE QU'ILS FERMENT UN SEUL SUJET PAR TROIS TRANSPORTS. Leur mode de panne est
@@ -294,9 +350,46 @@ add_filter( 'request', __NAMESPACE__ . '\\neutraliser_la_requete_d_auteur', 10, 
 // Les deux gardes envisagées pour le premier rappel — « is_admin() » et
 // « defined( 'REST_REQUEST' ) » — sont REFUSÉES, chacune avec son motif propre, et LE MOTIF DE #49 NE S'Y
 // RECOPIE PAS : il se remplace. Le motif neuf est écrit au-dessus de « retirer_les_routes_d_identite() ».
-// LA SEULE GARDE DU LOT EST « is_admin() » SUR LE DEUXIÈME RAPPEL, et elle est obligatoire :
-// « wp-admin/includes/class-wp-posts-list-table.php:1284 » appelle « get_the_author() », donc sans elle
-// les écrans Pages et Articles afficheraient le titre du site comme auteur de tout, EN SILENCE.
+// LA SEULE GARDE DE CONTEXTE DE CES TROIS RAPPELS EST « is_admin() » SUR LE DEUXIÈME, et elle est
+// obligatoire : « wp-admin/includes/class-wp-posts-list-table.php:1284 » appelle « get_the_author() »,
+// donc sans elle les écrans Pages et Articles afficheraient le titre du site comme auteur de tout, EN
+// SILENCE. « LA SEULE GARDE DU LOT » AURAIT CESSÉ D'ÊTRE JUSTE LE JOUR MÊME : le correctif ajoute plus
+// bas une CONDITION DE CAPACITÉ sur le rappel d'armement, et une lecture de drapeau en tête du premier
+// rappel — ni l'une ni l'autre n'est une garde de CONTEXTE, et c'est pourquoi la phrase est bornée aux
+// trois rappels ci-dessous plutôt que rayée.
 add_filter( 'rest_endpoints', __NAMESPACE__ . '\\retirer_les_routes_d_identite', 10, 1 );
 add_filter( 'the_author', __NAMESPACE__ . '\\substituer_le_nom_d_auteur', 10, 1 );
 add_filter( 'oembed_response_data', __NAMESPACE__ . '\\substituer_l_auteur_oembed', 10, 1 );
+
+// NE JAMAIS « HARMONISER » LES QUATRE RAPPELS DE CE GROUPE. Ils se ressemblent de loin et n'ont ni le
+// même rôle, ni les mêmes gardes — et ils sont NOMMÉS plutôt que numérotés, l'ordre d'accroche ci-dessus
+// n'étant pas l'ordre d'exécution : « armer_le_retrait_des_routes_d_identite() » ARME,
+// « retirer_les_routes_d_identite() » RETIRE, « substituer_le_nom_d_auteur() » SUBSTITUE sous une garde
+// « is_admin() », « substituer_l_auteur_oembed() » ÉCRASE sans garde. Uniformiser leurs gardes casserait
+// « is_admin() » sur « substituer_le_nom_d_auteur() » — LA GARDE LA PLUS GRAVE DU FICHIER : sans elle,
+// les écrans Pages et Articles afficheraient le titre du site comme auteur de toutes les lignes, en
+// silence. Et l'appariement de route du rappel d'armement ne se recopie NULLE PART ailleurs : sous
+// « rest_endpoints », le même geste détruirait quatre routes sur six (interdit gelé du §15).
+//
+// ARMEMENT DU RETRAIT REST (correctif de régression, #56, 2026-09-08). Le rappel de « rest_endpoints »
+// ci-dessus retirait pour TOUT LE MONDE, éleveuse comprise : son écran d'édition annonçait « (Aucun
+// auteur/autrice) » sur un contenu qui a un auteur. Ce rappel-ci décide, AVANT que la table des routes
+// ne soit calculée, s'il faudra l'amputer ; « rest_pre_dispatch » est le PREMIER geste de
+// « WP_REST_Server::dispatch() » (« class-wp-rest-server.php:1078 ») et la table n'est demandée qu'en
+// l. 1167, sur un « get_routes() » QUI N'EST PAS MÉMOÏSÉ (l. 956-973). L'utilisateur courant y est déjà
+// résolu SUR LE CHEMIN DE « serve_request() » — « check_authentication() » l. 436, « dispatch() »
+// l. 439 ; sur les chemins qui passent par « rest_do_request() », il l'est PAR DÉDUCTION du contexte
+// appelant, et la portée exacte de ce fait est écrite sous les faits 2 et 3 en tête de
+// « identite-des-comptes.php ».
+// IL NE COURT-CIRCUITE JAMAIS : il rend son premier argument inchangé sur tous ses chemins, y compris
+// quand il arme. Rendre autre chose avalerait le court-circuit d'un tiers, ou fabriquerait un corps de
+// notre main — l'oracle de second ordre pour lequel l'option B du §4.7 a été écartée.
+// TROIS ARGUMENTS, PARCE QUE LA REQUÊTE EST LE TROISIÈME. PRIORITÉ 10 : aucun autre rappel de
+// « rest_pre_dispatch » n'existe dans « wp-content/ » — vérifié par recherche le 2026-09-08 — donc
+// aucune concurrence, et aucun ordre à imposer avec les trois accroches ci-dessus.
+// LA CAPACITÉ EST « edit_posts » ET LA GARDE EST SOUSTRACTIVE : le cœur accorde déjà la collection
+// « users » à un anonyme par défaut, si bien que ce rappel ne donne JAMAIS plus que le cœur — il ne fait
+// que retirer. Son pire échec est « nous n'avons rien retiré ». Le motif de cette capacité-là plutôt que
+// « list_users » ou « edit_others_posts », et l'inversion de sûreté qui commande d'apparier
+// GÉNÉREUSEMENT ici et LITTÉRALEMENT sous « rest_endpoints », sont écrits au-dessus du rappel lui-même.
+add_filter( 'rest_pre_dispatch', __NAMESPACE__ . '\\armer_le_retrait_des_routes_d_identite', 10, 3 );

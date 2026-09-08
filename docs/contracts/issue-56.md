@@ -1236,3 +1236,313 @@ outil d'exécution** plutôt que de le maquiller. **0 erreur.**
    **cela ne décide toujours de rien** sous un retrait inconditionnel.
 5. **Les quinze ancres du cœur de `identite-des-comptes.php` sont épinglées à WordPress 6.9** et **se
    périmeront en silence** : **dette T114, issue #57, que #56 alimente et ne solde pas.**
+
+---
+
+# Amendement — 2026-09-08, issue #56, correctif BLOQUANT : la cible était trop forte, et l'excès a fait mentir un écran
+
+> Ajout daté, conforme à la **convention d'amendement** déclarée en tête. **Le §4 et le §7 restent
+> lisibles tels qu'ils ont été gelés ; cet amendement en contredit plusieurs passages ouvertement, et
+> dit pourquoi.** *Un contrat qu'on réécrit en silence ne prouve plus rien ; un contrat qu'on amende par
+> écrit garde la trace de ce qu'il a cru.*
+
+## A. Le défaut livré — un écran qui ment, et c'est une autre chaîne qui l'a vu
+
+**Mesuré par la chaîne #54, puis REPRODUIT par moi dans un vrai Chrome piloté en CDP, session Éditrice
+réelle**, sur l'écran d'édition de la **page 318** (`post_author = 1`) :
+
+| Relevé | Valeur |
+|---|---|
+| Panneau **« Auteur/autrice »** | **« (Aucun auteur/autrice) »** |
+| Scrutations | **12 sur 12, valeur unique — état STABLE, pas un transitoire** |
+| `getEditedPostAttribute('author')` | **`1`** — *le contenu A un auteur* |
+| `wp.apiFetch('/wp/v2/users/1')` **en session** | **`rest_no_route`** |
+| `wp.apiFetch('/wp/v2/users/me')` | **répond** — *c'est pourquoi l'éditeur démarrait et enregistrait* |
+
+**Cause** : `retirer_les_routes_d_identite()` était accrochée à `rest_endpoints` **sans aucune
+condition** (§4.1, §4.3, §6 rappel 1 geste 1), donc elle amputait la table des routes **aussi pour
+l'éditeur de blocs authentifié**.
+
+> **Portée réelle : aucun écran d'édition de ce site ne pouvait plus afficher le nom de l'auteur d'un
+> contenu, pour aucun compte.**
+
+**Ce n'est pas la perte d'une liste, c'est l'affichage d'une valeur fausse** — sans message, sans terme
+technique, **sans un octet au journal**. C'est la **décision 79** mot pour mot, et c'est le mode de panne
+qui a bloqué le lot 20 **sur ce module même**.
+
+### Ce que le rapport de cette chaîne avait dit, et pourquoi c'était faux
+
+Le rapport livré écrivait : « *il perd la liste déroulante du panneau Auteur, qu'elle n'utilise pas* »
+et « *le mode de panne du lot 20 a été vu AVANT d'être livré, pas après* ». **La première phrase
+décrivait une soustraction là où il y avait un mensonge. La seconde était vraie du rappel `the_author`
+et fausse du rappel `rest_endpoints`.** Elles sont corrigées ici, ouvertement.
+
+## B. Le trou de la sonde S1 — c'est le point qui vaut pour les lots suivants
+
+Le §11 disait « **S1 n'est pas facultative** », et elle a bien été jouée (amendement précédent, §B).
+**Elle a vérifié que l'écran ne TOMBE pas ; elle n'a jamais lu ce qu'il AFFICHE.**
+
+| Ce que S1 relevait | Ce qu'elle ne relevait pas |
+|---|---|
+| l'éditeur s'ouvre · 6 blocs chargés · `getCurrentUser()` résout · `savePost()` enregistre · zéro exception JS | **le texte rendu du panneau « Auteur/autrice »** |
+
+> **Une sonde qui mesure la mécanique et jamais le rendu ne peut pas voir un mensonge : elle ne peut
+> voir qu'une chute.** Et « sept écrans identiques à l'octet » ne couvrait rien ici — **ces tailles
+> mesurent le HTML initial, pas ce que le JavaScript peint ensuite.**
+
+**Second angle mort, de même famille** : la sonde portait sur la page **6**, dont l'auteur **était**
+l'utilisateur courant. Or `/users/me` restait servie. **Le seul cas qui pouvait mentir est celui où
+l'auteur du contenu N'EST PAS l'utilisateur courant** — la page 318. *Un écran choisi au hasard n'est
+pas un échantillon.*
+
+**Relève du §11** : S1 devient **S1a–S1d**, et son premier relevé est désormais **le texte affiché par
+le panneau**, sur un contenu **dont l'auteur n'est pas l'utilisateur courant**.
+
+## C. La cible était trop forte — c'est la racine, et elle est dans ce contrat
+
+Le §7.1 a gelé comme propriété à atteindre :
+
+> « indiscernable **à l'octet et au md5** de n'importe quelle route absente »
+
+**Ce n'est pas la propriété que l'issue demande.** La tâche 4 demande :
+
+> « ne plus permettre de **distinguer un compte existant d'un compte inexistant**, ni de lire le nom
+> civil de l'éleveuse »
+
+**Les deux ne sont pas la même chose.** Ce qui ferme l'oracle, c'est **l'uniformité de la réponse entre
+un identifiant qui existe et un identifiant qui n'existe pas** — **pas** le fait que cette réponse
+ressemble à une route absente. Qu'un anonyme puisse déduire « ce site a une route `users` » n'est **pas**
+un oracle sur les comptes : **tout WordPress en a une.**
+
+> **Le contrat avait choisi la propriété la plus forte des deux, et c'est cet EXCÈS — pas l'objectif —
+> qui a coûté l'administration.** *Une cible trop forte ne se paie pas en rigueur : elle se paie en
+> dégâts ailleurs.*
+
+**§7.1 est relevé.** La propriété visée est désormais : **« pour tout demandeur sans `edit_posts`, la
+réponse est la même que l'identifiant existe ou non, et ne publie ni slug, ni nom, ni identifiant de
+connexion. »** L'égalité avec la route absente **survit comme un bonus mesuré** — le cœur écrit toujours
+le corps — **mais elle cesse d'être la cible**, et aucun rapport ne doit plus la présenter comme telle.
+
+## D. La forme corrigée — `rest_pre_dispatch` ARME, `rest_endpoints` RETIRE
+
+**Le rappel `retirer_les_routes_d_identite()` n'est PAS remplacé** : sa signature, son crochet, sa
+priorité et **ses deux `unset()` littéraux** sont intacts au caractère près. Il gagne **une seule ligne
+de garde**.
+
+```
+armer_le_retrait_des_routes_d_identite( $resultat, $serveur, WP_REST_Request $requete )  — rest_pre_dispatch 10, 3 args
+    1. si la route ne commence pas par « /wp/v2/users » → rendre $resultat
+    2. si ! current_user_can( 'edit_posts' )            → armer le drapeau
+    3. rendre $resultat, TOUJOURS. Jamais de court-circuit.
+
+retirer_les_routes_d_identite( array $routes ): array  — rest_endpoints 10, INCHANGÉE + 1 ligne
+    0. si le drapeau n'est pas armé → rendre $routes INTACT
+    1..3. les deux unset() littéraux, tels quels
+```
+
+**Pourquoi ARMER et non RÉPONDRE — et c'est une objection que ce contrat avait DÉJÀ gelée.** Le §4.7
+option B écarte un crochet parce qu'« **elle rend un corps que nous fabriquons, donc distinguable d'une
+route absente** ». Répondre nous-mêmes depuis `rest_pre_dispatch` ressusciterait exactement ce défaut,
+**et nous forcerait à recopier une chaîne du cœur** (`rest_user_cannot_view`) dans un fichier où l'i18n
+est interdite — une ancre T114 de plus. **Ici, le corps reste écrit par le cœur.**
+
+### L'inversion de sûreté — c'est le cœur du correctif, et elle DOIT être écrite
+
+| Crochet | Ce que l'appariement décide | Sur-apparier | Sous-apparier |
+|---|---|---|---|
+| `rest_endpoints` | **ce qu'on RETIRE** | **catastrophique** — un préfixe tuerait 4 routes sur 6, et **la panne serait invisible en anonyme** | inoffensif |
+| `rest_pre_dispatch` | **si on ARME** | **inoffensif** — armer sur `/users/me` ne retire pas `/me`, sa clé n'étant pas dans les `unset()` | **fuite** |
+
+> **Même mot, motif opposé.** On aparie donc **généreusement** dans l'armement — `0 === strpos()`, idiome
+> du dépôt — et **littéralement** dans le retrait. **L'interdit de préfixe du §15 reste ENTIER à
+> l'intérieur de `retirer_les_routes_d_identite()`, et il est relevé pour l'armement seul.**
+
+### La propriété architecturale — elle vaut plus que le correctif
+
+> **Toute défaillance de ce mécanisme — appariement raté, capacité non résoluble, filtre non chargé,
+> `get_routes()` appelée hors dispatch — laisse le drapeau DÉSARMÉ, donc la table INTACTE.**
+> **Cette forme peut échouer EN FUYANT ; elle ne peut pas échouer EN MENTANT.**
+> **La forme livrée le matin du 2026-09-08 avait l'inversion exacte.**
+
+### La capacité : `edit_posts`, et la garde est SOUSTRACTIVE
+
+**Laisse passer** : Administrateur, Éditrice, Auteur, Contributeur. **Arrête** : anonyme, Abonné.
+**L'argument qui ferme la discussion** : *le cœur accorde déjà la collection `users` à un anonyme par
+défaut* — mesuré, `200 · 672` sans cookie. **Notre garde ne peut donc jamais donner plus que le cœur :
+elle ne fait que retirer.** Son pire échec est « nous n'avons rien retiré » ; jamais « nous avons exposé
+davantage ».
+**Pas `list_users`** — l'Éditrice ne l'a pas, la garde ne mordrait pas pour elle et le défaut
+survivrait. **Pas `edit_others_posts`** — elle armerait pour un Auteur, dont l'écran mentirait : *le
+défaut déplacé sur un rôle que le site peut créer demain.* **Pas `is_user_logged_in()`** — interdite à
+l'extension.
+
+## E. Le relevé APRÈS — anonyme
+
+**Contexte** : 2026-09-08, WordPress 6.9, depuis le conteneur, sans cookie. `php -l` : **0 erreur.**
+
+**La propriété visée est ATTEINTE — les DIX adresses rendent le même triplet et le même md5 :**
+
+| Adresse | Après |
+|---|---|
+| `/wp-json/wp/v2/nexiste-pas-du-tout` *(référence rejouée)* | `404 · 183 · 4015aeea866cc65662e69632c8038bef` |
+| `/wp-json/wp/v2/users` (collection) | **idem** |
+| `/wp-json/wp/v2/users/1` · `/2` — **COMPTES QUI EXISTENT** | **idem** |
+| `/wp-json/wp/v2/users/3` · `/999` — **QUI N'EXISTENT PAS** | **idem** |
+| `/wp-json/wp/v2/users?search=fab` | **idem** |
+| `/?rest_route=/wp/v2/users` · `/users/1` · `/users/3` | **idem** |
+
+> **Existant et inexistant sont indiscernables, sous les deux écritures, collection et élément
+> compris.** *M-R1 est répondue par l'observable : si la forme `?rest_route=` avait échappé à
+> l'appariement, elle rendrait 200 — elle rend 404·183.*
+
+**Routes préservées, inchangées à l'octet** : `/users/me` `401 · 117` · les deux
+`application-passwords` mesurées `501 · 138`. *Ce sont précisément les routes volontairement
+sur-appariées : la mesure confirme que l'armement ne les retire pas.*
+
+**`?_embed=1` anonyme** : `_embedded.author` porte `rest_no_route`, **zéro occurrence de `slug":"admin"`
+et de `/author/admin/`** sur `pages` et `posts`. **La porte de derrière reste fermée.**
+
+**Flux et oEmbed, inchangés** : `dc:creator` et `<name>` rendent le titre du site, **zéro `admin`** ;
+oEmbed d'une portée → `Berger Hollandais du Mont Brabant | http://localhost:3005`.
+
+**Non-régressions, identiques à l'octet et au md5** : `/` `25 491` · `/portees/` `31 819` · `/travail/`
+`35 411` · `/nexiste-pas-du-tout/` `404 · 18 284 · d9f9bae7…` · **`/author/admin/` et `/?author=1`
+`404 · 18 284`** (#49) · **`/wp-sitemap-users-1.xml` `404 · 18 284`** (#50) ·
+**`posts?author=1` `200 · 1 847`** — la garde REST de #49 mord toujours.
+
+## F. Le relevé APRÈS — authentifié, et **S1 CORRIGÉE**
+
+**S1a — le cas qui avait menti**, page 318, `post_author = 1`, session **Éditrice** (compte 2), vrai
+Chrome piloté en CDP :
+
+| Relevé | Avant correctif | **Après** |
+|---|---|---|
+| **Texte du panneau « Auteur/autrice »** | **« (Aucun auteur/autrice) »** | **« admin »** — *le nom réel de l'auteur du contenu* |
+| Scrutations | 12/12 identiques | **12/12 identiques — état stable** |
+| `wp.apiFetch('/wp/v2/users/1')` | `rest_no_route` | **l'objet compte** |
+| `wp.apiFetch('/wp/v2/users?context=view&_fields=id,name')` | `rest_no_route` | **les deux comptes** |
+| Réponses HTTP ≥ 400 | **deux**, sur `wp/v2/users` | **une seule** — voir ci-dessous |
+
+**La seule réponse ≥ 400 restante est du CŒUR, pas de nous — et c'est mesuré, pas affirmé.**
+`?who=authors&per_page=100&context=edit` rend `403 rest_forbidden_context` (« vous n'avez pas
+l'autorisation de modifier des comptes ») à l'Éditrice. **Discriminateur joué** : la **même** sonde en
+session **Administrateur** rend **les données complètes et ZÉRO réponse ≥ 400**. Or ni l'un ni l'autre
+n'arme le drapeau (tous deux ont `edit_posts`) — *et si le drapeau avait armé, la réponse serait
+`rest_no_route`, pas `rest_forbidden_context`.* **C'est le contrôle de capacité du cœur pour un rôle
+sans `list_users`, et il préexiste à #56.** Le panneau affiche quand même le bon nom, l'éditeur
+retombant sur `context=view`.
+
+**S1 en session Administrateur** : panneau → **« admin »**, 12/12, **zéro réponse ≥ 400.**
+
+**S3 — la garde `is_admin()` du rappel 2 est intacte** : la colonne « Auteur » de l'écran Pages rend
+**`admin` 9 fois** et **le titre du site 0 fois**.
+
+**P13, contrainte 4 — le contrôle qui remplace l'argument perdu du §4.1** :
+`/wp-json/` **anonyme** = `249 889 o`, md5 `c7c60bed21282b6015857ff9f855d54f` ·
+`/wp-json/` **en session** = `249 889 o`, **même md5**.
+> **IDENTIQUES À L'OCTET. Aucun index conditionnel, aucune surface empoisonnable en cache.** La route
+> de l'index est `/` : elle n'arme jamais. *L'objection du §4.1 n'est pas contournée, elle est
+> satisfaite — plus complètement qu'avant, l'index étant redevenu identique pour tous.*
+
+**Écrans d'administration, session Éditrice** : `edit.php?post_type=mtb_portee` **175 431**,
+`?post_type=page` **161 962**, `?post_type=post` **134 750**, `upload.php?mode=list` **186 838**,
+`upload.php` **186 608** — **tous identiques à l'octet.**
+
+### Les deux écarts non nuls, attribués et non arrondis
+
+1. **Les deux écrans d'éditeur pèsent +413 octets par rapport à la ligne de base du matin**
+   (`post.php?post=6` **765 695** contre 765 282 ; `post-new.php` **760 486** contre 760 073).
+   **Ce n'est PAS mon correctif — mesuré, pas supposé** : en désaccrochant mon `rest_pre_dispatch` le
+   temps d'un relevé (module REST donc totalement inerte), les mêmes écrans rendent **765 695** et
+   **760 486**, à l'octet. **Le delta vient de l'arbre partagé** — les chaînes #54 et #55 y écrivent
+   depuis. **Mon correctif coûte donc ZÉRO octet sur ces écrans**, et les **−53 octets** de
+   `targetHints` consignés à l'amendement précédent sont **intégralement remboursés.**
+2. **`profile.php` : 125 830 puis 125 826 puis 125 826, MODULE DÉSARMÉ.** **La page est instable de
+   ±4 octets par elle-même**, indépendamment de #56 — même famille que l'instabilité de `/contact/`
+   consignée à #49, amendement §C.2. *Consigné plutôt que présenté comme un effet du correctif.*
+
+## G. **P11 ÉCHOUE, et ce n'est pas moi — dit plutôt que tu**
+
+Le §11 exige « `debug.log` 0 octet avant, 0 octet après ; **tout octet écrit est un échec à
+signaler** ». **Il pèse 2 838 octets.** Il est donc signalé.
+
+**Contenu : une seule ligne distincte**, répétée à chaque requête :
+`[mtb-core] module « admin/vocabulaire-page » ignoré : aucun bootstrap.php lisible dans ce dossier.`
+
+**Zéro ligne concerne ce module** — vérifié par recherche sur `indexation-heritee`,
+`identite-des-comptes`, `rest_endpoints`, `rest_pre_dispatch`, `the_author`, `oembed`. C'est
+`includes/admin/vocabulaire-page/`, **l'empreinte de la chaîne #54, en cours d'écriture dans le même
+arbre de travail** ; le dossier n'est d'ailleurs plus sur le disque à l'heure de ce relevé.
+
+> **Ce n'est pas mon échec, et ce n'est pas non plus un contrôle vert.** *Une ligne de base de lot
+> partagée entre trois chaînes concurrentes cesse d'être un témoin fiable dès que l'une d'elles est à
+> mi-chemin — et il vaut mieux l'écrire que de rendre un P11 « vert » qui ne l'est pas.* **À la main du
+> lead**, avec le lot.
+
+## H. Les relèves de contrat — chacune nommée
+
+| § | Ce qui est relevé |
+|---|---|
+| **§4.1** | « **retrait INCONDITIONNEL** : aucune capacité, aucune session, aucune garde de contexte » → **le retrait est conditionné à `current_user_can( 'edit_posts' )`, par l'intermédiaire d'un armement.** L'objection d'empoisonnement d'index **n'est pas abandonnée : elle est SATISFAITE** — la route de l'index n'arme jamais, et **P13 le mesure**. L'argument de l'appelant inconnu de `:1527` **tient toujours** : ce qui y est lu est un drapeau dont l'armement a exigé un demandeur sans `edit_posts`, et le demandeur ne change pas au sein d'un processus |
+| **§4.3** | « ce rappel n'a AUCUNE garde, et c'est une propriété » → **il en a une**, et les deux interdits (`is_admin()`, `defined( 'REST_REQUEST' )`) **restent entiers** : la condition n'est pas une garde de **contexte**, c'est une garde de **capacité** |
+| **§4.4** | « les laisser annoncées serait l'oracle *annoncée mais absente* » → **écrite sous la mauvaise cible, relevée.** L'index réannonce les six clés à tout le monde, et **ce n'est pas un oracle sur les comptes** |
+| **§6, rappel 1** | Geste 1 « **Aucune garde. Le rappel court toujours** » → **une ligne de garde en tête**, dont le mode de panne est *la régression du §A* |
+| **§7.1** | La propriété visée — voir §C |
+| **§7.1 / P4** | « exactement les quatre clés préservées » → **les SIX clés**, et `/wp-json/` revient à **249 889** |
+| **§8** | Ligne `index_rest` (« les deux clés disparaissent aussi de l'index — effet voulu ») → **relevée** : l'index est intact pour tous. Trois états neufs : `demandeur_sans_capacite`, `demandeur_avec_capacite`, `sous_requete_d_embarquement` |
+| **§10** | « **`current_user_can()` est délibérément absent** » → **il est présent, dans le seul rappel d'armement.** Et « **aucun compte n'est lu** » devient : « **aucun rappel ne lit un compte AUTRE que celui du demandeur ; aucun ne lit un compte par identifiant, ni un slug, ni un nom civil.** » Les rappels 2 et 3 gardent la propriété d'origine intégralement |
+| **§11 / P11** | Voir §G : **échoue, pour une cause extérieure à ce module** |
+| **§11 / P12** | « chaque littéral une seule fois EN CODE » → **`/wp/v2/users` apparaît TROIS fois en code**, toutes dans le même fichier : `strpos` de l'armement (l. 385) et les deux `unset()` (l. 500-501). **Elles ne se factorisent PAS en constante** : une constante partagée lierait deux appariements dont les inversions de sûreté sont **opposées**, et inviterait un successeur à « factoriser » les `unset()` en boucle — **l'interdit du §15 réintroduit par une bonne intention.** P12 attend désormais **trois** occurrences |
+| **§11 / S1** | Devient **S1a–S1d** et relève **le texte affiché par le panneau** — voir §B |
+| **§13.1** | L'énumération des hooks de front du groupe `migration/` passe de **HUIT à NEUF** ; ce module de **SIX à SEPT**. Le septième **n'est pas une garde de ceinture** : c'est un armement |
+| **§13.4** | Borne 2 **intacte — rien en base**. « sans état » devient « **sans état PERSISTANT** : un drapeau en mémoire, mort avec le processus » |
+| **§15** | L'interdit de préfixe est **borné à `retirer_les_routes_d_identite()`**, et **relevé avec son motif inversé** pour l'armement — voir §D |
+| **§16, arbitrage 3** | « **Inconditionnel** » → **conditionnel à la capacité, l'objection d'index étant satisfaite autrement** |
+| **§1** | « trois `add_filter` » → **quatre** |
+
+## I. Résidus neufs
+
+| # | Résidu | Statut |
+|---|---|---|
+| **R12** | Dans un même processus, une fois le drapeau armé par un dispatch anonyme d'une route de comptes, les `get_routes()` suivants du **même processus** voient la table amputée. **Anonyme uniquement** ; à URL identique le corps reste fonction de l'URL. **Aucun désarmement n'est écrit** : posé trop tard il serait décoratif, posé trop tôt il **fuirait**. Ne pas l'écrire est la plus sûre des deux | Déclaré |
+| **R13** | **Pour tout demandeur détenant `edit_posts`, l'identité des comptes redevient lisible par la REST.** La propriété livrée se rétrécit de « personne » à « aucun visiteur sans capacité d'édition ». **C'est le prix assumé du correctif** — sans lui, l'écran ment. *Un rapport qui l'omettrait rapporterait une demi-fermeture comme entière* | Déclaré, **assumé** |
+| **R14** | Les ancres du cœur `:1078`, `:1167`, `:956-973`, `:436`, `:439` vivent **dans les deux fichiers du module**. À la montée de version (T114), l'un sera corrigé et l'autre **divergera en silence** | Déclaré |
+
+## J. Ce qui n'est PAS mesuré — obligatoire
+
+1. **Le chemin des sous-requêtes `?_embed=1` et du préchargement d'administration** : `rest_do_request()`
+   appelle `dispatch()` est **relevé** (`rest-api.php:592-594`) ; que `current_user_can()` y rende le
+   même verdict que sur une requête servie par HTTP est **DÉDUIT**. Le fait `:436`/`:439` est relevé
+   **dans `serve_request()`**, et **sa portée ne s'étend pas d'elle-même** aux autres chemins.
+   *L'observable — le panneau qui affiche de nouveau `admin` — ne remplace pas cette mesure ; il la rend
+   seulement moins urgente.*
+2. **L'appelant de `get_routes()` en `:1527`** — toujours non identifié. **Ne décide de rien** : ce qui y
+   est lu est un drapeau, pas une capacité.
+3. **Les en-têtes `Cache-Control` d'une réponse REST anonyme.** L'index ne varie pas (P13) ; **les
+   réponses `users`, elles, varient selon le demandeur.** *Un frontal qui les mettrait en cache pourrait
+   servir à une session la réponse d'un anonyme — c'est le seul chemin de mensonge résiduel de cette
+   forme, et il n'est pas mesuré.*
+4. **L'énumération de TOUS les endroits où l'administration imprime le nom d'une personne.** Trois
+   chemins sont connus : `the_author` (colonnes de liste, gardé), `wp_dropdown_users()` (SQL direct,
+   jamais touché), `/wp/v2/users` (panneau Auteur, corrigé). **Le bandeau « Dernière modification
+   par… », l'écran des révisions, le filtre « Tous les auteurs », la colonne « Mis en ligne par » de la
+   Médiathèque et la modération des commentaires n'ont JAMAIS été regardés.** *Le défaut n'était pas que
+   S1 était mal écrite : c'est qu'on avait vérifié UN écran en croyant vérifier LA propriété.* **Mesure
+   due, à jouer une fois pour le projet, pas par issue.**
+5. **Une ancre corrigée sur relevé, et c'est une erreur de ma main** : le fichier écrivait
+   `rest_pre_dispatch` « **PREMIÈRE INSTRUCTION** de `dispatch()` ». **C'est faux** — `dispatch()` ouvre
+   en `:1062` sur `$this->dispatching_requests[] = $request;`. La formule juste est « **premier filtre**
+   de la méthode ». **La conclusion — l'armement précède `get_routes()` en `:1167` — est intacte.**
+   Signalée par la passe de refacto, qui a **refusé de deviner** ; corrigée avant tout commit.
+6. Les points du §14 d'origine restent inchangés.
+
+## K. La passe de refacto
+
+**Zéro ligne exécutable modifiée** — prouvé par le rejeu : les dix adresses anonymes, `/users/me`, `/`,
+`/author/admin/`, l'index et `dc:creator` rendent des md5 **identiques** après les corrections de prose.
+
+Elle a de nouveau trouvé **la même faute que la fois précédente, deux fois** : une **DÉDUCTION énoncée
+comme une MESURE**, sur le chemin des sous-requêtes `?_embed=1` et sur la portée du fait `:436`/`:439`.
+Elle a rectifié quatre décomptes rendus faux par le correctif, et **signalé l'ancre `:1078` sans la
+corriger**, faute de pouvoir l'ouvrir. **Le `php -l` a été joué par le lead**, l'agent ayant **déclaré
+n'avoir aucun outil d'exécution** — pour la deuxième fois, et c'est la bonne conduite.

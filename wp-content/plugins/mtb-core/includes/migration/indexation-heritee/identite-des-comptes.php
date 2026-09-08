@@ -126,6 +126,273 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Résidu nommé, non masqué.
  */
 
+/*
+ * ACTE DATÉ DU 2026-09-08 (#56, correctif de régression) — SIX FAITS DE PLUS, RELEVÉS DANS LE CONTENEUR,
+ * WordPress 6.9 : CINQ DU CŒUR (faits 16 à 20) ET UN DU DÉPÔT (fait 21). AUCUN N'EST DÉDUIT, ET LA SEULE
+ * CONSÉQUENCE DÉDUITE — celle du fait 19 — EST MARQUÉE COMME TELLE À SA LIGNE. AUCUN N'EN REMPLACE UN
+ * DES QUINZE CI-DESSUS : le bloc précédent n'est pas amputé, il est augmenté. Le comptage « quinze »
+ * était juste à sa date ; les faits relevés dans ce fichier sont désormais VINGT ET UN, DONT VINGT SONT
+ * DES ANCRES DU CŒUR.
+ *
+ *   16. « wp-includes/rest-api/class-wp-rest-server.php:1062 » — « dispatch() » ; et l. 1078
+ *       « apply_filters( 'rest_pre_dispatch', null, $this, $request ) », PREMIER FILTRE DE LA MÉTHODE
+ *       — ET NON SA PREMIÈRE INSTRUCTION : « dispatch() » ouvre en l. 1062 sur
+ *       « $this->dispatching_requests[] = $request; ». La nuance ne change RIEN à la conclusion, et
+ *       elle s'écrit quand même : une ancre qui fait dire à une ligne un peu plus que ce qu'elle dit
+ *       est la dette exacte que ce module paie depuis deux lots. Rectifié sur relevé le 2026-09-08,
+ *       avant tout commit. La table des routes, elle, n'est calculée qu'en l. 1167
+ *       (« $routes = $this->get_routes(); »). L'ARMEMENT PRÉCÈDE DONC LE CALCUL DE LA TABLE, DANS LE
+ *       MÊME DISPATCH : c'est ce fait, et lui seul, qui rend ce correctif possible sans rien mémoriser
+ *       d'un processus à l'autre. Le premier argument du filtre vaut « null » : le cœur y attend un
+ *       court-circuit éventuel, jamais un ordre.
+ *   17. Même fichier, l. 956-973 — « get_routes() » ouvre sur « $endpoints = $this->endpoints; » puis
+ *       applique « rest_endpoints ». AUCUNE MÉMOÏSATION : le filtre est réappliqué À CHAQUE APPEL, sur
+ *       la table brute. Un armement posé entre deux appels mord donc sur le second, et le premier reste
+ *       intact — la propriété exacte dont ce correctif a besoin.
+ *   18. Même fichier, l. 1838 — SECONDE APPLICATION de « rest_pre_dispatch », pour les requêtes
+ *       groupées. Le rappel d'armement doit donc supporter d'être appelé PLUSIEURS FOIS par processus ;
+ *       il le supporte par construction, un loquet à sens unique étant idempotent.
+ *   19. « wp-includes/rest-api.php:592-594 » — « rest_do_request() » appelle
+ *       « rest_get_server()->dispatch( $request ) ». CE SEUL ÉNONCÉ EST L'ANCRE ; CE QUI SUIT EN EST UNE
+ *       DÉDUCTION, ET ELLE EST MARQUÉE PLUTÔT QUE LISSÉE. SI les sous-requêtes de « ?_embed=1 »
+ *       empruntent « rest_do_request() », ALORS elles passent par « dispatch() », donc par
+ *       « rest_pre_dispatch », donc par leur propre « get_routes() » (fait 17), et la porte de derrière
+ *       se fermerait du même geste, sans un rappel de plus. CE QUE LA MESURE PORTE, ET CE QU'ELLE NE
+ *       PORTE PAS : M-B a été relevée le 2026-09-08 sous la forme INCONDITIONNELLE du matin (contrat
+ *       #56, amendement §A) — « _embedded.author » y portait « rest_no_route » ; QUE LA FORME ARMÉE
+ *       FERME LA MÊME PORTE N'EST PAS REJOUÉ ICI, et le chemin exact de ces sous-requêtes n'a pas été
+ *       ouvert dans le conteneur. L'écrire au présent de l'indicatif serait la faute qui a bloqué le
+ *       lot 20.
+ *   20. « wp-includes/rest-api.php:1417-1419 » — « rest_authorization_required_code() » rend
+ *       « is_user_logged_in() ? 403 : 401 ». C'EST LE CŒUR QUI REFUSE une route préservée, jamais nous :
+ *       relevé pour que personne ne croie devoir écrire un refus de sa main sur « /users/me ».
+ *   21. AUCUN AUTRE RAPPEL DE « rest_pre_dispatch » n'existe dans « wp-content/ » — vérifié par
+ *       recherche le 2026-09-08. Aucune concurrence de priorité, aucun ordre à imposer.
+ *
+ * LES FAITS 2 ET 3 SONT RAPPELÉS ICI PARCE QU'ILS PORTENT LE CORRECTIF, ET NON RECOMPTÉS. Le fait 3
+ * (l. 436 « check_authentication() » PUIS l. 439 « dispatch() ») établit que L'UTILISATEUR COURANT EST
+ * DÉJÀ RÉSOLU quand « rest_pre_dispatch » court : sans lui, « current_user_can() » y statuerait sur un
+ * utilisateur vide et armerait pour tout le monde, y compris pour l'éleveuse. Le fait 2 établit les
+ * appels de « get_routes() » HORS dispatch — l. 1373 pour l'index, l. 1527 dont l'appelant reste non
+ * identifié : sur ceux-là le drapeau est DÉSARMÉ, et l'acte daté suivant dit pourquoi c'est le bon côté
+ * de l'erreur.
+ *
+ * PORTÉE EXACTE DU FAIT 3, ET ELLE N'EST PAS TOUTE LA COUVERTURE. Il est relevé DANS « serve_request() » :
+ * il vaut pour une requête REST SERVIE PAR HTTP, et pour elle seule. Les appels de « dispatch() » qui ne
+ * viennent pas de là — préchargement de l'éditeur de blocs en administration, sous-requêtes de
+ * « ?_embed=1 » par « rest_do_request() » (fait 19) — N'ONT AUCUNE ANCRE ICI : que le demandeur y soit
+ * déjà résolu, et donc que « current_user_can() » y statue sur lui, se DÉDUIT du contexte appelant et ne
+ * se lit dans aucune ligne relevée du cœur. CE QUI EST MESURÉ SUR CE CHEMIN EST UN OBSERVABLE, PAS UNE
+ * LIGNE DU CŒUR : après correctif, en session Éditrice et dans un vrai navigateur piloté, le panneau
+ * « Auteur/autrice » de la page 318 affiche de nouveau son auteur — la même sonde qui avait lu
+ * « (Aucun auteur/autrice) ». UNE ANCRE DU CŒUR ET UN OBSERVABLE NE PROUVENT PAS LA MÊME CHOSE, et les
+ * confondre est la faute que ce module traque.
+ *
+ * CINQ ANCRES DE PLUS ÉPINGLÉES À WordPress 6.9 — les faits 16 à 20 —, qui SE PÉRIMERONT EN SILENCE
+ * comme les quinze autres. LE FAIT 21 N'EN EST PAS UNE : c'est un relevé de « wp-content/ », qui se
+ * périmerait par une reprise du dépôt et jamais par une montée de version du cœur. Dette T114
+ * (issue #57), alimentée de cinq, non soldée.
+ */
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────────────────────
+ * ACTE DATÉ DU 2026-09-08 (#56) — LA FORME LIVRÉE CE JOUR-LÀ FAISAIT MENTIR UN ÉCRAN. CORRECTIF.
+ *
+ * CE QUI A ÉTÉ LIVRÉ, ET CE QUE ÇA A FAIT. « retirer_les_routes_d_identite() » amputait la table des
+ * routes INCONDITIONNELLEMENT — donc aussi pour l'éleveuse authentifiée. Mesuré dans un vrai navigateur
+ * piloté, session Éditrice, sur l'écran d'édition de la page 318, dont le « post_author » vaut 1 : le
+ * panneau « Auteur/autrice » affichait « (Aucun auteur/autrice) », DOUZE SCRUTATIONS SUR DOUZE, état
+ * stable ; en session, « wp.apiFetch( '/wp/v2/users/1' ) » rendait « rest_no_route ». LE CONTENU A UN
+ * AUTEUR. L'ÉCRAN NE TOMBAIT PAS : IL MENTAIT. C'est le mode de panne de la décision 79, celui qui a
+ * bloqué le lot 20, et c'est la seule raison pour laquelle ce correctif existe.
+ *
+ * POURQUOI LA SONDE NE L'A PAS ATTRAPÉ, ET C'EST LA LEÇON LA PLUS CHÈRE DE L'ÉPISODE. La sonde S1 a bel
+ * et bien été JOUÉE, dans un vrai navigateur, et elle a rendu « ENREGISTRE ok ». Elle a mesuré que
+ * l'éditeur S'OUVRE ET ENREGISTRE — c'est vrai — et que « getUsers({who:'authors'}) » rend « null », ce
+ * qui a été consigné comme « il perd une liste, il ne tombe pas ». ELLE N'A PAS LU CE QUE L'ÉCRAN
+ * AFFICHE. Entre « la liste des auteurs est vide » et « le panneau ANNONCE qu'il n'y a pas d'auteur », il
+ * y a toute la différence entre une fonction perdue et une AFFIRMATION FAUSSE lue par l'éleveuse. Une
+ * sonde qui interroge l'API du navigateur sans jamais lire le texte rendu peut rapporter « acceptable »
+ * sur un écran qui ment.
+ *
+ * LA PROPRIÉTÉ ARCHITECTURALE DE LA FORME CORRIGÉE, ET ELLE VAUT PLUS QUE LE CORRECTIF LUI-MÊME.
+ * TOUTE DÉFAILLANCE DE CE MÉCANISME — appariement raté, capacité non résoluble, filtre non chargé,
+ * « get_routes() » appelée hors dispatch — LAISSE LE DRAPEAU DÉSARMÉ, DONC LA TABLE INTACTE. CETTE FORME
+ * PEUT DONC ÉCHOUER EN FUYANT ; ELLE NE PEUT PAS ÉCHOUER EN MENTANT. La forme livrée le 2026-09-08 avait
+ * L'INVERSION EXACTE — toute défaillance y laissait la table amputée — et c'est ce qui a fait afficher
+ * « (Aucun auteur/autrice) » sur un contenu qui avait un auteur.
+ *
+ * CE QUE CE CORRECTIF ABANDONNE, DIT SANS L'ADOUCIR — DEUX CHOSES, ET AUCUNE N'EST ARRONDIE.
+ *   1. L'INDEX « /wp-json/ » REDEVIENT ENTIER, POUR TOUT LE MONDE. La route de l'index est « / » : elle
+ *      ne commence pas par « /wp/v2/users », le drapeau n'est donc jamais armé pour elle et sa table est
+ *      intacte. Conséquence à dire plutôt qu'à taire : L'INDEX ANNONCE LES DEUX ROUTES QUE LE DISPATCH
+ *      REFUSE À UN ANONYME. Le §4.4 du contrat gelé appelait cela une incohérence — « annoncée mais
+ *      absente » ne se lit que d'une façon — et LA CIBLE P4 DU §7.1, qui exige que l'index ne porte que
+ *      les quatre clés préservées, ÉCHOUE DÉSORMAIS SANS QU'AUCUNE RÉGRESSION N'AIT EU LIEU. L'échange
+ *      est nommé : on troque un signal de second ordre — « quelqu'un a retiré quelque chose » — contre
+ *      l'empoisonnement d'index en cache que le §4.1 refusait, ET contre un écran qui ment. AUCUNE
+ *      IDENTITÉ DE COMPTE NE SORT PAR CET INDEX : il ne publie que des clés de route.
+ *   2. UN DEMANDEUR PORTANT « edit_posts » REÇOIT DE NOUVEAU LES DEUX ROUTES. La propriété mesurée de
+ *      l'issue — « le nom civil de l'éleveuse n'est plus publié en une requête SANS COOKIE » — tient
+ *      entière ; celle qu'on pourrait croire livrée — « plus personne ne lit jamais ces routes » — n'a
+ *      jamais été la propriété défendue, et c'est justement l'éleveuse que la forme précédente privait de
+ *      son propre écran.
+ *
+ * BORNE 2 — RELUE, ET LA PHRASE CHANGE D'UN MOT. Elle se lit plus haut « INTACTE. Aucun des trois ne
+ * dépend d'un état en base ». RIEN N'EST ÉCRIT EN BASE, et cela reste vrai : ni option, ni méta, ni
+ * transient, aucun réglage, aucune visite de « wp-admin », aucune règle de réécriture. Mais ce fichier
+ * porte désormais UN ÉTAT EN MÉMOIRE, pour le seul processus en cours — voir « drapeau_de_retrait() ».
+ * LA PHRASE JUSTE EST DONC « SANS ÉTAT PERSISTANT », ET CE N'EST PAS LA MÊME PHRASE QUE « SANS ÉTAT ».
+ *
+ * BORNE 1 — LE COMPTAGE SEUL CHANGE, ET LA BORNE PAS DU TOUT. Elle se lit plus haut « Les trois rappels
+ * de ce fichier LISENT ET RÉPONDENT », et la borne 2 « Aucun des trois » : ILS SONT QUATRE depuis ce
+ * correctif — trois qui retirent ou substituent, un qui ARME. LA BORNE N'EST PAS ÉTENDUE POUR AUTANT :
+ * le rappel neuf lit une route et une capacité, rend son argument INCHANGÉ sur tous ses chemins,
+ * n'amende aucune requête et n'écrit rien. Le motif complet est au huitième acte daté de
+ * « bootstrap.php ».
+ * ─────────────────────────────────────────────────────────────────────────────────────────────
+ */
+
+/**
+ * Loquet à sens unique : dit si la table des routes doit être amputée dans le processus en cours.
+ *
+ * NON ACCROCHÉE. Ce n'est pas un rappel, c'est LE SEUL STOCKAGE DE CE MODULE. Elle est armée par
+ * « armer_le_retrait_des_routes_d_identite() » et lue par « retirer_les_routes_d_identite() ».
+ *
+ * POURQUOI UN « static » DE FONCTION, ET NON AUTRE CHOSE. Trois formes ont été envisagées, trois sont
+ * refusées, chacune avec son motif :
+ *   UN « add_filter » POSÉ DYNAMIQUEMENT — refusé. Le §10 du contrat gèle « Hooks offerts au thème :
+ *   AUCUN », et UN DRAPEAU QUI EST UN HOOK EST UN HOOK : n'importe quel fichier du site pourrait
+ *   l'armer, le désarmer ou en changer la priorité, et le mécanisme le plus grave du module deviendrait
+ *   un point d'extension que personne n'a voulu.
+ *   UNE VARIABLE GLOBALE — refusée : inscriptible de partout, par n'importe quel code, sans une trace et
+ *   sans un grep qui le montre.
+ *   UNE PROPRIÉTÉ STATIQUE DE CLASSE — refusée : ce module n'a AUCUNE classe, et en introduire une pour
+ *   porter un booléen ferait entrer une famille de formes entière là où il n'y en avait pas.
+ *
+ * LE PRIX PAYÉ, ÉCRIT PLUTÔT QUE TU : cette fonction A DEUX RÔLES — poser et lire — ce qu'un nom seul ne
+ * dit pas, et ce qu'un successeur pressé lira mal une fois. Elle l'assume parce que c'est le seul
+ * stockage à la fois PRIVÉ AU MODULE (portée de fonction), NON INSCRIPTIBLE DE L'EXTÉRIEUR, HORS BASE ET
+ * HORS GLOBAL.
+ *
+ * BORNE 2, ET LA NUANCE EST TOUT LE SUJET : L'ÉTAT EST EN MÉMOIRE, POUR LE SEUL PROCESSUS EN COURS.
+ * Aucune option, aucune méta, aucun transient, RIEN EN BASE — donc rien à nettoyer, rien à migrer, rien
+ * qui survive à la requête. Le module devient « SANS ÉTAT PERSISTANT », ce qui n'est pas la même phrase
+ * que « sans état », et il vaut mieux l'écrire que de laisser un successeur citer l'ancienne.
+ *
+ * POURQUOI AUCUN DÉSARMEMENT, JAMAIS. Un désarmement posé TROP TARD serait décoratif : la table est déjà
+ * calculée, le mal — ou le bien — est fait. Posé TROP TÔT, il laisserait passer la route pour un
+ * anonyme : UNE FUITE SILENCIEUSE, c'est-à-dire exactement le défaut que ce fichier existe pour fermer.
+ * Et il n'y a rien à désarmer : L'ARMEMENT EXIGE UN DEMANDEUR SANS « edit_posts », OR LE DEMANDEUR NE
+ * CHANGE PAS AU SEIN D'UN PROCESSUS. Le loquet est donc à sens unique par construction, et idempotent —
+ * ce que le fait 18 réclame, « rest_pre_dispatch » pouvant s'appliquer deux fois dans le même processus.
+ *
+ * @param bool $armer Vrai pour ARMER le retrait. Ne désarme jamais, quelle que soit la valeur.
+ *
+ * @return bool Vrai si le retrait a été armé dans ce processus.
+ */
+function drapeau_de_retrait( bool $armer = false ): bool {
+	static $arme = false;
+
+	if ( true === $armer ) {
+		$arme = true;
+	}
+
+	return $arme;
+}
+
+/**
+ * Arme le retrait des routes d'identité quand le demandeur de cette requête REST n'a pas « edit_posts ».
+ *
+ * NE RETIRE RIEN, NE RÉPOND RIEN, NE COURT-CIRCUITE JAMAIS. Il décide seulement, AVANT que la table des
+ * routes ne soit calculée (fait 16), s'il faudra l'amputer ; c'est
+ * « retirer_les_routes_d_identite() » qui ampute, et lui seul.
+ *
+ * L'INVERSION DE SÛRETÉ — LE CŒUR DU CORRECTIF, ET LA PHRASE À LIRE AVANT DE TOUCHER À CE FICHIER.
+ * Sous « rest_endpoints », l'appariement décide CE QU'ON RETIRE : sur-apparier DÉTRUIT DES ROUTES — un
+ * préfixe aurait tué quatre routes sur six, dont « /users/me » — la panne y est catastrophique et
+ * INVISIBLE EN ANONYME. D'où l'interdit gelé du §15, reconduit ENTIER dans l'autre fonction.
+ * Sous « rest_pre_dispatch », l'appariement décide seulement SI ON ARME : le retrait, lui, reste deux
+ * « unset() » littéraux. SUR-APPARIER EST DONC INOFFENSIF — armer sur « /users/me » ne retire pas
+ * « /me », sa clé n'étant dans aucun « unset() » — ET SEUL LE SOUS-APPARIEMENT FUIT. ON APPARIE DONC
+ * GÉNÉREUSEMENT, exactement à l'envers de la fonction voisine.
+ * MÊME MOT, MOTIF OPPOSÉ. L'ÉCRIRE, SINON UN SUCCESSEUR APPLIQUERA LE MAUVAIS INTERDIT — c'est
+ * exactement ce que le §4.3 a dû faire pour « REST_REQUEST », dont le verdict se recopiait et le motif
+ * non.
+ *
+ * CE QUI EST VOLONTAIREMENT SUR-APPARIÉ, ET POURQUOI C'EST SANS CONSÉQUENCE :
+ *   « /wp/v2/users/me » — armée, JAMAIS RETIRÉE : sa clé n'entre dans aucun « unset() ». La route
+ *   résout, et c'est son « permission_callback » qui répond, par le code du cœur (fait 20). C'est elle
+ *   qui résout l'identité de l'éleveuse dans l'éditeur de blocs, et elle n'est pas touchée.
+ *   « /wp/v2/users/<id>/application-passwords[/…] » — armées, JAMAIS RETIRÉES, mêmes clés absentes des
+ *   « unset() ».
+ *
+ * « 0 === strpos() » ET NON « str_starts_with() » : c'est l'idiome de ce dépôt — « strpos » y est
+ * partout, « str_starts_with » n'apparaît nulle part en code dans « wp-content/ », relevé le
+ * 2026-09-08 — il est Yoda par construction, et une seule forme donne UN SEUL grep le jour d'un audit.
+ *
+ * L'ORDRE DES DEUX GESTES EST IMPOSÉ, ET IL N'EST PAS COSMÉTIQUE. Inversé, « current_user_can() » — et
+ * les filtres « user_has_cap » et « map_meta_cap » qu'il déclenche — courrait sur CHAQUE requête REST du
+ * site pour une décision qui ne retirera rien dans la quasi-totalité des cas. L'appariement de route est
+ * SANS EFFET DE BORD ; demander une capacité NE L'EST PAS.
+ *
+ * POURQUOI LE PREMIER GESTE TIENT LA CONTRAINTE D'INDEX DU §4.1. La route de l'index REST est « / » :
+ * elle ne commence pas par « /wp/v2/users », DONC LE DRAPEAU N'EST JAMAIS ARMÉ POUR ELLE, donc
+ * « /wp-json/ » est bâti d'une TABLE INTACTE POUR TOUT LE MONDE, à URL identique et sans « Vary ».
+ * L'objection d'empoisonnement de cache du §4.1 est ainsi RESPECTÉE, et non contredite ; ce qu'elle
+ * coûte est nommé au deuxième acte daté en tête de ce fichier, point 1.
+ *
+ * JAMAIS DE COURT-CIRCUIT, SUR AUCUN CHEMIN : « $resultat » est rendu tel quel, y compris quand on arme.
+ * Rendre « null » inconditionnellement AVALERAIT EN SILENCE le court-circuit d'un tiers. Rendre un corps
+ * de notre main rouvrirait l'oracle de second ordre pour lequel l'option B du §4.7 a été écartée, ET
+ * nous forcerait à recopier une chaîne du cœur (« rest_user_cannot_view ») dans un fichier où l'i18n est
+ * interdite — une ancre T114 de plus, pour rien.
+ *
+ * LA CAPACITÉ EST « edit_posts », ET CE QU'ELLE LAISSE PASSER DIT POURQUOI. Laisse passer :
+ * Administrateur, ÉDITRICE, Auteur, Contributeur. Arrête : anonyme, Abonné.
+ * L'ARGUMENT QUI FERME LA DISCUSSION : LE CŒUR ACCORDE DÉJÀ LA COLLECTION « users » À UN ANONYME PAR
+ * DÉFAUT — mesuré, « 200 · 672 » sans cookie. NOTRE GARDE NE DONNE DONC JAMAIS PLUS QUE LE CŒUR : ELLE
+ * NE FAIT QUE RETIRER. Son pire échec est « nous n'avons rien retiré », jamais « nous avons exposé
+ * davantage ». LA GARDE EST SOUSTRACTIVE.
+ *   PAS « list_users » — L'ÉLEVEUSE EST ÉDITRICE ET NE L'A PAS : la garde ne mordrait pas pour elle, et
+ *   le défaut survivrait à l'identique. Écrit parce qu'un successeur la proposera, la capacité portant
+ *   le nom du sujet.
+ *   PAS « edit_others_posts » — elle armerait pour un Auteur, dont l'écran d'édition afficherait alors la
+ *   valeur fausse : le défaut ne serait pas corrigé, il serait DÉPLACÉ SUR UN RÔLE que le site peut créer
+ *   demain.
+ *   PAS « is_user_logged_in() » — fonction remplaçable, interdite à l'extension
+ *   (« query/page-protegee/bootstrap.php:156-161 »). « current_user_can( 'edit_posts' ) » est la
+ *   frontière déjà employée par la maison (« blocks/grille-chiens/donnees.php:190 »).
+ *
+ * TYPAGE, ET CHAQUE CHOIX A SON MOTIF — L'ATTRIBUTION COMPRISE. « $resultat » N'EST PAS TYPÉ. LE CŒUR,
+ * LUI, Y PASSE « null » : c'est tout ce que le fait 16 établit, et lui faire dire davantage serait une
+ * ancre qui ment. Ce qui nous parvient est la valeur DE LA CHAÎNE de rappels — un tiers posé avant nous
+ * peut y avoir mis son court-circuit, « WP_HTTP_Response » ou « WP_Error ». Aucun n'existe aujourd'hui
+ * dans « wp-content/ » (fait 21) ; typer le paramètre poserait donc un « TypeError » sous
+ * « strict_types » le jour où il en existerait un, sur un chemin que nous ne contrôlons pas. AUCUN TYPE
+ * DE RETOUR N'EST DÉCLARÉ NON PLUS : la fonction rend « $resultat » tel quel, et « mixed » — le seul qui
+ * conviendrait — n'ajouterait rien à ce que le « @return » ci-dessous dit déjà. « $serveur » N'EST PAS
+ * TYPÉ non plus : il n'est JAMAIS LU, et typer un paramètre qu'on ne lit pas crée un chemin de
+ * « TypeError » gratuit. « $requete » EST typé, parce qu'on appelle une méthode dessus.
+ *
+ * @param mixed            $resultat Court-circuit éventuel posé par un tiers. RENDU TEL QUEL, toujours.
+ * @param mixed            $serveur  Serveur REST en cours. JAMAIS LU.
+ * @param \WP_REST_Request $requete  Requête en cours de dispatch.
+ *
+ * @return mixed Le « $resultat » reçu, inchangé — sur tous les chemins, sans exception.
+ */
+function armer_le_retrait_des_routes_d_identite( $resultat, $serveur, \WP_REST_Request $requete ) {
+	if ( 0 !== strpos( $requete->get_route(), '/wp/v2/users' ) ) {
+		return $resultat;
+	}
+
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		drapeau_de_retrait( true );
+	}
+
+	return $resultat;
+}
+
 /**
  * Retire de la table des routes REST les deux routes qui publient une identité de compte.
  *
@@ -197,11 +464,39 @@ if ( ! defined( 'ABSPATH' ) ) {
  * BORD (fait 2). Les laisser annoncées dans l'index pendant que le dispatch rend 404 fabriquerait
  * exactement l'oracle que le fait 4 nous fait fuir : « annoncée mais absente » ne se lit que d'une façon.
  *
+ * ACTE DATÉ DU 2026-09-08 (#56) — UNE LIGNE DE GARDE EN TÊTE, ET DEUX PARAGRAPHES CI-DESSUS QUI CHANGENT
+ * DE PORTÉE. Le retrait n'est plus inconditionnel : il ne mord QUE si le drapeau a été armé, plus tôt
+ * dans le même dispatch, par « armer_le_retrait_des_routes_d_identite() » — lequel n'arme que pour un
+ * demandeur SANS « edit_posts ». LE MOTIF EST UNE RÉGRESSION MESURÉE : la forme inconditionnelle
+ * amputait la table pour l'éleveuse aussi, et son écran d'édition annonçait « (Aucun auteur/autrice) »
+ * sur un contenu qui A un auteur. Le récit complet est au deuxième acte daté en tête de ce fichier.
+ * CE QUI NE CHANGE PAS, ET QUI SE LIT AVANT DE TOUCHER À CETTE FONCTION :
+ *   L'INTERDIT DE PRÉFIXE DU §15 RESTE ENTIER ICI. Deux « unset() » sur deux clés littérales, dans cet
+ *   ordre, sans « isset », sans boucle, sans motif. La garde ajoutée NE LIT AUCUNE ROUTE : elle lit un
+ *   booléen. L'appariement de route vit dans l'autre fonction, où sur-apparier est INOFFENSIF ;
+ *   l'inversion de sûreté est écrite au-dessus d'elle, ET ELLE NE SE RECOPIE PAS ICI.
+ *   LES DEUX GARDES REFUSÉES CI-DESSUS LE RESTENT, motifs inchangés : « is_admin() » et
+ *   « defined( 'REST_REQUEST' ) ». LE DRAPEAU N'EST NI L'UNE NI L'AUTRE — ce n'est pas une garde de
+ *   CONTEXTE, c'est le report d'une DÉCISION au seul instant où le demandeur est connu et où la table
+ *   n'est pas encore calculée (faits 16 et 17).
+ *   LA CONDITION DE CAPACITÉ QUE LE §4.1 REFUSAIT N'EST PAS RÉINTRODUITE ICI. Rien dans cette fonction
+ *   ne demande une capacité, et l'index « /wp-json/ » est bâti d'une TABLE INTACTE POUR TOUT LE MONDE,
+ *   la route de l'index — « / » — n'armant jamais le drapeau : l'index ne varie donc pas selon le
+ *   demandeur, à URL identique, et l'empoisonnement de cache reste fermé. LE PARAGRAPHE CI-DESSUS « LES
+ *   DEUX CLÉS DISPARAISSENT AUSSI DE L'INDEX » CESSE D'ÊTRE VRAI PAR CE FAIT MÊME, et ce qu'on y perd
+ *   est nommé au deuxième acte daté en tête de ce fichier, point 1 : la cible P4 du §7.1 échoue
+ *   désormais sans qu'aucune régression n'ait eu lieu.
+ *
  * @param array $routes Table des routes REST, telle que « get_routes() » vient de l'assembler.
  *
- * @return array La table reçue, amputée des deux routes d'identité — et de rien d'autre.
+ * @return array La table reçue INCHANGÉE si le retrait n'a pas été armé ; sinon, la table reçue,
+ *               amputée des deux routes d'identité — et de rien d'autre.
  */
 function retirer_les_routes_d_identite( array $routes ): array {
+	if ( ! drapeau_de_retrait() ) {
+		return $routes;
+	}
+
 	unset( $routes['/wp/v2/users'] );
 	unset( $routes['/wp/v2/users/(?P<id>[\d]+)'] );
 
