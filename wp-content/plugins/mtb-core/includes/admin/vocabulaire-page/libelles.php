@@ -1,16 +1,23 @@
 <?php
 /**
- * Les deux tables gelées du module : les libellés du type « page », et les chaînes du navigateur.
+ * Les tables gelées du module, et la source unique du libellé « Adresse de la page ».
  *
- * SOURCE UNIQUE DES SIX CHAÎNES : les quatre libellés photo, « Adresse de la page », et le nom
- * accessible du bouton. La sixième n'était au gel du contrat qu'une entrée CONDITIONNELLE, admise
- * seulement si sa source anglaise était un msgid nu, sans « % » ni « < » ni « > » ni « & », et si son
- * remplacement se bornait à substituer le groupe nominal ; les trois conditions ayant été mesurées
- * vertes, elle est dans la table — le contrat, lui, en dénombre encore cinq. Aucun autre fichier de ce
- * module, PHP ou JavaScript, n'écrit l'une d'elles : la moitié PHP appelle « libelles_du_type() », la
- * moitié JavaScript reçoit « table_javascript() » par « wp_add_inline_script() ». Recopier l'une de
+ * SOURCE UNIQUE DE TOUTES LES CHAÎNES AFFICHÉES PAR CE MODULE : les libellés photo, « Adresse de la
+ * page », et le nom accessible du bouton. Le fichier ne les dénombre pas, à dessein : le nom accessible
+ * n'était au gel du contrat #54 qu'une entrée CONDITIONNELLE, entrée après mesure, et un compte écrit
+ * ici s'est déjà périmé une fois. LES FONCTIONS FONT FOI. Aucun autre fichier de ce module, PHP ou
+ * JavaScript, n'écrit l'une de ces chaînes : le rappel des libellés du type appelle
+ * « libelles_du_type() », le JavaScript reçoit « table_javascript() » par « wp_add_inline_script() »,
+ * et le rappel de la Modification rapide consulte « table_modification_rapide() ». Recopier l'une de
  * ces chaînes ailleurs fabriquerait une seconde vérité, qui divergerait en silence le jour où l'une
  * des deux changerait.
+ *
+ * « ADRESSE DE LA PAGE » N'EST ÉCRITE QU'UNE FOIS, dans « libelle_adresse_de_la_page() », parce que
+ * deux tables la rendent (contrat #59, interdit n° 16 réécrit). Les CLÉS des tables ne sont pas des
+ * chaînes affichées mais des sources anglaises du cœur : les deux tables portent la clé « Slug » parce
+ * qu'elles visent deux émissions distinctes, l'une en JavaScript sur l'écran d'une page, l'autre en
+ * PHP dans la Modification rapide des listes. ELLES NE SE FUSIONNENT PAS : la table JavaScript porte
+ * une chaîne qui n'a jamais été mesurée sur les listes.
  *
  * @package MTB\Core
  */
@@ -64,6 +71,23 @@ function libelles_du_type(): array {
 }
 
 /**
+ * Le libellé qui remplace « Slug » partout où ce module le renomme.
+ *
+ * RECOPIÉ, PAS RÉDIGÉ : « design-system/MASTER.md » §10.2 le fige, et les écrans de saisie d'une
+ * portée et d'un chien titrent déjà leur boîte ainsi. Le même mot vaut pour les trois types de la
+ * Modification rapide et pour l'écran d'une page. On ne le raccourcit jamais, même si une rangée
+ * passe à la ligne : ni « Adresse », ni « Adresse page ».
+ *
+ * AUCUN « % », « < », « > » NI « & » : cette valeur passe par les deux points d'extension de
+ * traduction, PHP et JavaScript, où ces caractères déclenchent la panne décrite plus bas.
+ *
+ * @return string Le libellé affiché.
+ */
+function libelle_adresse_de_la_page(): string {
+	return 'Adresse de la page';
+}
+
+/**
  * Les chaînes sources anglaises du navigateur, et le libellé français qui les remplace.
  *
  * ON COMPARE SUR L'ANGLAIS, JAMAIS SUR LE FRANÇAIS, exactement comme « admin/description-photo ». Le
@@ -114,8 +138,39 @@ function table_javascript(): array {
 
 	if ( null === $table ) {
 		$table = array(
-			'Slug'                               => 'Adresse de la page',
+			'Slug'                               => libelle_adresse_de_la_page(),
 			'Edit or replace the featured image' => 'Modifier ou remplacer la photo principale',
+		);
+	}
+
+	return $table;
+}
+
+/**
+ * Les chaînes sources anglaises de la Modification rapide des listes, et leur libellé français.
+ *
+ * UNE SEULE ENTRÉE, MESURÉE. Relevé au navigateur, WORDPRESS 6.9, LE 2026-09-17, session Éditrice, dans
+ * le panneau « Modification rapide » des listes Pages, Portées et Chiens : « Slug » est le seul mot du
+ * §10.4 de « design-system/MASTER.md » qui s'y trouve. Il est émis en PHP par
+ * « WP_Posts_List_Table::inline_edit() », msgid NU, domaine « default ». « Modèle » reste : c'est le mot
+ * français du cœur, et §10.4 n'interdit que l'anglais « template ».
+ *
+ * AUCUNE ENTRÉE N'ENTRE ICI SANS AVOIR ÉTÉ MESURÉE DANS CE PANNEAU. Le rappel qui lit cette table
+ * reçoit TOUTES les chaînes du domaine « default » traduites après « load-edit.php » sur trois listes
+ * entières — en-têtes de colonnes, actions groupées, messages, pied de page. Une entrée ajoutée « au
+ * cas où » renommerait ce mot partout sur ces écrans, et non dans le seul panneau.
+ *
+ * Mémoïsée par un « static » local : le rappel qui la consulte est appelé pour chaque chaîne traduite
+ * de la liste.
+ *
+ * @return array<string, string> Chaîne source anglaise du cœur => libellé affiché.
+ */
+function table_modification_rapide(): array {
+	static $table = null;
+
+	if ( null === $table ) {
+		$table = array(
+			'Slug' => libelle_adresse_de_la_page(),
 		);
 	}
 

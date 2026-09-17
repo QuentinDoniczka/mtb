@@ -1,7 +1,55 @@
 <?php
 /**
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * Le vocabulaire de l'écran d'une page : la rangée « Slug » et la famille « image mise en avant ».
  *
+ * ACTE DU 2026-09-17 — ISSUE #59 (T118), PRIME SUR LES PASSAGES MARQUÉS. Le texte qui suit l'acte est
+ * celui du contrat #54 ; il n'est pas réécrit. Chaque paragraphe que cet acte rend faux porte en tête
+ * le marqueur « [RESTREINT PAR L'ACTE DU 2026-09-17] » et se lit avec les points ci-dessous.
+ *
+ *   1. CE QUE L'ÉLEVEUSE VOIT CHANGER EN PLUS. Dans les listes Pages, Portées et Chiens, le panneau
+ *      « Modification rapide » d'une ligne appelle désormais « Adresse de la page » le champ qui
+ *      s'appelait « Slug ». Même libellé, même source que sur l'écran d'une page. Aucune donnée n'est
+ *      touchée. La liste des ARTICLES n'est pas concernée : elle dit toujours « Slug ».
+ *
+ *   2. UNE TROISIÈME MOITIÉ, EN PHP, SUR UN AUTRE ÉCRAN — « modification-rapide.php ». Le cœur émet
+ *      cette étiquette côté serveur, par « WP_Posts_List_Table::inline_edit() », msgid « Slug », domaine
+ *      « default » ; le JavaScript de ce module n'y est pour rien et n'y est pas chargé. Sur
+ *      « load-edit.php », une garde d'écran vérifie la base « edit » et le type ; sur les trois listes
+ *      visées seulement, elle pose un rappel sur « gettext_default », qui cherche la chaîne source par
+ *      clé exacte dans « table_modification_rapide() ». Relevé sur WordPress 6.9, le 2026-09-17.
+ *
+ *   3. LA DETTE T-#54-b EST CLOSE POUR TROIS TYPES : Pages, Portées, Chiens. Les Articles sont écartés
+ *      VOLONTAIREMENT — l'éleveuse n'en écrit pas, et leur « Slug » prouve que la garde tient. C'est la
+ *      dette T-#59-a. Les Résultats n'ont pas de champ d'adresse dans ce panneau : rien à renommer.
+ *
+ *   4. ÉCART AU CROCHET DE GROUPE, COMPLÉTÉ. Ce module pose en plus « load-edit.php », à l'inclusion,
+ *      et « gettext_default » depuis le rappel de « load-edit.php ». Même statut que les deux crochets déjà déclarés : écart
+ *      réel, volontaire, et que le chargeur ne vérifie pas.
+ *
+ *   5. LE SUJET DU MODULE S'ÉLARGIT : ce n'est plus un type de contenu, c'est LE MOT « SLUG » SUR LES
+ *      ÉCRANS QUOTIDIENS DE L'ÉLEVEUSE, plus la famille photo du type « page ». Le dossier garde son
+ *      nom, pour ne pas périmer les contrats qui le citent. Le critère de séparation d'avec
+ *      « admin/description-photo » TIENT TOUJOURS : sa garde « is_admin() » en tête de fichier tuerait
+ *      notre filtre des libellés photo sur la façade REST, et les désactivations resteraient couplées.
+ *
+ *   6. MODE DE PANNE DE LA TROISIÈME MOITIÉ. Elle compare une chaîne source : si le cœur reformule
+ *      « Slug », ou cesse de déclencher « load-edit.php », la liste redit « Slug ». Panne bénigne, et
+ *      muette, comme celle de la moitié JavaScript.
+ *
+ *   7. VÉRIFICATION N° 3, RÉÉCRITE. Sur l'écran d'une portée, d'un chien, d'un article et sur la
+ *      Médiathèque, « Slug » DOIT RESTER là où il est. Dans la Modification rapide, « Slug » DOIT
+ *      RESTER sur la liste des Articles et DOIT AVOIR DISPARU des listes Pages, Portées et Chiens, au
+ *      profit de « Adresse de la page ». Ce panneau est présent dans le HTML sans interaction : on le
+ *      lit dans « #inline-edit ». Contrôle serveur, sans écriture, chaque ligne dans son propre
+ *      processus :
+ *        wp eval 'set_current_screen("edit-mtb_portee"); do_action("load-edit.php"); echo translate("Slug");'
+ *      rend « Adresse de la page » ; avec « edit-post », ou sans l'action, il rend « Slug ».
+ *
+ *   8. POUR DÉSACTIVER : le renommage du dossier en « _vocabulaire-page » emporte les TROIS moitiés
+ *      ensemble, et aucun autre module.
+ *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * CE QUE L'ÉLEVEUSE VOIT CHANGER. Sur l'écran d'une page, et nulle part ailleurs : la rangée de la
  * zone latérale qui s'appelait « Slug » s'appelle désormais « Adresse de la page », et la fenêtre
  * volante qu'elle ouvre porte le même titre ; le bouton de la photo dit « Choisir la photo
@@ -27,6 +75,7 @@
  * qui se répare tout seul puis se casse à l'usage est PIRE qu'un écran qui ne change jamais, et il ne
  * laisse ni erreur, ni ligne au journal.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * LE CONTEXTE SE TESTE DANS LE RAPPEL QUI MET LE SCRIPT EN FILE, JAMAIS AU CHARGEMENT DU MODULE.
  * C'est le partage que « includes/fields/sommeil/bootstrap.php » documente déjà : l'un des deux
  * crochets a besoin de la garde d'ouverture, l'autre serait tué par elle. Ici la garde d'écran vit
@@ -44,6 +93,7 @@
  * silence. Posé à l'inclusion du bootstrap, comme « admin/description-photo » pose le sien, il est en
  * place à temps. Le chargeur autorise expressément « add_filter » à l'inclusion.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * ÉCART AU CROCHET DE GROUPE, DÉCLARÉ. Le chargeur associe au groupe « admin » les crochets
  * « admin_menu » et « admin_init ». Ce module pose « post_type_labels_page » (à l'inclusion) et
  * « enqueue_block_editor_assets ». L'écart est réel et volontaire : cette liste est descriptive et le
@@ -51,6 +101,7 @@
  * « admin/corbeille » « bulk_post_updated_messages ». Écrit ici pour qu'une chaîne future ne le lise
  * pas comme une faute à corriger.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * MODULE DISTINCT DE « admin/description-photo », À NE PAS Y RANGER. Quatre raisons, les trois
  * premières transposées du critère de séparation que ce module-là a lui-même fixé. Sa garde
  * « is_admin() », en tête de fichier avec « return », TUERAIT notre filtre sur la façade REST ; la
@@ -62,12 +113,14 @@
  * « admin », avec un crochet de mise en file, dans un module dont l'en-tête déclare ne poser qu'un
  * seul « add_filter ».
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * AUCUN NUMÉRO DE LIGNE DU CŒUR N'EST CITÉ NULLE PART DANS CE MODULE, ET C'EST DÉLIBÉRÉ. Un numéro de
  * ligne se périme en silence à la première montée de version. La moitié PHP s'appuie sur un NOM DE
  * FILTRE — « post_type_labels_page », API publique — et la moitié JavaScript sur des CHAÎNES SOURCES,
  * citées avec la version et la date de leur relevé. Écart assumé à la forme de
  * « admin/description-photo », dont la table de huit lignes se périmera sans prévenir.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * CE QUE CE MODULE N'ATTEINT PAS, NOMMÉMENT, AVEC SA SUITE. Le mot « Slug » reste écrit dans la
  * MODIFICATION RAPIDE des listes — Pages, Portées, Chiens et Articles —, où le cœur l'émet en PHP :
  * deux de ces écrans sont quotidiens pour l'éleveuse, le remède mord sur trois types et appartient à
@@ -94,6 +147,7 @@
  * il n'y a rien à remplacer. Le mot français « Modèle » reste : §10.4 interdit « template », l'anglais,
  * et §10.2 ne fige aucun autre mot pour cette rangée ; le renommer serait inventer du vocabulaire.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * MODE DE PANNE, MOITIÉ PAR MOITIÉ. La moitié PHP ne compare AUCUNE chaîne : elle ne peut pas tomber
  * parce que le cœur aurait reformulé un texte. Elle ne tomberait que si l'éditeur cessait de lire les
  * libellés du type, ou si le cœur renommait une clé de « register_post_type » — quasi impossible,
@@ -101,6 +155,7 @@
  * où le cœur en reformule une, et elle tombe EN SILENCE. Dans les deux cas la panne est bénigne — rien
  * de cassé, rien de perdu, retour exact à l'état d'avant — et rigoureusement muette.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * IL N'Y A AUCUN TÉMOIN AUTOMATIQUE, ET C'EST UNE DÉCISION, PAS UN OUBLI. Toutes les commandes WP-CLI
  * du dépôt vivent dans « includes/migration/ » ; en inventer une ici casserait deux conventions pour
  * un témoin d'une ligne, qui serait de surcroît FAUX VERT sur la moitié qui en aurait le plus besoin.
@@ -113,6 +168,7 @@
  *   2. Les deux moitiés à l'écran : ouvrir l'écran d'une page dans un vrai navigateur, SANS aucune
  *      interaction, et lire la zone latérale. « Adresse de la page » présent, « Slug » nulle part,
  *      « Choisir la photo principale » présent, « Image mise en avant » nulle part.
+ *      [RESTREINT PAR L'ACTE DU 2026-09-17]
  *   3. Le non-débordement : sur l'écran d'une portée, d'un chien, d'un article, sur les listes et sur
  *      la Médiathèque, le mot « Slug » DOIT RESTER là où il est aujourd'hui. Sa présence y est la
  *      preuve que la garde tient, jamais un échec.
@@ -121,6 +177,7 @@
  * pas normal, signalez-le » de la fiche du guide. L'éleveuse est le seul détecteur qui regarde
  * vraiment l'écran.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * POUR DÉSACTIVER CE MODULE : renommer son dossier en « _vocabulaire-page ». Les deux moitiés
  * disparaissent ensemble, l'écran revient exactement à son état d'avant, et aucun autre module n'est
  * emporté.
@@ -139,6 +196,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/libelles.php';
 require_once __DIR__ . '/filtre-des-libelles.php';
 require_once __DIR__ . '/ecran.php';
+require_once __DIR__ . '/modification-rapide.php';
 
 /*
  * À L'INCLUSION, ET SURTOUT PAS SUR « init » : le type « page » est enregistré par le cœur pendant
@@ -148,3 +206,9 @@ require_once __DIR__ . '/ecran.php';
 add_filter( 'post_type_labels_page', __NAMESPACE__ . '\\remplacer_les_libelles', 10, 1 );
 
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\mettre_le_script_en_file', 10 );
+
+/*
+ * La garde d'écran de la Modification rapide vit dans ce rappel, pas au chargement du module : le
+ * filtre de traduction n'est posé que sur les trois listes visées.
+ */
+add_action( 'load-edit.php', __NAMESPACE__ . '\\poser_le_renommage_de_la_modification_rapide', 10 );
