@@ -192,6 +192,31 @@ if ( ! defined( 'ABSPATH' ) ) {
  * comme les quinze autres. LE FAIT 21 N'EN EST PAS UNE : c'est un relevé de « wp-content/ », qui se
  * périmerait par une reprise du dépôt et jamais par une montée de version du cœur. Dette T114
  * (issue #57), alimentée de cinq, non soldée.
+ *
+ * ACTE DATÉ DU 2026-09-17 (#57) — TROIS PHRASES DE CE FICHIER SE LISENT DÉSORMAIS AVEC CET ACTE.
+ *   1. « ILS SE PÉRIMERONT EN SILENCE à la prochaine montée de version — sans une erreur, sans une ligne
+ *      au journal » et « C'est la dette T114 […], que ce fichier ALIMENTE […] et ne solde pas » (fin
+ *      des quinze faits), puis « CINQ ANCRES DE PLUS […], qui SE PÉRIMERONT EN SILENCE » et « Dette
+ *      T114 […], alimentée de cinq, non soldée » (paragraphe ci-dessus). T114 EST TRAITÉE PAR #57, DANS LA PILE
+ *      DOCKER DE DÉVELOPPEMENT : « docker/provision/temoin-ancres.sh », lancé à chaque provisionnement,
+ *      compare chaque fichier du cœur cité avec un numéro de ligne à son empreinte relevée dans
+ *      « docker/provision/ancres-coeur.txt », et les fichiers des faits 1 à 20 y sont tous inscrits. Si
+ *      l'un change, le journal de wpcli porte « ANCRES DU CŒUR : ALERTE » : il y a donc désormais une
+ *      ligne au journal. CE QUI RESTE VRAI : la production n'exécute pas ce témoin ; il dit « le fichier
+ *      a changé », jamais « la ligne a bougé » ni « le rappel ne mord plus » — « sans que le correctif
+ *      cesse forcément de mordre au même instant » est donc toujours juste, dans les deux sens (T115,
+ *      #58) ; et il atteste l'état des fichiers au 2026-09-17, pas la justesse de chaque numéro relevé le
+ *      2026-09-08.
+ *   2. « il périmerait des citations par nom dans trois contrats gelés » (borne 3, en tête). LE DÉCOMPTE
+ *      ÉTAIT FAUX PAR DÉFAUT : le nom du module est écrit 77 fois dans 11 contrats gelés avant #57, et
+ *      79 fois dans 12 contrats en comptant « docs/contracts/issue-57.md ». Relevé du 2026-09-17 ; les
+ *      commandes sont recopiées sous le motif 1 de « bootstrap.php ». LE
+ *      RENOMMAGE « AJOURNÉ […], à trancher par le lead AVANT le prochain ajout » EST TRANCHÉ : pas de
+ *      renommage, et le périmètre du module se lit désormais par le critère de ce même acte.
+ *   3. CE QUI NE CHANGE PAS : les phrases sur un GABARIT DU CŒUR RECOPIÉ, qui « se périme en silence à
+ *      chaque montée de version », restent vraies. Une copie vivrait dans le dépôt, et ce témoin ne
+ *      surveille que des fichiers du cœur ; il ne la verrait pas diverger de son original. Une ancre du
+ *      cœur garde aussi son coût : elle s'inscrit au registre et se relit à chaque ALERTE.
  */
 
 /*

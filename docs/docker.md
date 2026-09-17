@@ -132,6 +132,91 @@ seulement** : le jour où l'image de base bougerait sous les enrobages, `docker 
 dirait de lui-même. Cette sonde ne fait jamais échouer le démarrage — c'est une commande de confort,
 pas le chemin de connexion du site (celui-là est testé plus haut dans le même script, en `mysqli`).
 
+## Témoin des ancres du cœur (#57)
+
+Le cœur WordPress vit dans le volume `mtb_wp_data` : il n'est pas versionné dans ce dépôt. Pourtant,
+l'extension, le thème et les contrats en citent des **numéros de ligne** comme preuves
+(`class-wp.php:409`, `wp-admin/includes/post.php:1319`…). Une montée de version peut les rendre faux.
+Le témoin est là pour que cette péremption se voie.
+
+- **Le registre** : `docker/provision/ancres-coeur.txt`. Il porte une ligne par fichier du cœur cité avec
+  un numéro de ligne : `<version> <date> <md5> <chemin>`. Son en-tête donne le format et les règles.
+- **Le script** : `docker/provision/temoin-ancres.sh`. Il compare l'empreinte md5 de chaque fichier
+  installé à celle du registre, et dit quelle version de WordPress est installée. Il n'écrit rien (à part
+  un fichier temporaire), ne touche ni au réseau ni à la base.
+- **Quand il tourne** : à chaque exécution de `docker/provision/provision.sh`, après la sonde
+  `wp db query` et avant `terminé.`. C'est le cas à chaque démarrage du conteneur `wpcli`, donc à chaque
+  `make provision`, et à chaque `make up` qui (re)crée ou démarre `wpcli`. Un `make up` qui trouve
+  `wpcli` déjà en marche ne le relance pas. **Il ne fait jamais échouer le provisionnement.**
+
+### Ce qu'il écrit
+
+Toutes ses lignes commencent par `[provision] ANCRES DU CŒUR : `. **Pour les retrouver dans les
+journaux, chercher la sous-chaîne ASCII `ANCRES DU C`** :
+
+```sh
+docker compose logs wpcli | grep 'ANCRES DU C'
+```
+
+Le témoin écrit **exactement une ligne de bilan, toujours en dernier** :
+
+| Bilan | Signifie | Statut |
+|---|---|---|
+| `ok` | Tous les fichiers inscrits sont identiques à leur relevé, et datés de la version installée | 0 |
+| `AVERTISSEMENT` | Tous les fichiers sont identiques, mais au moins une ligne est datée d'une autre version | 10 |
+| `TÉMOIN INOPÉRANT` | Le registre est introuvable ou vide, une ligne est mal formée ou en double, la version est illisible, ou il n'y a aucun outil d'empreinte. **Rien n'a été garanti** | 20 |
+| `ALERTE` | Au moins un fichier cité a changé ou disparu | 30 |
+
+Tout autre statut signifie que le témoin s'est interrompu, sans bilan fiable. Au-dessus du bilan, une
+ligne `ALERTE` par fichier changé ou disparu donne la recherche à lancer depuis la racine du dépôt
+(`git grep -n -F -e '<nom du fichier>' -- …`). Une ligne `TÉMOIN INOPÉRANT` par anomalie donne son
+motif. Après `terminé.`, `provision.sh` répète un rappel pour les statuts 30, 20 et « interrompu ». Il
+n'en écrit aucun pour `ok` ni pour `AVERTISSEMENT`.
+
+### Solder un verdict
+
+- **ALERTE** : rien n'est cassé sur le site. Sur l'hôte, lancer la recherche imprimée. **Relire toutes les
+  citations** du fichier, y compris les « même fichier, l. N » et les `:N` nus. Corriger celles qui sont
+  devenues fausses : dans un contrat gelé ou un fichier gelé, par **acte daté** seulement. Ensuite
+  seulement, mettre à jour la ligne du registre, **version, date et empreinte ensemble**. L'empreinte se
+  relève ainsi :
+  `docker compose exec -T wpcli sh -c 'cd /var/www/html && md5sum <chemin>'`.
+- **AVERTISSEMENT** : les fichiers n'ont pas changé, leurs numéros de ligne restent justes. Re-dater les
+  lignes concernées (version et date), **jamais l'empreinte**.
+- **TÉMOIN INOPÉRANT** : réparer le registre (ligne mal formée, chemin en double), ou la cause donnée
+  par le motif. Tant que ce verdict tient, aucune ancre n'est garantie.
+
+**Toute nouvelle citation d'une ligne du cœur ajoute sa ligne au registre dans le même commit.** Mieux
+encore : citer un nom de crochet ou de fonction, qui ne se périme pas.
+
+### Le lancer à la demande
+
+Depuis la racine du dépôt :
+
+```sh
+docker compose exec -T wpcli sh -c 'tr -d "\r" < /provision/temoin-ancres.sh | sh; echo "statut=$?"'
+```
+
+Depuis Git Bash sous Windows, préfixer la commande de `MSYS_NO_PATHCONV=1`, sinon les chemins absolus
+peuvent arriver tronqués dans le conteneur (décision 80 de `docs/ETAT.md`). Pour la preuve, trois
+variables d'environnement changent ce que le script lit, et `compose.yaml` n'en pose aucune :
+`MTB_ANCRES_REGISTRE`, `MTB_ANCRES_RACINE` et `MTB_ANCRES_VERSION_OBSERVEE`
+(`… | MTB_ANCRES_VERSION_OBSERVEE=7.1 sh` doit rendre un `AVERTISSEMENT`).
+
+### Ce qu'il ne prouve pas
+
+- **Il ne tourne que dans cette pile Docker.** La production ne l'exécute pas.
+- **« Fichier inchangé » ne veut pas dire « rappel vivant ».** Un rappel de `mtb-core` peut cesser de
+  mordre sans qu'aucun fichier cité ne change, et un fichier peut changer sans que le rappel tombe
+  (T115, issue #58).
+- **Il ne certifie pas les citations passées.** Le registre atteste l'état des fichiers au jour de leur
+  relevé, pas la justesse de chaque numéro déjà écrit.
+- **Un fichier du cœur non cité est invisible**, et c'est voulu.
+- **Il ne voit une mise à jour que s'il tourne.** Le cœur peut changer dans le volume sans que `wpcli`
+  redémarre, par exemple par une mise à jour automatique de WordPress. L'ALERTE n'apparaît alors qu'au
+  provisionnement suivant (`make provision`). Comme `wp-includes/version.php` est inscrit, **toute
+  montée de version réelle lève au moins une ALERTE**.
+
 ## Diagnostics PHP
 
 `WORDPRESS_DEBUG` (dans `.env`, livré à `1`) pilote **`WP_DEBUG`** et, depuis #31, **`WP_DEBUG_LOG`**,

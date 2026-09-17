@@ -100,6 +100,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * rappel dépend : le rappel ne lit AUCUN compte, donc il vaut pour les comptes présents ET FUTURS.
  * Aucune règle de réécriture n'est touchée, aucun « flush » n'est requis, aucun état n'est laissé en
  * base.
+ *
+ * ACTE DATÉ DU 2026-09-17 (#57) — « LE PÉRIMÈTRE RESTE CLOS ET DATÉ » CI-DESSUS, ET « LA PROCHAINE
+ * DEMANDE DE CE GENRE EXIGE SON PROPRE AMENDEMENT ÉCRIT ET DATÉ » DANS L'EXCEPTION DU 2026-09-05, SE
+ * LISENT AVEC L'ACTE DE #57 PLACÉ SOUS LE MOTIF 1 DE « bootstrap.php ». Vraies à leur date, elles cèdent
+ * pour la suite à son critère : un sujet n'entre dans ce module que si le tenir ailleurs recréerait le
+ * mode de panne de #52, et par un acte daté qui nomme le fait partagé.
  * ─────────────────────────────────────────────────────────────────────────────────────────────
  */
 

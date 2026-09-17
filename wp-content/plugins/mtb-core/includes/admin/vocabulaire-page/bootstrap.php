@@ -137,6 +137,19 @@
  * citées avec la version et la date de leur relevé. Écart assumé à la forme de
  * « admin/description-photo », dont la table de huit lignes se périmera sans prévenir.
  *
+ * ACTE DATÉ DU 2026-09-17 — ISSUE #57 (T114). Le paragraphe ci-dessus se lit aussi avec cet acte-ci.
+ * « Un numéro de ligne se périme en silence » et « se périmera sans prévenir » ne sont plus vrais dans
+ * la pile Docker de développement : les fichiers du cœur cités avec un numéro de ligne, dont ceux de la
+ * table de « admin/description-photo », sont inscrits dans « docker/provision/ancres-coeur.txt », et
+ * « docker/provision/temoin-ancres.sh » écrit « ANCRES DU CŒUR : ALERTE » au journal de wpcli, à chaque
+ * provisionnement, dès que l'un d'eux change. La production n'exécute pas ce témoin. CE QU'IL NE
+ * SURVEILLE PAS, ET C'EST CE MODULE-CI : les chaînes sources et les libellés relevés à l'écran ne sont
+ * rattachés à aucun fichier inscrit, et restent sans témoin. Le choix d'un nom de filtre et de chaînes
+ * sources plutôt que de numéros de ligne reste donc le bon, et la vérification manuelle décrite plus bas
+ * se rejoue toujours en entier à chaque montée de WordPress. Seul changement pour elle : le fichier
+ * « wp-includes/version.php » étant inscrit, une montée de version lève une ALERTE qui marque le moment
+ * de la rejouer.
+ *
  * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * CE QUE CE MODULE N'ATTEINT PAS, NOMMÉMENT, AVEC SA SUITE. Le mot « Slug » reste écrit dans la
  * MODIFICATION RAPIDE des listes — Pages, Portées, Chiens et Articles —, où le cœur l'émet en PHP :

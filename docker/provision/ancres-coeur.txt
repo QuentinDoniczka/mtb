@@ -1,0 +1,123 @@
+# Registre des ancres du cœur WordPress — issue #57 (T114), contrat docs/contracts/issue-57.md
+#
+# CE QUE C'EST. Une ligne par fichier du cœur WordPress cité AVEC UN NUMÉRO DE LIGNE, où que ce soit,
+# sous wp-content/plugins/mtb-core/, wp-content/themes/mtb/, docs/contracts/ ou docs/ETAT.md. Le cœur
+# n'est pas versionné dans ce dépôt : ce registre est ce qui permet au témoin
+# docker/provision/temoin-ancres.sh de dire qu'un fichier cité a changé depuis son relevé.
+#
+# FORMAT, une ligne par fichier, champs séparés par une ou plusieurs espaces :
+#   <version relevée> <AAAA-MM-JJ> <md5 en minuscules> <chemin relatif à la racine du cœur>
+# Lignes « # » et lignes vides ignorées. Tri par chemin (LC_ALL=C sort -k4). Chemin sans « .. », sans
+# espace, présent une seule fois. Une fin de ligne CRLF (checkout Windows) est tolérée.
+#
+# RÈGLES, GELÉES PAR LE CONTRAT #57 §1 :
+#   1. AJOUT. Toute nouvelle citation d'une ligne du cœur ajoute la ligne de ce fichier ici, DANS LE
+#      MÊME COMMIT. Empreinte relevée dans le conteneur wpcli :
+#        docker compose exec -T wpcli sh -c 'cd /var/www/html && md5sum <chemin>'
+#   2. MISE À JOUR APRÈS ALERTE. Une empreinte ne change qu'APRÈS RELECTURE DE TOUTES LES CITATIONS du
+#      fichier, y compris les « même fichier, l. N » et les « :N » nus. Version, date et empreinte
+#      changent ENSEMBLE, sur la même ligne. Une citation fausse dans un contrat gelé se corrige par
+#      acte daté, jamais par réécriture.
+#   3. AVERTISSEMENT. Sur AVERTISSEMENT (fichier identique, autre version installée), on re-date la
+#      version et la date, JAMAIS l'empreinte.
+#   4. RETRAIT. Une ligne ne se retire que lorsque la recherche ne rend plus aucune citation du fichier :
+#        git grep -n -F -e '<nom du fichier>' -- wp-content/plugins/mtb-core wp-content/themes/mtb docs/contracts docs/ETAT.md
+#   5. PRÉFÉRER citer un nom de crochet ou de fonction plutôt qu'un numéro de ligne : un nom ne se
+#      périme pas au premier ajout de ligne au-dessus de lui.
+#
+# EXCLUSIONS. wp-config.php (généré par l'image, pas un fichier du cœur) ; tout fichier du dépôt ; les
+# outils hors de la racine du cœur (par exemple le binaire WP-CLI /usr/local/bin/wp, cité par le
+# contrat #30). Un nom nu que le contexte de sa citation ne tranche pas y figure pour TOUS ses candidats.
+#
+# PORTÉE. Le témoin ne tourne que dans la pile Docker de développement (provision.sh, donc « make up »
+# et « make provision »). La production ne l'exécute pas. « Fichier inchangé » ne veut pas dire « le
+# rappel de mtb-core mord encore » (T115, #58).
+#
+# PROVENANCE ET VALIDATION. Les ancres ont été relevées sur WordPress 6.9, le 2026-09-08 pour la
+# plupart. LES EMPREINTES, ELLES, ONT ÉTÉ PRISES LE 2026-09-17 sur le cœur 6.9 installé dans le volume
+# de la pile (« wp core version » = 6.9) : la date de chaque ligne est celle de l'empreinte. Elles sont
+# VALIDÉES contre les sommes officielles : le 2026-09-17, « wp core verify-checksums » a rendu
+# « Success » (seul avertissement : wp-config-docker.php, fichier de l'image, absent de ce registre), et
+# les 77 empreintes ci-dessous ont été comparées une à une, à l'identique, à celles que rend
+# get_core_checksums( '6.9', 'en_US' ).
+#
+# CE QUE LE REGISTRE ATTESTE. L'état des fichiers au 2026-09-17, PAS CHAQUE CITATION PASSÉE : une
+# citation déjà fausse ce jour-là n'est pas rendue vraie par sa présence ici.
+
+6.9 2026-09-17 264dcb66205a8daa7868695134f49452 wp-admin/admin-ajax.php
+6.9 2026-09-17 fdb4d5fd5744821e9ddedcb91ca78244 wp-admin/admin.php
+6.9 2026-09-17 f345e62bbdb426aa1bdd03a458cfebba wp-admin/css/common.css
+6.9 2026-09-17 cc94ba40a5c91bb934446024d2bccd05 wp-admin/css/forms.css
+6.9 2026-09-17 0cca231856f9a35c99df83fee725bcfd wp-admin/css/list-tables.css
+6.9 2026-09-17 d3d41392ebb0872f012e0e57230ac120 wp-admin/edit-tag-form.php
+6.9 2026-09-17 fded6fe2e5c50339a33ae9c678124005 wp-admin/edit-tags.php
+6.9 2026-09-17 78e9f04249c2fdb5c16ae9dedff170cb wp-admin/edit.php
+6.9 2026-09-17 f22fd72b0e214e22a397a0ac0f6e207c wp-admin/includes/ajax-actions.php
+6.9 2026-09-17 add3676e086fbe7a8e94c8d05a569505 wp-admin/includes/class-wp-list-table.php
+6.9 2026-09-17 f775ddd9c2e774085d3dbfcc7ecc1298 wp-admin/includes/class-wp-media-list-table.php
+6.9 2026-09-17 f3ccb81bea68cb77eb25f323df5713ec wp-admin/includes/class-wp-posts-list-table.php
+6.9 2026-09-17 22640a20fa088e5cbf0e60d4f76346e5 wp-admin/includes/class-wp-terms-list-table.php
+6.9 2026-09-17 16bb1e4d14e44963135b703fd9bc9879 wp-admin/includes/media.php
+6.9 2026-09-17 c288bb024635bc88c6551dc57fab520f wp-admin/includes/meta-boxes.php
+6.9 2026-09-17 df8dc7f8f2867ed1cfdacc1cd88dfa41 wp-admin/includes/post.php
+6.9 2026-09-17 81142340bff6c1a497aff5a9a6533108 wp-admin/js/post.js
+6.9 2026-09-17 5cdfa0c69402f85e85e3161ccafa6f18 wp-admin/menu.php
+6.9 2026-09-17 320922df353971eff38b6a496ff9e7db wp-admin/nav-menus.php
+6.9 2026-09-17 3e887e3ff40bd2483357fb1d582bbe92 wp-admin/options-reading.php
+6.9 2026-09-17 a7dcd9f94380cb9244792d33f4240459 wp-admin/upload.php
+6.9 2026-09-17 b1f6b11b2b5fa069df6cc6a22e3944dd wp-cron.php
+6.9 2026-09-17 43571962b83d710bcbda876077a8f915 wp-includes/author-template.php
+6.9 2026-09-17 0188e0365efe4332962c931f5232db5f wp-includes/block-editor.php
+6.9 2026-09-17 b9af3148bbea524f239a2fbda708fd7d wp-includes/block-supports/generated-classname.php
+6.9 2026-09-17 06a23754226599f7820b40a22ba5d875 wp-includes/blocks.php
+6.9 2026-09-17 2c1dd1a803d40e722649fc3a8cb1c63d wp-includes/blocks/navigation-link.php
+6.9 2026-09-17 d242992de8614bca68b35dab0071185d wp-includes/blocks/navigation-submenu.php
+6.9 2026-09-17 1c79b37e6137eb8b41e6452d65072d6f wp-includes/blocks/navigation.php
+6.9 2026-09-17 985196e32049a8858722d3633f4f998d wp-includes/blocks/post-content.php
+6.9 2026-09-17 c7611efe1538651e92a5212d990f9505 wp-includes/blocks/query-title.php
+6.9 2026-09-17 f675dd67d229bbc48ee54bb716e315f9 wp-includes/canonical.php
+6.9 2026-09-17 b2363ce51c339fa8a3dceaebac891e45 wp-includes/class-wp-block-supports.php
+6.9 2026-09-17 fbcd1fa3e8816b6c452058bec2fddae5 wp-includes/class-wp-block.php
+6.9 2026-09-17 a37254bab08dcb1187e0fc3b96df9fa6 wp-includes/class-wp-classic-to-block-menu-converter.php
+6.9 2026-09-17 6679f38c1ef025fe77f85040abd1cad9 wp-includes/class-wp-navigation-fallback.php
+6.9 2026-09-17 3df297b29985a6eb54abe1656e193916 wp-includes/class-wp-post-type.php
+6.9 2026-09-17 9c0807b16e0f88044a25ce2380a917a5 wp-includes/class-wp-query.php
+6.9 2026-09-17 3362b4806ada5179b89da0a03233ebbe wp-includes/class-wp-rewrite.php
+6.9 2026-09-17 3d4f2a58535d9a86145f5fea1dffb75d wp-includes/class-wp-taxonomy.php
+6.9 2026-09-17 817ad5f179b7eec4c00d837021ae272c wp-includes/class-wp.php
+6.9 2026-09-17 a4799d0cd89e88e9b7c3f4d7e76d6a6d wp-includes/css/buttons.css
+6.9 2026-09-17 23a5ea97f84e2ec49e185bd0efede0f9 wp-includes/css/media-views.css
+6.9 2026-09-17 39aea0ad5c41c71d17c382f1a9b52a10 wp-includes/default-constants.php
+6.9 2026-09-17 ed8c71e5cdd42119114c1745038f94a5 wp-includes/default-filters.php
+6.9 2026-09-17 963eaae30c03c88efd21e9801adca499 wp-includes/embed.php
+6.9 2026-09-17 1ddf0ecc5bc743b26db8125e1ca4711d wp-includes/feed-atom.php
+6.9 2026-09-17 7847b337eb25949ea00062d0f8ecfec9 wp-includes/feed-rdf.php
+6.9 2026-09-17 8f4705b0c4db1e48f69fddad76e90214 wp-includes/feed-rss2-comments.php
+6.9 2026-09-17 b4ad6c4e132bee0e35020609a89b4f3f wp-includes/feed-rss2.php
+6.9 2026-09-17 c875a838a333e13e9a0317ff8d700f6a wp-includes/feed.php
+6.9 2026-09-17 218eb4d94a076e494413c6b3d5cb106b wp-includes/formatting.php
+6.9 2026-09-17 1140054e85c6911c122e42895cdbd212 wp-includes/js/dist/block-editor.js
+6.9 2026-09-17 7b55b0d87d6b6badb37de1987b8c382f wp-includes/js/dist/server-side-render.js
+6.9 2026-09-17 93a84034566188cba3829bf2c5f086e1 wp-includes/js/media-editor.js
+6.9 2026-09-17 1e5e9cb6c1dc7086aea473c46dd464b3 wp-includes/js/media-views.js
+6.9 2026-09-17 2f5f81880786f32e646792ba08208e87 wp-includes/kses.php
+6.9 2026-09-17 6d9d188e9de34195fa492efe17e1556f wp-includes/media-template.php
+6.9 2026-09-17 7235b15d55703d9a4e01a89d55852d28 wp-includes/media.php
+6.9 2026-09-17 b984e7f38036ab8a4698dd3d016f7bff wp-includes/post.php
+6.9 2026-09-17 fc2998bee8d747410dd0e17babdb8a9c wp-includes/rest-api.php
+6.9 2026-09-17 04a52100e6bd067c4e1ac1f5a2798ad8 wp-includes/rest-api/class-wp-rest-server.php
+6.9 2026-09-17 ced497cb38263f54565f5265de473415 wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php
+6.9 2026-09-17 9403ba8dadc1e1d4366eb214703a8ec0 wp-includes/rest-api/endpoints/class-wp-rest-controller.php
+6.9 2026-09-17 b8a66fb92ac43294a2345800ec5d45c4 wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+6.9 2026-09-17 70cf7c65474a44e33dcff2a469b6c832 wp-includes/rewrite.php
+6.9 2026-09-17 7216cef0f5067edb31cba0ddbda0b371 wp-includes/script-loader.php
+6.9 2026-09-17 e7605320a5b398f245be58bb5e5941b4 wp-includes/sitemaps.php
+6.9 2026-09-17 53cee596e7249e0aa258afa927281d03 wp-includes/sitemaps/class-wp-sitemaps-registry.php
+6.9 2026-09-17 7e5b9ce4d85d86ab3d21acd8b0b4deef wp-includes/sitemaps/class-wp-sitemaps.php
+6.9 2026-09-17 0cf99a42163a7f12e8011d57cc404ea1 wp-includes/sitemaps/providers/class-wp-sitemaps-posts.php
+6.9 2026-09-17 1d55afa0702153e4bb5e699cf76c1aa7 wp-includes/template-loader.php
+6.9 2026-09-17 3ed08fda9b5387656de5c491c554747f wp-includes/theme-templates.php
+6.9 2026-09-17 a2d6f8b2a54dee88ca1598138372de47 wp-includes/user.php
+6.9 2026-09-17 81e72555766c3780a97aab29641c8709 wp-includes/version.php
+6.9 2026-09-17 ce5aba44c960175f9ba23dfaa5917aa7 wp-includes/widgets/class-wp-widget-media-image.php
+6.9 2026-09-17 61338088d230e36c935344b3e3bc0884 wp-login.php

@@ -726,3 +726,27 @@ foi pour la suite est **`docs/contracts/issue-59.md`**.
 5. **La « seule parade humaine » du §7 ne couvre pas la Modification rapide.** Aucune fiche du guide ne
    décrit ce panneau, et c'est délibéré. Pour cette moitié, seul le contrôle manuel du point 7 de l'acte
    de `bootstrap.php` détecte la panne muette.
+
+---
+
+## 15. Acte du 2026-09-17 — issue #57 (T114) : ce que le témoin des ancres couvre ici, et ce qu'il ne couvre pas
+
+Cet acte ne réécrit aucune phrase gelée ci-dessus, et il ne touche pas au §14.
+
+1. **L'en-tête du contrat n'est plus vrai qu'en partie.** Il dit que les relevés « **se périmeront en
+   silence** (dette **T114**) ». Depuis le 2026-09-17, les fichiers du cœur que le §6.4 cite avec un
+   numéro de ligne sont inscrits dans `docker/provision/ancres-coeur.txt` :
+   `wp-admin/includes/class-wp-terms-list-table.php`, `wp-admin/edit-tag-form.php`,
+   `wp-admin/edit-tags.php`, `wp-admin/includes/meta-boxes.php` et
+   `wp-admin/includes/class-wp-posts-list-table.php`. Le témoin `docker/provision/temoin-ancres.sh`
+   signale leur changement au provisionnement de la pile Docker, par une ligne `ANCRES DU CŒUR : ALERTE`.
+   **Les chaînes sources et les libellés relevés à l'écran ne sont rattachés à aucun fichier inscrit, et
+   restent sans témoin.** Pour eux, l'en-tête reste vrai mot pour mot. La production n'exécute pas ce
+   témoin.
+2. **L'interdit n° 12 du §5 est inchangé**, et il est cohérent avec le registre. Le module continue de ne
+   citer aucun numéro de ligne du cœur. La règle 5 de l'en-tête du registre dit la même chose : préférer
+   un nom de crochet ou de fonction à un numéro de ligne.
+3. **T-#54-e (§12) n'est pas soldée.** La vérification reste manuelle et se rejoue en entier à chaque
+   montée de WordPress. Seul changement : tant que `wp-includes/version.php` est inscrit au registre,
+   toute montée de version réelle lève une ALERTE au provisionnement. Cette ALERTE marque le moment où la
+   vérification manuelle redevient due.

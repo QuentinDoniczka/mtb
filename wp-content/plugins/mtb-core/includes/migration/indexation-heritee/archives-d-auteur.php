@@ -42,6 +42,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * une archive d'auteur y tombe sur l'index du blog. La borne 3 dit « clos et daté », pas « minuscule ».
  * La prochaine demande de ce genre exige son propre amendement écrit et daté.
  *
+ * ACTE DATÉ DU 2026-09-17 (#57) — CE PARAGRAPHE SE LIT AVEC L'ACTE DE #57 PLACÉ SOUS LE MOTIF 1 DE
+ * « bootstrap.php ». « Clos et daté » reste vrai du périmètre de #49 à sa date ; la phrase « la prochaine
+ * demande de ce genre exige son propre amendement » est remplacée par le critère écrit là-bas : un sujet
+ * n'entre dans ce module que si le tenir ailleurs recréerait le mode de panne de #52, et par un acte daté
+ * qui nomme le fait partagé.
+ *
  * AMENDEMENT DÉCLARÉ À LA BORNE 1 (contrat #49 §13.1). Elle se lisait « lecture seule », puis « il lit,
  * il RÉPOND » depuis #50. Ce rappel-ci va un cran plus loin, et l'étendre en silence aurait été la
  * faute que la borne existe pour empêcher : IL MODIFIE LA REQUÊTE. Il retire des clés du tableau des
@@ -116,6 +122,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * CES NUMÉROS DE LIGNE SONT ÉPINGLÉS À WordPress 6.9. « wp-includes/ » n'étant pas versionné dans ce
  * dépôt, ILS SE PÉRIMERONT EN SILENCE à la prochaine montée de version. Résidu nommé, non masqué.
+ *
+ * ACTE DATÉ DU 2026-09-17 (#57) — « EN SILENCE » CESSE D'ÊTRE VRAI DANS LA PILE DOCKER DE DÉVELOPPEMENT.
+ * Un témoin existe depuis ce jour : « docker/provision/temoin-ancres.sh », lancé à chaque provisionnement
+ * (« make provision », ou « make up » quand il démarre wpcli), compare chaque fichier du cœur cité
+ * avec un numéro de ligne à son empreinte relevée dans « docker/provision/ancres-coeur.txt ». Les
+ * fichiers que les neuf faits ci-dessus citent y sont tous inscrits ; si l'un change, le journal de
+ * wpcli porte « ANCRES DU CŒUR : ALERTE » avec la recherche qui retrouve ses citations. RÉSERVES, DITES PLUTÔT QUE LISSÉES : le témoin
+ * ne tourne que dans la pile Docker, jamais en production ; il dit qu'un fichier a changé, pas qu'une
+ * ligne citée a bougé ni que le rappel ne mord plus (T115, #58) ; et il atteste l'état des fichiers au
+ * 2026-09-17, pas la justesse de chaque numéro écrit le 2026-09-08.
  */
 
 /**

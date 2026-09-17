@@ -528,6 +528,17 @@ function photos_affichables( int $post_id ): array {
  * MÉCANISME décrit — pose différée, retrait immédiat —, et il se revérifie en relisant les
  * fichiers nommés.
  *
+ * ACTE DATÉ DU 2026-09-17 (#57) — « SANS QUE RIEN NE LE SIGNALE » N'EST PLUS VRAI DANS LA PILE DOCKER.
+ * Les quatre fichiers du cœur cités ci-dessus — « wp-includes/js/media-editor.js »,
+ * « wp-admin/includes/ajax-actions.php » (cité deux fois), « wp-admin/includes/post.php » et
+ * « wp-admin/js/post.js » — sont inscrits dans « docker/provision/ancres-coeur.txt ».
+ * Le témoin « docker/provision/temoin-ancres.sh » tourne à chaque provisionnement de la pile. Si l'un de
+ * ces fichiers change, quelle qu'en soit la cause, il écrit « ANCRES DU CŒUR : ALERTE » au journal de
+ * wpcli. RÉSERVES : pile Docker seulement, jamais en production ; « fichier changé » ne veut pas dire
+ * « mécanisme cassé », ni l'inverse. Ce que l'écran affiche et l'ordre des gestes du navigateur ne sont
+ * rattachés à aucun fichier inscrit, et restent sans témoin : ils se revérifient toujours en relisant
+ * les fichiers et en jouant l'écran.
+ *
  * @param int   $post_id Identifiant de la portée.
  * @param array $photos  Liste des photos que la boîte s'apprête à afficher.
  *

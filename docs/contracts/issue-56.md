@@ -1601,3 +1601,33 @@ reste `is_admin()` seule, et **le §15 continue d'interdire d'y toucher sans rou
 *Trouvé par la passe de brainstorm de la reprise, mesuré par le lead de chaîne, arbitré par le lead
 orchestrateur. Nommé plutôt que tu — c'est la seule chose qui empêche un latent de devenir une
 surprise.*
+
+---
+
+# Amendement — 2026-09-17, issue #57 (T114) : les vingt ancres du cœur ne se périment plus en silence dans la pile Docker
+
+Cet amendement ne réécrit aucune phrase ci-dessus. Il porte sur trois passages qui disent que les ancres
+« **se périmeront en silence** » : la note placée sous « La frontière avec le CŒUR, gelée » (« Vingt
+ancres de plus »), le point 8 du §14 (« Les vingt ancres F1–F20 »), et le point 5 du §E du premier
+amendement (« Les quinze ancres du cœur de `identite-des-comptes.php` »).
+**Ils se lisent avec cet acte.**
+
+1. **T114 est traitée par #57, dans la pile Docker de développement.** Chaque fichier du cœur cité avec
+   un numéro de ligne par ce contrat ou par `identite-des-comptes.php` est inscrit dans
+   `docker/provision/ancres-coeur.txt` : `class-wp-rest-server.php`, `rest-api.php`,
+   `class-wp-rest-users-controller.php`, les quatre gabarits de flux, `author-template.php`, `embed.php`,
+   `class-wp-posts-list-table.php`, `wp-includes/user.php`, `wp-login.php`, `feed.php`. Le témoin
+   `docker/provision/temoin-ancres.sh` tourne à chaque démarrage de `wpcli` (`make provision`, ou
+   `make up` quand il crée ou démarre ce conteneur). Si l'un d'eux
+   change, il écrit `ANCRES DU CŒUR : ALERTE` au journal de `wpcli`. **Réserves** : pas en production ;
+   « fichier changé » n'est pas « rappel mort », et inversement (T115, #58) ; l'état des fichiers est
+   attesté au 2026-09-17, pas chaque ancre relevée le 2026-09-08.
+2. **R14 (§I) reste « Déclaré ».** L'ALERTE d'un fichier imprime la recherche
+   `git grep -n -F -e '<nom du fichier>'`, qui retrouve ses citations dans **les deux fichiers du module**
+   comme dans les contrats. Cela **atténue** la divergence entre les deux fichiers ; cela ne la supprime
+   pas, car la relecture reste humaine.
+3. **Restent vrais mot pour mot** : le refus de recopier un gabarit du cœur, « un fichier qui **se périme
+   en silence** » (§4.5, et l'option D du §4.7), et le refus de réimplémenter le flux
+   `login_form_lostpassword` (§5). Une copie vivrait dans le dépôt, et le témoin ne surveille que des
+   fichiers du cœur. Reste vrai aussi le §D du second amendement, qui chiffre le coût d'« une ancre T114
+   de plus » : une ancre s'inscrit toujours au registre et se relit à chaque ALERTE.

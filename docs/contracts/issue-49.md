@@ -1006,3 +1006,29 @@ un écran ; elle n'a simplement pas encore été payée.*
    deux identifiants** à un visiteur anonyme. **T105 n'est close que sur son énoncé.**
 4. Les numéros de ligne du **fait 9** sont, comme les huit autres, **épinglés à WordPress 6.9** et se
    périmeront en silence.
+
+---
+
+# Amendement — 2026-09-17, issue #57 (T114) : les numéros de ligne du cœur ne se périment plus en silence dans la pile Docker
+
+Cet amendement ne réécrit aucune phrase ci-dessus. Trois passages disent que les numéros de ligne du cœur
+« **se périmeront en silence** » : la note placée sous « La frontière avec le CŒUR, gelée » (« Les
+numéros de ligne ci-dessus sont épinglés à WordPress 6.9 »), le point 5 du §14, et le point 4 du §G
+(« Les numéros de ligne du **fait 9** »). **Ils se lisent avec cet acte.**
+
+1. **Depuis le 2026-09-17, la péremption est signalée au provisionnement de la pile Docker.** Le registre
+   `docker/provision/ancres-coeur.txt` porte l'empreinte md5 de chaque fichier du cœur cité avec un numéro
+   de ligne. Tous les fichiers que ce contrat cite ainsi y sont inscrits (`class-wp.php`, `rest-api.php`,
+   `class-wp-query.php`, `template-loader.php`, `canonical.php`, `wp-admin/includes/post.php`,
+   `upload.php`, `admin.php`, `admin-ajax.php`, `ajax-actions.php`, `wp-cron.php`, entre autres). Le
+   témoin `docker/provision/temoin-ancres.sh` tourne à chaque démarrage de `wpcli` (`make provision`, ou
+   `make up` quand il crée ou démarre ce conteneur). Si l'un de
+   ces fichiers change, il écrit au journal de `wpcli` une ligne `ANCRES DU CŒUR : ALERTE`, avec la
+   recherche qui retrouve ses citations. Contrat : `docs/contracts/issue-57.md`.
+2. **Réserves, qui restent vraies.** Le témoin ne tourne **que dans la pile Docker** ; la production ne
+   l'exécute pas. Il dit « **un fichier cité a changé** », jamais « la ligne a bougé » ni « le rappel ne
+   mord plus » (T115, #58). Il atteste l'état des fichiers **au 2026-09-17**, et non la justesse de chaque
+   numéro relevé le 2026-09-08.
+3. Un numéro de ligne du cœur ne se change toujours **qu'après relecture de toutes ses citations** et par
+   acte daté dans ce contrat gelé. L'empreinte du registre change **dans le même geste** (règle 2 de
+   l'en-tête du registre).

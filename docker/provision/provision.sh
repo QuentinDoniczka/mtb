@@ -290,6 +290,25 @@ else
 	log "AVERTISSEMENT : « wp db query 'SELECT 1' » échoue dans le conteneur wpcli — les enrobages TLS de docker/wpcli/bin/ (issue #30) ne couvrent peut-être plus le binaire résolu par WP-CLI (image de base rebougée ?). Voir docs/contracts/issue-30.md et docs/docker.md. Sans conséquence sur le site : WordPress et la sonde ci-dessus passent par mysqli, jamais par ce client."
 fi
 
+log "témoin des ancres du cœur (issue #57)…"
+# JAMAIS UN "exit", pour le même motif que la sonde ci-dessus : le témoin dit qu'un fichier du cœur cité
+# avec un numéro de ligne a changé, il ne dit pas que le site est cassé. Faire échouer ce script ici
+# mettrait wpcli en boucle de redémarrage ("restart: unless-stopped") le jour même d'une montée de
+# version — exactement le jour où l'on a besoin de la pile. Son statut n'est retenu que pour le rappel
+# qui suit "terminé." (docs/contracts/issue-57.md §4). Sa sortie n'est jamais capturée : ses lignes
+# vont au journal telles quelles.
+# Le test "-r" est obligatoire : "sed | sh" sur un script absent rend 0, car le statut d'un tube est
+# celui de sh, qui n'a rien lu et n'imprime aucun bilan. L'absence du témoin passerait alors pour un
+# silence conforme.
+temoin_ancres_statut=0
+if [ -r /provision/temoin-ancres.sh ]; then
+	sed 's/\r$//' /provision/temoin-ancres.sh | /bin/sh
+	temoin_ancres_statut=$?
+else
+	log "ANCRES DU CŒUR : TÉMOIN INOPÉRANT — script /provision/temoin-ancres.sh absent."
+	temoin_ancres_statut=20
+fi
+
 # La chaîne "[provision] terminé." est le signal de fin de provisionnement attendu par les
 # scripts/agents qui patientent sur les logs (ex. docker-mtb) — elle doit toujours apparaître
 # telle quelle, y compris quand une erreur non bloquante a été détectée plus haut : sinon plus
@@ -299,6 +318,14 @@ log "terminé."
 if [ "${site_non_francophone:-0}" -eq 1 ]; then
 	log "ERREUR : rappel — le site n'est PAS en fr_FR (voir « ERREUR » ci-dessus). Relancer 'make provision' avec un accès réseau."
 fi
+# Même motif que le rappel T39 : un verdict du témoin des ancres (#57) resterait noyé au-dessus de
+# "terminé.". Rien pour ok (0) ni AVERTISSEMENT (10), qui ne demandent aucun geste urgent.
+case "$temoin_ancres_statut" in
+	0 | 10 ) ;;
+	30 ) log "ANCRES DU CŒUR : rappel — ALERTE levée plus haut (lignes « ALERTE »). Sans effet sur le site ; à solder avant de citer à nouveau une ligne du cœur." ;;
+	20 ) log "ANCRES DU CŒUR : rappel — TÉMOIN INOPÉRANT (voir plus haut) : aucune ancre n'est garantie." ;;
+	* ) log "ANCRES DU CŒUR : rappel — le témoin s'est interrompu (statut ${temoin_ancres_statut}) : aucun bilan fiable." ;;
+esac
 
 # Le conteneur reste en vie pour que WP-CLI reste disponible en cas d'exécution ponctuelle
 # (make wp, make shell) et pour que le healthcheck du service reflète l'état du provisionnement.

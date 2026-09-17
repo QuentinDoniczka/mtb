@@ -757,3 +757,27 @@ Deux points de prose ont été routés au lead et corrigés dans le même geste 
 `in_array()`, qui invoquait un danger propre à PHP 7 sur un plafond PHP 8.1 — **le `true` reste, c'est
 le pourquoi qui devient vrai** — et un en-tête annonçant « quatre faits » au-dessus d'un bloc qui en
 porte cinq, *la même erreur en miniature que celle que #24 §15 s'interdisait*.
+
+---
+
+# Amendement — 2026-09-17, issue #57 (T114) : les numéros de ligne du cœur ne se périment plus en silence dans la pile Docker
+
+Cet amendement ne réécrit aucune phrase ci-dessus. Le point 4 du §F (« Les numéros de ligne du cœur cités
+dans le code et ci-dessus sont épinglés à WordPress 6.9 […] ils **se périmeront en silence** ») **se lit
+avec cet acte.**
+
+1. **Depuis le 2026-09-17, la péremption est signalée au provisionnement de la pile Docker.** Les
+   fichiers du cœur que ce contrat et `plan-du-site.php` citent avec un numéro de ligne
+   (`wp-includes/sitemaps/class-wp-sitemaps.php`, `wp-includes/sitemaps.php`,
+   `wp-includes/default-filters.php`, `wp-includes/rewrite.php`, `wp-includes/formatting.php`, entre
+   autres) sont inscrits dans `docker/provision/ancres-coeur.txt`. Le témoin
+   `docker/provision/temoin-ancres.sh` tourne à chaque démarrage de `wpcli` (`make provision`, ou
+   `make up` quand il crée ou démarre ce conteneur). Si l'un d'eux
+   change, il écrit au journal de `wpcli` une ligne `ANCRES DU CŒUR : ALERTE`. Contrat :
+   `docs/contracts/issue-57.md`.
+2. **Réserves, qui restent vraies.** Le témoin ne tourne que dans la pile Docker, jamais en production.
+   Il dit qu'un fichier cité a changé, pas que le 404 franc ne mord plus : la sonde de ce rappel reste le
+   protocole HTTP du §9 (T115, #58). Il atteste l'état des fichiers au 2026-09-17, pas la justesse de
+   chaque numéro relevé le 2026-09-08. `rewrite.php:162-174` (§C, Q7) est inscrit sous son seul candidat
+   du cœur, `wp-includes/rewrite.php`, **sans que l'ancre elle-même ait été relue** : le registre
+   n'atteste pas les citations passées.

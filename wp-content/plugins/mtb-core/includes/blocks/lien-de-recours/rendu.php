@@ -145,6 +145,15 @@ function destination( string $cible ): ?array {
  * décaler sans que rien ne le signale. Ce qui est le livrable, c'est le MÉCANISME décrit — les deux
  * chemins et le tamis « uses_context » —, et il se revérifie en relisant les deux fichiers nommés.
  *
+ * ACTE DATÉ DU 2026-09-17 (#57) — « SANS QUE RIEN NE LE SIGNALE » N'EST PLUS VRAI DANS LA PILE DOCKER.
+ * Les deux fichiers du cœur cités dans ce fichier, « wp-includes/blocks.php » et
+ * « wp-includes/class-wp-block.php », sont inscrits dans « docker/provision/ancres-coeur.txt ». Le témoin
+ * « docker/provision/temoin-ancres.sh » tourne à chaque provisionnement de la pile. Si l'un d'eux change,
+ * quelle qu'en soit la cause, il écrit « ANCRES DU CŒUR : ALERTE » au journal de wpcli. RÉSERVES : pile
+ * Docker seulement, jamais en production ; « fichier changé » ne veut pas dire « tamis cassé », ni
+ * l'inverse. Le comportement du contexte à l'exécution n'est rattaché à aucun fichier inscrit : il reste
+ * sans témoin, et se revérifie toujours en relisant les deux fichiers nommés.
+ *
  * POLARITÉ DU REPLI, ET POURQUOI DANS CE SENS. On n'enveloppe que si la clé est présente et vaut
  * exactement « true » ; toute autre situation — clé absente, filtre jamais appelé, valeur d'un autre
  * type — laisse le rendu d'aujourd'hui, à l'octet près. Les trois écrans livrés (« 404.html »,

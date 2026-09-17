@@ -18,6 +18,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  *   1. HONNÊTETÉ DU NOM — un module nommé « redirections-301 » qui convertirait une directive
  *      d'indexation mentirait sur son contenu.
+ *
+ *      ACTE DATÉ DU 2026-09-17 (#57) — LE NOM N'ANNONCE PLUS QU'UN SUJET SUR TROIS, ET IL RESTE.
+ *      CE MODULE PORTE TROIS SUJETS, et le motif 1 doit le dire avant tout autre ajout : (a) la
+ *      conversion du fait d'indexation relevé sur l'ancien site (#24, #52) ; (b) le plan du site —
+ *      l'exception du 2026-09-05 et le 404 franc de #50 ; (c) la vie privée des comptes — les archives
+ *      d'auteur (#49), puis la route REST, les flux et l'oEmbed (#56). Le nom du dossier et la ligne
+ *      d'en-tête de ce fichier n'annoncent que le premier. L'ÉCART EST CONNU ET ASSUMÉ, PAS OUBLIÉ.
+ *      PAS DE RENOMMAGE, ET LE MOTIF EST UN DÉCOMPTE MESURÉ, relevé le 2026-09-17 : le nom du module
+ *      est écrit 77 fois dans 11 contrats gelés AVANT #57 — au commit a4912fc, par
+ *        git grep -o -F -e 'indexation-heritee' -e 'indexation héritée' a4912fc -- docs/contracts | wc -l
+ *        git grep -l -F -e 'indexation-heritee' -e 'indexation héritée' a4912fc -- docs/contracts | wc -l
+ *      — et 79 fois dans 12 contrats en comptant « docs/contracts/issue-57.md », qui l'écrit deux fois.
+ *      La formule « trois contrats gelés », écrite en tête de « identite-des-comptes.php », sous-comptait :
+ *      onze, et non trois. Renommer périmerait toutes ces citations pour un bénéfice nul à l'écran de
+ *      l'éleveuse.
+ *      LA LOGIQUE « PÉRIMÈTRE CLOS ET DATÉ » EST RETIRÉE, et ce critère la remplace, formulé par le
+ *      défaut et non par le sujet : « Un sujet n'entre ici que si le tenir ailleurs recréerait le mode
+ *      de panne de #52 — deux mécanismes décrivant le même fait, dont l'un peut tomber pendant que
+ *      l'autre tient, en silence. Il entre alors par un acte daté qui nomme ce fait partagé ; à défaut,
+ *      il va dans son propre module. » Les formules « clos et daté » antérieures — le paragraphe
+ *      « AMENDEMENT DÉCLARÉ À LA BORNE 1 » plus bas, l'en-tête de « archives-d-auteur.php », le troisième
+ *      acte de « plan-du-site.php » — restent vraies à leur date et SE LISENT AVEC CET ACTE : leur
+ *      promesse « la prochaine demande exige son propre amendement » est remplacée par le critère
+ *      ci-dessus. La borne 3 de « identite-des-comptes.php » n'en fait pas partie : elle REFUSAIT déjà
+ *      « clos et daté » et se disait ÉTIRÉE. Sa recommandation de renommage, ajournée jusqu'au prochain
+ *      ajout, reçoit ici sa réponse : pas de renommage.
+ *      #57 N'AJOUTE ICI NI SUJET NI SONDE. Son témoin des ancres du cœur vit dans « docker/provision/ »,
+ *      n'est pas une commande de ce module et ne lit aucun de ses états : le motif 3 est intact.
+ *
  *   2. RÉVERSIBILITÉ. Elle ne passe plus par le code depuis le 2026-09-07 (#52), ET C'EST TOUT
  *      L'OBJET DE L'ISSUE : à « remettez Placement dans Google », la réponse est désormais
  *      « ouvrez Placement et décochez "Mettre ce contenu en sommeil" ». Le renommage du dossier en
@@ -248,6 +277,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  * PHRASE QUE « SANS ÉTAT ». La borne 1, elle, N'EST TOUJOURS PAS ÉTENDUE : le rappel neuf lit une route
  * et une capacité, il rend son argument inchangé sur TOUS ses chemins, il n'amende aucune requête et
  * n'écrit rien.
+ *
+ * NEUVIÈME ACTE DATÉ DU 2026-09-17 (#57) — UNE PARTIE DES CAUSES « DU CŒUR » N'EST PLUS MUETTE, DANS LA
+ * PILE DE DÉVELOPPEMENT SEULEMENT. Les causes qui passent par le cœur — « le cœur renommant une de ces
+ * clés » (troisième surface), « le cœur renommant une clé de route ou cessant d'appeler "the_author()" »
+ * (quatrième surface), et les deux causes du cœur ajoutées par le septième acte — sont désormais
+ * SIGNALÉES AU PROVISIONNEMENT DE LA PILE DOCKER quand elles modifient un fichier du cœur cité avec un
+ * numéro de ligne : le témoin « docker/provision/temoin-ancres.sh » compare chaque fichier à son
+ * empreinte dans « docker/provision/ancres-coeur.txt » et écrit « ANCRES DU CŒUR : ALERTE » au journal
+ * de wpcli. Les fichiers du cœur que ce module cite avec un numéro de ligne y sont tous inscrits.
+ * CE N'EST PAS UN TÉMOIN DE MORSURE : il dit « un fichier cité a changé », jamais « ce rappel ne mord
+ * plus » — un fichier changé peut laisser le rappel intact, et un rappel peut cesser de mordre par un
+ * fichier du cœur que personne ne cite, ce qui reste muet. Les autres causes — ligne « add_filter »
+ * perdue, constante vidée, dossier renommé, tiers qui filtre après nous — restent muettes (T115, #58).
+ * La production n'exécute pas ce témoin : là-bas, « RIEN NE LE DIRAIT » reste vrai mot pour mot.
  *
  * MESURE D'ÉGALITÉ DU CONTRAT #24 §6.2, RELEVÉE LE 2026-09-07 : « le nombre de contenus portant
  * _mtb_robots_source, le nombre rendus noindex et le nombre retirés du plan du site sont ÉGAUX » cesse
