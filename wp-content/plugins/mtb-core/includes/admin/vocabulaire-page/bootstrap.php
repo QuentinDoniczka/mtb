@@ -24,8 +24,8 @@
  *      dette T-#59-a. Les Résultats n'ont pas de champ d'adresse dans ce panneau : rien à renommer.
  *
  *   4. ÉCART AU CROCHET DE GROUPE, COMPLÉTÉ. Ce module pose en plus « load-edit.php », à l'inclusion,
- *      et « gettext_default » depuis le rappel de « load-edit.php ». Même statut que les deux crochets déjà déclarés : écart
- *      réel, volontaire, et que le chargeur ne vérifie pas.
+ *      et « gettext_default » depuis le rappel de « load-edit.php ». Même statut que les deux
+ *      crochets déjà déclarés : écart réel, volontaire, et que le chargeur ne vérifie pas.
  *
  *   5. LE SUJET DU MODULE S'ÉLARGIT : ce n'est plus un type de contenu, c'est LE MOT « SLUG » SUR LES
  *      ÉCRANS QUOTIDIENS DE L'ÉLEVEUSE, plus la famille photo du type « page ». Le dossier garde son
@@ -35,7 +35,11 @@
  *
  *   6. MODE DE PANNE DE LA TROISIÈME MOITIÉ. Elle compare une chaîne source : si le cœur reformule
  *      « Slug », ou cesse de déclencher « load-edit.php », la liste redit « Slug ». Panne bénigne, et
- *      muette, comme celle de la moitié JavaScript.
+ *      muette, comme celle de la moitié JavaScript. MAIS SANS PARADE HUMAINE : AUCUNE fiche du
+ *      guide ne porte de ligne de signalement pour la Modification rapide, parce que le guide ne
+ *      décrit pas ce panneau, délibérément (contrat #59 §12). La ligne du guide citée plus bas ne
+ *      couvre que l'écran d'une page. Pour cette moitié, SEUL le contrôle du point 7 de cet acte,
+ *      joué à la main, détecte la panne.
  *
  *   7. VÉRIFICATION N° 3, RÉÉCRITE. Sur l'écran d'une portée, d'un chien, d'un article et sur la
  *      Médiathèque, « Slug » DOIT RESTER là où il est. Dans la Modification rapide, « Slug » DOIT
@@ -48,6 +52,18 @@
  *
  *   8. POUR DÉSACTIVER : le renommage du dossier en « _vocabulaire-page » emporte les TROIS moitiés
  *      ensemble, et aucun autre module.
+ *
+ *   9. DEUX LECTURES RECTIFIÉES.
+ *      « MOITIÉ ». Le module compte désormais TROIS moitiés : deux en PHP — les libellés photo, sur
+ *      « post_type_labels_page », et le renommage de la Modification rapide, sur
+ *      « gettext_default » — et une en JavaScript, sur l'écran d'une page. Là où
+ *      « filtre-des-libelles.php » et « ecran.php », écrits avant #59, disent « la moitié PHP » au
+ *      singulier, lire « la moitié photo » ; de même dans les passages marqués de cet en-tête.
+ *      LE CHARGEUR ET « add_filter » À L'INCLUSION. La phrase « Le chargeur autorise expressément
+ *      "add_filter" à l'inclusion » est inexacte : l'en-tête de « includes/class-loader.php »
+ *      dresse la liste de ce qui est interdit dans un bootstrap.php à l'inclusion, et
+ *      « add_filter » n'y figure pas. Le chargeur NE L'INTERDIT PAS ; il ne l'autorise nulle part
+ *      expressément. La conclusion du paragraphe — poser le filtre à l'inclusion — tient.
  *
  * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * CE QUE L'ÉLEVEUSE VOIT CHANGER. Sur l'écran d'une page, et nulle part ailleurs : la rangée de la
@@ -87,6 +103,7 @@
  * « gettext », appelé pour CHAQUE chaîne traduite de CHAQUE requête — d'où la garde de
  * « admin/description-photo », juste chez lui et fausse ici.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * POURQUOI LE FILTRE EST POSÉ À L'INCLUSION ET JAMAIS SUR « init ». Le cœur enregistre le type
  * « page » pendant l'amorçage, avant « plugins_loaded » et donc bien avant « init ». Un « add_filter »
  * posé depuis un rappel de « init » arriverait APRÈS le calcul des libellés et ne mordrait RIEN, en
@@ -173,6 +190,7 @@
  *      la Médiathèque, le mot « Slug » DOIT RESTER là où il est aujourd'hui. Sa présence y est la
  *      preuve que la garde tient, jamais un échec.
  *
+ * [RESTREINT PAR L'ACTE DU 2026-09-17]
  * La seule parade retenue contre la panne muette est humaine : une ligne dans la rubrique « Ce n'est
  * pas normal, signalez-le » de la fiche du guide. L'éleveuse est le seul détecteur qui regarde
  * vraiment l'écran.

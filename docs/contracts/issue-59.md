@@ -295,3 +295,91 @@ restent la parade humaine sur l'écran qu'elle ouvre vraiment.
 `filtre-des-libelles.php` et `ecran.php`, est devenu ambigu ; la phrase gelée de `bootstrap.php` selon
 laquelle le chargeur « autorise expressément `add_filter` à l'inclusion » ne se lit pas dans
 `class-loader.php`, qui se contente de ne pas l'interdire (héritée de #54).
+
+---
+
+## 13. Acte correctif du 2026-09-17 (revue du lot) — prime sur le §10 B10 et sur le §12
+
+Aucune phrase ci-dessus n'est réécrite ; celles que cet acte contredit se lisent avec lui.
+
+### A. B10 et le §12 « aucune fiche n'est devenue fausse » — ÉTAIT FAUX
+
+`docs/guide/chien-ajouter-un-chien.md` disait « C'est le seul endroit où l'adresse d'une fiche se
+change ». Depuis `0379804`, la Modification rapide de la liste des Chiens montre un second champ portant
+exactement ce libellé : la phrase était contredite à l'écran. **C'était un faux vert de documentation**,
+que ni le brainstorm, ni `doc-client-mtb`, ni moi n'avons vu. La recherche avait porté sur les mots
+« Slug » et « Adresse de la page », pas sur les **affirmations d'unicité** qui les entourent.
+
+**Corrigé** : la puce est déplacée de « Ce qui n'a aucune importance » vers « Ce qu'il vaut mieux ne pas
+faire ». Elle ne dit plus combien d'endroits existent : elle reste donc vraie que la Modification rapide
+soit masquée plus tard ou non (T-#59-b). Elle dit pourquoi ne pas toucher l'adresse (voir C). Une
+recherche des affirmations d'unicité (« seul endroit », « seule façon », « seul moyen », « uniquement »,
+« nulle part ailleurs ») sur tout `docs/guide/` n'en trouve **aucune autre** qui porte sur l'adresse.
+`portee-ajouter-une-portee.md` n'est pas modifié : ses lignes sur l'adresse restent vraies (voir B et C).
+
+### B. Mesure M-QE — une adresse vide enregistrée par la Modification rapide [M]
+
+Mesure faite dans une transaction annulée : 12 tables InnoDB ; ordres à validation implicite, courriel
+et HTTP bloqués ; session `fabienne` ; `wp_ajax_inline_save()` reproduit du contrôle du nonce jusqu'à
+`edit_post()` inclus, avec le `$_POST` qu'envoie `inline-edit-post.js`.
+
+```
+portée 163 « A1 2025 »   a1-2025   → a1-2025               (écran complet : identique)
+chien 11 « Etch »        etch      → etch                  (écran complet : identique)
+portée 176 « N_2 2017 »  n-2017    → n_2-2017, _wp_old_slug=n-2017   (écran complet : identique)
+chien 191 « Rex » (démo) demo-rex  → rex, _wp_old_slug=demo-rex      (écran complet : identique)
+ROLLBACK → @@in_transaction 0 ; lignes, métadonnées, révisions, options et carte des 301 (46/46) identiques
+```
+
+**La Modification rapide réécrit une adresse vide exactement comme l'écran complet** : le cœur la
+recalcule à partir du titre (l'identifiant pour une portée, le nom d'usage pour un chien), et mtb-core
+ne touche jamais l'adresse. La phrase « Laissée vide, elle se réécrit toute seule » du guide des portées
+est donc vraie **par les deux chemins**. **Mais** 3 portées, 5 chiens et 1 page publiés portent une
+adresse différente de celle que le cœur recalculerait : pour eux, **vider le champ change l'adresse**.
+Le seul cas réel relevé est la portée 176 ; les autres sont des contenus de démonstration.
+
+### C. Changement d'adresse et liens de l'ancien site [M], relevé pour T-#59-b
+
+`page` est hiérarchique ; `mtb_portee` et `mtb_chien` ne le sont pas. Dans la même transaction annulée :
+
+```
+page 316 litterature  → aucun _wp_old_slug ; ancienne adresse 404 ; 301 /bhpl/littérature/  → cible_non_resolue
+chien 25 very-best    → _wp_old_slug écrit ; le cœur retrouve la nouvelle ; 301 /la-meute/very-best/ → cible_non_resolue
+portée 165 a3-2025    → _wp_old_slug écrit ; 301 /bhpl/portée-a3-2025/ suit la nouvelle adresse
+```
+
+`migration/redirections-301/` **ne compense rien** : il résout les cibles « chien » et « page » **par
+leur adresse**, et la cible « portée » par son identifiant. **Changer l'adresse d'un chien ou d'une page
+coupe, sans rien signaler à l'écran, le lien venu de l'ancien site** (contrainte 4). Seule
+`wp mtb verifier-redirections` le détecte. **[D]** : l'envoi effectif de la 301 par
+`wp_old_slug_redirect` n'a pas été joué en HTTP, puisqu'une autre connexion ne voit pas une transaction
+non validée. **Hors empreinte, non corrigé → dette T-#59-d**, versée à la question produit T-#59-b.
+
+### D. §12 V2 — « 196 octets » corrigé
+
+La charge `window.mtbVocabulairePage` fait **149 octets**, le suffixe `sourceURL` que le cœur ajoute au
+script en ligne étant exclu. C'est la valeur relevée par la revue et par la passe d'intégration.
+**[D]** : les 196 octets du relevé d'implémentation comptaient ce suffixe. L'égalité de md5 avant/après,
+seule propriété que V2 exige, n'est pas remise en cause, puisque les deux relevés portaient sur le même
+périmètre.
+
+### E. Commentaires du module corrigés (constats MEDIUM et LOW de la revue)
+
+`bootstrap.php` :
+- le point 6 de l'acte dit que **seul le contrôle n° 7** détecte la panne muette de la Modification
+  rapide, aucune fiche ne portant de ligne de signalement pour ce panneau ;
+- le point 9 définit les **trois moitiés** : « la moitié PHP » de `filtre-des-libelles.php` et de
+  `ecran.php` se lit « la moitié photo » ;
+- le point 9 rectifie aussi « le chargeur autorise expressément `add_filter` » en « ne l'interdit pas » ;
+- des marqueurs sont posés au-dessus des deux paragraphes gelés concernés, et une ligne de 125 colonnes
+  est recoupée.
+
+`libelles.php` : « aucun filtre PHP ne l'atteint » est borné à **l'écran d'édition d'une page**.
+
+**Largeur de ligne** : 55 lignes de `bootstrap.php` et 31 de `libelles.php` dépassent encore 100
+colonnes. Ce sont des lignes existantes, souvent dans du texte gelé, et aucune règle de largeur n'est
+configurée dans le dépôt. **Non remises en forme.**
+
+| # | Dette nouvelle |
+|---|---|
+| **T-#59-d** | Changer (ou vider) l'adresse d'un **chien** ou d'une **page** coupe en silence la 301 de l'ancien site, résolue par adresse (`redirections-301`). Le guide des chiens le dit désormais ; le produit ne l'empêche pas |

@@ -105,7 +105,8 @@ function libelle_adresse_de_la_page(): string {
  *   volante qu'elle ouvre, et l'étiquette du champ de saisie de cette fenêtre — cette dernière est
  *   masquée à l'œil et lue par les lecteurs d'écran. Le catalogue français traduit « Slug » par
  *   « Slug » : ce n'est PAS une traduction manquante, c'est la traduction officielle, et aucun filtre
- *   PHP ne l'atteint.
+ *   PHP ne l'atteint sur l'écran d'édition d'une page (sur les listes, depuis #59, un filtre PHP
+ *   l'atteint : voir « table_modification_rapide() »).
  *
  *   « Edit or replace the featured image » — msgid NU également, nom accessible du bouton de la photo
  *   quand une photo est déjà posée. Le mot interdit y survit INVISIBLE À L'ŒIL ET PRONONCÉ À VOIX

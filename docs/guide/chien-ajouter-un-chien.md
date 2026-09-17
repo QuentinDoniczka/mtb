@@ -235,9 +235,6 @@ italique si vous voulez, et laissez faire le reste.
 - L'ordre dans lequel vous remplissez les sections.
 - Le **Cadrage de la photo** si votre photo est déjà bien centrée : **Centre** convient.
 - La couleur et la taille du texte de votre commentaire : le site s'en occupe.
-- La boîte **Adresse de la page**, tout en bas de l'écran : elle se remplit toute seule à partir du
-  nom d'usage. C'est le seul endroit où l'adresse d'une fiche se change, et vous n'avez à y toucher
-  que si elle est fausse.
 
 **Ce qu'il vaut mieux ne pas faire :**
 
@@ -248,6 +245,11 @@ italique si vous voulez, et laissez faire le reste.
   mieux qu'une date fausse, qui finira recopiée ailleurs.
 - **Ne créez pas une deuxième fiche pour le même chien.** Si vous ne retrouvez pas une fiche, cherchez
   son nom dans **Tous les chiens** avant d'en ajouter une.
+- **Ne touchez à l'adresse de la fiche que si elle est fausse.** Elle est dans la boîte
+  **Adresse de la page**, tout en bas de l'écran, et se remplit toute seule à partir du nom d'usage.
+  Si ce chien avait déjà sa page sur votre ancien site, c'est cette adresse qui conduit jusqu'à la
+  fiche les liens vers l'ancienne page : si elle change, ces liens ne mènent plus nulle part.
+  Laissez-la donc telle quelle, et ne la videz pas.
 
 **Si quelque chose vous inquiète** : ne supprimez rien, notez le nom du chien et l'heure, et
 appelez-nous. Une fiche mal remplie n'a jamais cassé un site.

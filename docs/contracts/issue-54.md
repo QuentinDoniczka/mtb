@@ -201,6 +201,7 @@ formulation. **Le geste prescrit est : ouvrir `content/portee/bootstrap.php:93-9
     `migration/**`, et `admin/**` est un groupe d'écrans.
 14. **Les quatre libellés photo, ou aucun.** Jamais un sous-ensemble (§3).
 15. **`mtb-core.php` et `includes/class-loader.php` ne sont pas ouverts.**
+*[RESTREINT PAR L'ACTE DU 2026-09-17 — §14 : le n° 16 est remplacé par `issue-59.md` §6]*
 16. **Aucune chaîne rendue n'est recopiée ailleurs** que par appel des deux fonctions de table.
     L'interdit est écrit **sans compte**, à dessein : le §12 bis a fait entrer une sixième chaîne
     (le nom accessible du bouton photo) après le gel, et un nombre inscrit ici se serait périmé en
@@ -389,7 +390,7 @@ réécriture n'a bougé) · `debug.log` **vide** · `git status` sans aucun fich
 | **A5** | « Extrait » — question bloquante ouverte par le plan | **Close par la mesure** | `post_type_supports('page','excerpt') === false` : le panneau n'est pas sur cet écran. **Rien à remonter à l'utilisateur** |
 | **A6** | L'`aria-label` portant le mot interdit | **Entre dans la table, sous trois conditions strictes** (§6.2), sinon dette T-#54-f | AA est bloquante au brief. Retirer le mot interdit de l'étiquette visible en le laissant dans le nom accessible reproduirait, pour un lecteur d'écran, l'asymétrie que A4 refuse |
 | **A7** | « permalien » dans le texte d'aide | **Hors périmètre — dette T-#54-g** | Précédent gelé de `description-photo` : on ne remplace pas un texte d'aide du cœur ; §10.2 fige des libellés, pas des phrases. **Asymétrie assumée avec A6** : un nom accessible est une étiquette, un texte d'aide n'en est pas une |
-| **A8** | La Modification rapide dit « Slug » sur trois types | **Hors périmètre — dette T-#54-b** | Autre écran, autre mécanisme (PHP), autre module, trois types. Une chaîne sœur partage l'arbre |
+| **A8** *[RESTREINT PAR L'ACTE DU 2026-09-17 — §14]* | La Modification rapide dit « Slug » sur trois types | **Hors périmètre — dette T-#54-b** | Autre écran, autre mécanisme (PHP), autre module, trois types. Une chaîne sœur partage l'arbre |
 | **A9** | `page-proteger-une-page-par-mot-de-passe.md:31` dit « Slug » et sort de l'empreinte | **Non touché ici — remonté au lot** | §11 |
 | **A10** | Un témoin automatique | **Aucun.** Vérification manuelle, rejouable, écrite | §7. Un canari faux vert est pire que pas de témoin — c'est le défaut que T109 nommait |
 | **A11** | Le seuil de cible tactile | **24 px**, doctrine d'administration des contrats #52 et #32. **Non rouvert** | Le seuil de 44 px est le seuil public |
@@ -420,7 +421,7 @@ pour ne pas dépendre d'une mémoire.
 | # | Dette | Payée par |
 |---|---|---|
 | **T-#54-a** | Les quatre libellés photo sont désormais écrits **trois fois** dans le dépôt — `content/portee/`, `content/chien/`, et ici. `content/**` est hors empreinte, donc rien ne tient les trois ensemble : **une divergence future serait muette** | l'issue qui rouvrira `content/**` |
-| **T-#54-b** | Le cœur émet « Slug » **en PHP** dans la **Modification rapide** (`class-wp-posts-list-table.php`), donc sur **Pages, Portées, Chiens et Articles** — deux écrans quotidiens de l'éleveuse. **L'énoncé de #54, « `page` est le seul type jamais traité », était plus optimiste que la réalité** | une issue `contenu`, sur `admin/listes/**` |
+| **T-#54-b** *[SOLDÉE POUR TROIS TYPES PAR L'ACTE DU 2026-09-17 — §14]* | Le cœur émet « Slug » **en PHP** dans la **Modification rapide** (`class-wp-posts-list-table.php`), donc sur **Pages, Portées, Chiens et Articles** — deux écrans quotidiens de l'éleveuse. **L'énoncé de #54, « `page` est le seul type jamais traité », était plus optimiste que la réalité** | une issue `contenu`, sur `admin/listes/**` |
 | **T-#54-c** | « Slug » sur les écrans de taxonomie (`class-wp-terms-list-table.php`, `edit-tag-form.php`, `edit-tags.php`) | priorité basse — l'éditrice n'y va pas |
 | **T-#54-d** | « Image mise en avant » sur un **Article** (`post_type_labels_post`, une ligne) | à ne pas faire « en passant » |
 | **T-#54-e** | La vérification de #54 est **entièrement manuelle** et se rejoue **en entier** à chaque montée de WordPress. Même famille que **T114** | une passe d'outillage |
@@ -699,3 +700,29 @@ fenêtre des photos qu'il ouvre s'intitule **« Photo principale »**.
 
 Aucune donnée n'est touchée, aucune adresse ne change, aucune page n'est à ré-enregistrer, le site
 public est identique. Portées, chiens et résultats : **rien ne change** — ils disent déjà ces mots.
+
+---
+
+## 14. Acte de renvoi du 2026-09-17 — issue #59 (T118)
+
+Cet acte ne réécrit aucune phrase gelée ci-dessus. Les passages marqués **[RESTREINT PAR L'ACTE DU
+2026-09-17]** ou **[SOLDÉE …]** se lisent **avec lui**, et il prime en cas d'écart. Le contrat qui fait
+foi pour la suite est **`docs/contracts/issue-59.md`**.
+
+1. **T-#54-b est soldée pour Pages, Portées et Chiens** par #59, commit `0379804`. Le §12 la destinait à
+   un module `admin/listes/**` : **ce module n'existe pas.** Le remède vit dans **ce** module,
+   `admin/vocabulaire-page/`, sous la forme d'une troisième moitié en PHP
+   (`modification-rapide.php`, filtre `gettext_default` posé depuis `load-edit.php`). La part
+   **Articles** reste ouverte, sous le nom **T-#59-a**.
+2. **A8** (« hors périmètre ») reste vrai **pour #54** : il ne dit plus rien de l'état du module.
+3. **L'interdit n° 16 est remplacé** par la version du `issue-59.md` §6, qui compte deux tables PHP et
+   une table JavaScript et n'écrit « Adresse de la page » **qu'une fois**, dans
+   `libelle_adresse_de_la_page()`. La phrase du n° 16, qui parle de « deux fonctions de table », est
+   **périmée**. Au n° 16 se lit désormais celui de `issue-59.md`.
+4. **Le §13 (« sur l'écran d'une page, et nulle part ailleurs ») et la vérification V3 du §8** (« liste
+   des Pages, liste des Portées : inchangées ») sont restreints de la même façon. Sur ces listes, la
+   Modification rapide dit désormais « Adresse de la page ». « Slug » ne **reste** que sur la liste des
+   Articles.
+5. **La « seule parade humaine » du §7 ne couvre pas la Modification rapide.** Aucune fiche du guide ne
+   décrit ce panneau, et c'est délibéré. Pour cette moitié, seul le contrôle manuel du point 7 de l'acte
+   de `bootstrap.php` détecte la panne muette.
