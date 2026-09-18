@@ -212,9 +212,13 @@ appliqué, et l'éleveuse peut-elle vraiment s'en servir** ».
 
 ### 6. Clôturer
 
-a) `docker-mtb` → vérifie que la stack build et boote avec le nouveau code, puis tear down.
+a) `docker-mtb` → vérifie que la stack build et boote avec le nouveau code, puis tear down. Son
+   rapport recopie la ligne de bilan du témoin des ancres du cœur (#57) : relaie-la telle quelle dans la
+   ligne « Stack Docker » du rapport. Pas de ligne = « témoin absent », jamais un ok.
 a-bis) **Mets `docs/ETAT.md` à jour toi-même** : la phase atteinte, la ligne du lot dans le journal,
-   les décisions nouvelles, les questions tranchées ou apparues. C'est ce fichier qui te permettra de
+   les décisions nouvelles, les questions tranchées ou apparues. Sur **TÉMOIN INOPÉRANT** (20),
+   **ALERTE** (30) ou témoin absent, consigne-le aussi, et fais ouvrir par `github-boards` une issue de
+   relecture des ancres (`infra`), à solder selon `docs/docker.md`. C'est ce fichier qui te permettra de
    reprendre le projet dans un contexte vierge — un lot clos sans mise à jour d'`ETAT.md` n'est pas clos.
 b) **Rapport** à l'utilisateur (format ci-dessous).
 c) `git-mtb` → `push` : sync puis push sur `main`, une seule fois pour tout le lot. Si le distant a
@@ -241,7 +245,7 @@ Obligatoire, en français, 25 lignes maximum.
 **Lignes de DoD non vérifiées** : [liste explicite — ne jamais laisser croire à une couverture totale]
 **Review** : [BLOQUANT / OK AVEC RÉSERVES / OK] — [constats restants]
 **Guide** : [pages ajoutées] · **Captures à prendre** : [nombre, ou "aucune"]
-**Stack Docker** : build ✓ / boot ✓
+**Stack Docker** : build ✓ / boot ✓ / ancres du cœur : <verdict>
 
 **Poussé sur main** : <sha> — issues fermées #<n1>, #<n2>, #<n3>
 

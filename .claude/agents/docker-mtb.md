@@ -75,7 +75,13 @@ Run this whenever asked to verify:
 5. `curl -fsS http://localhost:<port>/` — the home page responds 200.
 6. `curl -fsS http://localhost:<port>/wp-admin/` — reachable.
 7. `docker compose logs --tail=50` — read them; report any PHP warning, notice or fatal.
-8. `docker compose down` — tear down. Leave nothing running.
+8. `docker compose logs wpcli | grep 'ANCRES DU C'` — the core-anchor witness (#57, `docs/docker.md`).
+   Copy the **last** bilan line (`ok` / `AVERTISSEMENT` / `TÉMOIN INOPÉRANT` / `ALERTE`) verbatim into
+   the report. No line → write « témoin absent »: an anomaly, never read as ok. `make up` does not
+   restart an unchanged running `wpcli`: if it was not (re)provisioned during this verification, say
+   which provisioning the line comes from, or `docker compose restart wpcli` for a fresh one — never
+   `down -v`.
+9. `docker compose down` — tear down. Leave nothing running.
 
 If a step fails, read the logs, diagnose, report the actual error. Do not retry blindly.
 
@@ -95,7 +101,8 @@ If a step fails, read the logs, diagnose, report the actual error. Do not retry 
 3. healthy : ✓/✗ (délai réel)
 4. accueil 200 : ✓/✗  ·  wp-admin joignable : ✓/✗
 5. logs : [warnings/notices/fatals found, or "propres"]
-6. down : ✓
+6. ancres du cœur : <ligne recopiée telle quelle, ou « témoin absent »> [provisionnement d'origine]
+7. down : ✓
 
 ## Fichiers créés / modifiés
 - `chemin` — rôle
@@ -106,6 +113,9 @@ If a step fails, read the logs, diagnose, report the actual error. Do not retry 
 ## Problèmes
 [Actual errors with actual output. "aucun" if none.]
 ```
+
+Any anchor verdict other than `ok` — AVERTISSEMENT, TÉMOIN INOPÉRANT, ALERTE, témoin absent — is also
+flagged on the first line of the report, above `## Stack`.
 
 ## Rules
 
