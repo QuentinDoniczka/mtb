@@ -76,8 +76,14 @@ Run this whenever asked to verify:
 6. `curl -fsS http://localhost:<port>/wp-admin/` — reachable.
 7. `docker compose logs --tail=50` — read them; report any PHP warning, notice or fatal.
 8. `docker compose logs wpcli | grep 'ANCRES DU C'` — the core-anchor witness (#57, `docs/docker.md`).
+   **Wait for `terminé.` in the `wpcli` logs before grepping.** The `wpcli` healthcheck (`wp core
+   is-installed`) goes healthy well before provisioning ends — measured at ~70 s early on 2026-09-18 —
+   so step 4 alone does not mean the witness line exists yet. Grepping too early finds nothing, and
+   that is provisioning still running, **not** « témoin absent ».
    Copy the **last** bilan line (`ok` / `AVERTISSEMENT` / `TÉMOIN INOPÉRANT` / `ALERTE`) verbatim into
-   the report. No line → write « témoin absent »: an anomaly, never read as ok. `make up` does not
+   the report — the bilan itself, not the reminder line posted after `terminé.` on statuses 20 and 30,
+   which carries the same keyword. No line → write « témoin absent »: an anomaly, never read as ok.
+   `make up` does not
    restart an unchanged running `wpcli`: if it was not (re)provisioned during this verification, say
    which provisioning the line comes from, or `docker compose restart wpcli` for a fresh one — never
    `down -v`.
